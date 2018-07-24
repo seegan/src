@@ -1839,41 +1839,6 @@ SELECT tt1.*, (tt1.stock_total - tt1.sale_total) as stock_bal from ( select *, (
 	return $data;
 }
 
-function getBillReturnDetail($bill_no = 0) {
-	$data['success'] = 0;
-	global $wpdb;
-	$sale_detail_table = 	$wpdb->prefix.'sale_detail';
-	$sales_table = 	$wpdb->prefix.'sale';
-	$stock_table = 	$wpdb->prefix.'stock';
-	$customer_table = $wpdb->prefix.'customers';
-
-
-	$bill_query              = "SELECT * FROM ${sales_table} WHERE id = '${bill_no}' OR invoice_id = '${bill_no}'";
-	$bill_data = $wpdb->get_row($bill_query);
-
-	if($bill_data) {
-
-		$data['success'] = 1;
-		
-
-		$bill_id = $bill_data->id;
-		$bill_detail_query = "SELECT *, sdo.id as sale_detail_id FROM wp_sale_detail sdo
-
-JOIN (
-
-SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal from ( select *, ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id, ( SELECT ( case WHEN SUM(total_weight) Then SUM(total_weight) ELSE 0 END ) from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, ( SELECT ( case WHEN SUM(sale_weight) Then SUM(sale_weight) ELSE 0 END ) from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total from wp_lots as l WHERE  active = 1 ) as tt1
-    
-) as lt ON lt.par_id = sdo.lot_parent_id WHERE sdo.sale_id = ${bill_id} AND sdo.lot_id = lt.id AND sdo.item_status = 'return'";
-
-	$data['bill_detail_data'] = $wpdb->get_results($bill_detail_query);
-
-	} else {
-		$data['msg'] = 'Bill Not Found';
-	}
-
-	return $data;
-}
-
 
 function getCustomerDetail($customer_id = 0) {
 	global $wpdb;
@@ -3085,5 +3050,17 @@ function addSale($lot_id = 0, $sale_count = 0) {
 	global $wpdb;
 	$lots_table = $wpdb->prefix. 'lots';
 	$sql_update = "UPDATE $lots_table SET sale_balance = sale_balance + $sale_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+function lessReturn($lot_id = 0, $return_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET return_balance = return_balance - $return_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+function addReturn($lot_id = 0, $return_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET return_balance = return_balance + $return_count  WHERE id = $lot_id";
 	$wpdb->query($sql_update);
 }
