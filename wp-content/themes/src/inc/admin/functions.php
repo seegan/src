@@ -1186,8 +1186,7 @@ function stock_create_submit_popup() {
 
 			$weight = $count * $bag_weight;
 			//Update stock total in lot table
-			$sql_update = "UPDATE $lots_table SET stock_balance = stock_balance + $weight  WHERE id = $lot_id";
-			$wpdb->query($sql_update);
+			addStock($lot_id, $weight);
 
 
 			if($stock_id = $wpdb->insert_id)  {
@@ -1235,7 +1234,8 @@ function stock_update_submit_popup($stock_id = 0) {
 			$new_weight = $stock_detail->weight * $stock_count;
 
 			//Update stock total in lot table
-			$sql_update = "UPDATE $lots_table SET stock_balance = stock_balance + ($new_weight - $old_weight)  WHERE id = $stock_detail->lot_id";
+			$stock_now = $new_weight - $old_weight;
+			addStock($stock_detail->lot_id, $stock_now);
 
 			$sql = "UPDATE $stock_table SET bags_count = $stock_count , total_weight = ( $stock_detail->weight * $stock_count)  WHERE id = $stock_id";
 
@@ -1403,8 +1403,8 @@ function update_bill(){
 	$sales_table = $wpdb->prefix. 'sale';
 //	$payment_history = $wpdb->prefix. 'payment_history';
 	$installment_table = $wpdb->prefix. 'payment_installment';
-
 	$lots_sale_detail_table = $wpdb->prefix. 'sale_detail';
+
 	$stock_not_avail = array();
 
 	$billing_date = $params['billing_date'];
@@ -1515,7 +1515,20 @@ function update_bill(){
 		);
 
 
-		
+		$previous_data_query = "SELECT * FROM ${lots_sale_detail_table} WHERE sale_id = $billing_no AND active = 1";
+		$previous_data = $wpdb->get_results($previous_data_query);
+		if($previous_data && count($previous_data)>0) {
+			foreach ($previous_data as $p_value) {
+				$sale_weight = $p_value->sale_weight;
+				$lot_id = $p_value->lot_parent_id;
+
+				if($p_value->bill_type == 'original') {
+					lessSale($lot_id, $sale_weight);
+				}
+
+			}
+		}
+
 
 
 		//Remove old sale details
@@ -1529,9 +1542,11 @@ function update_bill(){
 
 		foreach ($update_sale as $a_key => $a_value) {
 			$wpdb->insert($lots_sale_detail_table, $a_value);
+
+			if($a_value['bill_type'] == 'original') {
+				addSale($a_value['lot_parent_id'], $a_value['sale_weight']);
+			}
 		}
-
-
 	}
 
 	echo json_encode($data);
@@ -1729,6 +1744,19 @@ function update_bill_last(){
 
 
 
+		$previous_data_query = "SELECT * FROM ${lots_sale_detail_table} WHERE sale_id = $billing_no AND active = 1";
+		$previous_data = $wpdb->get_results($previous_data_query);
+		if($previous_data && count($previous_data)>0) {
+			foreach ($previous_data as $p_value) {
+				$sale_weight = $p_value->sale_weight;
+				$lot_id = $p_value->lot_parent_id;
+
+				if($p_value->bill_type == 'original') {
+					lessSale($lot_id, $sale_weight);
+				}
+
+			}
+		}
 
 
 		//Remove old sale details
@@ -1743,6 +1771,11 @@ function update_bill_last(){
 		//Insert new sale detail
 		foreach ($update_sale as $a_key => $a_value) {
 			$wpdb->insert($lots_sale_detail_table, $a_value);
+
+			if($a_value['bill_type'] == 'original') {
+				addSale($a_value['lot_parent_id'], $a_value['sale_weight']);
+			}
+			
 		}		
 
 	}
@@ -2394,9 +2427,7 @@ function src_delete_data() {
 		$existing_data = $wpdb->get_row( $sql );
 		$lot_id = $existing_data->lot_id;
 		$old_weight = $existing_data->total_weight;
-		$lots_table = $wpdb->prefix. 'lots';
-		$sql_update = "UPDATE $lots_table SET stock_balance = stock_balance - $old_weight  WHERE id = $lot_id";
-		$wpdb->query($sql_update);
+		lessStock($lot_id ,$old_weight);
 	}
 
 
@@ -2408,8 +2439,6 @@ function src_delete_data() {
 }
 add_action( 'wp_ajax_src_delete_data', 'src_delete_data' );
 add_action( 'wp_ajax_nopriv_src_delete_data', 'src_delete_data' );
-
-
 
 
 
@@ -3030,3 +3059,31 @@ function check_unique_lot() {
 }
 add_action( 'wp_ajax_check_unique_lot', 'check_unique_lot' );
 add_action( 'wp_ajax_nopriv_check_unique_lot', 'check_unique_lot' );
+
+
+
+
+function lessStock($lot_id = 0, $stock_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET stock_balance = stock_balance - $stock_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+function addStock($lot_id = 0, $stock_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET stock_balance = stock_balance + $stock_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+function lessSale($lot_id = 0, $sale_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET sale_balance = sale_balance - $sale_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+function addSale($lot_id = 0, $sale_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET sale_balance = sale_balance + $sale_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
