@@ -1,0 +1,1363 @@
+[23-Nov-2016 08:39:58 UTC] WordPress database error Unknown column 'wp_' in 'field list' for query SELECT wp_
+[23-Nov-2016 08:42:31 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by require('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:45:37 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:47:25 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:47:32 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:47:33 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query  SELECT * from ( SELECT 
+                
+                (CASE
+                WHEN SUM(sale_total) Is Null 
+                THEN 0
+                ELSE SUM(sale_total)
+                END) as sal_total
+                
+                
+                FROM wp_sale WHERE active = 1 AND DATE(invoice_date) = DATE('2016-11-23') )as s_total 
+
+INNER JOIN 
+
+( SELECT 
+ 
+ (CASE
+  WHEN SUM(cash_amount) Is Null 
+  THEN 0
+  ELSE SUM(cash_amount)
+  END) as petty_cash 
+ 
+ FROM wp_petty_cash WHERE active = 1 AND DATE(cash_date) = DATE('2016-11-23') ) as pt_total
+
+ON 1=1
+INNER JOIN
+
+( SELECT 
+  (CASE
+  WHEN SUM(cash_amount) Is Null 
+  THEN 0
+  ELSE SUM(cash_amount)
+  END) as income_cash 
+ 
+ FROM wp_income_list WHERE active = 1 AND DATE(cash_date) = DATE('2016-11-23') ) as in_total made by wp_dashboard, do_meta_boxes, call_user_func, sales_statistics_widget, include('/themes/src/inc/admin/report/sales-statistics-chart.php'), getSalesStatistics
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT COUNT(1) FROM (SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+    ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+    FROM 
+    (
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+        (CASE 
+            WHEN l.parent_id = 0 
+            THEN l.id
+            ELSE l.parent_id
+         END ) as parent_id
+        FROM wp_lots l WHERE l.active = 1
+    ) 
+    lot LEFT JOIN 
+    (
+        SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+    ) 
+    sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+    (
+        SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+    ) 
+    stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) AS combined_table made by wp_dashboard, do_meta_boxes, call_user_func, stock_status_widget, include('/themes/src/inc/admin/report/list-template/list-stock-detail.php'), stock_detail_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+    ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+    FROM 
+    (
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+        (CASE 
+            WHEN l.parent_id = 0 
+            THEN l.id
+            ELSE l.parent_id
+         END ) as parent_id
+        FROM wp_lots l WHERE l.active = 1
+    ) 
+    lot LEFT JOIN 
+    (
+        SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+    ) 
+    sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+    (
+        SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+    ) 
+    stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ORDER BY lo.id ASC LIMIT 0, 20 made by wp_dashboard, do_meta_boxes, call_user_func, stock_status_widget, include('/themes/src/inc/admin/report/list-template/list-stock-detail.php'), stock_detail_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT COUNT(1) FROM (SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1 ) AS combined_table made by wp_dashboard, do_meta_boxes, call_user_func, sales_delivery_status_widget, include('/themes/src/inc/admin/report/sales-delivery-status.php'), billing_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1 ORDER BY s.id DESC LIMIT 0, 10 made by wp_dashboard, do_meta_boxes, call_user_func, sales_delivery_status_widget, include('/themes/src/inc/admin/report/sales-delivery-status.php'), billing_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT days.day as label, 
+
+		(CASE 
+		 WHEN sl.sal_val Is Null
+		 THEN 0
+		 ELSE sl.sal_val
+		 END
+		) as y
+
+		FROM ( select curdate() as day
+		   union select curdate() - interval 1 day
+		   union select curdate() - interval 2 day
+		   union select curdate() - interval 3 day
+		   union select curdate() - interval 4 day
+		   union select curdate() - interval 5 day
+		   union select curdate() - interval 6 day
+		   union select curdate() - interval 7 day
+		   union select curdate() - interval 8 day
+		   union select curdate() - interval 9 day
+		) days 
+
+		LEFT JOIN 
+
+		(SELECT SUM(s.sale_total) sal_val, s.invoice_date FROM wp_sale s WHERE s.active = 1 GROUP BY s.invoice_date ) sl
+
+		ON sl.invoice_date = days.day ORDER BY days.day ASC made by wp_dashboard, do_meta_boxes, call_user_func, lot_status_chart_widget, include('/themes/src/inc/admin/report/lot-chart.php'), laseDaysSaleTotal
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_customers' doesn't exist for query SELECT COUNT(1) FROM (SELECT * FROM wp_customers WHERE active = 1 ) AS combined_table made by wp_dashboard, do_meta_boxes, call_user_func, customer_status_widget, include('/themes/src/inc/admin/report/customers-report.php'), customer_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_customers' doesn't exist for query SELECT * FROM wp_customers WHERE active = 1 ORDER BY id DESC LIMIT 0, 10 made by wp_dashboard, do_meta_boxes, call_user_func, customer_status_widget, include('/themes/src/inc/admin/report/customers-report.php'), customer_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by require('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT COUNT(1) FROM (SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1  AND ( DATE(s.invoice_date) >= '2016-11-23' AND DATE(s.invoice_date) <= '2016-11-23' ) ) AS combined_table made by require('wp-admin/admin-footer.php'), do_action('admin_footer'), call_user_func_array, billing_dashboard_widget, include('/themes/src/inc/admin/report/billing-report.php'), billing_list_pagination
+[23-Nov-2016 08:49:37 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1  AND ( DATE(s.invoice_date) >= '2016-11-23' AND DATE(s.invoice_date) <= '2016-11-23' ) ORDER BY s.id DESC LIMIT 0, 10 made by require('wp-admin/admin-footer.php'), do_action('admin_footer'), call_user_func_array, billing_dashboard_widget, include('/themes/src/inc/admin/report/billing-report.php'), billing_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query  SELECT * from ( SELECT 
+                
+                (CASE
+                WHEN SUM(sale_total) Is Null 
+                THEN 0
+                ELSE SUM(sale_total)
+                END) as sal_total
+                
+                
+                FROM wp_sale WHERE active = 1 AND DATE(invoice_date) = DATE('2016-11-23') )as s_total 
+
+INNER JOIN 
+
+( SELECT 
+ 
+ (CASE
+  WHEN SUM(cash_amount) Is Null 
+  THEN 0
+  ELSE SUM(cash_amount)
+  END) as petty_cash 
+ 
+ FROM wp_petty_cash WHERE active = 1 AND DATE(cash_date) = DATE('2016-11-23') ) as pt_total
+
+ON 1=1
+INNER JOIN
+
+( SELECT 
+  (CASE
+  WHEN SUM(cash_amount) Is Null 
+  THEN 0
+  ELSE SUM(cash_amount)
+  END) as income_cash 
+ 
+ FROM wp_income_list WHERE active = 1 AND DATE(cash_date) = DATE('2016-11-23') ) as in_total made by wp_dashboard, do_meta_boxes, call_user_func, sales_statistics_widget, include('/themes/src/inc/admin/report/sales-statistics-chart.php'), getSalesStatistics
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT COUNT(1) FROM (SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+    ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+    FROM 
+    (
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+        (CASE 
+            WHEN l.parent_id = 0 
+            THEN l.id
+            ELSE l.parent_id
+         END ) as parent_id
+        FROM wp_lots l WHERE l.active = 1
+    ) 
+    lot LEFT JOIN 
+    (
+        SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+    ) 
+    sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+    (
+        SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+    ) 
+    stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) AS combined_table made by wp_dashboard, do_meta_boxes, call_user_func, stock_status_widget, include('/themes/src/inc/admin/report/list-template/list-stock-detail.php'), stock_detail_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+    ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+    FROM 
+    (
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+        (CASE 
+            WHEN l.parent_id = 0 
+            THEN l.id
+            ELSE l.parent_id
+         END ) as parent_id
+        FROM wp_lots l WHERE l.active = 1
+    ) 
+    lot LEFT JOIN 
+    (
+        SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+    ) 
+    sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+    (
+        SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+    ) 
+    stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ORDER BY lo.id ASC LIMIT 0, 20 made by wp_dashboard, do_meta_boxes, call_user_func, stock_status_widget, include('/themes/src/inc/admin/report/list-template/list-stock-detail.php'), stock_detail_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT COUNT(1) FROM (SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1 ) AS combined_table made by wp_dashboard, do_meta_boxes, call_user_func, sales_delivery_status_widget, include('/themes/src/inc/admin/report/sales-delivery-status.php'), billing_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1 ORDER BY s.id DESC LIMIT 0, 10 made by wp_dashboard, do_meta_boxes, call_user_func, sales_delivery_status_widget, include('/themes/src/inc/admin/report/sales-delivery-status.php'), billing_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT days.day as label, 
+
+		(CASE 
+		 WHEN sl.sal_val Is Null
+		 THEN 0
+		 ELSE sl.sal_val
+		 END
+		) as y
+
+		FROM ( select curdate() as day
+		   union select curdate() - interval 1 day
+		   union select curdate() - interval 2 day
+		   union select curdate() - interval 3 day
+		   union select curdate() - interval 4 day
+		   union select curdate() - interval 5 day
+		   union select curdate() - interval 6 day
+		   union select curdate() - interval 7 day
+		   union select curdate() - interval 8 day
+		   union select curdate() - interval 9 day
+		) days 
+
+		LEFT JOIN 
+
+		(SELECT SUM(s.sale_total) sal_val, s.invoice_date FROM wp_sale s WHERE s.active = 1 GROUP BY s.invoice_date ) sl
+
+		ON sl.invoice_date = days.day ORDER BY days.day ASC made by wp_dashboard, do_meta_boxes, call_user_func, lot_status_chart_widget, include('/themes/src/inc/admin/report/lot-chart.php'), laseDaysSaleTotal
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_customers' doesn't exist for query SELECT COUNT(1) FROM (SELECT * FROM wp_customers WHERE active = 1 ) AS combined_table made by wp_dashboard, do_meta_boxes, call_user_func, customer_status_widget, include('/themes/src/inc/admin/report/customers-report.php'), customer_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_customers' doesn't exist for query SELECT * FROM wp_customers WHERE active = 1 ORDER BY id DESC LIMIT 0, 10 made by wp_dashboard, do_meta_boxes, call_user_func, customer_status_widget, include('/themes/src/inc/admin/report/customers-report.php'), customer_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by require('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT COUNT(1) FROM (SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1  AND ( DATE(s.invoice_date) >= '2016-11-23' AND DATE(s.invoice_date) <= '2016-11-23' ) ) AS combined_table made by require('wp-admin/admin-footer.php'), do_action('admin_footer'), call_user_func_array, billing_dashboard_widget, include('/themes/src/inc/admin/report/billing-report.php'), billing_list_pagination
+[23-Nov-2016 08:51:15 UTC] WordPress database error Table 'wifieud6_src.wp_sale' doesn't exist for query SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s LEFT JOIN wp_customers as c ON s.customer_id = c.id WHERE s.active = 1  AND ( DATE(s.invoice_date) >= '2016-11-23' AND DATE(s.invoice_date) <= '2016-11-23' ) ORDER BY s.id DESC LIMIT 0, 10 made by require('wp-admin/admin-footer.php'), do_action('admin_footer'), call_user_func_array, billing_dashboard_widget, include('/themes/src/inc/admin/report/billing-report.php'), billing_list_pagination
+[23-Nov-2016 08:51:17 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:51:29 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:52:29 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 08:52:51 UTC] WordPress database error Table 'wifieud6_src.wp_lots' doesn't exist for query SELECT avl.avail_stock, unavl.unavail_stock, cus.tot_customers, emp.tot_employees FROM ( SELECT count(1) as     avail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, ( CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+    
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock > 0
+    ) as avl 
+
+    JOIN
+
+    ( SELECT count(1) as unavail_stock FROM ( SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,
+        
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  ) as bal_stock
+        FROM 
+        (
+            SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+            (CASE 
+                WHEN l.parent_id = 0 
+                THEN l.id
+                ELSE l.parent_id
+             END ) as parent_id
+            FROM wp_lots l WHERE l.active = 1
+        ) 
+        lot LEFT JOIN 
+        (
+            SELECT s.lot_parent_id as sale_lot_id, SUM(s.sale_weight) as sale_total FROM wp_sale_detail s WHERE s.active = 1 AND s.bill_type = 'original' AND s.item_status = 'open' GROUP BY s.lot_parent_id
+        ) 
+        sale ON lot.parent_id = sale.sale_lot_id LEFT JOIN 
+        (
+            SELECT s1.lot_id as stock_lot_id, SUM(s1.total_weight) as stock_total FROM wp_stock s1 WHERE s1.active = 1 GROUP BY s1.lot_id    
+        ) 
+        stock ON lot.parent_id = stock.stock_lot_id ) as lo  WHERE lo.id = lo.parent_id ) as avail_stock 
+
+        WHERE avail_stock.bal_stock <= 0
+    ) as unavl 
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_customers FROM wp_customers c WHERE c.active = 1 ) cus
+
+    ON 1 = 1
+    JOIN
+    ( SELECT count(1) as tot_employees FROM wp_employees e WHERE e.active = 1 AND e.emp_current_status = 1 ) as emp made by include('wp-admin/admin-footer.php'), apply_filters('admin_footer_text'), call_user_func_array, remove_footer_admin, getStatusCount
+[23-Nov-2016 09:04:39 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:05:39 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:06:21 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:06:39 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:06:59 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:08:01 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:08:22 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:09:00 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:10:01 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:10:23 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:11:00 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:12:01 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:12:24 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[23-Nov-2016 09:13:01 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'function_name' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[22-Jun-2017 06:11:23 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'src_settings' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[05-Jul-2017 06:12:58 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'src_settings' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[10-Jul-2017 07:36:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:36:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:36:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:36:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:37:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:37:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:37:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:37:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:37:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1290
+[10-Jul-2017 07:39:40 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[10-Jul-2017 07:39:40 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[18-Jul-2017 07:07:29 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'src_settings' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[08-Nov-2017 07:08:45 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[08-Nov-2017 07:15:58 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[08-Nov-2017 07:16:01 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:36:30 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:36:55 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:37:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:37:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:37:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:37:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Nov-2017 11:38:19 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[17-Nov-2017 11:38:19 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[17-Nov-2017 11:39:45 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[17-Nov-2017 11:39:45 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[17-Jan-2018 12:21:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Jan-2018 12:21:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Jan-2018 12:21:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Jan-2018 12:21:24 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[17-Jan-2018 12:23:33 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[17-Jan-2018 12:23:33 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[18-Jan-2018 10:49:39 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:38 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:52 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:52 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:52 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:52 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:52 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:52:52 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 10:57:17 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[18-Jan-2018 10:57:17 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[18-Jan-2018 10:58:10 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'src_settings' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[18-Jan-2018 11:14:55 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill_last'), call_user_func_array, update_bill_last
+[18-Jan-2018 11:14:55 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill_last'), call_user_func_array, update_bill_last
+[18-Jan-2018 12:46:01 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 12:46:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 12:46:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 12:46:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 12:46:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 12:46:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 12:46:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:28:15 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:28:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:28:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:28:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:28:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:29:31 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:29:31 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:29:31 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:29:31 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:31:15 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:31:15 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:31:15 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 13:31:15 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:07 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:07 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:07 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:07 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:07 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:07 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:17 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:33 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:33 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:33 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:33 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:33 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:33 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:50 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:50 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:50 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:50 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:50 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:14:50 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:19:16 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[18-Jan-2018 14:19:16 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill'), call_user_func_array, update_bill
+[18-Jan-2018 14:21:04 UTC] WordPress database error Unknown column 'success' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = success AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill_last'), call_user_func_array, update_bill_last
+[18-Jan-2018 14:21:04 UTC] WordPress database error Unknown column 'billing_no' in 'where clause' for query 
+		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
+		(
+
+		select *,
+		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
+		( SELECT  
+		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
+		 from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
+		    
+		( SELECT 
+		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
+		 from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
+		from wp_lots as l WHERE id = billing_no AND active = 1 
+
+		) as tt1 made by do_action('wp_ajax_update_bill_last'), call_user_func_array, update_bill_last
+[18-Jan-2018 14:55:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:55:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:55:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 14:55:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:12 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:12 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:12 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:12 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:43 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:43 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:43 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:35:43 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:47:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:47:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:47:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:47:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:47:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:47:16 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:48:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:48:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:48:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:48:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:48:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:48:11 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:50:46 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:50:46 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:50:46 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:50:46 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:50:46 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:50:46 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:51:59 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:53:41 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:53:41 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:53:41 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:53:41 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:53:41 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:53:41 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:55:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:55:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:55:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:55:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:55:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:55:19 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:56:03 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:56:03 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:56:03 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:56:03 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:57:37 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:57:37 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:57:37 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:57:37 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:58:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:58:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:58:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:58:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:58:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 15:58:04 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[18-Jan-2018 16:05:36 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 05:33:22 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 05:33:45 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'src_settings' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[19-Jan-2018 05:38:12 UTC] PHP Warning:  call_user_func_array() expects parameter 1 to be a valid callback, function 'src_settings' not found or invalid function name in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/plugin.php on line 524
+[19-Jan-2018 06:28:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:28:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:28:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:28:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:28:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:28:27 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:32:09 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:32:09 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:32:09 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:32:09 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:32:09 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:32:09 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:33:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:33:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:33:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:33:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:33:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:33:23 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:47:44 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:47:44 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:47:44 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:47:44 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:47:44 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:47:44 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:10 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:10 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:10 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:10 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:14 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:14 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:14 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:14 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:14 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:49:14 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:21 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:21 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:21 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:21 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:21 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:21 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:28 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 543 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:28 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 553 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:28 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 556 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:28 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 560 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:28 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 566 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
+[19-Jan-2018 06:52:28 UTC] PHP Warning:  Missing argument 2 for wpdb::prepare(), called in /home/wifieud6/public_html/saravanaricecentre.com/wp-content/themes/src/inc/admin/functions.php on line 570 and defined in /home/wifieud6/public_html/saravanaricecentre.com/wp-includes/wp-db.php on line 1291
