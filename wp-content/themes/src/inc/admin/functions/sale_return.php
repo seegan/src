@@ -31,6 +31,7 @@ function sale_return($value='')
 					addReturn($data->lot_parent_id, $return['return_weight']);
 				}
 			}
+			
 
 		}
 	}
