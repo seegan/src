@@ -2,6 +2,7 @@
 
 $bill_no = isset($_GET['bill_no']) ? $_GET['bill_no'] : $_GET['inv_id'];
 $bill_data = getBillDetail($bill_no);
+$bill_return_data = getBillReturnDetail($bill_no);
 if($bill_data['bill_data']->gst_to == 'cgst'){
 	$gst_data =  gst_group_cgst($bill_no);
 } else if($bill_data['bill_data']->gst_to == 'igst'){

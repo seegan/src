@@ -117,7 +117,7 @@
 
 	<tr style="font-weight:bold;">
 		<th>To Pay:
-			<input type="checkbox" name="cur_bal_check_box" style="visibility:hidden;" class="cur_bal_check_box" style="width: 20px;height: 18px;" <?php if($bill_data && $bill_fdata){ $paid = $bill_fdata->pay_to_check; if($paid == '1' ){ echo 'checked'; }  } else { echo 'checked'; } ?>>
+			<input type="checkbox" name="cur_bal_check_box"  class="cur_bal_check_box" style="width: 20px;height: 18px;" <?php if($bill_data && $bill_fdata){ $paid = $bill_fdata->pay_to_check; if($paid == '1' ){ echo 'checked'; }  } else { echo 'checked'; } ?>>
 
 		</th>
 		<td>

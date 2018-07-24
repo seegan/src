@@ -85,16 +85,16 @@ jQuery(document).ready(function (argument) {
         
     });
 
-    jQuery('.cod_check').on('click',function(){
-        if(jQuery('.cod_check:checked').val()=='cod'){
-            jQuery('.cod_amount_div').css("display","block");
-            payment_calculation();
-        } else {
-            jQuery('.cod_amount_div').css("display","none");
-            jQuery('.cod_amount').val('0');
+    // jQuery('.cod_check').on('click',function(){
+    //     if(jQuery('.cod_check:checked').val()=='cod'){
+    //         jQuery('.cod_amount_div').css("display","block");
+    //         payment_calculation();
+    //     } else {
+    //         jQuery('.cod_amount_div').css("display","none");
+    //         jQuery('.cod_amount').val('0');
             
-        }
-    });
+    //     }
+    // });
 });
 
 
@@ -151,3 +151,14 @@ function deleteDueCash(uniquename){
     });
     //individualBillPaidCalculation();
 }
+
+
+
+function isNumberKey(evt)
+   {
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode < 48 || charCode > 57))
+         return false;
+
+      return true;
+   }

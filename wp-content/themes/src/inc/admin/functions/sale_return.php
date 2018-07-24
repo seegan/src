@@ -23,13 +23,7 @@ function sale_return($value='')
 		foreach ($params['return_data'] as $return) {
 			if($return['return_weight'] > 0) {
 				$return_data = array( 'return_id' => $return_id, 'sale_id' => $sale_id, 'sale_detail_id' => $return['sale_detail'],'lot_id' => $return['return_lot'], 'return_weight' => $return['return_weight'] );
-				$wpdb->insert($return_detail_table, $return_data);
-
-				$query = "SELECT lot_parent_id, bill_type FROM wp_sale_detail WHERE id = '".$return['sale_detail']."' AND active = 1";
-				$data = $wpdb->get_row($query);
-				if($data->bill_type == 'original') {
-					addReturn($data->lot_parent_id, $return['return_weight']);
-				}
+				$wpdb->insert($return_detail_table, $return_data);			
 			}
 
 		}
@@ -60,7 +54,7 @@ function sale_return_update($value='')
 	if(isset($params['return_data']) && $params['return_data']) {
 		foreach ($params['return_data'] as $return) {
 			$return_data = array( 'return_weight' => $return['return_weight'] );
-			$wpdb->update($return_detail_table, $return_data, array('id' => $return['return_detail_id']));
+			$wpdb->update($return_detail_table, $return_data, array('id' => $return['return_detail_id']));			
 		}
 	}
 
