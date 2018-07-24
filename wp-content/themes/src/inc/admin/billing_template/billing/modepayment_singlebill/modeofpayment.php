@@ -23,6 +23,7 @@
             <input type="checkbox" name="payment_cash[]" value="cheque_content" class="payment_cash" data-paytype="cheque"> Cheque 
             <input type="checkbox" name="payment_cash[]" value="internet_content" class="payment_cash" data-paytype="internet"> Neft
             <input type="checkbox" name="payment_cash[]" value="credit_content" class="payment_cash" data-paytype="credit"> Credit  
+            <input type="checkbox" name="payment_cash[]" value="payto_content" class="payment_cash" data-paytype="payto"> Pay to  
             <!-- <input type="checkbox" name="payment_cash" value="credit"> Credit -->
         </div>
     </div>
