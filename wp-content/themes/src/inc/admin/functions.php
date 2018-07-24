@@ -26,8 +26,6 @@ add_action( 'admin_menu', 'my_footer_shh' );
 
 
 
-
-
 wp_enqueue_style( 'jquery-ui', get_template_directory_uri() . '/inc/css/jquery-ui.css' );
 wp_enqueue_style( 'admin-style', get_template_directory_uri() . '/inc/css/admin-css.css' );
 
@@ -1483,8 +1481,6 @@ function update_bill(){
 				$update_sale[] = array('id' => $token_id,'bill_type' => 'duplicate', 'bill_from' => $s_value['type_bill_s'], 'lot_type' => '-', 'lot_id' => $s_value['lot_number'], 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => '-','slab' => $slab, 'sale_as'=> $saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight, 'sale_weight' => $s_value['lot_duplicate_total'], 'unit_price' => $s_value['unit_price_duplicate'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display, 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
 			}
 		}
-
-		
 	}
 
 
