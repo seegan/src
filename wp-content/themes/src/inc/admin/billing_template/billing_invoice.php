@@ -2,6 +2,7 @@
 
 $bill_no = isset($_GET['bill_no']) ? $_GET['bill_no'] : $_GET['inv_id'];
 $bill_data = getBillDetail($bill_no);
+$bill_return_data = getBillReturnDetail($bill_no);
 
 
 $bill_original = '<div class="type-f type-original"></div>';
@@ -89,6 +90,80 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 					</ul>
 				</div>
 			</div>
+			<div style="clear:both;"></div>
+
+
+			<?php
+			//var_dump($bill_data['bill_detail_data']);
+			if(isset($bill_return_data['bill_detail_data']) AND count($bill_return_data['bill_detail_data'])>0 ) {
+			?>
+			<h3 style="margin-bottom:0px;">Item Returned</h3>
+			<div class=table-simple>
+				<table class=display>
+					<thead>
+						<tr>
+							<th class="first-col">Lot.No</th>
+							<th>Unit Price</th>
+							<th>Product Name</th>
+							<th>Discount Price</th>
+							<th>Net Weight</th>
+							<th>Sale Option</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php
+							$i=0;
+							foreach ($bill_return_data['bill_detail_data'] as $r_value) {
+								$i++;
+					?>
+						<tr>
+							<td class="row">
+								<?php 
+									if($r_value->bill_from == 'health_store') {
+										echo $bill_healthcenter;
+									} elseif ($r_value->bill_from == 'out_stock') {
+										echo $bill_duplicate;
+									} else {
+										echo $bill_original;
+									}
+								?>
+							<?php echo $r_value->lot_number; ?>
+								
+
+							</td>
+							<td><?php echo $r_value->basic_price; ?></td>
+							<td>
+								<?php echo $r_value->product_name; ?>
+								<?php
+									if($r_value->brand_display === '1') {
+										echo "<small>( ".$r_value->brand_name." )</small>";
+									}
+								?>
+
+							</td>
+							<td><?php echo $i_value->unit_price; ?></td>
+							<td>
+								<strong><?php echo (float) $r_value->sale_weight; ?></strong>
+							</td>
+							<td style="width: 15%;">
+								<?php echo $r_value->sale_type; ?>
+							</td>
+							<td><?php echo $r_value->sale_value; ?></td>
+						</tr>
+
+					<?php
+							}
+
+					?>
+					</tbody>
+				</table>
+			</div>
+			<?php
+			}
+			?>
+
+
 			<div style="clear:both;"></div>
 			<h3 style="margin-top:30px;margin-bottom:0px;">Item Ordered</h3>
 			<div class=table-simple>

@@ -75,7 +75,7 @@
                 ?>
                     <tr>
                         <td><?php echo $s_value->lot_id; ?></td>
-                        <td><?php echo $s_value->lot_number; ?></td>
+                        <td></td>
                         <td><?php echo $s_value->sale_weight; ?></td>
                         <td><?php echo $s_value->tot_delivered; ?></td>
                         <td><?php echo $s_value->tot_returned; ?></td>

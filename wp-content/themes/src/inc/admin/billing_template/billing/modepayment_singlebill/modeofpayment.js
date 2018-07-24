@@ -20,9 +20,11 @@ jQuery(document).ready(function (argument) {
                 } else {
                     var type_text = Capital(type);
                 }
+
+                var amt = (type == 'payto')? '' : '';
                 var existing_count  = parseInt( jQuery('#bill_payment_tab tr').length );
                 var current_row     = existing_count + 1;
-                var str             = '<tr class="payment_table"><td style="padding:5px;">' + type_text + '<input type="hidden" name="payment_detail['+current_row+'][payment_type]" value="'+type+'" style="width:20px;" class="payment_type"/></td><td style="padding:5px;"><input type="text" name="payment_detail['+current_row+'][payment_amount]" class="payment_amount" data-paymenttype="'+type+'"  data-uniqueName="'+makeid()+'" value="" style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /></td><td style="padding"5px;>'+today+'</td><td style="padding:5px;"><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';                
+                var str             = '<tr class="payment_table"><td style="padding:5px;">' + type_text + '<input type="hidden" name="payment_detail['+current_row+'][payment_type]" value="'+type+'" style="width:20px;" class="payment_type"/></td><td style="padding:5px;"><input type="text" name="payment_detail['+current_row+'][payment_amount]" class="payment_amount" data-paymenttype="'+type+'"  data-uniqueName="'+makeid()+'" value="'+ amt +'" style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /></td><td style="padding"5px;>'+today+'</td><td style="padding:5px;"><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';                
                 jQuery('#bill_payment_tab').append(str);
             }
             payment_calculation();               
@@ -85,16 +87,16 @@ jQuery(document).ready(function (argument) {
         
     });
 
-    jQuery('.cod_check').on('click',function(){
-        if(jQuery('.cod_check:checked').val()=='cod'){
-            jQuery('.cod_amount_div').css("display","block");
-            payment_calculation();
-        } else {
-            jQuery('.cod_amount_div').css("display","none");
-            jQuery('.cod_amount').val('0');
+    // jQuery('.cod_check').on('click',function(){
+    //     if(jQuery('.cod_check:checked').val()=='cod'){
+    //         jQuery('.cod_amount_div').css("display","block");
+    //         payment_calculation();
+    //     } else {
+    //         jQuery('.cod_amount_div').css("display","none");
+    //         jQuery('.cod_amount').val('0');
             
-        }
-    });
+    //     }
+    // });
 });
 
 
@@ -121,7 +123,29 @@ function payment_calculation(){
     jQuery('.paid_amount').trigger('change');
     return total_pay;
 }
+function payment_calculation_payto(){
+    var total           = parseFloat(jQuery('.final_total').val());
+    var due             = parseFloat(jQuery('.balance_amount_val').val());
+   
+    var paid_tot = 0;
+    jQuery('.payment_table').each(function() {  
+        var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
+        tot         = isNaN(tot) ? 0 : tot ;
+        paid_tot    = paid_tot + tot;       
+    });
+   var new_paid = paid_tot + 
+if(paid_tot > due){
 
+}
+    var total_pay     = total_payment - paid_tot;
+    var cur_pay       = total - paid_tot;
+    cur_pay = (cur_pay >= 0)? cur_pay : 0 ;
+    jQuery('.pay_amount_cheque').val(cur_pay);
+    jQuery('.cod_amount').val(cur_pay);
+    jQuery('.paid_amount').val(paid_tot);
+    jQuery('.paid_amount').trigger('change');
+    return total_pay;
+}
 
 function makeid() {
     var text = "";
@@ -151,3 +175,14 @@ function deleteDueCash(uniquename){
     });
     //individualBillPaidCalculation();
 }
+
+
+
+function isNumberKey(evt)
+   {
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode < 48 || charCode > 57))
+         return false;
+
+      return true;
+   }
