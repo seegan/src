@@ -32,6 +32,8 @@ jQuery(document).ready(function(){
   }).on("select2:select", function (e) {
     jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
     checkPaymentDue(e.params.data.id);
+
+    
   });
 
 

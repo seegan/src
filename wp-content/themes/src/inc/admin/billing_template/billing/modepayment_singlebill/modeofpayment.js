@@ -133,7 +133,7 @@ function payment_calculation_payto(){
         tot         = isNaN(tot) ? 0 : tot ;
         paid_tot    = paid_tot + tot;       
     });
-   var new_paid = paid_tot + 
+   //var new_paid = paid_tot + 
 if(paid_tot > due){
 
 }

@@ -1,18 +1,25 @@
+<style type="text/css">
+    
+    .payment-detail-container, .previous-payment-due {
+        /*float: left;*/
+        margin-top: 20px;
+        width:800px;
+    }
+    .previous-payment-due .billing-structure {
+        border: 2px solid red;
+        padding:20px;
+    }
+    
+</style>
 
 
-
-
-<div class="billing-structure">Due Amount:<span class="balance_amount"></span><br/>
-	<input type="hidden" value="<?php echo ( $bill_data && $bill_fdata ) ? $bill_fdata->prev_bal : 0;  ?>" name="balance_amount_val" class="balance_amount_val"/>
-	<input type="hidden" class="form-control return_amt" value="<?php echo ( $bill_data && $bill_fdata ) ? $bill_fdata->tot_due_amt : 0;  ?>" name="return_amt">
-	Total Due Balance <span class="return_amt_txt"><?php echo ( $bill_data && $bill_fdata ) ? $bill_fdata->tot_due_amt : 0;  ?></span>
+ <div class="previous-payment-due">
+    <div class="billing-structure">
+        Payment Due From Previous Bills : <span class="due_bal"></span>
+        <input type="hidden" name="due_bal_input" class="due_bal_input" id="due_bal_input"/>
+    </div>
 </div>
-
-
-
-
-
-											
+<br/>
 <div class="payment-mode">
     <div class="payment-container-top">
         <div class="payment-span" style="width: 180%;">
@@ -23,7 +30,7 @@
             <input type="checkbox" name="payment_cash[]" value="cheque_content" class="payment_cash" data-paytype="cheque"> Cheque 
             <input type="checkbox" name="payment_cash[]" value="internet_content" class="payment_cash" data-paytype="internet"> Neft
             <input type="checkbox" name="payment_cash[]" value="credit_content" class="payment_cash" data-paytype="credit"> Credit  
-            <input type="checkbox" name="payment_cash[]" value="payto_content" class="payment_cash" data-paytype="payto"> Pay to  
+            <input type="checkbox" name="payment_cash[]" value="payto_content" class="payment_cash" data-paytype="payto"> Paid From Balance 
             <!-- <input type="checkbox" name="payment_cash" value="credit"> Credit -->
         </div>
     </div>
