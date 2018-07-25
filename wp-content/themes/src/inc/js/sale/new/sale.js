@@ -33,7 +33,7 @@ jQuery(document).ready(function(){
     jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
     checkPaymentDue(e.params.data.id);
 
-    
+
   });
 
 
@@ -133,11 +133,13 @@ function checkPaymentDue(id = 0) {
     dataType: "json",
     url: frontendajax.ajaxurl,
     data: {
-      action      : 'check_balance',
+      action      : 'check_balance_new',
       customer_id  : id,
     },
     success: function (data) { console.log(data);
-      jQuery('.due_bal').text(data.payment_due);
+      jQuery('.due_bal').text(data.balance);
+      jQuery('.due_bal_input').val(data.balance);
+      PayFromPrevoius(jQuery('.final_total').val(),data.balance);
     }
   });
 }

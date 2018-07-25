@@ -92,12 +92,12 @@ function check_balance_new() {
 	$id = $_POST['customer_id'];
 
 	$sale_table = $wpdb->prefix.'sale';
-	$query = "SELECT s2.customer_id, SUM(s2.sale_total) as sale_total, SUM(s2.paid_total) as paid_total, ( SUM(s2.sale_total) - SUM(s2.paid_total) ) as payment_due FROM 
- ( SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM wp_sale as s 
-  JOIN 
-  ( SELECT p.sale_id, SUM(p.payment_paid) as paid_total FROM wp_payment_history as p WHERE p.active = 1 GROUP BY p.sale_id ) 
-  as ph ON s.id = ph.sale_id WHERE s.active = 1 AND s.customer_id = ${id} ) 
- as s2";
+	$credit_table = $wpdb->prefix.'credit';
+	$debit_table = $wpdb->prefix.'debit';
+	$query = "	SELECT * FROM {$credit_table} WHERE active = 1 
+	union 
+	SELECT * FROM {$credit_table} WHERE active = 1
+    ORDER BY `modified_at` DESC LIMIT 1";
 
 	if( $data = $wpdb->get_row( $query, ARRAY_A  ) ) {
 		echo json_encode($data); 
