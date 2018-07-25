@@ -28,6 +28,7 @@ function sale_return($value='')
 				$query = "SELECT lot_parent_id, bill_type FROM wp_sale_detail WHERE id = '".$return['sale_detail']."' AND active = 1";
 				$exist_data = $wpdb->get_row($query);
 				if($exist_data->bill_type == 'original') {
+
 					addReturn($exist_data->lot_parent_id, $return['return_weight']);
 				}
 			}
@@ -59,13 +60,15 @@ function sale_return_update($value='')
 	
 	if(isset($params['return_data']) && $params['return_data']) {
 		foreach ($params['return_data'] as $return) {
+
+			$query = "SELECT sd.lot_parent_id, sd.bill_type, rd.return_weight FROM wp_sale_detail as sd JOIN wp_return_detail as rd ON sd.id = rd.sale_detail_id WHERE sd.id = '".$return['sale_detail']."' AND rd.id = ".$return['return_detail_id']." AND sd.active = 1 AND rd.active = 1";
+			$exist_data = $wpdb->get_row($query);
+
 			$return_data = array( 'return_weight' => $return['return_weight'] );
 			$wpdb->update($return_detail_table, $return_data, array('id' => $return['return_detail_id']));
 
-			$query = "SELECT sd.lot_parent_id, sd.bill_type, rd.return_weight FROM wp_sale_detail as sd JOIN wp_return_detail as rd ON sd.id = rd.sale_detail_id WHERE sd.id = '".$return['sale_detail']."' AND sd.active = 1 AND rd.active = 1";
-			$exist_data = $wpdb->get_row($query);
-
 			$actual_return = $exist_data->return_weight - $return['return_weight'];
+
 			if($exist_data->bill_type == 'original') {
 				lessReturn($exist_data->lot_parent_id, $actual_return);
 			}

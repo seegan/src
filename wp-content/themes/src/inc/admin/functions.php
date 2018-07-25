@@ -3094,3 +3094,17 @@ function addSale($lot_id = 0, $sale_count = 0) {
 	$sql_update = "UPDATE $lots_table SET sale_balance = sale_balance + $sale_count  WHERE id = $lot_id";
 	$wpdb->query($sql_update);
 }
+function lessReturn($lot_id = 0, $return_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET return_balance = return_balance - $return_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+function addReturn($lot_id = 0, $return_count = 0) {
+	global $wpdb;
+	$lots_table = $wpdb->prefix. 'lots';
+	$sql_update = "UPDATE $lots_table SET return_balance = return_balance + $return_count  WHERE id = $lot_id";
+	$wpdb->query($sql_update);
+}
+
+
