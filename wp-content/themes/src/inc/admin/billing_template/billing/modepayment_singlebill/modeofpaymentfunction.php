@@ -86,6 +86,28 @@ function PaymentUpdate($payment_detail = '',$invoice_id = '',$customer_id = ''){
 	}
 }
 
+function check_balance_new() {
+
+	global $wpdb;
+	$id = $_POST['customer_id'];
+
+	$sale_table = $wpdb->prefix.'sale';
+	$query = "SELECT s2.customer_id, SUM(s2.sale_total) as sale_total, SUM(s2.paid_total) as paid_total, ( SUM(s2.sale_total) - SUM(s2.paid_total) ) as payment_due FROM 
+ ( SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM wp_sale as s 
+  JOIN 
+  ( SELECT p.sale_id, SUM(p.payment_paid) as paid_total FROM wp_payment_history as p WHERE p.active = 1 GROUP BY p.sale_id ) 
+  as ph ON s.id = ph.sale_id WHERE s.active = 1 AND s.customer_id = ${id} ) 
+ as s2";
+
+	if( $data = $wpdb->get_row( $query, ARRAY_A  ) ) {
+		echo json_encode($data); 
+	} else {
+		return false;
+	}
+	die();
+}
+add_action( 'wp_ajax_check_balance_new', 'check_balance_new' );
+add_action( 'wp_ajax_nopriv_check_balance_new', 'check_balance_new' );
 
 
 ?>
