@@ -1413,8 +1413,8 @@ function update_bill(){
 
 
 
-	PaymentCreate($params['payment_detail'],$billing_no);
-	die();
+	//PaymentCreate($params['payment_detail'], $billing_no);
+
 
 	$shop_name = $params['shop_name'];
 	$gst_type = $params['gst_type'];
@@ -1532,10 +1532,8 @@ function update_bill(){
 				if($p_value->bill_type == 'original') {
 					lessSale($lot_id, $sale_weight);
 				}
-
 			}
 		}
-
 
 
 		//Remove old sale details
