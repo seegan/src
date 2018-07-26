@@ -117,6 +117,7 @@ function populate_select2(this_data = '', v) {
         triggerTotalCalculate(jQuery(this).parent().parent());
     //console.log(jQuery(this).parent().parent())
     //console.log(e.params.data); 
+    payment_calculation();
   });
 
 }

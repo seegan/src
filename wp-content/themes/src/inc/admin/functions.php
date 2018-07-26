@@ -1413,7 +1413,6 @@ function update_bill(){
 
 
 
-	//PaymentCreate($params['payment_detail'], $billing_no);
 
 
 	$shop_name = $params['shop_name'];
@@ -1441,13 +1440,9 @@ function update_bill(){
 
 	$payment_done = ( $params['payment_done'] && $params['payment_done'] == 'on' ) ? 1 : 0; 
 
-
-
 	foreach ($params['group_retail'] as $s_key => $s_value) {
 
 		$token_id = getToken($lots_sale_detail_table);	
-
-
 		$brand_display = 0;
 		if(isset($s_value['brand_checkbox_input'])) {
 			$brand_display = 1;
@@ -1518,8 +1513,72 @@ function update_bill(){
 
 			), array( 
 				'id' => $billing_no 
-			) 
+			)
 		);
+
+
+
+
+		//Mode of payment
+		PaymentCreate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
+		
+
+		//Other Payments(COD,PREV_BAL,TO PAY and Balance)
+		$codCheck = isset($params['cod_check'])? 1 : 0;
+		$paymentCheck = isset($params['to_pay_checkbox'])? 1 : 0;
+		AddOtherPayments($params['due_bal_input'],$codCheck, $params['cod_amount'],$paymentCheck,$params['to_pay'],$params['balance'],$billing_no,$params['payment_total_without_pre'],$params['payment_total']);
+
+
+
+		$customer_bal = check_balance($billing_customer);
+
+		$payment_total = $params['payment_total'];
+
+		//Credit
+		$credit_data = array(
+			'payment_key' 			=> 'sale',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal - $final_total ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale',
+			'payment_amt' 			=> $final_total,
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'D',
+			);
+		addCredit( $credit_data, $final_total);
+
+
+		$customer_bal = check_balance($billing_customer);
+		//credit
+		$credit_data = array(
+			'payment_key' 			=> 'sale_in',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal + $payment_total ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_in',
+			'payment_amt' 			=> $payment_total,
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'C',
+			);
+		addCredit( $credit_data, $final_total);
+
+
+		$customer_bal = check_balance($billing_customer);
+		//PAY TO CHECK 
+		if($paymentCheck){
+			$credit_data = array(
+			'payment_key' 			=> 'sale_hand_out',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal - $params['to_pay'] ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_hand_out',
+			'payment_amt' 			=> $params['to_pay'],
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'D',
+			);
+		addCredit( $credit_data, $final_total);
+		}
+		
 
 
 		$previous_data_query = "SELECT * FROM ${lots_sale_detail_table} WHERE sale_id = $billing_no AND active = 1";
@@ -2755,29 +2814,6 @@ add_action( 'wp_ajax_get_salery_pay_details', 'get_salery_pay_details' );
 add_action( 'wp_ajax_nopriv_get_salery_pay_details', 'get_salery_pay_details' );
 
 
-
-function check_balance() {
-
-	global $wpdb;
-	$id = $_POST['customer_id'];
-
-	$sale_table = $wpdb->prefix.'sale';
-	$query = "SELECT s2.customer_id, SUM(s2.sale_total) as sale_total, SUM(s2.paid_total) as paid_total, ( SUM(s2.sale_total) - SUM(s2.paid_total) ) as payment_due FROM 
- ( SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM wp_sale as s 
-  JOIN 
-  ( SELECT p.sale_id, SUM(p.payment_paid) as paid_total FROM wp_payment_history as p WHERE p.active = 1 GROUP BY p.sale_id ) 
-  as ph ON s.id = ph.sale_id WHERE s.active = 1 AND s.customer_id = ${id} ) 
- as s2";
-
-	if( $data = $wpdb->get_row( $query, ARRAY_A  ) ) {
-		echo json_encode($data); 
-	} else {
-		return false;
-	}
-	die();
-}
-add_action( 'wp_ajax_check_balance', 'check_balance' );
-add_action( 'wp_ajax_nopriv_check_balance', 'check_balance' );
 
 
 function generateInvoice_aj() {
