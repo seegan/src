@@ -2413,29 +2413,33 @@ function src_delete_data() {
 	$data['success'] = 1;
 	$table = $wpdb->prefix.$table_post;
 
-
-	$wpdb->update( 
-		$table, 
-		array( 
+	$wpdb->update(
+		$table,
+		array(
 			'active' => 0,
-		), 
+		),
 		array( 'id' => $data_id ), 
 		array( 
 			'%d'
-		), 
-		array( '%d' ) 
+		),
+		array( '%d' )
 	);
 
-
 	if($table_post == 'stock') {
-		$sql = "select * from $table WHERE id = $data_id";
+		$sql = "SELECT * FROM $table WHERE id = $data_id";
 		$existing_data = $wpdb->get_row( $sql );
 		$lot_id = $existing_data->lot_id;
 		$old_weight = $existing_data->total_weight;
 		lessStock($lot_id ,$old_weight);
 	}
 
-
+	if($table_post == 'return_detail') {
+		$sql = "SELECT rd.return_weight,  sd.lot_parent_id  FROM $table as rd JOIN wp_sale_detail as sd ON rd.sale_detail_id = sd.id WHERE rd.id = $data_id AND sd.active = 1";
+		$existing_data = $wpdb->get_row( $sql );
+		$lot_id = $existing_data->lot_parent_id;
+		$old_weight = $existing_data->return_weight;
+		lessReturn($lot_id ,$old_weight);
+	}
 
 
 	echo json_encode($data, JSON_PRETTY_PRINT);

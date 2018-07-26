@@ -234,8 +234,6 @@ jQuery('.search_avail_stock').live('click', function(){
 
 
 
-
-
 jQuery('.c-delete').live('click', function(){
 
     var data_id = jQuery(this).attr('data-id');
