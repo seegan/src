@@ -49,6 +49,7 @@ jQuery(document).ready(function (argument) {
         // jQuery('.payment_amount').trigger('change');
         var uniquename = jQuery(this).parent().parent().find('.payment_amount').data('uniquename');
         deleteDueCash(uniquename);
+        PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
     });
     jQuery('.payment_cash').live('keydown', function(e){
         var keyCode = e.keyCode || e.which; 
@@ -84,12 +85,12 @@ jQuery(document).ready(function (argument) {
         }  
         payment_calculation();
         jQuery('.paid_amount').trigger('change');   
-        PayFromPrevoius(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
+        PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
         
     });
 
     jQuery('.cod_check').on('click',function(){
-        PayFromPrevoius(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
+        PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
     });
 
 
@@ -118,7 +119,7 @@ function payment_calculation(){
     var cur_pay       = total - paid_tot;
     cur_pay = (cur_pay >= 0)? cur_pay : 0 ;
 
-    jQuery('.pay_amount_cheque').val(cur_pay);
+    jQuery('.pay_amount_cheque').val(total_pay);
     //jQuery('.cod_amount').val(cur_pay);
     jQuery('.paid_amount').val(paid_tot);
 
@@ -169,15 +170,6 @@ function isNumberKey(evt)
 
 function PayFromPrevoius(sale = 0,due = 0){
 
-
-    var paid_tot = 0;
-    jQuery('.payment_table').each(function() {  
-        var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
-        tot         = isNaN(tot) ? 0 : tot ;
-        paid_tot    = paid_tot + tot;       
-    });
-    var Total_balance_new = ( parseFloat(due) + paid_tot ) - parseFloat(sale);
-
     var Total_balance = parseFloat(due) - parseFloat(sale);
 
     jQuery('.tot_due_txt').text(Total_balance);
@@ -223,3 +215,50 @@ function PayFromPrevoius(sale = 0,due = 0){
     jQuery('.pay_pre_bal').val(pre_bal);
 }
 
+function PaymentChange(sale = 0,due = 0){
+
+
+    var paid_tot = 0;
+    jQuery('.payment_table').each(function() {  
+        var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
+        tot         = isNaN(tot) ? 0 : tot ;
+        paid_tot    = paid_tot + tot;       
+    });
+    var Total_balance_new = ( parseFloat(due) + paid_tot ) - parseFloat(sale);
+    //Balance
+    jQuery('.balance').val(Total_balance_new);
+    jQuery('.tot_due_txt').text(Total_balance_new);
+    jQuery('.tot_due').val(Total_balance_new);
+    var pre_bal = 0;
+    if(Total_balance_new > 0){
+
+
+//Cod Checked
+        jQuery('.cod_check').attr('checked',false);
+        jQuery('.cod_check').attr('readonly',true);
+        jQuery('.cod_amount').val(0);
+
+
+//To pay
+
+        jQuery('.to_pay_checkbox').attr('readonly',false);
+        jQuery('.to_pay').val(Total_balance_new);
+
+
+        pre_bal = sale;
+    } else {
+
+//Cod unChecked
+        jQuery('.cod_check').attr('readonly',false);
+        jQuery('.cod_amount').val(Math.abs(Total_balance_new));
+
+//To pay
+        jQuery('.to_pay_checkbox').attr('checked',false);
+        jQuery('.to_pay_checkbox').attr('readonly',true);
+        jQuery('.to_pay').val(0);
+
+        pre_bal = due;
+    }
+    //jQuery('.pay_pre_bal').val(pre_bal);
+
+}
