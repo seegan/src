@@ -118,6 +118,7 @@ function populate_select2(this_data = '', v) {
       updateBalanceStock(e.params.data.par_id, e.params.data.stock_bal, e.params.data.stock_alert);
 
       triggerTotalCalculate(jQuery(this).parent().parent());
+      payment_calculation();
     //console.log(jQuery(this).parent().parent())
     //console.log(e.params.data); 
   });

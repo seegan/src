@@ -10,7 +10,7 @@ jQuery(document).ready(function (argument) {
                 var existing_count  = parseInt( jQuery('#bill_payment_tab_cheque tr').length );
                 var current_row     = existing_count + 1;
                 if(current_row == 1){
-                    var str1            = '<tr class="payment_cheque"><td style="">' + Capital(type) + '<input type="hidden" name="pay_cheque" value="'+type+'" style="" class="pay_cheque"/></td><td style=""><input type="text" name="pay_amount_cheque" class="pay_amount_cheque" '+ readonly +' value="'+ jQuery('.fsub_total').val() +'" style="width: 106px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /></td><td style="">'+today+'</td><td style=""><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';
+                    var str1            = '<tr class="payment_cheque"><td style="">' + Capital(type) + '<input type="hidden" name="pay_cheque" value="'+type+'" style="" class="pay_cheque"/></td><td style=""><input type="text" name="pay_amount_cheque" class="pay_amount_cheque" '+ readonly +' value="'+ jQuery('.fsub_total').val() +'" style="width: 106px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /><input type="hidden" name="payment_detail['+current_row+'][unique_name]" value="'+ makeid() +'" /></td><td style="">'+today+'</td><td style=""><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';
                     jQuery('#bill_payment_tab_cheque').append(str1);  
                 }
                
@@ -24,7 +24,7 @@ jQuery(document).ready(function (argument) {
 
                 var existing_count  = parseInt( jQuery('#bill_payment_tab tr').length );
                 var current_row     = existing_count + 1;
-                var str             = '<tr class="payment_table"><td style="padding:5px;">' + type_text + '<input type="hidden" name="payment_detail['+current_row+'][payment_type]" value="'+type+'" style="width:20px;" class="payment_type"/></td><td style="padding:5px;"><input type="text" name="payment_detail['+current_row+'][payment_amount]" class="payment_amount" data-paymenttype="'+type+'"  data-uniqueName="'+makeid()+'" value="" style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /></td><td style="padding"5px;>'+today+'</td><td style="padding:5px;"><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';                
+                var str             = '<tr class="payment_table"><td style="padding:5px;">' + type_text + '<input type="hidden" name="payment_detail['+current_row+'][payment_type]" value="'+type+'" style="width:20px;" class="payment_type"/></td><td style="padding:5px;"><input type="text" name="payment_detail['+current_row+'][payment_amount]" class="payment_amount" data-paymenttype="'+type+'"  data-uniqueName="'+makeid()+'" value="" style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][unique_name]" value="'+ makeid() +'" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /></td><td style="padding"5px;>'+today+'</td><td style="padding:5px;"><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';                
                 jQuery('#bill_payment_tab').append(str);
             }
             payment_calculation();               
@@ -45,8 +45,8 @@ jQuery(document).ready(function (argument) {
             jQuery('.payment_cash').focus();
         }
         payment_calculation();
+        totalPayment();
         jQuery('.paid_amount').trigger('change');
-        // jQuery('.payment_amount').trigger('change');
         var uniquename = jQuery(this).parent().parent().find('.payment_amount').data('uniquename');
         deleteDueCash(uniquename);
         PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
@@ -84,6 +84,7 @@ jQuery(document).ready(function (argument) {
             }
         }  
         payment_calculation();
+        totalPayment();
         jQuery('.paid_amount').trigger('change');   
         PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
         
@@ -104,8 +105,8 @@ jQuery(document).ready(function (argument) {
 
 
 function payment_calculation(){
-    var total           = parseFloat(jQuery('.final_total').val());
-    var due             = parseFloat(jQuery('.due_bal_input').val());
+    var total           = isNaN(parseFloat(jQuery('.final_total').val())) ? 0 : parseFloat(jQuery('.final_total').val());
+    var due             = isNaN(parseFloat(jQuery('.due_bal_input').val())) ? 0 : parseFloat(jQuery('.due_bal_input').val());
     var total_payment   = total - due;
     var paid_tot = 0;
     jQuery('.payment_table').each(function() {  
@@ -169,6 +170,8 @@ function isNumberKey(evt)
    }
 
 function PayFromPrevoius(sale = 0,due = 0){
+    due = isNaN(parseFloat(due))? 0 : parseFloat(due);
+    sale = isNaN(parseFloat(sale))? 0 : parseFloat(sale);
 
     var Total_balance = parseFloat(due) - parseFloat(sale);
 
@@ -210,14 +213,16 @@ function PayFromPrevoius(sale = 0,due = 0){
 
 //all payment mode disable readonly
         jQuery('.payment_cash').attr('readonly',false);
-        pre_bal = due;
+        pre_bal = (due > 0) ? due: 0;   
+
     }
     jQuery('.pay_pre_bal').val(pre_bal);
 }
 
 function PaymentChange(sale = 0,due = 0){
 
-
+    due = isNaN(parseFloat(due)) ? 0 : parseFloat(due);
+    sale = isNaN(parseFloat(sale)) ? 0 : parseFloat(sale);
     var paid_tot = 0;
     jQuery('.payment_table').each(function() {  
         var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
@@ -238,14 +243,11 @@ function PaymentChange(sale = 0,due = 0){
         jQuery('.cod_check').attr('readonly',true);
         jQuery('.cod_amount').val(0);
 
-
 //To pay
 
         jQuery('.to_pay_checkbox').attr('readonly',false);
         jQuery('.to_pay').val(Total_balance_new);
 
-
-        pre_bal = sale;
     } else {
 
 //Cod unChecked
@@ -257,8 +259,19 @@ function PaymentChange(sale = 0,due = 0){
         jQuery('.to_pay_checkbox').attr('readonly',true);
         jQuery('.to_pay').val(0);
 
-        pre_bal = due;
-    }
-    //jQuery('.pay_pre_bal').val(pre_bal);
 
+    }
+
+}
+//for display total
+function totalPayment(){
+    var paid_tot = 0;
+    jQuery('.payment_table').each(function() {  
+        var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
+        tot         = isNaN(tot) ? 0 : tot ;
+        paid_tot    = paid_tot + tot;       
+    });
+    var pay_pre_bal = parseFloat(jQuery('.pay_pre_bal').val());
+    jQuery('.payment_total_without_pre').val(paid_tot);
+    jQuery('.payment_total').val(paid_tot + pay_pre_bal);
 }
