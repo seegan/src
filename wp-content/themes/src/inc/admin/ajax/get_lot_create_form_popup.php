@@ -321,16 +321,16 @@
 					    	<div data-repeater-item class="repeterin div-table-row">
 								<div class="div-table-col rowno">1</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="price" class="price" autocomplete="off">
+							    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off"  value="0.00">
 							    </div>
 							    <div class="div-table-col">
 							    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>

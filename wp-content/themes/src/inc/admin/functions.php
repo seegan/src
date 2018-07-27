@@ -1666,7 +1666,7 @@ function update_bill_last(){
 		$bill_from_to = 'counter';
 	} else {
 		$bill_from_to = 'customer';
-		if($params['user_type'] == 'old') {
+		if( $params['user_type'] == 'old') {
 			$billing_customer = $params['billing_customer'];
 		} else {
 			$billing_customer = $params['customer_id_new'];
