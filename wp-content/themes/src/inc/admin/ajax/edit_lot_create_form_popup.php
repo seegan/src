@@ -54,6 +54,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 		        <option>Idly-IR 20</option>
 		        <option>Basmati</option>
 		        <option>Basmati (Loose)</option>
+		        <option>Zeragasamba (Loose)</option>
 		        <option>R.H</option>
 		        <option>25 KG B.R</option>
 		        <option>Others</option>

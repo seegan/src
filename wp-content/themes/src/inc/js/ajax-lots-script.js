@@ -280,13 +280,13 @@ function pricePattern(product_name = 'R.R', price_type = 'retail') {
     'R.R' : {
         'retail' :    {
           'range' : {'0.1' : '4.99', '5' : '29.99', '30' : '36.99', '37' : '49.99', '50' : '75'},
-          'diff' :  {'0.1' : 0.00, '5' : 0.20, '30' : 0.30, '37' : 0.50, '50' : 1},
-          'margin' :  {'0.1' : 0.00, '5' : 0.20, '30' : 0.30, '37' : 0.50, '50' : 1},
+          'diff' :  {'0.1' : 0.00, '5' : 0.20, '30' : 0.30, '37' : 1, '50' : 2},
+          'margin' :  {'0.1' : 0.00, '5' : 0.20, '30' : 0.30, '37' : 1, '50' : 2},
         }, 
         'wholesale' : {
           'range' : {'0.1' : '4.99', '5' : '29.99', '30' : '36.99', '37' : '49.99', '50' : '75'},
-          'diff' :  {'0.1' : 0.00, '5' : 0.20, '30' : 0.30, '37' : 0.50, '50' : 1},
-          'margin' :  {'0.1' : 0.00, '5' : 0.20, '30' : 0.30, '37' : 0.50, '50' : 1},
+          'diff' :  {'0.1' : 1, '5' : 0.20, '30' : 0.30, '37' : 1, '50' : 2},
+          'margin' :  {'0.1' : 1, '5' : 0.20, '30' : 0.30, '37' : 1, '50' : 2},
         }, 
       },
     'Idly' : {
@@ -363,9 +363,21 @@ function pricePattern(product_name = 'R.R', price_type = 'retail') {
       },
     'Basmati (Loose)' : {
         'retail' :    {
+          'range' : {0.1 : '1.99', 2 : '4.99', 5 : '10', 10.01 : '24.99', 25 : '100'},
+          'diff' :  {'0.1' : 0.00, '2' : 0.50, '5' : 1.00, '10.01' : 2.00, '25' : 3},
+          'margin' :  {'0.1' : 0.00, '2' : 0.50, '5' : 1.00, '10.01' : 2.00, '25' : 3},
+        }, 
+        'wholesale' : {
           'range' : {'0.1' : '24.99', '25' : '49.99', '50' : '69.99', '70' : '99.99', '100' : '150'},
-          'diff' :  {'0.1' : 1.00, '25' : 2.00, '50' : 3.00, '70' : 4.00, '100' : 5},
-          'margin' :  {'0.1' : 1.10, '25' : 2.10, '50' : 3.10, '70' : 4.10, '100' : 5.10},
+          'diff' :  {'0.1' : 0.00, '25' : 0.20, '50' : 0.30, '70' : 0.50, '100' : 1},
+          'margin' :  {'0.1' : 0.00, '25' : 0.20, '50' : 0.30, '70' : 0.50, '100' : 1},
+        }, 
+      },
+    'Zeragasamba (Loose)' : {
+        'retail' :    {
+          'range' : {'0.1' : '1.99', '2' : '4.99', '5' : '10', '10.1' : '24.99', '25' : '100'},
+          'diff' :  {'0.1' : 0.00, '2' : 0.50, '5' : 1, '10.1' : 2, '25' : 3},
+          'margin' :  {'0.1' : 0.00, '2' : 0.50, '5' : 1, '10.1' : 2, '25' : 3},
         }, 
         'wholesale' : {
           'range' : {'0.1' : '24.99', '25' : '49.99', '50' : '69.99', '70' : '99.99', '100' : '150'},
@@ -417,6 +429,7 @@ function pricePattern(product_name = 'R.R', price_type = 'retail') {
 function retailPriceRange(product_name = 'R.R', price_type = 'retail', selector = '', price_type_deep = 'retail_original') {
 
   var patten = pricePattern(product_name, price_type);
+  var keys = Object.keys(patten.range).sort(function(a,b) { return a - b;});
   var data = [];
   var values = jQuery(selector).parent().find('.weight_from').map(function(){
     if(jQuery(this).val() != '') {
@@ -424,15 +437,43 @@ function retailPriceRange(product_name = 'R.R', price_type = 'retail', selector 
     }
   }).get();
 
-  jQuery.each(patten['range'], function( index, value ) {
-    if(jQuery.inArray( index, values ) == -1) {
-      data.from = index;
-      data.to = patten['range'][index];
+  jQuery.each(keys, function( index, value ) {
+    if(jQuery.inArray( value, values ) == -1) {
+      data.from = value;
+      data.to = patten['range'][value];
       return false;
     }
   });
+
   return data;
 }
+
+
+function wholesalePriceRange(product_name = 'R.R', price_type = 'wholesale', selector = '', price_type_deep = 'wholesale_original') {
+
+  var patten = pricePattern(product_name, price_type);
+  var keys = Object.keys(patten.range).sort(function(a,b) { return a - b;});
+  var data = [];
+  var values = jQuery(selector).parent().find('.weight_from').map(function(){
+    if(jQuery(this).val() != '') {
+      return jQuery(this).val();
+    }
+  }).get();
+
+  jQuery.each(keys, function( index, value ) {
+    if(jQuery.inArray( value, values ) == -1) {
+      data.from = value;
+      data.to = patten['range'][value];
+      return false;
+    }
+  });
+
+  return data;
+
+}
+
+
+
 
 
 function priceDifferent(product_name, price_type) { 
@@ -447,13 +488,12 @@ function marginDifferent(product_name, price_type) {
 }
 
 function setPriceDifferent(product_name = 'R.R', price_type = 'retail', selector = '', weight ='', price_type_deep = 'retail_original') {
-  if(price_type_deep == 'retail_original') {
+  if( price_type_deep == 'retail_original' || price_type_deep == 'wholesale_original' ) {
     var selling_price = parseFloat(jQuery('#src_info_box .basic_price').val());
   }
-  if(price_type_deep == 'retail_dummy') {
+  if( price_type_deep == 'retail_dummy' || price_type_deep == 'wholesale_dummy' ) {
     var selling_price = parseFloat(jQuery('#src_info_box .dummy_basic_price').val());
   }
-
 
   var price_differents = priceDifferent(product_name, price_type);
   var current_diff = parseFloat(price_differents[weight]);
@@ -476,6 +516,14 @@ jQuery('.basic_price').live('change', function(){
     var weight_from = jQuery(this).find('.weight_from').val();
     setPriceDifferent(product_name, 'retail', selector, weight_from, 'retail_original');
   });
+
+  jQuery('.retail-wholesale.group_wholesale .repeterin').each(function(){
+    var selector = this;
+    var weight_from = jQuery(this).find('.weight_from').val();
+    setPriceDifferent(product_name, 'wholesale', selector, weight_from, 'wholesale_original');
+  });
+
+
 });
 
 jQuery('.dummy_basic_price').live('change', function(){
@@ -485,6 +533,14 @@ jQuery('.dummy_basic_price').live('change', function(){
     var weight_from = jQuery(this).find('.weight_from').val();
     setPriceDifferent(product_name, 'retail', selector, weight_from, 'retail_dummy');
   });
+
+  jQuery('.retail-wholesale-dummy.group_wholesale_dummy .repeterin').each(function(){
+    var selector = this;
+    var weight_from = jQuery(this).find('.weight_from').val();
+    setPriceDifferent(product_name, 'wholesale', selector, weight_from, 'wholesale_dummy');
+  });
+
+
 });
 
 

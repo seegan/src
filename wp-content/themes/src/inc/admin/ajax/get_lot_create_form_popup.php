@@ -43,6 +43,7 @@
 		        <option>Idly-IR 20</option>
 		        <option>Basmati</option>
 		        <option>Basmati (Loose)</option>
+		        <option>Zeragasamba (Loose)</option>
 		        <option>R.H</option>
 		        <option>25 KG B.R</option>
 		        <option>Others</option>
@@ -521,6 +522,12 @@
             count++;
           })
           jQuery(this).slideDown();
+
+          var from_to = wholesalePriceRange(jQuery('.popup_form #product_name').val(), 'wholesale', this, 'wholesale_original');
+          jQuery(this).find('.weight_from').val(from_to.from);
+          jQuery(this).find('.weight_to').val(from_to.to);
+          setPriceDifferent(jQuery('.popup_form #product_name').val(), 'wholesale', this, from_to.from, 'wholesale_original');
+
         },
         hide: function (deleteElement) {
             if(confirm('Are you sure you want to delete this element?')) {
@@ -554,17 +561,17 @@
             'radio-input': 'B'
         },
         show: function () {
-          var count = 1;
-          jQuery('.retail-repeater-dummy .repeterin').each(function(){
-            jQuery(this).find('.rowno').text(count);
-            count++;
-          })
-          jQuery(this).slideDown();
+			var count = 1;
+			jQuery('.retail-repeater-dummy .repeterin').each(function(){
+			jQuery(this).find('.rowno').text(count);
+				count++;
+			})
+          	jQuery(this).slideDown();
 
-         	var from_to = retailPriceRange(jQuery('.popup_form #product_name').val(), 'retail', this, 'retail_dummy');
-          	jQuery(this).find('.weight_from').val(from_to.from);
-          	jQuery(this).find('.weight_to').val(from_to.to);
-          	setPriceDifferent(jQuery('.popup_form #product_name').val(), 'retail', this, from_to.from, 'retail_dummy');
+			var from_to = retailPriceRange(jQuery('.popup_form #product_name').val(), 'retail', this, 'retail_dummy');
+			jQuery(this).find('.weight_from').val(from_to.from);
+			jQuery(this).find('.weight_to').val(from_to.to);
+			setPriceDifferent(jQuery('.popup_form #product_name').val(), 'retail', this, from_to.from, 'retail_dummy');
 
 
         },
@@ -593,12 +600,18 @@
             'radio-input': 'B'
         },
         show: function () {
-          var count = 1;
-          jQuery('.retail-wholesale-dummy .repeterin').each(function(){
-            jQuery(this).find('.rowno').text(count);
-            count++;
-          })
-          jQuery(this).slideDown();
+          	var count = 1;
+          	jQuery('.retail-wholesale-dummy .repeterin').each(function(){
+            	jQuery(this).find('.rowno').text(count);
+            	count++;
+          	})
+          	jQuery(this).slideDown();
+
+			var from_to = retailPriceRange(jQuery('.popup_form #product_name').val(), 'wholesale', this, 'wholesale_dummy');
+			jQuery(this).find('.weight_from').val(from_to.from);
+			jQuery(this).find('.weight_to').val(from_to.to);
+			setPriceDifferent(jQuery('.popup_form #product_name').val(), 'wholesale', this, from_to.from, 'wholesale_dummy');
+
         },
         hide: function (deleteElement) {
             if(confirm('Are you sure you want to delete this element?')) {
