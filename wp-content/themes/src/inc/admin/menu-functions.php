@@ -105,6 +105,18 @@ function admin_menu_register(){
 	);
 	add_submenu_page('src_settings', 'Settings', 'Settings', $src_premissions['settings'], 'src_settings', 'src_settings' );
 
+	// add_menu_page(
+	//     __( 'Bill Due', 'shc'),
+	//     'Bill Due',
+	//     $src_capabilities['customers']['permission']['ws_customer_list'],
+	//     'credit_debit',
+	//     'credit_debit',
+	//     'dashicons-id',
+	//     8
+	// );
+	// add_submenu_page('credit_debit', 'Paid Bill Due List', 'Paid Bill Due List', $src_premissions['customers']['permission']['ws_customer_list'], 'credit_debit', 'credit_debit' );
+	// add_submenu_page('credit_debit', 'Pay Bill Due', 'Pay Bill Due', $src_premissions['customers']['permission']['add_ws_customer'], 'add_credit_debit', 'add_credit_debit' );	
+
 }
 
 

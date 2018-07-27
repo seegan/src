@@ -9,7 +9,6 @@ add_action( 'admin_head', 'hide_update_notice', 1 );
 
 function my_footer_shh() {
 	remove_filter( 'update_footer', 'core_update_footer' ); 
-
 	remove_submenu_page( 'index.php', 'update-core.php' );
 	remove_menu_page( 'jetpack' );                    //Jetpack* 
 	remove_menu_page( 'edit.php' );                   //Posts
@@ -556,7 +555,7 @@ function get_lot($lot_id = 0) {
 	$query = "SELECT * FROM {$lot_table} where id = ".$lot_id." AND active = 1";
 	
 	if ($lot_data = $wpdb->get_row( $wpdb->prepare( $query ) ) ) {
-		$lot_id = $lot_data->id;
+		$lot_id   = $lot_data->id;
 		$data['lot_original_id'] = $lot_id;
 
 		$lot_original = $lot_data->lot_number;
