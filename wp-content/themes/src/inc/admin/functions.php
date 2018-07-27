@@ -796,7 +796,7 @@ function lot_create_submit_popup() {
 				}
 
 				//For Slab system no (Wholesale Dummy lot)
-				if($slab_system_dummy == 0 && isset( $params['bag_weight_from_wholesale_no_slab']) && isset( $params['bag_weight_to_wholesale_no_slab']) && isset( $params['bag_weight_price_wholesale_no_slab'])&& $params['bag_weight_from_wholesale_no_slab'] != '' && $params['bag_weight_to_wholesale_no_slab'] != '' && $params['bag_weight_price_wholesale_no_slab'] != '' ) { 
+				if($slab_system_dummy == 0 && isset( $params['bag_weight_from_wholesale_no_slab']) && isset( $params['bag_weight_to_wholesale_no_slab']) && isset( $params['bag_weight_price_wholesale_no_slab'])&& $params['bag_weight_from_wholesale_no_slab'] != '' && $params['bag_weight_to_wholesale_no_slab'] != '' && $params['bag_weight_price_wholesale_no_slab'] != '' ) {
 
 					$lot_detail = array(
 							'lot_id' 		=> $dummy_lot_id,
@@ -810,11 +810,8 @@ function lot_create_submit_popup() {
 						);
 					$wpdb->insert($lots_detail_table, $lot_detail);
 				}
-
 			}
-
 		}
-
 
 	} else {
 		$data['msg'] = 'Lot Number Already Exist!';
