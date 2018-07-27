@@ -56,9 +56,6 @@
         $by_counter = 'display:block;';
         $bill_by_counter = 'checked';
     }
-
-
-
 ?>
 
 
@@ -846,7 +843,7 @@
     });
 
     jQuery(document).ready(function(){ 
-        populateBill();
+    //        populateBill();
 
         jQuery("#billing_date" ).datepicker({dateFormat: "yy-mm-dd"});
     });

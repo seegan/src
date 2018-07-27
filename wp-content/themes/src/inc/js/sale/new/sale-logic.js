@@ -117,7 +117,7 @@ function populate_select2(this_data = '', v) {
         triggerTotalCalculate(jQuery(this).parent().parent());
     //console.log(jQuery(this).parent().parent())
     //console.log(e.params.data); 
-    payment_calculation();
+
   });
 
 }
@@ -370,6 +370,8 @@ function updateSaleTotal() {
 
   jQuery('.final_total').val(final_total).change();
   PayFromPrevoius(final_total,jQuery('.due_bal_input').val());
+    payment_calculation();
+    jQuery('.payment_amount').trigger('change');
 }
 
 
