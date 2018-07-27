@@ -1520,7 +1520,7 @@ function update_bill(){
 
 		$customer_bal = check_balance($billing_customer);
 
-		$payment_total = $params['payment_total'];
+		$payment_total = $params['payment_total_without_pre'];
 
 		//Credit
 		$credit_data = array(
@@ -1793,7 +1793,7 @@ function update_bill_last(){
 
 //Update in all Payments
 
-		$payment_total = $params['payment_total'];
+		$payment_total = $params['payment_total_without_pre'];
 
 		//Mode of payment
 		PaymentUpdate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
@@ -1806,17 +1806,22 @@ function update_bill_last(){
 
 
 
-		$customer_bal = check_balance($billing_customer);
+		
+		$prevBalanceSale = prevBalance('sale',$billing_no);
+		$prevBalanceSaleIn = prevBalance('sale_in',$billing_no);
+		$prevBalanceSaleInHand = prevBalance('sale_in_hand',$billing_no);
+		$payment_total = $params['payment_total_without_pre'];
 
-		$payment_total = $params['payment_total'];
+		
+		$customer_bal = check_balance($billing_customer);
 //Update Creditdebit table
 			$credit_data = array(
 			'payment_key' 			=> 'sale_update',
 			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal + $final_total ),
+			'balance'				=> ( $customer_bal + $prevBalanceSale),
 			'sale_id' 				=> $billing_no,
 			'remarks' 				=> 'sale_update',
-			'payment_amt' 			=> $final_total,
+			'payment_amt' 			=> $prevBalanceSale,
 			'transaction_order' 	=> 1,
 			'payment_type' 			=> 'C',
 			);
@@ -1828,10 +1833,10 @@ function update_bill_last(){
 		$credit_data = array(
 			'payment_key' 			=> 'sale_in_update',
 			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal - $payment_total ),
+			'balance'				=> ( $customer_bal - $prevBalanceSaleIn ),
 			'sale_id' 				=> $billing_no,
 			'remarks' 				=> 'sale_in_update',
-			'payment_amt' 			=> $payment_total,
+			'payment_amt' 			=> $prevBalanceSaleIn,
 			'transaction_order' 	=> 1,
 			'payment_type' 			=> 'D',
 			);
@@ -1844,10 +1849,10 @@ function update_bill_last(){
 			$credit_data = array(
 			'payment_key' 			=> 'sale_hand_out_update',
 			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal + $params['to_pay'] ),
+			'balance'				=> ( $customer_bal + $prevBalanceSaleInHand ),
 			'sale_id' 				=> $billing_no,
 			'remarks' 				=> 'sale_hand_out_update',
-			'payment_amt' 			=> $params['to_pay'],
+			'payment_amt' 			=> $prevBalanceSaleInHand,
 			'transaction_order' 	=> 1,
 			'payment_type' 			=> 'C',
 			);

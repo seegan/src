@@ -120,11 +120,22 @@ function checkPaymentDue(id = 0) {
       action      : 'check_balance_ajax',
       customer_id  : id,
     },
-    success: function (data) { console.log(data);
-      jQuery('.due_bal').text(data.balance);
-      jQuery('.due_bal_input').val(data.balance);
-      PayFromPrevoius(jQuery('.final_total').val(),data.balance);
-      payment_calculation();
+    success: function (data) 
+    { if(data) 
+      {
+        jQuery('.due_bal').text(data.balance);
+        jQuery('.due_bal_input').val(data.balance);
+        PayFromPrevoius(jQuery('.final_total').val(),data.balance);
+        payment_calculation();
+    
+      } else{
+        jQuery('.due_bal').text(0);
+        jQuery('.due_bal_input').val(0);
+        PayFromPrevoius(jQuery('.final_total').val(),0);
+        payment_calculation();
+      }
+
+      
     }
   });
 }

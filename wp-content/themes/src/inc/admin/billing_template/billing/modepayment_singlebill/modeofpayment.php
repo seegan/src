@@ -66,7 +66,7 @@
 					if($p_value->payment_type !='credit') {
 						if($p_value->payment_type == 'internet'){
 							$display_type = 'Netbanking';
-						}  else{
+						}  else {
 							$display_type = ucfirst($p_value->payment_type);
 						}
 						echo '<tr  class="payment_table" >

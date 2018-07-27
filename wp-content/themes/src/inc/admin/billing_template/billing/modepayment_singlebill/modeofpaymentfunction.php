@@ -208,5 +208,13 @@ function get_paymenttype($id = 0){
 
 //     return $token;
 // }
+function prevBalance($type = '',$sale_id = 0){
+	global $wpdb;
+	$credit_table 			= $wpdb->prefix.'creditdebit';
+	$query 					= "SELECT payment_amt FROM {$credit_table} WHERE sale_id =${sale_id} and payment_key ='${type}' order by id DESC limit 1";
+	$getbalance 			= $wpdb->get_row( $query);
+	$payment_amt = ($getbalance && isset($getbalance->payment_amt)) ? $getbalance->payment_amt : 0;
+	return $payment_amt;
 
+}
 ?>
