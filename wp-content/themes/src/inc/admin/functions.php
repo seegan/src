@@ -953,28 +953,23 @@ function lot_update_submit_popup() {
 				);
 			$wpdb->insert($lots_detail_table, $lot_detail);
 		}
-
-
-
-
-
-
+ 
 		if($dummy_lot_number != '' ) {
 
 			$lot_dummy = array(
-					'lot_number' => $dummy_lot_number,
-					'brand_name' => $brand_name,
-					'product_name' => $product_name,
-					'weight' => $weight,
-					'lot_type' => 'dummy',
-					'slab_system' => $slab_system_dummy,
-					'parent_id' => $lot_id,
-					'stock_alert' => $stock_alert,
-					'basic_price' => $dummy_basic_price,
-					'buying_price' => $buying_price,
+					'lot_number' 		=> $dummy_lot_number,
+					'brand_name' 		=> $brand_name,
+					'product_name' 		=> $product_name,
+					'weight' 			=> $weight,
+					'lot_type' 			=> 'dummy',
+					'slab_system' 		=> $slab_system_dummy,
+					'parent_id' 		=> $lot_id,
+					'stock_alert' 		=> $stock_alert,
+					'basic_price' 		=> $dummy_basic_price,
+					'buying_price' 		=> $buying_price,
 					'hsn_code' 			=> $hsn_code,
 					'gst_percentage'	=> $gst_percentage,					
-					'active' => 1,
+					'active' 			=> 1,
 				);
 			if($dummy_exist) {
 				$wpdb->update($lots_table, $lot_dummy, array('id' => $dummy_exist->id ));
@@ -1405,16 +1400,12 @@ function update_bill(){
 
 	$stock_not_avail = array();
 
-	$billing_date = $params['billing_date'];
-	$billing_no = $params['billing_no'];
+	$billing_date 	= $params['billing_date'];
+	$billing_no 	= $params['billing_no'];
 
-
-
-
-
-	$shop_name = $params['shop_name'];
-	$gst_type = $params['gst_type'];
-	$home_delivery = $params['home_delivery'];
+	$shop_name 		= $params['shop_name'];
+	$gst_type 		= $params['gst_type'];
+	$home_delivery 	= $params['home_delivery'];
 
 	if($params['bill_by_name'] == 'no') {
 		$billing_customer = 0;
@@ -1666,14 +1657,9 @@ function update_bill_last(){
 		$bill_from_to = 'counter';
 	} else {
 		$bill_from_to = 'customer';
-		if( $params['user_type'] == 'old') {
-			$billing_customer = $params['billing_customer'];
-		} else {
-			$billing_customer = $params['customer_id_new'];
-		}
+		$billing_customer = $params['billing_customer'];
 	}
-
-
+	
 	$customer_type 	= $params['customer_type'];
 	$actual_total   = $params['actual_price'];
 	$discount 		= $params['discount'];
@@ -1802,6 +1788,123 @@ function update_bill_last(){
 				'id' => $billing_no 
 			) 
 		);
+
+
+
+//Update in all Payments
+
+		$payment_total = $params['payment_total'];
+
+		//Mode of payment
+		PaymentUpdate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
+		
+
+		//Other Payments(COD,PREV_BAL,TO PAY and Balance)
+		$codCheck = isset($params['cod_check'])? 1 : 0;
+		$paymentCheck = isset($params['to_pay_checkbox'])? 1 : 0;
+		AddOtherPayments($params['due_bal_input'],$codCheck, $params['cod_amount'],$paymentCheck,$params['to_pay'],$params['balance'],$billing_no,$params['payment_total_without_pre'],$params['payment_total']);
+
+
+
+		$customer_bal = check_balance($billing_customer);
+
+		$payment_total = $params['payment_total'];
+//Update Creditdebit table
+			$credit_data = array(
+			'payment_key' 			=> 'sale_update',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal + $final_total ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_update',
+			'payment_amt' 			=> $final_total,
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'C',
+			);
+		addCredit( $credit_data, $final_total);
+
+
+		$customer_bal = check_balance($billing_customer);
+		//credit
+		$credit_data = array(
+			'payment_key' 			=> 'sale_in_update',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal - $payment_total ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_in_update',
+			'payment_amt' 			=> $payment_total,
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'D',
+			);
+		addCredit( $credit_data, $final_total);
+
+
+		$customer_bal = check_balance($billing_customer);
+		//PAY TO CHECK 
+		if($paymentCheck){
+			$credit_data = array(
+			'payment_key' 			=> 'sale_hand_out_update',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal + $params['to_pay'] ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_hand_out_update',
+			'payment_amt' 			=> $params['to_pay'],
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'C',
+			);
+		addCredit( $credit_data, $final_total);
+		}
+
+
+
+
+		$customer_bal = check_balance($billing_customer);
+		//debit
+		$credit_data = array(
+			'payment_key' 			=> 'sale',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal - $final_total ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale',
+			'payment_amt' 			=> $final_total,
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'D',
+			);
+		addCredit( $credit_data, $final_total);
+
+
+		$customer_bal = check_balance($billing_customer);
+		//credit
+		$credit_data = array(
+			'payment_key' 			=> 'sale_in',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal + $payment_total ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_in',
+			'payment_amt' 			=> $payment_total,
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'C',
+			);
+		addCredit( $credit_data, $final_total);
+
+
+		$customer_bal = check_balance($billing_customer);
+		//PAY TO CHECK 
+		if($paymentCheck){
+			$credit_data = array(
+			'payment_key' 			=> 'sale_hand_out',
+			'customer_id' 			=> $billing_customer,
+			'balance'				=> ( $customer_bal - $params['to_pay'] ),
+			'sale_id' 				=> $billing_no,
+			'remarks' 				=> 'sale_hand_out',
+			'payment_amt' 			=> $params['to_pay'],
+			'transaction_order' 	=> 1,
+			'payment_type' 			=> 'D',
+			);
+		addCredit( $credit_data, $final_total);
+		}
+		
+
+
 
 
 
@@ -2939,7 +3042,7 @@ function crypto_rand_secure($min, $max) {
     return $min + $rnd;
 }
 
-function getToken($table) {	
+function getToken($table =0) {	
 	global $wpdb; 
     $token_exists = false;
     do{

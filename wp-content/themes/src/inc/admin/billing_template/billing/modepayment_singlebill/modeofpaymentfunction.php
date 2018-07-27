@@ -57,48 +57,59 @@ if($payment_detail){
 
 }
 
-function PaymentUpdate($payment_detail = '',$invoice_id = '',$customer_id = ''){
+function PaymentUpdate($payment_detail = '',$payment_credit = '',$credit_amount = '',$invoice_id = '',$customer_id = 0,$paytobalance = ''){
 	global $wpdb;
-	$payment_table = $wpdb->prefix.'wp_payment';
-	$wpdb->update($payment_table, array('active' => 0), array('sale_id' => $data['id']));
+	$payment_table = $wpdb->prefix.'payment';
 
-	//$wpdb->update($payment_table_display, array('active' => 0), array('sale_id' => $data['id']));	
+	if($payment_detail){
+		foreach ($payment_detail as $value) {
+			if(isset($value['payment_type'])){			
+				$payment_data = 	array(
+					'reference_id' 		=> $value['reference_id'],
+					'reference_screen' 	=> $value['reference_screen'],
+					'uniquename' 		=> $value['unique_name'],
+					'sale_id'  			=> $invoice_id,
+					'payment_date'		=> date('Y-m-d'),
+					'customer_id'		=> $customer_id,
+					'payment_type'		=> $value['payment_type'],
+					'amount'			=> $value['payment_amount'],
+								);
+				$wpdb->insert($payment_table, $payment_data);
+			
+		   }
 
-	foreach ($params['payment_detail'] as $value) {
-		if(isset($value['payment_type'])){
-			$payment_data = 	array(
-				'reference_id' 		=> $value['reference_id'],
-				'reference_screen' 	=> $value['reference_screen'],
-				'sale_id'  			=> $data['id'],
-				'search_id'			=> $data['inv_id'],
-				'year'				=> $data['year'],
-				'payment_details'	=> '',
-				'payment_date'		=> date('Y-m-d'),
-				'customer_id'		=> $customer_id,
-				'payment_type'		=> $value['payment_type'],
-				'amount'			=> $value['payment_amount'],
-				'pay_to' 			=> $pay_to_bal,
-				);
-			$wpdb->insert($payment_table, $payment_data);
-       }
+		}
 	}
-	if(isset($params['pay_amount_cheque'])) {
-			$payment_data = 	array(
-				'reference_id' 		=> $params['reference_id'],
-				'reference_screen' 	=> $params['reference_screen'],
-				'sale_id'  			=> $data['id'],
-				'search_id'			=> $data['inv_id'],
-				'year'				=> $data['year'],
-				'payment_details'	=> '',
-				'payment_date'		=> date('Y-m-d'),
-				'customer_id'		=> $customer_id,
-				'payment_type'		=> $params['pay_cheque'],
-				'amount'			=> $params['pay_amount_cheque'],
-				'pay_to' 			=> $pay_to_bal,
-				);
-			$wpdb->insert($payment_table, $payment_data);
+	$update_data = $wpdb->update($payment_table,array('active'=> 0),array('sale_id'=> $invoice_id,'payment_type' => 'credit'));
+	if($payment_detail){ 
+		foreach ($payment_credit as $view) {
+			if($view == 'credit_content'){
+				$payment_data = 	array(
+			  		'reference_id' 		=> $value['reference_id'],
+					'reference_screen' 	=> $value['reference_screen'],
+					'sale_id'  			=> $invoice_id,
+					'payment_date'		=> date('Y-m-d'),
+					'customer_id'		=> $customer_id,
+					'payment_type'		=> 'credit',
+					'amount'			=> $credit_amount,
+								);
+				$wpdb->insert($payment_table, $payment_data);
+
+			}		
+		}
 
 	}
+	$update_data = $wpdb->update($payment_table,array('active'=> 0),array('sale_id'=> $invoice_id,'payment_type' => 'payfromprevious'));
+
+		$payfromprevious_data = array(
+			'reference_screen' 	=> 'billing_screen',
+			'sale_id'  			=> $invoice_id,
+			'payment_date'		=> date('Y-m-d'),
+			'customer_id'		=> $customer_id,
+			'payment_type'		=> 'payfromprevious',
+			'amount'			=> $paytobalance,
+			);
+		$wpdb->insert($payment_table, $payfromprevious_data);
 }
 
 function check_balance_ajax() {
