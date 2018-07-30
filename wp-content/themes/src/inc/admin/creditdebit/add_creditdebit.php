@@ -26,7 +26,7 @@ $lot = false;
 if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 	$credit_id = $_GET['id'];
 }
-var_dump($credit_debit);
+
 ?>
 <div class="widget-top">
 	<h4>Add New Admin User</h4>
@@ -41,13 +41,12 @@ var_dump($credit_debit);
 			<ul>
 				<li>
 					<label class="fldTitle">Customer Name
-						<abbr class="require" title="Required Field">*</abbr>
-						<option selected value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '';  ?>"><?php echo ($credit_debit) ? $credit_debit['main_tab']->name : '';  ?></option>
+						<abbr class="require" title="Required Field">*</abbr>	
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due">
-								<option></option>
+							<select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due" data-dvalue="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : ''; ?>" data-dtext="<?php echo ($credit_debit)? $credit_debit['customer_tab']->name: ''; ?>">
+								<option selected value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '';  ?>"><?php echo ($credit_debit) ? $credit_debit['customer_tab']->name : '';  ?></option>
 							</select>
 						</span>
 					</div>

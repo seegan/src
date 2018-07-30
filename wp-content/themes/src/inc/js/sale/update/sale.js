@@ -141,6 +141,7 @@ function checkPaymentDue(id = 0) {
           jQuery('#bill_payment_in_bill').remove();
           payment_calculation();
       }
+    }
   });
 }
 

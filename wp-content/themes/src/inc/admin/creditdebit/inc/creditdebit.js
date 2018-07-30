@@ -40,12 +40,6 @@ jQuery(document).ready(function(){
     
 
   });
-
- 
-    jQuery('.customer_type').focus();
-
- 
-
     jQuery(".credit_submit").on('keydown',  function(e) { 
       var keyCode = e.keyCode || e.which; 
        if(event.shiftKey && event.keyCode == 9) {  
