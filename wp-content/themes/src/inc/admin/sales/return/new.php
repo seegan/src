@@ -134,9 +134,22 @@
                         </td>
                         <td><?php echo $amt_per_kg; ?></td>
                         <td>
-                            <div style="float:left;width:150px;">
-                                <input type="text" name="return_data[<?php echo $row_count; ?>][return_amt]" value="0" >
-                            </div>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
                         </td>
                     </tr>
                 <?php
