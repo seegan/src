@@ -6,7 +6,7 @@ function hide_update_notice()
 }
 add_action( 'admin_head', 'hide_update_notice', 1 );
 
-
+require get_template_directory() . '/inc/admin/creditdebit/function.php';
 function my_footer_shh() {
 	remove_filter( 'update_footer', 'core_update_footer' ); 
 	remove_submenu_page( 'index.php', 'update-core.php' );
