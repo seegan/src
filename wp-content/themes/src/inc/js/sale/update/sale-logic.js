@@ -323,7 +323,12 @@ function triggerTotalCalculate(selector) {
   var lot_id = jQuery(selector).attr('lot-id');
   var sale_type = jQuery(selector).find('.sale_type:checked').val();
   if(jQuery(selector).attr('lot-slabsys') == 1) {
-    var total_weight = jQuery(selector).find('.slab_system_yes .total').val();
+    if(jQuery(selector).find('.sale_as[value="kg"]').attr("checked")) {
+      var total_weight = jQuery(selector).find('.slab_system_yes .total').val();
+    }
+    else{
+      var total_weight = jQuery(selector).find('.slab_system_yes .total').val() * jQuery(selector).find('.bagWeightInKg').val();
+    }
   } else {
     var total_weight = jQuery(selector).find('.slab_system_no .total').val();
   }
@@ -379,7 +384,10 @@ function updateSaleTotal() {
   payment_calculation();
   jQuery('.payment_amount').trigger('change');
 }
+jQuery('.sale_as').live('change',function(){
+    triggerTotalCalculate(jQuery(this).parent().parent().parent().parent().parent().parent());
 
+});
 
 jQuery('.discount, .cardswip').live('change', function(){
   updateSaleTotal();

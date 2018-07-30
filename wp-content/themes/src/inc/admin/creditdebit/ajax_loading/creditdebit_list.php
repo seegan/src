@@ -54,8 +54,8 @@
                                     <?php echo $i; ?>
                                 </td>
                                 <td class=""><?php echo $l_value->date; ?></td>
-                                <td class=""><?php echo $l_value->customer_name; ?></td>
-                                <td class=""><?php echo $l_value->customer_type; ?></td>
+                                <td class=""><?php echo $l_value->name; ?></td>
+                                <td class=""><?php echo $l_value->type; ?></td>
                                 <td class=""><?php echo $l_value->description; ?></td>
                                 <td class=""><?php 
                                 if($l_value->customer_type == 'retail'){

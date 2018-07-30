@@ -24,6 +24,7 @@
 		function creditdebit_list_pagination( $args ) {
 		    global $wpdb;
 		    $table =  $wpdb->prefix.'creditdebit';
+		    $customer_table =  $wpdb->prefix.'customers';
 		    $customPagHTML      = "";
 
 			$page_arg = [];
@@ -44,7 +45,12 @@
 		    	$condition .= " AND date LIKE '%".$this->date."%' ";
 		    }
 
-		    $query              = "SELECT * FROM ${table} WHERE active = 1 ${condition}";
+		    $query              = "SELECT * FROM {$table} as cd     
+								left join 
+								( 
+								    select id as cus_id,name,type from {$customer_table} WHERE active = 1
+								)as cus  
+								on cd.customer_id = cus.cus_id  WHERE cd.active = 1 ${condition}";
 
 		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 		    $data['total']              = $wpdb->get_var( $total_query );

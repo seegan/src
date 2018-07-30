@@ -128,6 +128,7 @@ function formatCustomerNameResult(data) {
 
 
 function checkPaymentDue(id = 0) {
+  customerBalance(id);
   jQuery.ajax({
     type: "POST",
     dataType: "json",
@@ -137,6 +138,7 @@ function checkPaymentDue(id = 0) {
       customer_id  : id,
     },
     success: function (data) { 
+    
       if(data.success) 
       {
         var data = data;
@@ -157,7 +159,26 @@ function checkPaymentDue(id = 0) {
           payment_calculation();
       }
     }
+
   });
+}
+
+function customerBalance(customer_id = 0){
+    jQuery.ajax({
+        type: "POST",
+        dataType : "json",
+        url: frontendajax.ajaxurl,
+        data: {
+            id      : customer_id,
+            action  :'customer_balance'
+        },
+          success: function (data) {
+            jQuery('.due_bal').text(data.final_bal);
+            jQuery('.due_bal_input').val(data.final_bal);
+            //rowCalculate();
+
+        }
+    });
 }
 
 jQuery('.bill_submit').live('click', function(){

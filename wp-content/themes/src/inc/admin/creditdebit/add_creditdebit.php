@@ -45,9 +45,20 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
+							<?php 
+							if($credit_debit){ ?>
+								<input type="text" name="customer_name" readonly value="<?php echo ($credit_debit) ? $credit_debit['customer_tab']->name : ''; ?> " />
+							<input type="hidden" name="billing_customer_due" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : ''; ?> " />
+							<?php }
+							else {
+								?>
 							<select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due" data-dvalue="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : ''; ?>" data-dtext="<?php echo ($credit_debit)? $credit_debit['customer_tab']->name: ''; ?>">
 								<option selected value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '';  ?>"><?php echo ($credit_debit) ? $credit_debit['customer_tab']->name : '';  ?></option>
-							</select>
+							</select>  
+							<?php }
+							?>
+							
+							
 						</span>
 					</div>
 				</li>

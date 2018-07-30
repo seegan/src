@@ -113,13 +113,10 @@ function update_creditdebit(){
 	if($creditdebit_id != '') {
 		$credit_data = array(
 			'date' 			=> $params['creditdebit_date'],
-			'customer_name' => $params['creditdebit_customer'],
 			'customer_id' 	=> $params['creditdebit_cus_id'],
-			'customer_type' => $params['customer_type'],
 			'due_amount' 	=> $params['total_due'],
 			'description' 	=> $params['description'],
 			'to_pay_amt' 	=> $params['to_pay_amt'],
-			'modified_by' 	=> $current_nice_name
 		);
 
 		$wpdb->update($credit_table, $credit_data, array('id' => $creditdebit_id));
@@ -338,7 +335,7 @@ function DuePaid($customer_id = 0){
 
 from 
 (
-    SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
+    SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,(case when s.pay_to_check = 0 then  s.pay_to_bal else 0 end ) as pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
 ) as sale
 left join 
 (
@@ -420,7 +417,7 @@ from
      sum(case when  (reference_screen= 'due_screen' and reference_id = ${reference_id})  then amount else 0 end ) as due_paid,
      sum(case when (reference_screen= 'due_screen' or reference_screen= 'billing_screen')   then amount else 0 end ) as bill_paid FROM ${payment_table} as p WHERE p.customer_id = ${customer_id} and p.active = 1 and p.payment_type != 'credit'  group by sale_id  ) as payment
 left join 
-( SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
+( SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,(case when s.pay_to_check = 0 then  s.pay_to_bal else 0 end ) as pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
 ) as sale 
 on sale.sale_id = payment.sale_id
 left join 
@@ -447,3 +444,4 @@ die();
 }
 add_action( 'wp_ajax_DuePaidUpdate', 'DuePaidUpdate');
 add_action( 'wp_ajax_nopriv_DuePaidUpdate', 'DuePaidUpdate');
+

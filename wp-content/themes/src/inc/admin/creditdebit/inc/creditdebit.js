@@ -2,7 +2,6 @@ jQuery(document).ready(function(){
 
 
   jQuery('#billing_customer_due').select2({
-
       allowClear: true,
       width: '100%',
       multiple: false,
@@ -101,21 +100,23 @@ jQuery("#create_creditdebit").bind('submit', function (e) {
               data : jQuery('#create_creditdebit :input').serialize()
             },
             success: function (data) {
+                    window.location.replace('admin.php?page=credit_debit');
                 jQuery("#create_creditdebit")[0].reset();
-                clearPopup();
-                jQuery('#lightbox').css('display','none');
+                // clearPopup();
+                // jQuery('#lightbox').css('display','none');
 
-                if(data.redirect != 0) { 
-                    setTimeout(function() {
-                      managePopupContent(data);
-                    }, 1000);
-                }
+                // if(data.redirect != 0) { 
 
-                if(data.success == 0) {
-                  popItUp('Error', data.msg);
-                } else {
-                  popItUp('Success', data.msg);
-                }
+                //     setTimeout(function() {
+                //       managePopupContent(data);
+                //     }, 1000);
+                // }
+
+                // if(data.success == 0) {
+                //   popItUp('Error', data.msg);
+                // } else {
+                //   popItUp('Success', data.msg);
+                // }
             }
         });
     } else{
@@ -355,6 +356,32 @@ function calPayto(){
 }
 
 
+// function formatCustomerName (state) {
+//   if (!state.id) {
+//     return state.id;
+//   }
+//   var $state = jQuery(
+//     '<span>' +
+//       state.customer_name +
+//     '</span>'
+//   );
+//   return $state;
+// };
+
+// function formatCustomerNameResult(data) {
+//   if (!data.id) { // adjust for custom placeholder values
+//     return 'Searching ...';
+//   }
+//   var $state = jQuery(
+//     '<span>Name : ' +
+//       data.customer_name +
+//     '</span>' +
+//     '<br><span> Mobile : ' +
+//       data.mobile +
+//     '</span>'
+//   );
+//   return $state;
+// }
 function formatCustomerName (state) {
   if (!state.id) {
     return state.id;
@@ -382,3 +409,7 @@ function formatCustomerNameResult(data) {
   return $state;
 }
 
+function clearPopup() {
+    jQuery('.popup_header').html('');
+    jQuery('.popup_container').html('');
+}
