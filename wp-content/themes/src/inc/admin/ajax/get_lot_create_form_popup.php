@@ -32,7 +32,6 @@
 			<label>Product Type
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-
 			<select name="product_name" id="product_name">
 		        <option>R.R</option>
 		        <option>Idly</option>
