@@ -12,6 +12,9 @@
         $sale_id = ($sale_detail && isset($sale_detail->id)) ? $sale_detail->id : 0;
         $sales = getSalesList($sale_id);
     }
+
+    $gst_from = $sale_detail->gst_to;
+
 ?>
     <div style="width: 100%;">
         <ul class="icons-labeled">
@@ -55,9 +58,9 @@
 
 
         <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>">
+        <input type="hidden" name="gst_from" value="<?php echo $gst_from; ?>" class="gst_from">
 
-
-        <table class="display">
+        <table class="display return_table">
             <thead>
                 <tr>
                     <th rowspan="2">S.No</th>
@@ -71,9 +74,12 @@
                     <th rowspan="2">Taxless Amt</th>
                     <th colspan="2">CGST</th>
                     <th colspan="2">SGST</th>
+                    <th colspan="2">IGST</th>
                     <th rowspan="2">Sub total</th>
                 </tr>
                 <tr>
+                    <th rowspan="2">Rate</th>
+                    <th rowspan="2">Amt.</th>
                     <th rowspan="2">Rate</th>
                     <th rowspan="2">Amt.</th>
                     <th rowspan="2">Rate</th>
@@ -86,9 +92,8 @@
                         $row_count = 1;
                         foreach ($sales as $s_value) {
                             $amt_per_kg = ( $s_value->slab == 1 ) ? $s_value->unit_price : ($s_value->unit_price / $s_value->bag_weight );
-                            $gst_from = $sale_detail->gst_to;
                             if($gst_from == 'cgst') {
-                                $gst_percentage = $s_value->cgst_percentage;
+                                $gst_percentage = ($s_value->cgst_percentage * 2);
                             } else if($gst_from == 'igst') {
                                 $gst_percentage = $s_value->igst_percentage;
                             } else {
@@ -124,29 +129,43 @@
                                     ?>
                                 </div>
                                 <div style="float:left;width:150px;">
-                                    <input type="text" value="0" name="return_data[<?php echo $row_count; ?>][return_weight]">
-                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>"
+                                    <input type="text" value="0" name="return_data[<?php echo $row_count; ?>][return_weight]" class="return_weight">
+                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg">
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
+                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][gst_percentage]" value="<?php echo $gst_percentage ?>" class="gst_percentage">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
                         </td>
                         <td><?php echo $amt_per_kg; ?></td>
                         <td>
-                            
+                            <div class="taxless_amt_txt">0.00</div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="0">
                         </td>
                         <td>
-                            
+                            <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_percentage]" class="cgst_percentage">
                         </td>
                         <td>
-                            
+                            <div class="cgst_txt"><?php echo "0.00"; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_amt]" class="cgst_amt">
                         </td>
                         <td>
-                            
+                            <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_percentage]" class="cgst_percentage">
                         </td>
                         <td>
-                            
+                            <div class="cgst_txt"><?php echo "0.00"; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_amt]" class="cgst_amt">
+                        </td>
+                        <td>
+                            <div class="igst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage).'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_percentage]" class="igst_percentage">
+                        </td>
+                        <td>
+                            <div class="igst_txt"><?php echo "0.00"; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_amt]" class="igst_amt">
                         </td>
                         <td>
                             
@@ -160,84 +179,6 @@
             </tbody>
         </table>
 
-
-
-        <table class="display">
-            <thead>
-                <tr>
-                    <th>Lot no</th>
-                    <th>Sale Detail</th>
-                    <th>Order Status</th>
-                    <th>Order Detail</th>
-                    <th style="width:200px;">Return in Kg</th>
-                    <th style="width: 200px;">Return Amt</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    if($sales && is_array($sales) && count($sales) > 0) {
-                        $row_count = 1;
-                        foreach ($sales as $s_value) {
-                            $amt_per_kg = ( $s_value->slab == 1 ) ? $s_value->unit_price : ($s_value->unit_price / $s_value->bag_weight );
-                            $gst_from = $sale_detail->gst_to;
-                            if($gst_from == 'cgst') {
-                                $gst_percentage = $s_value->cgst_percentage;
-                            } else if($gst_from == 'igst') {
-                                $gst_percentage = $s_value->igst_percentage;
-                            } else {
-                                $gst_percentage = 0;
-                            }
-                ?>
-                    <tr>
-                        <td><?php echo $s_value->lot_id; ?></td>
-                        <td>
-                            <?php echo $s_value->lot_number; ?><br>
-                            <?php echo "Order Weight : ".$s_value->sale_weight; ?><br>
-                            <?php echo "Sale Amt : ".$s_value->sale_value; ?>
-                        </td>
-                        <td>
-                            <?php echo "Total Delivered : ".$s_value->tot_delivered; ?><br>
-                            <?php echo "Total Returned : ".$s_value->tot_returned; ?><br>
-                            <?php echo "Return Available : ".$s_value->return_avail; ?>
-                        </td>
-                        <td>
-                            <?php echo "Price per Kg : "; ?><br>
-                            <?php echo "Tax Percentage : "; ?>
-                        </td>
-                        <td>
-                            <div>
-                                <div style="width: 30px;height: 30px;float:left;">
-                                    <?php 
-                                        if($s_value->slab == 1) {
-                                            echo'<img style="width:100%;" src="'.get_template_directory_uri().'/inc/img/weight.png">';
-                                        } else {
-                                            echo'<img style="width:100%;" src="'.get_template_directory_uri().'/inc/img/bag.png">';
-                                        }
-                                    ?>
-                                </div>
-                                <div style="float:left;width:150px;">
-                                    <input type="text" value="0" name="return_data[<?php echo $row_count; ?>][return_weight]">
-                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>"
-                                    <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
-                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
-                                </div>
-                                <div style="clear:both;"></div>
-                            </div>
-
-                        </td>
-                        <td>
-                            <div style="float:left;width:150px;">
-                                <input type="text" name="return_data[<?php echo $row_count; ?>][return_amt]" value="0" >
-                            </div>
-                        </td>
-                    </tr>
-                <?php
-                            $row_count++;
-                        }
-                    }
-                ?>
-            </tbody>
-        </table>
         <div style="margin-top:10px;">
             <input type="button" value="Update Return" class="submit-button return_item">
         </div>

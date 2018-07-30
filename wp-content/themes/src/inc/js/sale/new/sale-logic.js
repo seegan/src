@@ -233,10 +233,8 @@ function calculateGST(selector) {
   if(jQuery(selector).find('.type_bill:radio:checked').val() == 'duplicate') {
     var total_weight = jQuery(selector).find('.duplicate_total').val();
     var unit_price = jQuery(selector).find('.unit_price_input').val();
-    console.log('duplicate gst');
   } else {
     var unit_price = jQuery(selector).find('.sale_unit_price .unit_price').val();
-    console.log('original gst');
   }
 
   var row_total = total_weight*unit_price;
