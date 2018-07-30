@@ -36,7 +36,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 			<input type="text" id="lot_number" value="<?php echo $lot_details['lot_number']; ?>" name="lot_number">
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Brand Name 
+			<label style="width: 115px;">Alternate Name
 			</label>
 			<input type="text" id="brand_name" name="brand_name" autocomplete="off" value="<?php echo $lot_details['lot_data']->brand_name; ?>">
 		</div>
@@ -409,7 +409,6 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 
 			<div style="clear:both;"></div>
 
-
 			<div class="dummy_slot_number" style="margin-top:20px;">
 				<div class="form_detail">
 					<label>Dummy Lot Number
@@ -419,10 +418,10 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 				</div>
 				<div class="form_detail">
 					<label>
-						Selling Price (Rs)
+						Alternate Name
 					</label>
 					<div class="slab">
-						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off" value="<?php echo $lot_details['dummy_lot_data']->basic_price; ?>">
+						<input type="text" name="dummy_brand_name" id="dummy_brand_name" autocomplete="off" value="<?php echo ($lot_details['dummy_lot_data'] && $lot_details['dummy_lot_data']->brand_name) ? $lot_details['dummy_lot_data']->brand_name : ''; ?>">
 					</div>
 				</div>
 				<div class="form_detail">
@@ -434,7 +433,14 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 						<input type="radio" name="dummy_slab_system" class="dummy_slab_system" value="0" <?php echo (isset($lot_details['dummy_lot_data']->slab_system) && $dummy_slab_system == '1') ? '' : 'checked' ?>>No(Bag)
 					</div>
 				</div>
-
+				<div class="form_detail">
+					<label>
+						Selling Price (Rs)
+					</label>
+					<div class="slab">
+						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off" value="<?php echo $lot_details['dummy_lot_data']->basic_price; ?>">
+					</div>
+				</div>
 				<div style="clear:both;"></div>
 				<div class="table-simple price_range" style="width: 97%;">
 					<h3>Retail Sale Price Range</h3>
@@ -735,10 +741,10 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_d
           })
           jQuery(this).slideDown();
 
-          var from_to = retailPriceRange('.retail-repeater .repeterin', this);
+          var from_to = retailPriceRange(jQuery('.popup_form #product_name').val(), 'retail', this, 'retail_original');
           jQuery(this).find('.weight_from').val(from_to.from);
           jQuery(this).find('.weight_to').val(from_to.to);
-          setPriceDifferent(this, from_to.from);
+          setPriceDifferent(jQuery('.popup_form #product_name').val(), 'retail', this, from_to.from, 'retail_original');
 
 
         },
@@ -767,12 +773,18 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_d
             'radio-input': 'B'
         },
         show: function () {
-          var count = 1;
-          jQuery('.retail-wholesale .repeterin').each(function(){
-            jQuery(this).find('.rowno').text(count);
-            count++;
-          })
-          jQuery(this).slideDown();
+			var count = 1;
+			jQuery('.retail-wholesale .repeterin').each(function(){
+			jQuery(this).find('.rowno').text(count);
+				count++;
+			})
+			jQuery(this).slideDown();
+
+			var from_to = wholesalePriceRange(jQuery('.popup_form #product_name').val(), 'wholesale', this, 'wholesale_original');
+			jQuery(this).find('.weight_from').val(from_to.from);
+			jQuery(this).find('.weight_to').val(from_to.to);
+			setPriceDifferent(jQuery('.popup_form #product_name').val(), 'wholesale', this, from_to.from, 'wholesale_original');
+
         },
         hide: function (deleteElement) {
             if(confirm('Are you sure you want to delete this element?')) {
@@ -806,12 +818,18 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_d
             'radio-input': 'B'
         },
         show: function () {
-          var count = 1;
-          jQuery('.retail-repeater-dummy .repeterin').each(function(){
-            jQuery(this).find('.rowno').text(count);
-            count++;
-          })
-          jQuery(this).slideDown();
+			var count = 1;
+			jQuery('.retail-repeater-dummy .repeterin').each(function(){
+			jQuery(this).find('.rowno').text(count);
+				count++;
+			})
+			jQuery(this).slideDown();
+
+			var from_to = retailPriceRange(jQuery('.popup_form #product_name').val(), 'retail', this, 'retail_dummy');
+			jQuery(this).find('.weight_from').val(from_to.from);
+			jQuery(this).find('.weight_to').val(from_to.to);
+			setPriceDifferent(jQuery('.popup_form #product_name').val(), 'retail', this, from_to.from, 'retail_dummy');
+
         },
         hide: function (deleteElement) {
             if(confirm('Are you sure you want to delete this element?')) {
@@ -838,12 +856,18 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_d
             'radio-input': 'B'
         },
         show: function () {
-          var count = 1;
-          jQuery('.retail-wholesale-dummy .repeterin').each(function(){
-            jQuery(this).find('.rowno').text(count);
-            count++;
-          })
-          jQuery(this).slideDown();
+			var count = 1;
+			jQuery('.retail-wholesale-dummy .repeterin').each(function(){
+			jQuery(this).find('.rowno').text(count);
+				count++;
+			})
+			jQuery(this).slideDown();
+
+			var from_to = retailPriceRange(jQuery('.popup_form #product_name').val(), 'wholesale', this, 'wholesale_dummy');
+			jQuery(this).find('.weight_from').val(from_to.from);
+			jQuery(this).find('.weight_to').val(from_to.to);
+			setPriceDifferent(jQuery('.popup_form #product_name').val(), 'wholesale', this, from_to.from, 'wholesale_dummy');
+
         },
         hide: function (deleteElement) {
             if(confirm('Are you sure you want to delete this element?')) {

@@ -573,6 +573,12 @@ jQuery(document).on("keydown", "#edit_lot #lot_number, #add_lot #lot_number", fu
 jQuery(document).on('keyup','#lot_number', function() { 
     this.value = this.value.toUpperCase();
     jQuery(this).val(this.value);
+    jQuery('#brand_name').val(this.value).change();
+});
+jQuery(document).on('keyup','#dummy_slot_number', function() { 
+    this.value = this.value.toUpperCase();
+    jQuery(this).val(this.value);
+    jQuery('#dummy_brand_name').val(this.value).change();
 });
 
 

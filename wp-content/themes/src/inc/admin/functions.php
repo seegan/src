@@ -617,6 +617,8 @@ function lot_create_submit_popup() {
 	$dummy_lot_number = $params['dummy_slot_number'];
 
 	$brand_name = $params['brand_name'];
+	$dummy_brand_name = $params['dummy_brand_name'];
+	
 	$product_name = ($params['product_name'] == 'Others') ? $params['product_name1'] : $params['product_name'];
 	$weight = $params['weight'];
 	
@@ -728,7 +730,7 @@ function lot_create_submit_popup() {
 
 				$lot_dummy = array(
 					'lot_number' 	=> $dummy_lot_number,
-					'brand_name' 	=> $brand_name,
+					'brand_name' 	=> $dummy_brand_name,
 					'product_name' 	=> $product_name,
 					'weight' 		=> $weight,
 					'lot_type' 		=> 'dummy',

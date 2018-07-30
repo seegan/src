@@ -22,7 +22,7 @@
 			
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Brand Name 
+			<label style="width: 115px;">Alternate Name
 			</label>
 			<span>
 				<input type="text" id="brand_name" name="brand_name" autocomplete="off">
@@ -34,7 +34,6 @@
 			</label>
 
 			<select name="product_name" id="product_name">
-		        <option selected value="">Select Product Type</option>
 		        <option>R.R</option>
 		        <option>Idly</option>
 		        <option>B.R</option>
@@ -217,16 +216,16 @@
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off">
+						    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -287,10 +286,10 @@
 				</div>
 				<div class="form_detail">
 					<label>
-						Selling Price(Rs/Kg)
+						Alternate Name
 					</label>
 					<div class="slab">
-						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off">
+						<input type="text" name="dummy_brand_name" id="dummy_brand_name" autocomplete="off">
 					</div>
 				</div>
 				<div class="form_detail">
@@ -300,6 +299,14 @@
 					<div style="float:right;margin-top: 10px;" class="slab">
 						<input type="radio" name="dummy_slab_system" class="dummy_slab_system" value="1" checked>Yes(Kg)&nbsp;&nbsp;
 						<input type="radio" name="dummy_slab_system" class="dummy_slab_system" value="0">No(Bag)
+					</div>
+				</div>
+				<div class="form_detail">
+					<label>
+						Selling Price(Rs/Kg)
+					</label>
+					<div class="slab">
+						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off">
 					</div>
 				</div>
 				<div style="clear:both;"></div>
@@ -393,16 +400,16 @@
 					    	<div data-repeater-item class="repeterin div-table-row">
 								<div class="div-table-col rowno">1</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="price" class="price" autocomplete="off">
+							    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
 							    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
