@@ -129,11 +129,7 @@ function check_balance_ajax() {
 	$data['success'] = 0;
 	$id = $_POST['customer_id'];
 	$sale_table 	= $wpdb->prefix.'sale';
-	$return_table 	= $wpdb->prefix.'return';
-	$query 			= "SELECT pay_to_bal as amount,customer_id ,pay_to_check as tick ,id as sale_id,invoice_id as display_id  FROM {$sale_table} WHERE customer_id={$id} and pay_to_check = 0 and active=1 and pay_to_bal>0 
-						UNION  all
-						SELECT total_amount as amount,customer_id,sale_id,return_to_check as tick,sale_id,sale_id as display_id from  {$return_table} WHERE return_to_check = 0 and active = 1 and customer_id = {$id}
-						as ret_tab";
+	$query 			= "SELECT pay_to_bal,pay_to_check,id,invoice_id  FROM {$sale_table} WHERE customer_id={$id} and pay_to_check = 0 and active=1 and pay_to_bal>0";
 	$data = $wpdb->get_results( $query);
 	if($data){
 		$data['success'] = 1;	
@@ -143,7 +139,27 @@ function check_balance_ajax() {
 }
 add_action( 'wp_ajax_check_balance_ajax', 'check_balance_ajax' );
 add_action( 'wp_ajax_nopriv_check_balance_ajax', 'check_balance_ajax' );
+function check_balance_ajax2() {
 
+	global $wpdb;
+	$data['success'] = 0;
+	$id = $_POST['customer_id'];
+	$sale_table 	= $wpdb->prefix.'sale';
+	$return_table 	= $wpdb->prefix.'return';
+	$query 			= "SELECT pay_to_bal as amount,customer_id ,pay_to_check as tick ,id as sale_id,invoice_id as display_id,'s' as pay_form   FROM {$sale_table} WHERE customer_id={$id} and pay_to_check = 0 and active=1 and pay_to_bal>0 
+						UNION  all
+						SELECT total_amount as amount,customer_id,sale_id,return_to_check as tick,sale_id,sale_id as display_id, 'r' as pay_form from  {$return_table} WHERE return_to_check = 0 and active = 1 and customer_id = {$id}
+						as ret_tab";
+						// var_dump($query);
+	$data = $wpdb->get_results( $query);
+	if($data){
+		$data['success'] = 1;	
+	}
+	echo json_encode($data);
+	die();
+}
+add_action( 'wp_ajax_check_balance_ajax2', 'check_balance_ajax2' );
+add_action( 'wp_ajax_nopriv_check_balance_ajax2', 'check_balance_ajax2' );
 
 function getBalance($customer_id = 0) {
 
@@ -293,8 +309,7 @@ order by full_table.sale_id ASC )
 as cus_full_detail where cus_full_detail.customer_id = ${customer_id}  GROUP by cus_full_detail.customer_id ";
 
     $data = $wpdb->get_row($query);
- // var_dump($query);
- // die(); 
+
 	echo json_encode($data);
 	die();
 
