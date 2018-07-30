@@ -169,55 +169,55 @@ function isNumberKey(evt)
       return true;
    }
 
-function PayFromPrevoius(sale = 0,due = 0){
-    due = isNaN(parseFloat(due))? 0 : parseFloat(due);
-    sale = isNaN(parseFloat(sale))? 0 : parseFloat(sale);
+// function PayFromPrevoius(sale = 0,due = 0){
+//     due = isNaN(parseFloat(due))? 0 : parseFloat(due);
+//     sale = isNaN(parseFloat(sale))? 0 : parseFloat(sale);
 
-    var Total_balance = parseFloat(due) - parseFloat(sale);
+//     var Total_balance = parseFloat(due) - parseFloat(sale);
 
-    jQuery('.tot_due_txt').text(Total_balance);
-    jQuery('.tot_due').val(Total_balance);
-//Balance
-    jQuery('.balance').val(Total_balance);
-    var pre_bal = 0;
-    if(Total_balance > 0){
-
-
-//Cod Checked
-        jQuery('.cod_check').attr('checked',false);
-        jQuery('.cod_check').attr('readonly',true);
-        jQuery('.cod_amount').val(0);
+//     jQuery('.tot_due_txt').text(Total_balance);
+//     jQuery('.tot_due').val(Total_balance);
+// //Balance
+//     jQuery('.balance').val(Total_balance);
+//     var pre_bal = 0;
+//     if(Total_balance > 0){
 
 
-//To pay
+// //Cod Checked
+//         jQuery('.cod_check').attr('checked',false);
+//         jQuery('.cod_check').attr('readonly',true);
+//         jQuery('.cod_amount').val(0);
 
-        jQuery('.to_pay_checkbox').attr('readonly',false);
-        jQuery('.to_pay').val(Total_balance);
+
+// //To pay
+
+//         jQuery('.to_pay_checkbox').attr('readonly',false);
+//         jQuery('.to_pay').val(Total_balance);
 
 
 
-//All payment mode enable readonly
-        jQuery('.payment_cash').attr('readonly',true);
-        jQuery('.payment_table').remove();
-        pre_bal = sale;
-    } else {
+// //All payment mode enable readonly
+//         jQuery('.payment_cash').attr('readonly',true);
+//         jQuery('.payment_table').remove();
+//         pre_bal = sale;
+//     } else {
 
-//Cod unChecked
-        jQuery('.cod_check').attr('readonly',false);
-        jQuery('.cod_amount').val(Math.abs(Total_balance));
+// //Cod unChecked
+//         jQuery('.cod_check').attr('readonly',false);
+//         jQuery('.cod_amount').val(Math.abs(Total_balance));
 
-//To pay
-        jQuery('.to_pay_checkbox').attr('checked',false);
-        jQuery('.to_pay_checkbox').attr('readonly',true);
-        jQuery('.to_pay').val(0);
+// //To pay
+//         jQuery('.to_pay_checkbox').attr('checked',false);
+//         jQuery('.to_pay_checkbox').attr('readonly',true);
+//         jQuery('.to_pay').val(0);
 
-//all payment mode disable readonly
-        jQuery('.payment_cash').attr('readonly',false);
-        pre_bal = (due > 0) ? due: 0;   
+// //all payment mode disable readonly
+//         jQuery('.payment_cash').attr('readonly',false);
+//         pre_bal = (due > 0) ? due: 0;   
 
-    }
-    jQuery('.pay_pre_bal').val(pre_bal);
-}
+//     }
+// //    jQuery('.pay_pre_bal').val(pre_bal);
+// }
 
 function PaymentChange(sale = 0,due = 0){
 
@@ -271,7 +271,7 @@ function totalPayment(){
         tot         = isNaN(tot) ? 0 : tot ;
         paid_tot    = paid_tot + tot;       
     });
-    var pay_pre_bal = parseFloat(jQuery('.pay_pre_bal').val());
-    jQuery('.payment_total_without_pre').val(paid_tot);
-    jQuery('.payment_total').val(paid_tot + pay_pre_bal);
+    // var pay_pre_bal = parseFloat(jQuery('.pay_pre_bal').val());
+    // jQuery('.payment_total_without_pre').val(paid_tot);
+    // jQuery('.payment_total').val(paid_tot + pay_pre_bal);
 }

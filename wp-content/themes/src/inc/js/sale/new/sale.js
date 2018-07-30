@@ -137,21 +137,23 @@ function checkPaymentDue(id = 0) {
       customer_id  : id,
     },
     success: function (data) { 
-      if(data) 
+      if(data.success) 
       {
         var data = data;
         var i = 1;
         jQuery.each( data, function(a,b) {
-          
-            var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" nmae="prev_pay['+i+'][id]" value="'+b.id+'"/></td><td style="">' + b.pay_to_bal + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+b.pay_to_bal+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
-            jQuery('#bill_payment_in_bill').append(str1);  
-            payment_calculation();
-            i++;
+          if(b.invoice_id){
+              var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" name="prev_pay['+i+'][id]" value="'+b.id+'"/></td><td style="">' + b.pay_to_bal + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+b.pay_to_bal+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
+              jQuery('#bill_payment_in_bill').append(str1);  
+              payment_calculation();
+              i++;
+          }
+           
       });
 
     
       } else{
-          jQuery('.bill_payment').remove();
+          jQuery('#bill_payment_in_bill').remove();
           payment_calculation();
       }
     }

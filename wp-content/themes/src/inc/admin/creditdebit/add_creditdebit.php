@@ -26,26 +26,27 @@ $lot = false;
 if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 	$credit_id = $_GET['id'];
 }
-
+var_dump($credit_debit);
 ?>
 <div class="widget-top">
 	<h4>Add New Admin User</h4>
 </div>
 <div class="widget-content module">
 	<div class="form-grid">
-		<form method="post" name="new_user" id="new_user create_creditdebit" class="leftLabel creditdebit_submit">
+		<form method="post" name="create_creditdebit" id="create_creditdebit" class="leftLabel creditdebit_submit">
 			<input type="hidden" value="off" name="form_submit_prevent" class="form_submit_prevent_credit" id="form_submit_prevent_credit"/>
 			<input type="hidden" id="creditdebit_id" name="creditdebit_id" class="form-control col-md-7 col-xs-12 creditdebit_id" autocomplete="off" value="<?php echo ($credit_debit) ? $credit_id : '0'; ?>">
 			<input type="hidden" id="creditdebit_cus_id" name="creditdebit_cus_id" class="form-control col-md-7 col-xs-12 creditdebit_cus_id" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '0'; ?>">
 			<input type="hidden" id="creditdebit_screen" name="creditdebit_screen" class="form-control col-md-7 col-xs-12 creditdebit_screen" value="<?php echo ($credit_debit) ? 'due_screen': ''; ?>">
 			<ul>
 				<li>
-					<label class="fldTitle">Company/Mobile
+					<label class="fldTitle">Customer Name
 						<abbr class="require" title="Required Field">*</abbr>
+						<option selected value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '';  ?>"><?php echo ($credit_debit) ? $credit_debit['main_tab']->name : '';  ?></option>
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<select name="billing_customer2" id="billing_customer2" class="billing_customer2">
+							<select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due">
 								<option></option>
 							</select>
 						</span>

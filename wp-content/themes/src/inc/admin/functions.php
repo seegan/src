@@ -1509,7 +1509,7 @@ function update_bill(){
 
 
 		//Mode of payment
-		PaymentCreate($params['payment_detail'],$params['prev_pay'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
+		PaymentCreate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['prev_pay']);
 		
 
 		//Other Payments(COD,PREV_BAL,TO PAY and Balance)
@@ -1741,7 +1741,7 @@ function update_bill_last(){
 
 //Update in all Payments
 
-		$payment_total = $params['payment_total_without_pre'];
+		// $payment_total = $params['payment_total_without_pre'];
 
 		//Mode of payment
 		PaymentUpdate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
@@ -1750,115 +1750,7 @@ function update_bill_last(){
 		//Other Payments(COD,PREV_BAL,TO PAY and Balance)
 		$codCheck = isset($params['cod_check'])? 1 : 0;
 		$paymentCheck = isset($params['to_pay_checkbox'])? 1 : 0;
-		AddOtherPayments($params['due_bal_input'],$codCheck, $params['cod_amount'],$paymentCheck,$params['to_pay'],$params['balance'],$billing_no,$params['payment_total_without_pre'],$params['payment_total']);
-
-
-
-		
-		$prevBalanceSale = prevBalance('sale',$billing_no);
-		$prevBalanceSaleIn = prevBalance('sale_in',$billing_no);
-		$prevBalanceSaleInHand = prevBalance('sale_in_hand',$billing_no);
-		$payment_total = $params['payment_total_without_pre'];
-
-		
-		$customer_bal = check_balance($billing_customer);
-//Update Creditdebit table
-			$credit_data = array(
-			'payment_key' 			=> 'sale_update',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal + $prevBalanceSale),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_update',
-			'payment_amt' 			=> $prevBalanceSale,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'C',
-			);
-		addCredit( $credit_data, $final_total);
-
-
-		$customer_bal = check_balance($billing_customer);
-		//credit
-		$credit_data = array(
-			'payment_key' 			=> 'sale_in_update',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal - $prevBalanceSaleIn ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_in_update',
-			'payment_amt' 			=> $prevBalanceSaleIn,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'D',
-			);
-		addCredit( $credit_data, $final_total);
-
-
-		$customer_bal = check_balance($billing_customer);
-		//PAY TO CHECK 
-		if($paymentCheck){
-			$credit_data = array(
-			'payment_key' 			=> 'sale_hand_out_update',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal + $prevBalanceSaleInHand ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_hand_out_update',
-			'payment_amt' 			=> $prevBalanceSaleInHand,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'C',
-			);
-		addCredit( $credit_data, $final_total);
-		}
-
-
-
-
-		$customer_bal = check_balance($billing_customer);
-		//debit
-		$credit_data = array(
-			'payment_key' 			=> 'sale',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal - $final_total ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale',
-			'payment_amt' 			=> $final_total,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'D',
-			);
-		addCredit( $credit_data, $final_total);
-
-
-		$customer_bal = check_balance($billing_customer);
-		//credit
-		$credit_data = array(
-			'payment_key' 			=> 'sale_in',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal + $payment_total ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_in',
-			'payment_amt' 			=> $payment_total,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'C',
-			);
-		addCredit( $credit_data, $final_total);
-
-
-		$customer_bal = check_balance($billing_customer);
-		//PAY TO CHECK 
-		if($paymentCheck){
-			$credit_data = array(
-			'payment_key' 			=> 'sale_hand_out',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal - $params['to_pay'] ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_hand_out',
-			'payment_amt' 			=> $params['to_pay'],
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'D',
-			);
-		addCredit( $credit_data, $final_total);
-		}
-		
-
-
-
+		AddOtherPayments($codCheck, $params['cod_amount'],$paymentCheck,$params['to_pay'],$params['balance'],$billing_no);
 
 
 		$previous_data_query = "SELECT * FROM ${lots_sale_detail_table} WHERE sale_id = $billing_no AND active = 1";

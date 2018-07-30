@@ -70,10 +70,10 @@
 							$display_type = ucfirst($p_value->payment_type);
 						}
 						echo '<tr  class="payment_table" >
-						<td style="padding:5px;">'.$display_type.' <input type="hidden" value="'.$p_value->payment_type.'" name="" class="payment_type"  /> </td>
-						<td style="padding:5px;"><input type="text" readonly  value ="'.$p_value->amount.'" name="" class="payment_amount" data-paymenttype="'.$p_value->payment_type.'" data-uniqueName="'.getToken().'" style="width: 74px;"/><input type="hidden" name="" value="'.$p_value->reference_screen.'" /><input type="hidden" name="" value="'.$p_value->reference_id.'" /><input type="hidden" name="" value="'.$p_value->uniquename.'" readonly /></td>
-						<td style="width: 204px;">'.$p_value->payment_date.'</td>
-						</tr>';
+							<td style="padding:5px;">'.$display_type.' <input type="hidden" value="'.$p_value->payment_type.'" name="payment_detail['.$i.'][payment_type]" class="payment_type"  /> </td>
+							<td style="padding:5px;"><input type="text" '.$readonly.'  value ="'.$p_value->amount.'" name="payment_detail['.$i.'][payment_amount]" class="payment_amount" data-paymenttype="'.$p_value->payment_type.'" data-uniqueName="'.getToken().'" style="width: 74px;"/><input type="hidden" name="payment_detail['.$i.'][reference_screen]" value="'.$p_value->reference_screen.'" /><input type="hidden" name="payment_detail['.$i.'][reference_id]" value="'.$p_value->reference_id.'" /><input type="hidden" name="payment_detail['.$i.'][unique_name]" value="'.$p_value->uniquename.'" /></td>
+							<td style="width: 204px;">'.$p_value->payment_date.'</td>
+							<td style="padding:5px;"><a href="#" style="'.$display.'" class="payment_sub_delete">x</a></td></tr>';
 					}
 					$i++;
 				}	
@@ -145,12 +145,12 @@
 		<th></th>
 	</thead>
 	<tbody class="bill_payment_tab_previous" id="bill_payment_tab_previous">
-		<tr  class="" >
+		<!-- <tr  class="" >
 			<td style="padding:5px;">Pay From Prevoius </td>
 			<td style="padding:5px;">
 				<input type="text" value ="0" name="pay_pre_bal" class="pay_pre_bal" readonly style="width: 74px;"/>
 			</td>
-		</tr>
+		</tr> -->
 		<tr  class="" >
 			<td style="padding:5px;">COD <input type="checkbox" name="cod_check" class="cod_check" value="cod" <?php if($bill_data['bill_data']->cod_check == '1'){ echo 'checked'; } ?> /> </td>
 			<td style="padding:5px;"><div class="cod_amount_div"></div><input type="text" name="cod_amount" style="width:60px;"  class="cod_amount" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->cod_amount : 0;  ?>" readonly/></td>

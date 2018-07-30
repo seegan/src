@@ -1,7 +1,8 @@
 jQuery(document).ready(function(){
 
 
-  jQuery('#billing_customer2').select2({
+  jQuery('#billing_customer_due').select2({
+
       allowClear: true,
       width: '100%',
       multiple: false,
@@ -31,7 +32,9 @@ jQuery(document).ready(function(){
       templateResult: formatCustomerNameResult,
       templateSelection: formatCustomerName
   }).on("select2:select", function (e) {
-    jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
+    jQuery("#due_tab_cd").empty();
+
+    //jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
     //checkPaymentDue(e.params.data.id);
      duePaidCusCd(e.params.data.id);  
     
@@ -80,86 +83,19 @@ jQuery(document).ready(function(){
       success: "valid"
     });
 
-//<---  validation for whole sale--->
-    jQuery( ".creditdebit_submit" ).validate({
-        rules: {
-            
-            creditdebit_customer: {
-                required: true,
-            },
-             amount: {
-                required: true,
-            },
-             creditdebit_date: {
-                required: true,
-               
-            },
-             
-        },
-        messages: {           
-            creditdebit_customer: {
-                required: "Please Select Customer!",   
-            },
-             amount: {
-                required: "Please Enter amount!",
-                
-            },
-            creditdebit_date: {
-                required: "Please Enter Date!",
-            },            
-        }
-    });
   jQuery(".customer_type").on('change',function(){
     jQuery( ".creditdebit_customer").val('');
     jQuery( "#creditdebit_cus_id").val(0);
   });
 
 
-//<---- Billing mobile and customer search in Credit Debit------->
-jQuery( ".creditdebit_customer" ).autocomplete ({
-    source: function( request, response ) {
-        jQuery("#due_tab_cd").empty();
-        jQuery.ajax({
-            url: frontendajax.ajaxurl,
-            type: 'POST',
-            dataType: "json",
-            data: {
-                action: 'get_creditdebit_cus',
-                search_key: request.term,
-                customer_type : jQuery('.customer_type').val(),
-            },
-            success: function( data ) {
-                response(jQuery.map( data.result, function( item ) {
-                    if(jQuery('.customer_type').val() == 'ws'){
-                        var field_val = item.company_name +'('+ item.mobile +')' ;
-                        var type = 'wholesale';
-                    } else {
-                        var field_val = item.mobile +'('+ item.name +')' ;
-                        var type = 'retail';
-                    }
-                    return {
-                        id: item.id,
-                        value: field_val,
-                        type : type,
-                    }
-                }));
-            } 
-        });
-    },
-    minLength: 2,
-    select: function( event, ui ) {
-        jQuery('#creditdebit_cus_id').val(ui.item.id);      
-         duePaidCusCd(ui.item.id);  
-    },
-});
 
 
 	
 jQuery("#create_creditdebit").bind('submit', function (e) {
-    var valid = jQuery(".creditdebit_submit").valid();
     var length_type = jQuery('#bill_payment_tab_cd tr').length;
     var prevent = jQuery(".form_submit_prevent_credit").val();
-    if( valid && prevent == "off" && length_type > 0) {
+    if( prevent == "off" && length_type > 0) {
         jQuery(".form_submit_prevent_credit").val('on');
         jQuery('#lightbox').css('display','block');
         jQuery.ajax({
@@ -211,7 +147,7 @@ jQuery('.delete-creditdebit').live( "click", function() {
 
   //<----- Payment type JS------>
 jQuery('.payment_cash_cd').live('click',function(){
-    var today = '29/07/2018'; 
+    var today = jQuery('#creditdebit_date').val(); 
     jQuery('.payment_tab_cd').css('display','block');
     if(jQuery(this).is(':checked')) {
         var type            = jQuery(this).attr('data-paytype'); 
@@ -292,7 +228,7 @@ function duePaidCusCd(customer = 0){
     } else {
          var action = 'DuePaid';
     }
-    jQuery.ajax({
+        jQuery.ajax({
             type: "POST",
             dataType : "json",
             url: frontendajax.ajaxurl,
@@ -303,21 +239,27 @@ function duePaidCusCd(customer = 0){
                 reference_screen    : jQuery('.creditdebit_screen').val(),
             },
             success: function (data) {
+
                 var due_data = data.due_data;
                 var total_due = parseFloat(0);
-
-                jQuery.each( due_data, function(a,b) {
+                if(due_data){
+                    jQuery.each( due_data, function(a,b) {
                     total_due = parseFloat(b.current_due) + total_due;
                     var existing_count  = parseInt( jQuery('#due_tab_cd tr').length );
                     var current_row     = existing_count + 1; 
                     var tab_data = '<tr class="due_data_cd"><td style="padding:5px;">' + b.sale_id + '<input type="hidden" name="due_detail['+current_row+'][due_id]" value="'+b.sale_id+'" style="width:20px;" class="due_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_search_id]" value="'+b.inv_id+'" style="width:20px;" class="due_search_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_year]" value="'+b.financial_year+'" style="width:20px;" class="due_year_cd"/><input type="hidden" name="due_detail['+current_row+'][type_payment]" class="type_payment_cd" value="due"/></td><td style="padding:5px;">' + b.current_due + '<input type="hidden" name="due_detail['+current_row+'][due_amount]" value="'+b.current_due+'" style="width:20px;" class="due_amount_cd"/></td><td style="padding:5px;"><input type="text" name="due_detail['+current_row+'][paid_due]" class="paid_due_cd" tabindex="-1" value="" readonly style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="paid_due_hidden" class="paid_due_hidden_cd" value="0"/></td><td><table class="duePaymentType_cd"></table></td></tr>';
                     jQuery('#due_tab_cd').append(tab_data);
-                }); 
+                    }); 
                 jQuery('.total_due_text').text(total_due);                 
                 jQuery('.total_due').val(total_due); 
                 setTimeout( function(){ 
                     individualBillPaidCalculationCd();
                 }  , 50 );
+
+                } else{
+                    jQuery("#due_tab_cd").empty();
+                }
+                
                 
             }
         });

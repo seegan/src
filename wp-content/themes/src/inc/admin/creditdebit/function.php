@@ -24,20 +24,21 @@ function create_creditdebit(){
 
 	$params = array();
 	parse_str($_POST['data'], $params);
+
 	$credit_data = array(
 		'date' 			=> $params['creditdebit_date'],
-		'customer_id' 	=> $params['creditdebit_cus_id'],
-		'customer_name' => $params['creditdebit_customer'],
-		'customer_type' => $params['customer_type'],
+		'customer_id' 	=> $params['billing_customer_due'],
+		// 'customer_name' => $params['creditdebit_customer'],
 		'description' 	=> $params['description'],
 		'due_amount' 	=> $params['total_due'],
 		'to_pay_amt' 	=> $params['to_pay_amt'],
 		);
 
 	$wpdb->insert($credit_table, $credit_data);
+
 	$create_id 			= $wpdb->insert_id;
-	$lot_add_update 	=  array('created_by'=>$current_nice_name);
-	$wpdb->update($credit_table, $lot_add_update, array('id' => $create_id));
+	//$lot_add_update 	=  array('created_by'=>$current_nice_name);
+	//$wpdb->update($credit_table, $lot_add_update, array('id' => $create_id));
 
 
 //Insert Payment Type in credit Debit table
@@ -48,7 +49,7 @@ function create_creditdebit(){
 				'cd_id' 			=> $create_id,
 				'payment_details'	=> '',
 				'payment_date'		=> date('Y-m-d'),
-				'customer_id'		=> $params['creditdebit_cus_id'],
+				'customer_id'		=> $params['billing_customer_due'],
 				'payment_type'		=> $value['payment_type'],
 				'amount'			=> $value['payment_amount'],
 							);
@@ -65,11 +66,8 @@ function create_creditdebit(){
 				$insert_detail = array(
 				'reference_id' 		=> $create_id,
 				'reference_screen' 	=> 'due_screen',
-				//'uniquename'        => $params['duepayUniquename'][$key]['due'],
 				'sale_id' 			=> $params['dueId'][$key]['due'],
-				'search_id' 		=> $params['dueInvid'][$key]['due'],
-				'year' 				=> $params['dueYear'][$key]['due'],
-				'customer_id' 		=> $params['creditdebit_cus_id'],
+				'customer_id' 		=> $params['billing_customer_due'],
 				'amount' 			=> $params['duepayAmount'][$key]['due'],
 				'due_amount' 		=> $params['dueDueAmount'][$key]['due'],
 				'payment_type' 		=> $params['duePaytype'][$key]['due'],
@@ -82,13 +80,12 @@ function create_creditdebit(){
 
 	if($wpdb->insert_id) {
 		$data['success'] = 1;
-		$data['msg'] 	= 'Notes Created!';
+		$data['msg'] 	= 'Due Created!';
 		
 		$data['redirect'] = network_admin_url( 'admin.php?page=credit_debit' );
 	}
 
-	echo json_encode($data);
-	die();
+
 }
 add_action( 'wp_ajax_create_creditdebit', 'create_creditdebit' );
 add_action( 'wp_ajax_nopriv_create_creditdebit', 'create_creditdebit' );
@@ -149,10 +146,7 @@ function update_creditdebit(){
 				$insert_detail = array(
 				'reference_id' 		=> $creditdebit_id,
 				'reference_screen' 	=> 'due_screen',
-				//'uniquename'        => $params['duepayUniquename'][$key]['due'],
 				'sale_id' 			=> $params['dueId'][$key]['due'],
-				'search_id' 		=> $params['dueInvid'][$key]['due'],
-				'year' 				=> $params['dueYear'][$key]['due'],
 				'customer_id' 		=> $params['creditdebit_cus_id'],
 				'amount' 			=> $params['duepayAmount'][$key]['due'],
 				'due_amount' 		=> $params['dueDueAmount'][$key]['due'],
