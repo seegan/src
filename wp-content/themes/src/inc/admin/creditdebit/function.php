@@ -175,12 +175,16 @@ function get_creditdebit($credit_id = 0) {
     $credit_tab 			= $wpdb->prefix.'creditdebit';
     $credit_tab_details 	= $wpdb->prefix.'creditdebit_details';
     $credit_payment 		= $wpdb->prefix.'payment';
+    $customer_table 		= $wpdb->prefix.'customers';
     $query 					= "SELECT * FROM ${credit_tab} WHERE id = ${credit_id} and active = 1";
     $data['main_tab'] 		= $wpdb->get_row($query);
+    $customer_id 			= $data['main_tab']->customer_id;
     $query1 				= "SELECT * FROM ${credit_tab_details} WHERE cd_id = ${credit_id} and active = 1";
     $data['sub_tab'] 		= $wpdb->get_results($query1);
     $query2 				= "SELECT * FROM ${credit_payment} WHERE reference_id = ${credit_id} and reference_screen='due_screen' and active = 1";
     $data['payment_tab'] 	= $wpdb->get_results($query2);
+    $query3 				= "SELECT * FROM ${customer_table} WHERE id = {$customer_id} and active = 1";
+    $data['customer_tab'] 	= $wpdb->get_row($query3);
     return $data;
 }
 function get_Wscreditdebit($credit_id = 0) {
@@ -374,7 +378,7 @@ function DuePaidUpdate(){
 
 	global $wpdb;
 	$sale_table 		= $wpdb->prefix.'sale';
-	$return_table 		= $wpdb->prefix.'return_items';
+	$return_table 		= $wpdb->prefix.'return';
 	$payment_table  	= $wpdb->prefix.'payment';
 	$customer_table  	= $wpdb->prefix.'customers';
 		//$cd_notes 		= $wpdb->prefix.'shc_cd_notes';	
@@ -435,7 +439,7 @@ on payment.sale_id = ret.sale_id WHERE
 ) > 0
 
 order by sale.sale_id asc ";
-//var_dump($query);
+// var_dump($query);
 $data['due_data'] = $wpdb->get_results($query);
 echo json_encode($data);
 die();
