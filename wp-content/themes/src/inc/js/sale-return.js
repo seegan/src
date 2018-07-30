@@ -62,8 +62,6 @@ jQuery(document).ready(function(){
 
       var return_price = return_weight*price_per_kg;
 
-
-    
       var cgst_per = (parseFloat(gst_percentage) / 2).toFixed(2);
       var igst_per = parseFloat(gst_percentage).toFixed(2);
 
@@ -79,12 +77,30 @@ jQuery(document).ready(function(){
       jQuery(selector).find('.taxless_amt_txt').text(tax_less_total);
       jQuery(selector).find('.taxless_amt').val(tax_less_total);
 
+      jQuery(selector).find('.cgst_txt').text(row_per_cgst);
+      jQuery(selector).find('.cgst_amt').val(row_per_cgst);
 
+      jQuery(selector).find('.igst_txt').text(row_per_igst);
+      jQuery(selector).find('.igst_amt').val(row_per_igst);
+
+      return_price = return_price.toFixed(2);
+      jQuery(selector).find('.return_amt_txt').text(return_price);
+      jQuery(selector).find('.return_amt').val(return_price);
+
+      updateReturnTotal();
     })
-
-
-
 });
 
 
+function updateReturnTotal() {
+  var total = parseFloat(0);
+  var final_total;
+  jQuery('.return_amt').each(function(){
+    total = total + parseFloat(jQuery(this).val());
+  });
+  total = total.toFixed(2);
+
+  jQuery('.total_return_txt').text(total);
+  jQuery('.total_return').val(total);
+}
 

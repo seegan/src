@@ -72,18 +72,36 @@
                     <th rowspan="2">Return Qty</th>
                     <th rowspan="2">Sold Price (Per Kg)</th>
                     <th rowspan="2">Taxless Amt</th>
-                    <th colspan="2">CGST</th>
-                    <th colspan="2">SGST</th>
-                    <th colspan="2">IGST</th>
+                    <?php 
+                        if( $gst_from =='cgst' ) {
+                            echo "<th colspan='2'>CGST</th>";
+                            echo "<th colspan='2'>SGST</th>";
+                        }
+                    ?>
+                    <?php 
+                        if( $gst_from =='igst' ) {
+                            echo "<th colspan='2'>IGST</th>";
+                        }
+                    ?>
                     <th rowspan="2">Sub total</th>
                 </tr>
                 <tr>
+                    <?php 
+                        if( $gst_from =='cgst' ) {
+                    ?>
                     <th rowspan="2">Rate</th>
                     <th rowspan="2">Amt.</th>
                     <th rowspan="2">Rate</th>
                     <th rowspan="2">Amt.</th>
+                    <?php 
+                        }
+                        if( $gst_from =='igst' ) {
+                    ?>
                     <th rowspan="2">Rate</th>
                     <th rowspan="2">Amt.</th>
+                    <?php
+                        }
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -141,34 +159,47 @@
                         <td><?php echo $amt_per_kg; ?></td>
                         <td>
                             <div class="taxless_amt_txt">0.00</div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="0">
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="0.00">
+                        </td>
+
+
+                        <?php 
+                            if( $gst_from =='cgst' ) {
+                        ?>
+                        <td>
+                            <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_percentage]" class="cgst_percentage" value="0.00">
+                        </td>
+                        <td>
+                            <div class="cgst_txt">0.00</div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_amt]" class="cgst_amt" value="0.00">
                         </td>
                         <td>
                             <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_percentage]" class="cgst_percentage">
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_percentage]" class="cgst_percentage" value="0.00">
                         </td>
                         <td>
-                            <div class="cgst_txt"><?php echo "0.00"; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_amt]" class="cgst_amt">
+                            <div class="cgst_txt">0.00</div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_amt]" class="cgst_amt" value="0.00">
                         </td>
-                        <td>
-                            <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_percentage]" class="cgst_percentage">
-                        </td>
-                        <td>
-                            <div class="cgst_txt"><?php echo "0.00"; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_amt]" class="cgst_amt">
-                        </td>
+                        <?php 
+                            }
+                            if( $gst_from =='igst' ) {
+                        ?>
                         <td>
                             <div class="igst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage).'%'; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_percentage]" class="igst_percentage">
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_percentage]" class="igst_percentage" value="0.00">
                         </td>
                         <td>
-                            <div class="igst_txt"><?php echo "0.00"; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_amt]" class="igst_amt">
+                            <div class="igst_txt">0.00</div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_amt]" class="igst_amt" value="0.00">
                         </td>
+                        <?php
+                            }
+                        ?>
                         <td>
-                            
+                            <div class="return_amt_txt">0.00</div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][return_amt]" class="return_amt" value="0.00">
                         </td>
                     </tr>
                 <?php
@@ -176,6 +207,13 @@
                         }
                     }
                 ?>
+                <tr>
+                    <td colspan="13"><div class="text-right">Total Return</div></td>
+                    <td>
+                        <div class="total_return_txt">0.00</div>
+                        <input type="hidden" name="total_return" value="0.00" class="total_return">
+                    </td>
+                </tr>
             </tbody>
         </table>
 
