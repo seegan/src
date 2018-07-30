@@ -110,6 +110,34 @@
 </table>
 
 <br/>
+
+<table class="payment_tab div-table-row">
+	<thead>
+		<th></th>
+		<th></th>
+		<th></th>
+		<th></th>
+	</thead>
+	<tbody class="bill_payment_in_bill" id="bill_payment_in_bill">
+		<?php 
+			// if($bill_data['bill_data']) {
+			// 	$i = 1;
+			// 	foreach ($bill_pdata as $p_value) {
+			// 		if($p_value->payment_type == 'credit'){ 
+			// 			echo '<tr  class="payment_cheque" >
+			// 			<td style="padding:5px;">'.ucfirst($p_value->payment_type).' <input type="hidden" value="'.$p_value->payment_type.'" name="pay_cheque" class="pay_cheque"  /> </td>
+			// 			<td style="padding:5px;"><input type="text" value ="'.$p_value->amount.'" name="pay_amount_cheque" class="pay_amount_cheque" readonly style="width: 74px;"/><input type="hidden" name="reference_screen" value="'.$p_value->reference_screen.'" /><input type="hidden" name="reference_id" value="'.$p_value->reference_id.'" /></td>
+			// 			<td style="width: 190px;">'.$p_value->payment_date.'</td>
+			// 			</tr>';
+			// 		}
+			// 		$i++;
+			// 	}	
+			// }
+		?>
+	</tbody>
+</table>
+
+<br/>
 <table class="payment_tab div-table-row">
 	<thead>
 		<th></th>

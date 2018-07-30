@@ -9,6 +9,7 @@ require get_template_directory() . '/inc/admin/functions/sale_return.php';
 
 require get_template_directory() . '/inc/admin/admin-dashboard.php';
 require get_template_directory() . '/inc/admin/report-functions.php';
+require get_template_directory() . '/inc/admin/creditdebit/function.php';
 require get_template_directory() . '/inc/admin/billing_template/billing/modepayment_singlebill/modeofpaymentfunction.php';
 
 
