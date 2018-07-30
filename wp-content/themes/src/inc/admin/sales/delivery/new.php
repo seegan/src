@@ -125,7 +125,3 @@
         </div>
 
     </div>
-
-    <!-- SELECT rd.sale_id, rd.lot_id, sum(rd.return_weight) as return_weight FROM wp_return as r JOIN wp_return_detail as rd ON r.id = rd.return_id WHERE r.sale_id = 21 and r.active = 1 and rd.active= 1 group by rd.lot_id -->
-    
-    <!-- SELECT * FROM wp_sale_detail as sd WHERE sd.sale_id = 21 and sd.active = 1 -->
