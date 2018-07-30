@@ -125,7 +125,7 @@ function check_balance_ajax() {
 	global $wpdb;
 	$id = $_POST['customer_id'];
 	$sale_table 	= $wpdb->prefix.'sale';
-	$query 			= "SELECT pay_to_bal,pay_to_check,id,invoice_id  FROM {$sale_table} WHERE customer_id={$id} and pay_to_check = 1 and active=1";
+	$query 			= "SELECT pay_to_bal,pay_to_check,id,invoice_id  FROM {$sale_table} WHERE customer_id={$id} and pay_to_check = 0 and active=1";
 	$data = $wpdb->get_results( $query);
 	echo json_encode($data); 
 	// var_dump($query);
@@ -139,7 +139,7 @@ function getBalance($customer_id = 0) {
 
 	global $wpdb;
 	$credit_table 			= $wpdb->prefix.'sale';
-	$query 					= "SELECT pay_to_bal,pay_to_check,id  FROM $credit_table WHERE active=1 and customer_id=${customer_id} and pay_to_check = 1";
+	$query 					= "SELECT pay_to_bal,pay_to_check,id  FROM $credit_table WHERE active=1 and customer_id=${customer_id} and pay_to_check = 0";
 	$getbalance 			= $wpdb->get_row( $query);
 	$balance = ($getbalance && isset($getbalance->balance)) ? $getbalance->balance : 0;
 	return $balance;
@@ -150,18 +150,20 @@ function getBalance($customer_id = 0) {
 
 
 
-function AddOtherPayments($due_bal_input = 0, $codCheck = 0,$cod_amount = 0,$paymentCheck = 0,$to_pay = 0,$balance = 0,$sale_id = 0,$total_pay_without_prec = 0 ,$total_pay =0){
+function AddOtherPayments($codCheck = 0,$cod_amount = 0,$paymentCheck = 0,$to_pay = 0,$balance = 0,$sale_id = 0){
 	global $wpdb;
 	$sale_table = $wpdb->prefix.'sale';
 
 	$data_update = array(
-		'cod_check' 	=> $codCheck,
-		'cod_amount' 	=> $cod_amount,
-		'to_pay_check' 	=> $paymentCheck,
-		'to_pay' 		=> $to_pay,
-		'balance' 		=> $balance,
+		'cod_check' 		=> $codCheck,
+		'cod_amount' 		=> $cod_amount,
+		'pay_to_check' 		=> $paymentCheck,
+		'pay_to_bal' 		=> $to_pay,
+		'balance' 			=> $balance,
 		);
 	$wpdb->update($sale_table,$data_update,array('id'=>$sale_id));
+	// var_dump($wpdb->last_query);
+	// die();
 }
 
 

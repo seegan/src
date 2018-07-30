@@ -96,11 +96,11 @@
 				$i = 1;
 				foreach ($bill_pdata as $p_value) {
 					if($p_value->payment_type == 'credit'){ 
-						echo '<tr  class="payment_cheque" >
-						<td style="padding:5px;">'.ucfirst($p_value->payment_type).' <input type="hidden" value="'.$p_value->payment_type.'" name="pay_cheque" class="pay_cheque"  /> </td>
-						<td style="padding:5px;"><input type="text" value ="'.$p_value->amount.'" name="pay_amount_cheque" class="pay_amount_cheque" readonly style="width: 74px;"/><input type="hidden" name="reference_screen" value="'.$p_value->reference_screen.'" /><input type="hidden" name="reference_id" value="'.$p_value->reference_id.'" /></td>
-						<td style="width: 190px;">'.$p_value->payment_date.'</td>
-						</tr>';
+						echo '<tr  class="payment_table" >
+						<td style="padding:5px;">'.$display_type.' <input type="hidden" value="'.$p_value->payment_type.'" name="payment_detail['.$i.'][payment_type]" class="payment_type"  /> </td>
+						<td style="padding:5px;"><input type="text" '.$readonly.'  value ="'.$p_value->amount.'" name="payment_detail['.$i.'][payment_amount]" class="payment_amount" data-paymenttype="'.$p_value->payment_type.'" data-uniqueName="'.getToken().'" style="width: 74px;"/><input type="hidden" name="payment_detail['.$i.'][reference_screen]" value="'.$p_value->reference_screen.'" /><input type="hidden" name="payment_detail['.$i.'][reference_id]" value="'.$p_value->reference_id.'" /><input type="hidden" name="payment_detail['.$i.'][unique_name]" value="'.$p_value->uniquename.'" /></td>
+						<td style="width: 204px;">'.$p_value->payment_date.'</td>
+						<td style="padding:5px;"><a href="#" style="'.$display.'" class="payment_sub_delete">x</a></td></tr>';
 					}
 					$i++;
 				}	
@@ -120,19 +120,19 @@
 	</thead>
 	<tbody class="bill_payment_in_bill" id="bill_payment_in_bill">
 		<?php 
-			// if($bill_data['bill_data']) {
-			// 	$i = 1;
-			// 	foreach ($bill_pdata as $p_value) {
-			// 		if($p_value->payment_type == 'credit'){ 
-			// 			echo '<tr  class="payment_cheque" >
-			// 			<td style="padding:5px;">'.ucfirst($p_value->payment_type).' <input type="hidden" value="'.$p_value->payment_type.'" name="pay_cheque" class="pay_cheque"  /> </td>
-			// 			<td style="padding:5px;"><input type="text" value ="'.$p_value->amount.'" name="pay_amount_cheque" class="pay_amount_cheque" readonly style="width: 74px;"/><input type="hidden" name="reference_screen" value="'.$p_value->reference_screen.'" /><input type="hidden" name="reference_id" value="'.$p_value->reference_id.'" /></td>
-			// 			<td style="width: 190px;">'.$p_value->payment_date.'</td>
-			// 			</tr>';
-			// 		}
-			// 		$i++;
-			// 	}	
-			// }
+			if($bill_data['bill_data']) {
+				$i = 1;
+				foreach ($bill_pdata as $p_value) {
+					if($p_value->payment_type == 'credit'){ 
+						echo '<tr  class="payment_cheque" >
+						<td style="padding:5px;">'.ucfirst($p_value->payment_type).' <input type="hidden" value="'.$p_value->payment_type.'" name="pay_cheque" class="pay_cheque"  /> </td>
+						<td style="padding:5px;"><input type="text" value ="'.$p_value->amount.'" name="pay_amount_cheque" class="pay_amount_cheque" readonly style="width: 74px;"/><input type="hidden" name="reference_screen" value="'.$p_value->reference_screen.'" /><input type="hidden" name="reference_id" value="'.$p_value->reference_id.'" /></td>
+						<td style="width: 190px;">'.$p_value->payment_date.'</td>
+						</tr>';
+					}
+					$i++;
+				}	
+			}
 		?>
 	</tbody>
 </table>
@@ -156,24 +156,22 @@
 			<td style="padding:5px;"><div class="cod_amount_div"></div><input type="text" name="cod_amount" style="width:60px;"  class="cod_amount" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->cod_amount : 0;  ?>" readonly/></td>
 		</tr>
 		<tr style="font-weight:bold;">
-		<td>To Pay:
-			<input type="checkbox" name="to_pay_checkbox"  class="to_pay_checkbox" <?php if($bill_data['bill_data']->to_pay_check == '1'){ echo 'checked'; } ?>  style="width: 20px;height: 18px;" >
+			<td>To Pay:
+				<input type="checkbox" name="to_pay_checkbox"  class="to_pay_checkbox" <?php if($bill_data['bill_data']->pay_to_check == '1'){ echo 'checked'; } ?>  style="width: 20px;height: 18px;" >
 
-		</td>
-		<td>	
-			<input type ="text" name="to_pay" class="to_pay" readonly value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->to_pay : 0;  ?>" style="width: 76px;"/>
-		</td>
-		
-	</tr>
-	<tr style="color:red;font-weight:bold;">
-		
-		<td>
-			Balance:
-		</td>
-		<td>
-			<input type="text" name="balance" class="balance" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->balance : 0;  ?>" readonly style="width: 76px;"> 
-		</td>
-	</tr>
+			</td>
+			<td>	
+				<input type ="text" name="to_pay" class="to_pay" readonly value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->pay_to_bal : 0;  ?>" style="width: 76px;"/>
+			</td>		
+		</tr>
+		<tr style="color:red;font-weight:bold;">
+			<td>
+				Balance:
+			</td>
+			<td>
+				<input type="text" name="balance" class="balance" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->balance : 0;  ?>" readonly style="width: 76px;"> 
+			</td>
+		</tr>
 	</tbody>
 </table>
 
