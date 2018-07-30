@@ -1,14 +1,9 @@
 <?php
 
    global $wpdb;
-    $credit_table               = $wpdb->prefix.'shc_creditdebit';
-    $credit_table_details       = $wpdb->prefix.'shc_creditdebit_details';
-    if($_GET['type'] == 'retail'){
-        $payment_table          = $wpdb->prefix.'shc_payment';
-     } else{
-        $payment_table           = $wpdb->prefix.'shc_ws_payment';
-     }
-   
+    $credit_table               = $wpdb->prefix.'creditdebit';
+    $credit_table_details       = $wpdb->prefix.'creditdebit_details';
+    $payment_table              = $wpdb->prefix.'payment';   
 
     if($_GET['action']=='delete'){
         $id = $_GET['delete_id'];
@@ -112,7 +107,7 @@
         </div>
 
 
-
+<!-- 
         <div class="row">
             <div class="col-sm-7">
                 <div class="paging_simple_numbers" id="datatable-fixed-header_paginate">
@@ -125,3 +120,4 @@
                 <?php  echo $credit_list['status_txt']; ?>
             </div>
         </div>
+ -->

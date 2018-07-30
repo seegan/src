@@ -17,16 +17,13 @@ function create_creditdebit(){
 	$data['redirect'] 	= 0;
 
 	global $wpdb;
-	$credit_table 			=  $wpdb->prefix.'shc_creditdebit';
-	$payment_table_display 	=  $wpdb->prefix.'shc_creditdebit_details';
+	$credit_table 			=  $wpdb->prefix.'creditdebit';
+	$payment_table_display 	=  $wpdb->prefix.'creditdebit_details';
+	$payment_table 			=  $wpdb->prefix.'payment';	
+
 
 	$params = array();
 	parse_str($_POST['data'], $params);
-	if($params['customer_type'] == 'retail'){
-		$payment_table 			=  $wpdb->prefix.'shc_payment';	
-	} else {
-		$payment_table 			=  $wpdb->prefix.'shc_ws_payment';
-	}
 	$credit_data = array(
 		'date' 			=> $params['creditdebit_date'],
 		'customer_id' 	=> $params['creditdebit_cus_id'],
@@ -110,15 +107,10 @@ function update_creditdebit(){
 	parse_str($_POST['data'], $params);
 
 	$creditdebit_id 		= $params['creditdebit_id'];
-	$credit_table 			= $wpdb->prefix.'shc_creditdebit';
-	$payment_table_display 	= $wpdb->prefix.'shc_creditdebit_details';
+	$credit_table 			= $wpdb->prefix.'creditdebit';
+	$payment_table_display 	= $wpdb->prefix.'creditdebit_details';
+	$payment_table 			=  $wpdb->prefix.'payment';	
 
-	
-	if($params['customer_type'] == 'retail'){
-		$payment_table 			=  $wpdb->prefix.'shc_payment';	
-	} else {
-		$payment_table 			=  $wpdb->prefix.'shc_ws_payment';
-	}
 	$query = "SELECT * from ${credit_table} WHERE id = ${creditdebit_id} and date ='${creditdebit_date}' and customer_type = ${customer_type} and customer_id = ${customer_id} and  description = '${description}' and active='1'";
 	
 	if($creditdebit_id != '') {
@@ -186,9 +178,9 @@ add_action( 'wp_ajax_nopriv_update_creditdebit', 'update_creditdebit' );
 
 function get_creditdebit($credit_id = 0) {
     global $wpdb;
-    $credit_tab 			= $wpdb->prefix.'shc_creditdebit';
-    $credit_tab_details 	= $wpdb->prefix.'shc_creditdebit_details';
-    $credit_payment 		= $wpdb->prefix.'shc_payment';
+    $credit_tab 			= $wpdb->prefix.'creditdebit';
+    $credit_tab_details 	= $wpdb->prefix.'creditdebit_details';
+    $credit_payment 		= $wpdb->prefix.'payment';
     $query 					= "SELECT * FROM ${credit_tab} WHERE id = ${credit_id} and active = 1";
     $data['main_tab'] 		= $wpdb->get_row($query);
     $query1 				= "SELECT * FROM ${credit_tab_details} WHERE cd_id = ${credit_id} and active = 1";
@@ -199,9 +191,9 @@ function get_creditdebit($credit_id = 0) {
 }
 function get_Wscreditdebit($credit_id = 0) {
     global $wpdb;
-    $credit_tab 			= $wpdb->prefix.'shc_creditdebit';
-    $credit_tab_details 	= $wpdb->prefix.'shc_creditdebit_details';
-    $credit_payment 		= $wpdb->prefix.'shc_ws_payment';
+    $credit_tab 			= $wpdb->prefix.'creditdebit';
+    $credit_tab_details 	= $wpdb->prefix.'creditdebit_details';
+    $credit_payment 		= $wpdb->prefix.'payment';
     $query 					= "SELECT * FROM ${credit_tab} WHERE id = ${credit_id} and active = 1";
     $data['main_tab'] 		= $wpdb->get_row($query);
     $query1 				= "SELECT * FROM ${credit_tab_details} WHERE cd_id = ${credit_id} and active = 1";
@@ -214,7 +206,7 @@ function get_Wscreditdebit($credit_id = 0) {
 
 function creditdebit_filter() {
 	$creditdebit = new creditdebit();
-	include( get_template_directory().'/admin/creditdebit/ajax_loading/creditdebit_list.php' );
+	include( get_template_directory().'/inc/admin/creditdebit/ajax_loading/creditdebit_list.php' );
 	die();	
 }
 add_action( 'wp_ajax_creditdebit_filter', 'creditdebit_filter' );
@@ -231,12 +223,12 @@ function get_creditdebit_cus() {
 	$search = $_POST['search_key'];
 	$type = $_POST['customer_type'];
 	if($type == 'ws'){
-		$table =  $wpdb->prefix.'shc_wholesale_customer';
+		$table =  $wpdb->prefix.'customers';
 	    $customPagHTML      = "";
 	    $query              = "SELECT * FROM ${table} WHERE active = 1 AND ( company_name LIKE '%${search}%' OR customer_name LIKE '%${search}%' OR mobile LIKE '${search}%')";	
 	}
 	else{
-		$table =  $wpdb->prefix.'shc_customers';
+		$table =  $wpdb->prefix.'customers';
 	    $customPagHTML      = "";
 	    $query              = "SELECT * FROM ${table} WHERE active = 1 AND (  name LIKE '%${search}%' OR mobile LIKE '${search}%')";	
 	}
@@ -250,18 +242,12 @@ add_action( 'wp_ajax_nopriv_get_creditdebit_cus', 'get_creditdebit_cus' );
 function DuePaid($customer_id = 0){
 
 	global $wpdb;
-	if($_POST['type'] == 'retail'){
-		$sale_table 		= $wpdb->prefix.'shc_sale';
-		$return_table 		= $wpdb->prefix.'shc_return_items';
-		$payment_table  	= $wpdb->prefix.'shc_payment';
-		$customer_table  	= $wpdb->prefix.'shc_customers';
-		//$cd_notes 		= $wpdb->prefix.'shc_cd_notes';	
-	} else{
-		$sale_table 		= $wpdb->prefix.'shc_ws_sale';
-		$return_table 		= $wpdb->prefix.'shc_ws_return_items';
-		$payment_table  	= $wpdb->prefix.'shc_ws_payment';
-		$customer_table  	= $wpdb->prefix.'shc_wholesale_customer';
-	}
+
+	$sale_table 		= $wpdb->prefix.'sale';
+	$return_table 		= $wpdb->prefix.'return';
+	$payment_table  	= $wpdb->prefix.'payment';
+	$customer_table  	= $wpdb->prefix.'customers';
+	//$cd_notes 		= $wpdb->prefix.'shc_cd_notes';
 	
 	$customer_id 		= ($_POST['id']) ? $_POST['id'] : $customer_id;
 	$reference_id 		= ($_POST['reference_id'] != '') ? $_POST['reference_id'] : 0;
@@ -283,7 +269,7 @@ function DuePaid($customer_id = 0){
 // (case when  full_table.sale_total is null then 0.00 else full_table.sale_total end ) as sale_total,
 // (case when  full_table.paid_amount is null then 0.00 else full_table.paid_amount end ) as paid_amount,
 // (case when  full_table.key_amount is null then 0.00 else full_table.key_amount end ) as key_amount,
-// (case when  full_table.return_amount is null then 0.00 else full_table.return_amount end ) as return_amount,
+// (case when  full_table.return_ amount is null then 0.00 else full_table.return_amount end ) as return_amount,
 // (case when  full_table.invoice_bill_bal is null then 0.00 else full_table.invoice_bill_bal end ) as invoice_bill_bal,
 // (case when  full_table.return_bill_bal is null then 0.00 else full_table.return_bill_bal end ) as return_bill_bal,
 // (case when  full_table.new_sale_total is null then 0.00 else full_table.new_sale_total end ) as new_sale_total,
@@ -354,11 +340,11 @@ function DuePaid($customer_id = 0){
 
 from 
 (
-    SELECT s.id as sale_id, s.customer_id, (s.sub_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.inv_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
+    SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
 ) as sale
 left join 
 (
-    SELECT r.inv_id as sale_id,sum(r.total_amount) as return_sale,sum(r.key_amount) as return_amount FROM ${return_table} as r WHERE r.active = 1 and r.customer_id =${customer_id} GROUP by r.inv_id
+    SELECT r.sale_id as sale_id,sum(r.total_amount) as return_sale,sum(r.key_amount) as return_amount FROM ${return_table} as r WHERE r.active = 1 and r.customer_id =${customer_id} GROUP by r.sale_id
 ) as ret
 on sale.sale_id = ret.sale_id 
 
@@ -367,7 +353,17 @@ left join
 (
     SELECT p.sale_id as sale_id,sum(p.amount) as paid_amount FROM ${payment_table} as p WHERE p.customer_id = ${customer_id} and p.active = 1 and p.payment_type != 'credit' GROUP by p.sale_id
 ) as payment
-on sale.sale_id = payment.sale_id 
+on sale.sale_id = payment.sale_id WHERE
+
+(
+	sale.pay_to_bal
+    +
+    (case when ret.return_amount is null then 0 ELSE ret.return_amount end )
+    +
+    (case when  (sale.sale_total - ret.return_sale) is null then sale.sale_total else (sale.sale_total - ret.return_sale) end )
+    -
+    (case when payment.paid_amount is null then 0 ELSE payment.paid_amount end )
+) > 0
 
 order by sale.sale_id asc";
 
@@ -383,18 +379,11 @@ add_action( 'wp_ajax_nopriv_DuePaid', 'DuePaid');
 function DuePaidUpdate(){
 
 	global $wpdb;
-	if($_POST['type'] == 'retail'){
-		$sale_table 		= $wpdb->prefix.'shc_sale';
-		$return_table 		= $wpdb->prefix.'shc_return_items';
-		$payment_table  	= $wpdb->prefix.'shc_payment';
-		$customer_table  	= $wpdb->prefix.'shc_customers';
+	$sale_table 		= $wpdb->prefix.'sale';
+	$return_table 		= $wpdb->prefix.'return_items';
+	$payment_table  	= $wpdb->prefix.'payment';
+	$customer_table  	= $wpdb->prefix.'customers';
 		//$cd_notes 		= $wpdb->prefix.'shc_cd_notes';	
-	} else{
-		$sale_table 		= $wpdb->prefix.'shc_ws_sale';
-		$return_table 		= $wpdb->prefix.'shc_ws_return_items';
-		$payment_table  	= $wpdb->prefix.'shc_ws_payment';
-		$customer_table  	= $wpdb->prefix.'shc_wholesale_customer';
-	}
 	
 	$customer_id 		= ($_POST['id']) ? $_POST['id'] : $customer_id;
 	$reference_id 		= ($_POST['reference_id'] != '') ? $_POST['reference_id'] : 0;
@@ -433,12 +422,12 @@ from
      sum(case when  (reference_screen= 'due_screen' and reference_id = ${reference_id})  then amount else 0 end ) as due_paid,
      sum(case when (reference_screen= 'due_screen' or reference_screen= 'billing_screen')   then amount else 0 end ) as bill_paid FROM ${payment_table} as p WHERE p.customer_id = ${customer_id} and p.active = 1 and p.payment_type != 'credit'  group by sale_id  ) as payment
 left join 
-( SELECT s.id as sale_id, s.customer_id, (s.sub_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.inv_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
+( SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
 ) as sale 
 on sale.sale_id = payment.sale_id
 left join 
 (
-    SELECT r.inv_id as sale_id,sum(r.total_amount) as return_sale,sum(r.key_amount) as return_amount FROM ${return_table} as r WHERE r.active = 1 and r.customer_id =${customer_id} GROUP by r.inv_id
+    SELECT r.sale_id as sale_id,sum(r.total_amount) as return_sale,sum(r.key_amount) as return_amount FROM ${return_table} as r WHERE r.active = 1 and r.customer_id =${customer_id} GROUP by r.sale_id
 ) as ret
 on payment.sale_id = ret.sale_id WHERE
 (

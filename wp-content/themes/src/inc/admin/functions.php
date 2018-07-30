@@ -6,7 +6,7 @@ function hide_update_notice()
 }
 add_action( 'admin_head', 'hide_update_notice', 1 );
 
-require get_template_directory() . '/inc/admin/creditdebit/function.php';
+
 function my_footer_shh() {
 	remove_filter( 'update_footer', 'core_update_footer' ); 
 	remove_submenu_page( 'index.php', 'update-core.php' );
@@ -1507,7 +1507,7 @@ function update_bill(){
 
 
 		//Mode of payment
-		PaymentCreate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
+		PaymentCreate($params['payment_detail'],$params['prev_pay'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
 		
 
 		//Other Payments(COD,PREV_BAL,TO PAY and Balance)
@@ -1519,52 +1519,52 @@ function update_bill(){
 
 		$customer_bal = check_balance($billing_customer);
 
-		$payment_total = $params['payment_total_without_pre'];
+		// $payment_total = $params['payment_total_without_pre'];
 
-		//Credit
-		$credit_data = array(
-			'payment_key' 			=> 'sale',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal - $final_total ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale',
-			'payment_amt' 			=> $final_total,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'D',
-			);
-		addCredit( $credit_data, $final_total);
-
-
-		$customer_bal = check_balance($billing_customer);
-		//credit
-		$credit_data = array(
-			'payment_key' 			=> 'sale_in',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal + $payment_total ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_in',
-			'payment_amt' 			=> $payment_total,
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'C',
-			);
-		addCredit( $credit_data, $final_total);
+		// //Credit
+		// $credit_data = array(
+		// 	'payment_key' 			=> 'sale',
+		// 	'customer_id' 			=> $billing_customer,
+		// 	'balance'				=> ( $customer_bal - $final_total ),
+		// 	'sale_id' 				=> $billing_no,
+		// 	'remarks' 				=> 'sale',
+		// 	'payment_amt' 			=> $final_total,
+		// 	'transaction_order' 	=> 1,
+		// 	'payment_type' 			=> 'D',
+		// 	);
+		// addCredit( $credit_data, $final_total);
 
 
-		$customer_bal = check_balance($billing_customer);
-		//PAY TO CHECK 
-		if($paymentCheck){
-			$credit_data = array(
-			'payment_key' 			=> 'sale_hand_out',
-			'customer_id' 			=> $billing_customer,
-			'balance'				=> ( $customer_bal - $params['to_pay'] ),
-			'sale_id' 				=> $billing_no,
-			'remarks' 				=> 'sale_hand_out',
-			'payment_amt' 			=> $params['to_pay'],
-			'transaction_order' 	=> 1,
-			'payment_type' 			=> 'D',
-			);
-		addCredit( $credit_data, $final_total);
-		}
+		// $customer_bal = check_balance($billing_customer);
+		// //credit
+		// $credit_data = array(
+		// 	'payment_key' 			=> 'sale_in',
+		// 	'customer_id' 			=> $billing_customer,
+		// 	'balance'				=> ( $customer_bal + $payment_total ),
+		// 	'sale_id' 				=> $billing_no,
+		// 	'remarks' 				=> 'sale_in',
+		// 	'payment_amt' 			=> $payment_total,
+		// 	'transaction_order' 	=> 1,
+		// 	'payment_type' 			=> 'C',
+		// 	);
+		// addCredit( $credit_data, $final_total);
+
+
+		// $customer_bal = check_balance($billing_customer);
+		// //PAY TO CHECK 
+		// if($paymentCheck){
+		// 	$credit_data = array(
+		// 	'payment_key' 			=> 'sale_hand_out',
+		// 	'customer_id' 			=> $billing_customer,
+		// 	'balance'				=> ( $customer_bal - $params['to_pay'] ),
+		// 	'sale_id' 				=> $billing_no,
+		// 	'remarks' 				=> 'sale_hand_out',
+		// 	'payment_amt' 			=> $params['to_pay'],
+		// 	'transaction_order' 	=> 1,
+		// 	'payment_type' 			=> 'D',
+		// 	);
+		// addCredit( $credit_data, $final_total);
+		// }
 		
 
 

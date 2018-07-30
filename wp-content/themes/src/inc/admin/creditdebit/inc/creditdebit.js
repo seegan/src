@@ -1,6 +1,43 @@
 jQuery(document).ready(function(){
 
 
+  jQuery('#billing_customer2').select2({
+      allowClear: true,
+      width: '100%',
+      multiple: false,
+      minimumInputLength: 1,
+      ajax: {
+          type: 'POST',
+          url: frontendajax.ajaxurl,
+          delay: 250,
+          dataType: 'json',
+          data: function(params) {
+            return {
+              action: 'get_customer_name', // search term
+              page: 1,
+              search_key: params.term,
+            };
+          },
+          processResults: function(data) {
+            var results = [];
+            return {
+                results: jQuery.map(data.result, function(obj) {
+                    return { id: obj.id, customer_name: obj.name, mobile: obj.mobile, type: obj.type.toLowerCase() };
+                })
+            };
+          },
+          cache: true
+      },
+      templateResult: formatCustomerNameResult,
+      templateSelection: formatCustomerName
+  }).on("select2:select", function (e) {
+    jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
+    //checkPaymentDue(e.params.data.id);
+     duePaidCusCd(e.params.data.id);  
+    
+
+  });
+
  
     jQuery('.customer_type').focus();
 
@@ -174,7 +211,7 @@ jQuery('.delete-creditdebit').live( "click", function() {
 
   //<----- Payment type JS------>
 jQuery('.payment_cash_cd').live('click',function(){
-    var today = moment().format(' YYYY/MM/DD');  
+    var today = '29/07/2018'; 
     jQuery('.payment_tab_cd').css('display','block');
     if(jQuery(this).is(':checked')) {
         var type            = jQuery(this).attr('data-paytype'); 
@@ -262,7 +299,6 @@ function duePaidCusCd(customer = 0){
             data: {
                 id                  : customer,
                 action              : action,
-                type                : jQuery('.customer_type').val(),
                 reference_id        : jQuery('.creditdebit_id').val(),
                 reference_screen    : jQuery('.creditdebit_screen').val(),
             },
@@ -298,7 +334,7 @@ function deleteDueCashCd(uniquename){
         jQuery(this).find('.paid_due_cd').val(previous_paid);
 
     });
-    individualBillPaidCalculation();
+    individualBillPaidCalculationCd();
     calPayto();
 }
 
@@ -381,3 +417,32 @@ function calPayto(){
 
 
 }
+
+
+function formatCustomerName (state) {
+  if (!state.id) {
+    return state.id;
+  }
+  var $state = jQuery(
+    '<span>' +
+      state.customer_name +
+    '</span>'
+  );
+  return $state;
+};
+
+function formatCustomerNameResult(data) {
+  if (!data.id) { // adjust for custom placeholder values
+    return 'Searching ...';
+  }
+  var $state = jQuery(
+    '<span>Name : ' +
+      data.customer_name +
+    '</span>' +
+    '<br><span> Mobile : ' +
+      data.mobile +
+    '</span>'
+  );
+  return $state;
+}
+

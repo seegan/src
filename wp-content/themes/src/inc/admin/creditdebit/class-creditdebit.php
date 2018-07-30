@@ -23,7 +23,7 @@
 		}
 		function creditdebit_list_pagination( $args ) {
 		    global $wpdb;
-		    $table =  $wpdb->prefix.'shc_creditdebit';
+		    $table =  $wpdb->prefix.'creditdebit';
 		    $customPagHTML      = "";
 
 			$page_arg = [];

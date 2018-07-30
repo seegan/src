@@ -1,5 +1,5 @@
 <?php 
-function PaymentCreate($payment_detail = '',$payment_credit = '',$credit_amount = '',$invoice_id = '',$customer_id = '',$paytobalance = ''){
+function PaymentCreate($payment_detail = '',$duepaid = '',$payment_credit = '',$credit_amount = '',$invoice_id = '',$customer_id = '',$paytobalance = ''){
 
 global $wpdb;
 $payment_table = $wpdb->prefix.'payment';
@@ -41,16 +41,24 @@ if($payment_detail){
 
 }
 
+if($duepaid){
+	foreach ($duepaid as $due) {
+		if($due['prev_bal_check']){
+			updateDueCheck($due['id']);
+		}
+	}
 
-	$payfromprevious_data = array(
-		'reference_screen' 	=> 'billing_screen',
-		'sale_id'  			=> $invoice_id,
-		'payment_date'		=> date('Y-m-d'),
-		'customer_id'		=> $customer_id,
-		'payment_type'		=> 'payfromprevious',
-		'amount'			=> $paytobalance,
-		);
-	$wpdb->insert($payfromprevious_data, $payment_data);
+}
+
+	// $payfromprevious_data = array(
+	// 	'reference_screen' 	=> 'billing_screen',
+	// 	'sale_id'  			=> $invoice_id,
+	// 	'payment_date'		=> date('Y-m-d'),
+	// 	'customer_id'		=> $customer_id,
+	// 	'payment_type'		=> 'payfromprevious',
+	// 	'amount'			=> $paytobalance,
+	// 	);
+	// $wpdb->insert($payfromprevious_data, $payment_data);
 
 
 
@@ -116,27 +124,22 @@ function check_balance_ajax() {
 
 	global $wpdb;
 	$id = $_POST['customer_id'];
-
 	$sale_table 	= $wpdb->prefix.'sale';
-	$credit_table 	= $wpdb->prefix.'creditdebit';
-	$query 			= "SELECT * FROM {$credit_table} WHERE `active`=1 and `customer_id`= {$id} ORDER by `id` desc LIMIT 1";
-
-	if( $data = $wpdb->get_row( $query, ARRAY_A  ) ) {
-		echo json_encode($data); 
-	} else {
-		return false;
-	}
+	$query 			= "SELECT pay_to_bal,pay_to_check,id,invoice_id  FROM {$sale_table} WHERE customer_id={$id} and pay_to_check = 1 and active=1";
+	$data = $wpdb->get_results( $query);
+	echo json_encode($data); 
+	// var_dump($query);
 	die();
 }
 add_action( 'wp_ajax_check_balance_ajax', 'check_balance_ajax' );
 add_action( 'wp_ajax_nopriv_check_balance_ajax', 'check_balance_ajax' );
 
 
-function check_balance($customer_id = 0) {
+function getBalance($customer_id = 0) {
 
 	global $wpdb;
-	$credit_table 			= $wpdb->prefix.'creditdebit';
-	$query 					= "SELECT balance FROM {$credit_table} WHERE active=1 and customer_id= {$customer_id} ORDER by id desc LIMIT 1";
+	$credit_table 			= $wpdb->prefix.'sale';
+	$query 					= "SELECT pay_to_bal,pay_to_check,id  FROM $credit_table WHERE active=1 and customer_id=${customer_id} and pay_to_check = 1";
 	$getbalance 			= $wpdb->get_row( $query);
 	$balance = ($getbalance && isset($getbalance->balance)) ? $getbalance->balance : 0;
 	return $balance;
@@ -152,14 +155,11 @@ function AddOtherPayments($due_bal_input = 0, $codCheck = 0,$cod_amount = 0,$pay
 	$sale_table = $wpdb->prefix.'sale';
 
 	$data_update = array(
-		'previous_due' 	=> $due_bal_input,
 		'cod_check' 	=> $codCheck,
 		'cod_amount' 	=> $cod_amount,
 		'to_pay_check' 	=> $paymentCheck,
 		'to_pay' 		=> $to_pay,
 		'balance' 		=> $balance,
-		'total_pay_without_prec' 		=> $total_pay_without_prec,
-		'total_pay' 		=> $total_pay,
 		);
 	$wpdb->update($sale_table,$data_update,array('id'=>$sale_id));
 }
@@ -216,5 +216,11 @@ function prevBalance($type = '',$sale_id = 0){
 	$payment_amt = ($getbalance && isset($getbalance->payment_amt)) ? $getbalance->payment_amt : 0;
 	return $payment_amt;
 
+}
+function updateDueCheck($id = 0){
+	global  $wpdb;
+	$table = $wpdb->prefix.'sale';
+	$wpdb->update($table,array('pay_to_check' =>1),array('id'=>$id));
+	return true;
 }
 ?>

@@ -28,40 +28,26 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 }
 
 ?>
-
-
 <div class="widget-top">
-	<h4>Add New Due Bill</h4>
+	<h4>Add New Admin User</h4>
 </div>
-
 <div class="widget-content module">
 	<div class="form-grid">
-		<form method="post" name="new_user" id="create_creditdebit" class="leftLabel creditdebit_submit">
+		<form method="post" name="new_user" id="new_user create_creditdebit" class="leftLabel creditdebit_submit">
 			<input type="hidden" value="off" name="form_submit_prevent" class="form_submit_prevent_credit" id="form_submit_prevent_credit"/>
 			<input type="hidden" id="creditdebit_id" name="creditdebit_id" class="form-control col-md-7 col-xs-12 creditdebit_id" autocomplete="off" value="<?php echo ($credit_debit) ? $credit_id : '0'; ?>">
 			<input type="hidden" id="creditdebit_cus_id" name="creditdebit_cus_id" class="form-control col-md-7 col-xs-12 creditdebit_cus_id" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '0'; ?>">
 			<input type="hidden" id="creditdebit_screen" name="creditdebit_screen" class="form-control col-md-7 col-xs-12 creditdebit_screen" value="<?php echo ($credit_debit) ? 'due_screen': ''; ?>">
 			<ul>
-				<!-- <li>
-					<label class="fldTitle">Customer Type
-						<abbr class="require" title="Required Field">*</abbr>
-					</label>
-					<div class="fieldwrap">
-						<span class="left">
-							<select name="customer_type" class="customer_type">
-								<option <?php //echo ($credit_debit['main_tab']->customer_type == 'ws') ? 'selected': ''; ?> value="ws">Wholesale</option>
-								<option <?php //echo ($credit_debit['main_tab']->customer_type == 'retail') ? 'selected': ''; ?> value="retail">Retail</option>
-							</select>
-						</span>
-					</div>
-				</li> -->
 				<li>
-					<label class="fldTitle">Customer Name
+					<label class="fldTitle">Company/Mobile
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<select id="billing_customer" name="billing_customer" class="billing_customer"></select>
+							<select name="billing_customer2" id="billing_customer2" class="billing_customer2">
+								<option></option>
+							</select>
 						</span>
 					</div>
 				</li>
@@ -77,6 +63,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 				</li>
 				<li>
 					<label class="fldTitle">Date
+						<abbr class="require" title="Required Field">*</abbr>
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
@@ -89,17 +76,17 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<span class="total_due_text"></span>
 							<input type="hidden" id="total_due" name="total_due"  class="form-control col-md-7 col-xs-12 total_due" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->due_amount : 0; ?>"/>
 						</span>
 					</div>
 				</li>
 				<li>
 					<label class="fldTitle">
+						<abbr class="require" title="Required Field">*</abbr>
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-						<div class="payment-mode">
+							<div class="payment-mode">
 			                    <div class="payment-container-top">
 			                        <div class="payment-span" style="">
 			                        	<b>Mode Of Payment <span class="required">*</span> :     </b>
@@ -110,8 +97,8 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 			                            <!-- <input type="checkbox" name="payment_cash" value="credit"> Credit -->
 			                        </div>
 			                    </div>
-			                </div>	
-
+			                </div>
+	            		
 		            		<table class="payment_tab_cd" >
 		            			<thead>
 		            				<th style="padding:5px;">Payment Type</th>
@@ -157,62 +144,32 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 
 	            			</tbody>
 	            		</table>
-						</span>
+	            		
+	            		</span>
 					</div>
 				</li>
 				<li>
-					<label class="fldTitle">
-						To Pay:
-					</label>
-					<div class="fieldwrap">
-						<table>
-	            			<th style="width: 100px;">
-							</th>
-							<td>
-								<div class="col-xs-12 col-md-8 col-lg-6 form-group has-feedback nopadding">
-									<span class="current_bal_txt_cd"><?php echo ( $credit_debit ) ? $credit_debit['main_tab']->to_pay_amt : 0;  ?></span>
-									<input type="hidden" name="to_pay_amt" class="to_pay_amt_cd"  value="<?php echo ( $credit_debit ) ? $credit_debit['main_tab']->to_pay_amt : 0;  ?>"> 
-									
-									<!-- <span class="fa fa-inr form-control-feedback right" aria-hidden="true"></span> -->
-								</div>
-							</td>
-						</table>
-					</div>
-				</li>
-				<!-- <li>
-					<label class="fldTitle">User Role
-						<abbr class="require" title="Required Field">*</abbr>
+					<label class="fldTitle">To Pay:
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<select name="role" data-placeholder="Choose a Role..." class="chosen-select" style="width:350px;" tabindex="2">
-								<?php
-								$selected = '';
-								foreach ($editable_roles as $key => $role_value) {
-
-									if($user && $current_role === $key) {
-										$selected = 'selected';
-									} else {
-										$selected = '';
-									}
-									echo '<option '.$selected.'  value="'.$key.'">'.$role_value['name'].'</option>';
-								}
-								?>
-							</select>
+							<span class="current_bal_txt_cd"><?php echo ( $credit_debit ) ? $credit_debit['main_tab']->to_pay_amt : 0;  ?></span>
+									<input type="hidden" name="to_pay_amt" class="to_pay_amt_cd"  value="<?php echo ( $credit_debit ) ? $credit_debit['main_tab']->to_pay_amt : 0;  ?>"> 
 						</span>
 					</div>
-				</li> -->
+				</li>
 				<li class="buttons bottom-round noboder">
 					<div class="fieldwrap">
-						<input name="add_user" type="submit" value="Submit" class="submit-button">
+						<input type="submit" value="Submit" class="submit-button credit_submit">
 						<?php 
-									if(  $credit_debit ) {
-										echo '<input type="hidden" name="creditdebit_id" value="'.$credit_id.'">';
-										echo '<input type="hidden" name="action" class="creditdebit_action" value="update_creditdebit">';
-									} else {
-										echo '<input type="hidden" name="action" class="creditdebit_action" value="create_creditdebit">';
-									}
-								?>
+							if(  $credit_debit ) {
+								echo '<input type="hidden" name="creditdebit_id" value="'.$credit_id.'">';
+								echo '<input type="hidden" name="action" class="creditdebit_action" value="update_creditdebit">';
+							} else {
+								echo '<input type="hidden" name="action" class="creditdebit_action" value="create_creditdebit">';
+							}
+						?>
+
 					</div>
 				</li>
 			</ul>
