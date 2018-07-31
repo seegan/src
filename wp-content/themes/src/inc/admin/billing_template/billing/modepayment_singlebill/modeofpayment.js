@@ -49,7 +49,7 @@ jQuery(document).ready(function (argument) {
         jQuery('.paid_amount').trigger('change');
         var uniquename = jQuery(this).parent().parent().find('.payment_amount').data('uniquename');
         deleteDueCash(uniquename);
-        PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
+        PaymentChange(jQuery('.final_total').val(),jQuery('.customer_due').val());
     });
     jQuery('.payment_cash').live('keydown', function(e){
         var keyCode = e.keyCode || e.which; 
@@ -86,12 +86,12 @@ jQuery(document).ready(function (argument) {
         payment_calculation();
         totalPayment();
         jQuery('.paid_amount').trigger('change');   
-        PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
+        PaymentChange(jQuery('.final_total').val(),jQuery('.customer_due').val());
         
     });
 
     jQuery('.cod_check').on('click',function(){
-        PaymentChange(jQuery('.final_total').val(),jQuery('.due_bal_input').val());
+        PaymentChange(jQuery('.final_total').val(),jQuery('.customer_due').val());
     });
 
 
