@@ -3087,7 +3087,6 @@ function checkBillBalance($bill_id = 0) {
 	ON s.id = ret.return_sale_id WHERE s.id = $bill_id";
 	$data = $wpdb->get_row($query);
 
-
 	$balance = $data->actual_sale - $data->actual_paid;
 	return $balance;
 

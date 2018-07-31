@@ -71,7 +71,6 @@
                         <input type="text" name="billing_date" class="billing_date" value="<?php echo date("Y-m-d", strtotime($bill_data['bill_data']->invoice_date)); ?>" id="billing_date">
                     </span>
                     <span class="left">
-                        <?php echo "<pre>"; var_dump(checkBillBalance($bill_data['bill_data']->id)); echo "</pre>"; ?>
                     <label class="fldTitle">Bill No</label>
                     <input type="hidden" name="billing_no" id="billing_no" autocomplete="off" value="<?php echo $bill_data['bill_data']->id; ?>">
                     <input type="text" disabled="" id="invoice_id" value="<?php echo $bill_data['bill_data']->invoice_id; ?>">
