@@ -106,7 +106,7 @@ function updateReturnTotal() {
   jQuery('.total_return').val(total);
 
   var previous_to_pay = parseFloat(jQuery('.previous_pay_to_bal').val());
-  var current_to_pay = (previous_to_pay + total);
+  var current_to_pay = (previous_to_pay + total).toFixed(2);
 
 
   jQuery('.return_to_bal_text').text(current_to_pay);
