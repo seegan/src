@@ -17,17 +17,17 @@
 <?php  
 	$bill_pdata = get_paymenttype($bill_data['bill_data']->id);
 	if(isset($_GET['action']) && $_GET['action'] == 'update'){	
-		$Customer_id = $bill_data['bill_data']->id;
+		$bill_id = $bill_data['bill_data']->id;
 	} else{
-		$Customer_id = $unlocked_val['id'];
+		$bill_id = $unlocked_val['id'];
 	}
 
 ?>
  <div class="previous-payment-due">
     <div class="billing-structure">
 		<br/>
-		Current bill Due <span class="tot_due_txt"> <?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->balance : 0;  ?></span>
-		<input type="hidden" class="form-control tot_due" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->balance : 0;  ?>" name="tot_due">
+		Current bill Due <span class="tot_due_txt"> <?php echo checkBillBalance($bill_id);  ?></span>
+		<input type="hidden" class="form-control tot_due" value="<?php echo checkBillBalance($bill_id);  ?>" name="tot_due">
     </div>
 </div>
 <br/>
@@ -84,6 +84,7 @@
 		?>
 	</tbody>
 </table>
+<input type="hidden" class="previous_paid_total" value="<?php echo getBillPaymentTotal($bill_id); ?>">
 <br/>
 
 <table class="payment_tab div-table-row">

@@ -741,7 +741,7 @@
                                 <div class="final_total_price">
                                     <input  type="text" name="final_total" class="final_total text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>" readonly="">
                                     <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>">
-                                    <input  type="hidden" name="customer_due" class="customer_due" value="<?php echo checkBillBalance($bill_data['bill_data']->id); ?>">
+                                    <input  type="hidden" name="current_due" class="current_due " value="<?php echo checkBillBalance($bill_data['bill_data']->id); ?>">
                                 </div>
                             </div>
                             <div class="div-table-col sale-option">

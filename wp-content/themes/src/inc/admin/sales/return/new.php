@@ -219,8 +219,8 @@
                 <tr>
                     <td colspan="13"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" class="return_to_check"/></td></div>
                     <td>
-                        <div class="return_to_bal_text">0.00</div>
-                        <input type="hidden" name="return_to_bal" value="0.00" class="return_to_bal">
+                        <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) ?></div>
+                        <input type="hidden" name="return_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>" class="return_to_bal">
                     </td>
                 </tr>
             </tbody>
