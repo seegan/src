@@ -8,7 +8,7 @@ add_action( 'admin_head', 'hide_update_notice', 1 );
 
 
 function my_footer_shh() {
-	remove_filter( 'update_footer', 'core_update_footer' ); 
+/*	remove_filter( 'update_footer', 'core_update_footer' ); 
 	remove_submenu_page( 'index.php', 'update-core.php' );
 	remove_menu_page( 'jetpack' );                    //Jetpack* 
 	remove_menu_page( 'edit.php' );                   //Posts
@@ -19,7 +19,7 @@ function my_footer_shh() {
 	remove_menu_page( 'plugins.php' );                //Plugins
 	remove_menu_page( 'users.php' );                  //Users
 	remove_menu_page( 'tools.php' );                  //Tools
-	remove_menu_page( 'options-general.php' );        //Settings
+	remove_menu_page( 'options-general.php' );        //Settings*/
 }
 add_action( 'admin_menu', 'my_footer_shh' );
 
@@ -3049,6 +3049,84 @@ function check_unique_lot() {
 }
 add_action( 'wp_ajax_check_unique_lot', 'check_unique_lot' );
 add_action( 'wp_ajax_nopriv_check_unique_lot', 'check_unique_lot' );
+
+
+
+
+function checkBillBalance($bill_id = 0) {
+
+	global $wpdb;
+
+	$query = "SELECT 
+
+	( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE SUM(s.sale_total) END ) as sale_total,
+	( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE SUM(payment.total_paid) END ) as total_paid,
+	( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE SUM(ret.return_total) END ) as return_total,
+	( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) as pay_to_bal,
+	( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE SUM(ret.return_to_pay) END ) as return_to_pay,
+	( ( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE SUM(s.sale_total) END ) - ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE SUM(ret.return_total) END ) ) as actual_sale,
+	( ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE SUM(payment.total_paid) END ) - ( ( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) + ( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE SUM(ret.return_to_pay) END )) ) as actual_paid
+	FROM wp_sale as s 
+
+	LEFT JOIN 
+	( 
+	SELECT  
+	  ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
+	  p.sale_id as payment_sale_id
+	  FROM wp_payment as p WHERE p.payment_type != 'credit'
+	) as payment
+	ON s.id = payment.payment_sale_id
+	LEFT JOIN 
+	(
+	  SELECT 
+	  ( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
+	  ( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
+	  r.sale_id as return_sale_id
+	  FROM wp_return as r WHERE r.active = 1
+	) as ret
+	ON s.id = ret.return_sale_id WHERE s.sale_id = 1";
+	$data = $wpdb->get_row($query);
+	return $data;
+
+}
+
+
+function checkCustomerBalance($customer_id = 0) {
+
+	global $wpdb;
+
+	$query = "SELECT 
+
+	( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE SUM(s.sale_total) END ) as sale_total,
+	( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE SUM(payment.total_paid) END ) as total_paid,
+	( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE SUM(ret.return_total) END ) as return_total,
+	( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) as pay_to_bal,
+	( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE SUM(ret.return_to_pay) END ) as return_to_pay,
+	( ( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE SUM(s.sale_total) END ) - ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE SUM(ret.return_total) END ) ) as actual_sale,
+	( ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE SUM(payment.total_paid) END ) - ( ( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) + ( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE SUM(ret.return_to_pay) END )) ) as actual_paid
+	FROM wp_sale as s 
+
+	LEFT JOIN 
+	( 
+	SELECT  
+	  ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
+	  p.sale_id as payment_sale_id
+	  FROM wp_payment as p WHERE p.payment_type != 'credit'
+	) as payment
+	ON s.id = payment.payment_sale_id
+	LEFT JOIN 
+	(
+	  SELECT 
+	  ( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
+	  ( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
+	  r.sale_id as return_sale_id
+	  FROM wp_return as r WHERE r.active = 1
+	) as ret
+	ON s.id = ret.return_sale_id WHERE s.customer_id = 1";
+	$data = $wpdb->get_result($query);
+	return $data;
+
+}
 
 
 
