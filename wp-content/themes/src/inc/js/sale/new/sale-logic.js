@@ -375,7 +375,7 @@ function updateSaleTotal() {
 
   jQuery('.final_total').val(final_total).change();
 //  PayFromPrevoius(final_total,jQuery('.due_bal_input').val());
-    payment_calculation();
+//    payment_calculation();
     jQuery('.payment_amount').trigger('change');
 }
 
