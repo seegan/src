@@ -456,7 +456,8 @@
                             <div class="div-table-col sale-price">
                                 <div class="final_total_price">
                                     <input  type="text" name="final_total" class="final_total text-right" value="0.00" readonly="">
-                                    <input  type="hidden" name="customer_due" class="customer_due" value="0.00">
+                                    <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="0.00">
+                                    <input  type="hidden" name="customer_due" class="customer_due" value="<?php echo checkBillBalance($unlocked_val['id']); ?>">
                                 </div>                             
                             </div>
                             <div class="div-table-col option-delete">

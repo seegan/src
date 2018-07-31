@@ -16,11 +16,16 @@
 </style>
 <?php  
 	$bill_pdata = get_paymenttype($bill_data['bill_data']->id);
+	if(isset($_GET['action']) && $_GET['action'] == 'update'){	
+		$Customer_id = $bill_data['bill_data']->id;
+	} else{
+		$Customer_id = $unlocked_val['id'];
+	}
 
 ?>
  <div class="previous-payment-due">
     <div class="billing-structure">
-        Payment Due From Previous Bills : <span class="due_bal"></span>
+        Payment Due From Previous Bills : <span class="due_bal"><?php echo checkBillBalance($Customer_id); ?></span>
         <input type="hidden" name="due_bal_input" class="due_bal_input" id="due_bal_input" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->previous_due : 0;  ?>"/>
 		<br/>
 		Customer Balance <span class="tot_due_txt"> <?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->balance : 0;  ?></span>

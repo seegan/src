@@ -103,9 +103,16 @@ jQuery(document).ready(function (argument) {
 
 
 function payment_calculation(){
-    var total           = isNaN(parseFloat(jQuery('.final_total').val())) ? 0 : parseFloat(jQuery('.final_total').val());
-    var due             = isNaN(parseFloat(jQuery('.due_bal_input').val())) ? 0 : parseFloat(jQuery('.due_bal_input').val());
-    var total_payment   = due + total;
+
+    var prev_total          = isNaN(parseFloat(jQuery('.final_total_hidden').val())) ? 0 : parseFloat(jQuery('.final_total_hidden').val());
+    var current_bill_due    = isNaN(parseFloat(jQuery('.customer_due').val())) ? 0 : parseFloat(jQuery('.customer_due').val());
+    var current_total       = isNaN(parseFloat(jQuery('.final_total').val())) ? 0 : parseFloat(jQuery('.final_total').val());
+    var actual_total        = current_total- prev_total;
+    var pay_amount          = actual_total + current_bill_due;
+
+    // var total           = isNaN(parseFloat(jQuery('.final_total').val())) ? 0 : parseFloat(jQuery('.final_total').val());
+    // var due             = isNaN(parseFloat(jQuery('.due_bal_input').val())) ? 0 : parseFloat(jQuery('.due_bal_input').val());
+    //var total_payment   = due + total;
     var paid_tot = 0;
     jQuery('.payment_table').each(function() {  
         var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
@@ -114,8 +121,8 @@ function payment_calculation(){
     });
    
 
-    var total_pay     = total_payment - paid_tot;
-    var cur_pay       = total - paid_tot;
+    var total_pay     = pay_amount - paid_tot;
+    var cur_pay       = pay_amount - paid_tot;
     cur_pay = (cur_pay >= 0)? cur_pay : 0 ;
     jQuery('.pay_amount_cheque').val(cur_pay);
     jQuery('.cod_amount').val(cur_pay);
@@ -124,28 +131,7 @@ function payment_calculation(){
     return total_pay;
 }
 
-// function payment_calculation(){
-//     var total           = isNaN(parseFloat(jQuery('.final_total').val())) ? 0 : parseFloat(jQuery('.final_total').val());
-//     var due             = isNaN(parseFloat(jQuery('.due_bal_input').val())) ? 0 : parseFloat(jQuery('.due_bal_input').val());
-//     var total_payment   = total - due;
-//     var paid_tot = 0;
-//     jQuery('.payment_table').each(function() {  
-//         var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
-//         tot         = isNaN(tot) ? 0 : tot ;
-//         paid_tot    = paid_tot + tot;       
-//     });
-   
 
-//     var total_pay     = total_payment - paid_tot;
-//     var cur_pay       = total - paid_tot;
-//     cur_pay = (cur_pay >= 0)? cur_pay : 0 ;
-//     jQuery('.pay_amount_cheque').val(total_pay);
-//     //jQuery('.cod_amount').val(cur_pay);
-//     jQuery('.paid_amount').val(paid_tot);
-
-//     jQuery('.paid_amount').trigger('change');
-//     return total_pay;
-// }
 
 
 function makeid() {

@@ -3073,7 +3073,7 @@ function checkBillBalance($bill_id = 0) {
 	SELECT  
 	  ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
 	  p.sale_id as payment_sale_id
-	  FROM wp_payment as p WHERE p.payment_type != 'credit'
+	  FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1 AND p.sale_id = $bill_id
 	) as payment
 	ON s.id = payment.payment_sale_id
 	LEFT JOIN 
@@ -3082,11 +3082,14 @@ function checkBillBalance($bill_id = 0) {
 	  ( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
 	  ( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
 	  r.sale_id as return_sale_id
-	  FROM wp_return as r WHERE r.active = 1
+	  FROM wp_return as r WHERE r.active = 1 AND r.sale_id = $bill_id
 	) as ret
-	ON s.id = ret.return_sale_id WHERE s.sale_id = 1";
+	ON s.id = ret.return_sale_id WHERE s.id = $bill_id";
 	$data = $wpdb->get_row($query);
-	return $data;
+
+
+	$balance = $data->actual_sale - $data->actual_paid;
+	return $balance;
 
 }
 
@@ -3111,7 +3114,7 @@ function checkCustomerBalance($customer_id = 0) {
 	SELECT  
 	  ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
 	  p.sale_id as payment_sale_id
-	  FROM wp_payment as p WHERE p.payment_type != 'credit'
+	  FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1
 	) as payment
 	ON s.id = payment.payment_sale_id
 	LEFT JOIN 
