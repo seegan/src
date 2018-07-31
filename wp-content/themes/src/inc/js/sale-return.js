@@ -51,6 +51,7 @@ jQuery(document).ready(function(){
 
 
 
+
     jQuery('.return_table .return_weight').on('change', function () {
 
       var gst_from = jQuery('.gst_from').val();
