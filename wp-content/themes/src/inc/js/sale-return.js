@@ -100,8 +100,17 @@ function updateReturnTotal() {
     total = total + parseFloat(jQuery(this).val());
   });
   total = total.toFixed(2);
+  total = parseFloat(total);
 
   jQuery('.total_return_txt').text(total);
   jQuery('.total_return').val(total);
+
+  var previous_to_pay = parseFloat(jQuery('.previous_pay_to_bal').val());
+  var current_to_pay = (previous_to_pay + total);
+
+
+  jQuery('.return_to_bal_text').text(current_to_pay);
+  jQuery('.return_to_bal').val(current_to_pay);
+
 }
 
