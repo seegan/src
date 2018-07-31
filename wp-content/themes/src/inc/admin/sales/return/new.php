@@ -14,6 +14,7 @@
     }
 
     $gst_from = $sale_detail->gst_to;
+    $customer_id = $sale_detail->customer_id;
 
 ?>
     <div style="width: 100%;">
@@ -59,6 +60,7 @@
 
         <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>">
         <input type="hidden" name="gst_from" value="<?php echo $gst_from; ?>" class="gst_from">
+        <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>">
 
         <table class="display return_table">
             <thead>
@@ -168,7 +170,7 @@
                         ?>
                         <td>
                             <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_percentage]" class="cgst_percentage" value="0.00">
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_percentage]" class="cgst_percentage" value="<?php echo $gst_percentage/2; ?>">
                         </td>
                         <td>
                             <div class="cgst_txt">0.00</div>
@@ -176,7 +178,7 @@
                         </td>
                         <td>
                             <div class="cgst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage/2).'%'; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_percentage]" class="cgst_percentage" value="0.00">
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_percentage]" class="cgst_percentage" value="<?php echo $gst_percentage/2; ?>">
                         </td>
                         <td>
                             <div class="cgst_txt">0.00</div>
@@ -188,7 +190,7 @@
                         ?>
                         <td>
                             <div class="igst_percentage_txt"><?php echo sprintf("%.2f",$gst_percentage).'%'; ?></div>
-                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_percentage]" class="igst_percentage" value="0.00">
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_percentage]" class="igst_percentage" value="<?php echo $gst_percentage; ?>">
                         </td>
                         <td>
                             <div class="igst_txt">0.00</div>
@@ -212,6 +214,13 @@
                     <td>
                         <div class="total_return_txt">0.00</div>
                         <input type="hidden" name="total_return" value="0.00" class="total_return">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="13"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" class="return_to_check"/></td></div>
+                    <td>
+                        <div class="return_to_bal_text">0.00</div>
+                        <input type="hidden" name="return_to_bal" value="0.00" class="return_to_bal">
                     </td>
                 </tr>
             </tbody>

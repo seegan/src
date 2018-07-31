@@ -739,6 +739,7 @@
                             <div class="div-table-col sale-price">
                                 <div class="final_total_price">
                                     <input  type="text" name="final_total" class="final_total text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>" readonly="">
+                                     <input  type="hidden" name="customer_due" class="customer_due" value="0.00">
                                 </div>
                             </div>
                             <div class="div-table-col sale-option">
