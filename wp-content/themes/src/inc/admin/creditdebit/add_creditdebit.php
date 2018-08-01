@@ -68,7 +68,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<textarea name="description" id="description" class="description" style="border: 2px solid rgb(238, 238, 238);"><?php echo ($credit_debit) ? $credit_debit['main_tab']->description : '';  ?></textarea>
+							<textarea name="description" id="description" class="description"><?php echo ($credit_debit) ? $credit_debit['main_tab']->description : '';  ?></textarea>
 						</span>
 					</div>
 				</li>

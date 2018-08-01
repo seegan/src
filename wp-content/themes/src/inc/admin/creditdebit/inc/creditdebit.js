@@ -203,6 +203,11 @@ jQuery('.payment_sub_delete_cd').live('click',function(e){
     deleteDueCashCd(uniquename);  
 });
 
+
+
+
+
+
 });
 
 function payment_calculation_cd(){
@@ -355,33 +360,6 @@ function calPayto(){
 
 }
 
-
-// function formatCustomerName (state) {
-//   if (!state.id) {
-//     return state.id;
-//   }
-//   var $state = jQuery(
-//     '<span>' +
-//       state.customer_name +
-//     '</span>'
-//   );
-//   return $state;
-// };
-
-// function formatCustomerNameResult(data) {
-//   if (!data.id) { // adjust for custom placeholder values
-//     return 'Searching ...';
-//   }
-//   var $state = jQuery(
-//     '<span>Name : ' +
-//       data.customer_name +
-//     '</span>' +
-//     '<br><span> Mobile : ' +
-//       data.mobile +
-//     '</span>'
-//   );
-//   return $state;
-// }
 function formatCustomerName (state) {
   if (!state.id) {
     return state.id;
@@ -413,3 +391,7 @@ function clearPopup() {
     jQuery('.popup_header').html('');
     jQuery('.popup_container').html('');
 }
+
+jQuery(document).ready(function(){
+    jQuery(".creditdebit_date" ).datepicker({dateFormat: "yy-mm-dd"});
+});

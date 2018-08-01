@@ -107,10 +107,17 @@ function updateReturnTotal() {
 
   var previous_to_pay = parseFloat(jQuery('.previous_pay_to_bal').val());
   var current_to_pay = (previous_to_pay + total).toFixed(2);
-
-
-  jQuery('.return_to_bal_text').text(current_to_pay);
-  jQuery('.return_to_bal').val(current_to_pay);
+console.log(current_to_pay);
+  if(current_to_pay >= 0){
+        jQuery('.return_to_bal_text').text(current_to_pay);
+        jQuery('.return_to_bal').val(current_to_pay);
+        jQuery('.return_to_check').attr('readonly',false);
+  }
+  else {
+      jQuery('.return_to_bal_text').text(0);
+      jQuery('.return_to_bal').val(0);
+      jQuery('.return_to_check').attr('readonly',true);
+  }
 
 }
 

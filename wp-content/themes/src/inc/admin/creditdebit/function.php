@@ -338,7 +338,7 @@ function DuePaid($customer_id = 0){
 
 from 
 (
-    SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,(case when s.pay_to_check = 0 then  s.pay_to_bal else 0 end ) as pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
+    SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
 ) as sale
 left join 
 (
@@ -420,7 +420,7 @@ from
      sum(case when  (reference_screen= 'due_screen' and reference_id = ${reference_id})  then amount else 0 end ) as due_paid,
      sum(case when (reference_screen= 'due_screen' or reference_screen= 'billing_screen')   then amount else 0 end ) as bill_paid FROM ${payment_table} as p WHERE p.customer_id = ${customer_id} and p.active = 1 and p.payment_type != 'credit'  group by sale_id  ) as payment
 left join 
-( SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,(case when s.pay_to_check = 0 then  s.pay_to_bal else 0 end ) as pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
+( SELECT s.id as sale_id, s.customer_id, (s.sale_total) as sale_total,s.pay_to_bal, s.created_at as sale_date,s.invoice_id,s.financial_year FROM ${sale_table} as s WHERE s.customer_id = ${customer_id} and s.active = 1 
 ) as sale 
 on sale.sale_id = payment.sale_id
 left join 
