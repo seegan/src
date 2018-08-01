@@ -22,12 +22,25 @@
 		$bill_id = $unlocked_val['id'];
 	}
 
+	$current_due = checkBillBalance($bill_id);
+	$cod = 0.00;
+	$pay_to = 0.00;
+	if($current_due > 0 ) {
+		$cod = $current_due;
+		$pay_to = 0.00;
+	}
+	if($current_due < 0) {
+		$cod = 0.00;
+		$pay_to = (-1*$current_due);
+	}
+
+
 ?>
  <div class="previous-payment-due">
     <div class="billing-structure">
 		<br/>
-		Current bill Due <span class="tot_due_txt"> <?php echo checkBillBalance($bill_id);  ?></span>
-		<input type="hidden" class="form-control tot_due" value="<?php echo checkBillBalance($bill_id);  ?>" name="tot_due">
+		Current bill Due <span class="tot_due_txt"><?php echo $current_due;  ?></span>
+		<input type="hidden" class="form-control tot_due" value="<?php echo $current_due;  ?>" name="tot_due">
     </div>
 </div>
 <br/>
@@ -156,16 +169,16 @@
 			</td>
 		</tr> -->
 		<tr  class="" >
-			<td style="padding:5px;">COD <input type="checkbox" name="cod_check" class="cod_check" value="cod" <?php if($bill_data['bill_data']->cod_check == '1'){ echo 'checked'; } ?> /> </td>
-			<td style="padding:5px;"><div class="cod_amount_div"></div><input type="text" name="cod_amount" style="width:60px;"  class="cod_amount" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->cod_amount : 0;  ?>" readonly/></td>
+			<td style="padding:5px;">COD <input type="checkbox" name="cod_check" class="cod_check" value="cod" /> </td>
+			<td style="padding:5px;"><div class="cod_amount_div"></div><input type="text" name="cod_amount" style="width:60px;"  class="cod_amount" value="<?php echo $cod; ?>" readonly/></td>
 		</tr>
 		<tr style="font-weight:bold;">
 			<td>To Pay:
-				<input type="checkbox" name="to_pay_checkbox"  class="to_pay_checkbox" <?php if($bill_data['bill_data']->pay_to_check == '1'){ echo 'checked'; } ?>  style="width: 20px;height: 18px;" >
+				<input type="checkbox" name="to_pay_checkbox"  class="to_pay_checkbox"  style="width: 20px;height: 18px;" >
 
 			</td>
 			<td>	
-				<input type ="text" name="to_pay" class="to_pay" readonly value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->pay_to_bal : 0;  ?>" style="width: 76px;"/>
+				<input type ="text" name="to_pay" class="to_pay" readonly value="<?php echo $pay_to; ?>" style="width: 76px;"/>
 			</td>		
 		</tr>
 		<tr style="color:red;font-weight:bold;">
@@ -173,7 +186,7 @@
 				Balance:
 			</td>
 			<td>
-				<input type="text" name="balance" class="balance" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->balance : 0;  ?>" readonly style="width: 76px;"> 
+				<input type="text" name="balance" class="balance" value="<?php echo $cod;  ?>" readonly style="width: 76px;"> 
 			</td>
 		</tr>
 	</tbody>
