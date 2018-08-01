@@ -94,7 +94,7 @@ function populate_select2(this_data = '', v) {
             jQuery(this).parent().parent().find('.sale_as[value="bag"]').prop("checked", true);
             jQuery(this).parent().parent().find('.sale_as').attr("disabled", true);
             preSelect = 'bag';
-        }   else{
+        }   else {
             jQuery(this).parent().parent().find('.sale_as[value="kg"]').prop("checked", true);
             jQuery(this).parent().parent().find('.sale_as').attr("disabled", false);
             preSelect = 'kg';
