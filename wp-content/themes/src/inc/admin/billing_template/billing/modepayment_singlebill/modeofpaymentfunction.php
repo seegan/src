@@ -172,24 +172,12 @@ function getBalance($customer_id = 0) {
 	
 }
 
-
-
-
-
 function AddOtherPayments($codCheck = 0,$cod_amount = 0,$paymentCheck = 0,$to_pay = 0,$balance = 0,$sale_id = 0){
 	global $wpdb;
 	$sale_table = $wpdb->prefix.'sale';
  	$pay_to_bal = ($paymentCheck) ? $to_pay : 0;
-	$data_update = array(
-		'cod_check' 		=> $codCheck,
-		'cod_amount' 		=> $cod_amount,
-		'pay_to_check' 		=> $paymentCheck,
-		'pay_to_bal' 		=> 'pay_to_bal' + $pay_to_bal,
-		'balance' 			=> $balance,
-		);
-	$wpdb->update($sale_table,$data_update,array('id'=>$sale_id));
-	// var_dump($wpdb->last_query);
-	// die();
+ 	$data_update = "UPDATE $sale_table SET cod_check = $codCheck, cod_amount = $cod_amount, pay_to_check = $paymentCheck, pay_to_bal = pay_to_bal+$pay_to_bal, balance = $balance WHERE id = $sale_id";
+	$wpdb->query($data_update);
 }
 
 

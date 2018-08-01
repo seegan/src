@@ -15,7 +15,7 @@ function sale_return($value='')
 		'sale_id' => $sale_id, 
 		'customer_id' => $params['customer_id'],
 		'total_amount' => $params['total_return'],
-		'key_amount' => 'key_amount' + $pay_to_bal,
+		'key_amount' => $pay_to_bal,
 		'return_date' => $return_date,
 		);
 	$wpdb->insert($return_table,$return_data);
