@@ -68,10 +68,6 @@ jQuery(document).ready(function (argument) {
         paymentOperations(jQuery(this).parent().parent());
     });
 
-    jQuery('.cod_check').on('click',function(){
-        PaymentChange(jQuery('.final_total').val(),jQuery('.customer_due').val());
-    });
-
 
 
 
@@ -239,21 +235,22 @@ function isNumberKey(evt)
 
 
 function totalPayment(){
-    var paid_tot = 0;
+    var paid_tot = 0.00;
     jQuery('.payment_table').each(function() {  
         var tot     = parseFloat(jQuery(this).find('.payment_amount').val());
-        tot         = isNaN(tot) ? 0 : tot ;
+        tot         = isNaN(tot) ? 0.00 : tot ;
         paid_tot    = paid_tot + tot;       
     });
-    var previous_paid = parseFloat(jQuery('.previous_paid_total').val());
+    var previous_paid = isNaN(parseFloat(jQuery('.previous_paid_total').val())) ? 0.00 : parseFloat(jQuery('.previous_paid_total').val());
     var current_paid = paid_tot - previous_paid;
     return current_paid;
 }
 
 function currentDue() {
-    var final_total  = parseFloat(jQuery('.final_total').val());
-    var final_total_hidden = parseFloat(jQuery('.final_total_hidden').val());
-    var current_due = parseFloat(jQuery('.current_due').val());
+    var final_total  = isNaN(parseFloat(jQuery('.final_total').val())) ? 0.00 : parseFloat(jQuery('.final_total').val());
+    var final_total_hidden = isNaN(parseFloat(jQuery('.final_total_hidden').val())) ? 0.00 : parseFloat(jQuery('.final_total_hidden').val());
+    var current_due = isNaN(parseFloat(jQuery('.current_due').val())) ? 0.00 : parseFloat(jQuery('.current_due').val());
+
 
     var current_due = (final_total - final_total_hidden) + current_due;
 
@@ -290,26 +287,5 @@ function paymentOperations(selector = false) {
         jQuery('.balance').val(0);
         jQuery('.to_pay').val(Math.abs(current_bill_bal));
     }
-
-
-
-/*        var current_balance = payment_calculation();
-        console.log(current_balance);
-        var amount          = parseFloat(jQuery(this).parent().parent().find('.payment_amount').val());
-        var payment_type    = jQuery(this).parent().parent().find('.payment_type').val();
-        var sub_tot = 0;
-        if( payment_type == 'card' || payment_type == 'internet' ||  payment_type == 'cheque' ){
-            if(current_balance >= 0) {
-                
-            } else {
-                alert("Please Enter Amount as less than Total amount!!!");
-                parseFloat(jQuery(this).parent().parent().find('.payment_amount').val(0));
-                
-            }
-        }
-        jQuery('.paid_amount').trigger('change');   
-        paymentOperations();*/
-
-        console.log('sddsfsdf');
 
 }
