@@ -193,7 +193,6 @@ function AddOtherPayments($codCheck = 0,$cod_amount = 0,$paymentCheck = 0,$to_pa
 }
 
 
-
 function addCredit($credit_data = array()){
 	global $wpdb;
 	$credit_table 	= $wpdb->prefix.'creditdebit';

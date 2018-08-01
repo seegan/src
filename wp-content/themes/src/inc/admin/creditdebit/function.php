@@ -4,7 +4,10 @@ require get_template_directory() . '/inc/admin/creditdebit/class-creditdebit.php
 function load_credit_scripts() {
 	wp_enqueue_script( 'credit-script', get_template_directory_uri() . '/inc/admin/creditdebit/inc/creditdebit.js', array('jquery'), false, false );
 }
-add_action( 'admin_enqueue_scripts', 'load_credit_scripts' );
+
+if( (is_admin() ) && (isset($_GET['page'])) )   {
+    add_action( 'admin_enqueue_scripts', 'load_credit_scripts' );
+}  
 
 /*Ajax Functions*/
 function create_creditdebit(){

@@ -201,8 +201,6 @@ function src_admin_confirm_box() {
 	});
 
 
-
-
 </script>
 <?php
 	echo $html;
@@ -277,6 +275,7 @@ function src_admin_confirm_box() {
 		wp_enqueue_script( 'ajax_custom_script',  get_template_directory_uri() . '/inc/js/ajax-scripts.js', array('jquery'), false, false );
 		wp_enqueue_script( 'ajax_payment_script',  get_template_directory_uri() . '/inc/admin/billing_template/billing/modepayment_singlebill/modeofpayment.js', array('jquery'), false, false );
 		wp_localize_script( 'ajax_custom_script', 'frontendajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
+
 	}
 
 
