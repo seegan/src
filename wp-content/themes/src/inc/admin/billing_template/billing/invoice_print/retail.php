@@ -161,25 +161,20 @@
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>SNO</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Lot No</th>
-<!--         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top' >MRP</th>
-        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>PRODUCT<br>NAME</th>
-        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>QTY</th>
-        <th class="dotted_border_top dotted_border_bottom"  valign='top' align='center'>Dis.Rs</th> -->
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>TOTAL</th>
       </tr>
       <tr>
 
       </tr>
      <?php
-             
             if(isset($bill_data['bill_detail_data']) AND count($bill_data['bill_detail_data'])>0 ) {
               $i=0;
               foreach ($bill_data['bill_detail_data'] as $value) {
                 $slab_type = ($value->slab == 1) ? 'Kg' : 'Bag';
-                $bag_display = ($value->slab == 1) ? '' : '('.$value->bag_weight.'Bag)';
+                $bag_display = ($value->slab == 1) ? '' : '('.$value->bag_weight.'Kg)';
+                $sale_weight = ($value->slab == 1) ? $value->sale_weight : $value->bag_count;
                 $i++;
-        ?>
-                
+        ?>    
       <tr>
         <td valign='top' class="dotted_border_bottom" align='center'><?php echo $i; ?></td>
         <td valign='top' class="dotted_border_bottom" align='left'>
@@ -191,13 +186,9 @@
           }
           echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$value->price_orig_hidden;
           echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-          echo  $value->unit_price.' x '.(float) $value->sale_weight.$slab_type ;
+          echo  $value->unit_price.' x '.(float) $sale_weight.$slab_type ;
         ?>
         </td>
-        <!-- <td valign='top' align='center'><?php echo $value->price_orig_hidden; ?></td> -->
-        <!-- <td valign='top' align='center'><?php echo $value->product_name ?></td> -->
-        <!-- <td valign='top' align='center'></td> -->
-        <!-- <td valign='top' align='left'><?php echo $value->unit_price; ?></td> -->
         <td valign='top' class="dotted_border_bottom" align='right'><br><?php echo $value->sale_value; ?></td></tr>
       </tr>
       <?php
@@ -210,11 +201,6 @@
 
 
       <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped">
-      <!-- <tr>
-        <td valign='top' colspan="3" >No.Of.Items : 4    </td>
-        <td valign='top'  align='right' >Total Qty : 10&nbsp;&nbsp;&nbsp;</td>
-      </tr> -->
-      
        <tr> 
          <td class=" " colspan="6" valign='top' align='center'><b>AMOUNT</b></td>
          <td  class=" " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$bill_data['bill_data']->sale_value.'</b>'; ?></span></td>
