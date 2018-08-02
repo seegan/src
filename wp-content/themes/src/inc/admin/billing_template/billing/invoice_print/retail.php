@@ -182,14 +182,14 @@
         <td valign='top' align='center'><?php echo $i; ?></td>
         <td valign='top' align='left'>
         <?php
-          echo $value->price_orig_hidden.' ';
           if($value->brand_display === '1') {
             echo $value->brand_name;
           } else {
             echo $value->lot_number; 
           }
+          echo ' '.$value->price_orig_hidden;
           echo "<br>&nbsp&nbsp&nbsp";
-          echo (float) $value->sale_weight .' x '.$value->unit_price;
+          echo  $value->unit_price.' x '.(float) $value->sale_weight;
         ?>
         </td>
         <!-- <td valign='top' align='center'><?php echo $value->price_orig_hidden; ?></td> -->
