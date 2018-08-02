@@ -3084,6 +3084,8 @@ function checkBillBalance($bill_id = 0) {
 	  	FROM wp_return as r WHERE r.active = 1 AND r.sale_id = $bill_id
 	) as ret
 	ON s.id = ret.return_sale_id WHERE s.id = $bill_id";
+
+
 	$data = $wpdb->get_row($query);
 
 	$balance = $data->actual_sale - $data->actual_paid;
@@ -3102,38 +3104,59 @@ function getBillPaymentTotal($bill_id = 0) {
 }
 
 
-function checkCustomerBalance($customer_id = 0) {
+function checkCustomerBalance($customer_id = 0, $condition = 'full') {
+
+	if( $condition == 'full' ) {
+		$condition = '';
+	}
+	if( $condition == 'due' ) {
+		$condition = 'full_table.customer_pending > 0';
+	}
+	if( $condition == 'balance' ) {
+		$condition = 'full_table.customer_pending < 0';
+	}
 
 	global $wpdb;
 
-	$query = "SELECT 
-
-	( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE SUM(s.sale_total) END ) as sale_total,
-	( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE SUM(payment.total_paid) END ) as total_paid,
-	( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE SUM(ret.return_total) END ) as return_total,
-	( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) as pay_to_bal,
-	( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE SUM(ret.return_to_pay) END ) as return_to_pay,
-	( ( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE SUM(s.sale_total) END ) - ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE SUM(ret.return_total) END ) ) as actual_sale,
-	( ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE SUM(payment.total_paid) END ) - ( ( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) + ( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE SUM(ret.return_to_pay) END )) ) as actual_paid
-	FROM wp_sale as s 
-
-	LEFT JOIN 
-	( 
-	SELECT  
-	  ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
-	  p.sale_id as payment_sale_id
-	  FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1
-	) as payment
-	ON s.id = payment.payment_sale_id
-	LEFT JOIN 
+	$query = "SELECT * FROM
 	(
-	  SELECT 
-	  ( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
-	  ( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
-	  r.sale_id as return_sale_id
-	  FROM wp_return as r WHERE r.active = 1
-	) as ret
-	ON s.id = ret.return_sale_id WHERE s.customer_id = 1";
+		SELECT 
+		s.id,
+	    s.customer_id,
+	    ( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE s.sale_total END ) as sale_total,
+	    ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE payment.total_paid END ) as total_paid,
+	    ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE ret.return_total END ) as return_total,
+		( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) as sale_to_pay,
+	    ( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE ret.return_to_pay END ) as return_to_pay,
+		( ( CASE WHEN s.sale_total IS NULL THEN 0.00 ELSE s.sale_total END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) ) as actual_sale,
+		( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN s.pay_to_bal IS NULL THEN 0.00 ELSE s.pay_to_bal END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) ) as actual_paid,
+	    (
+	    	( ( CASE WHEN s.sale_total IS NULL THEN 0.00 ELSE s.sale_total END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) )
+	        -
+	        ( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN s.pay_to_bal IS NULL THEN 0.00 ELSE s.pay_to_bal END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) )
+	    ) as customer_pending
+	    FROM
+		wp_sale as s 
+	    
+		LEFT JOIN 
+		( 
+			SELECT  
+		  	( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
+		  	p.sale_id as payment_sale_id
+		  	FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1 AND p.customer_id = $customer_id GROUP BY p.sale_id
+		) as payment
+		ON s.id = payment.payment_sale_id
+		LEFT JOIN 
+		(
+		  	SELECT 
+		  	( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
+		  	( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
+		  	r.sale_id as return_sale_id
+		  	FROM wp_return as r WHERE r.active = 1 AND r.customer_id = $customer_id GROUP BY r.sale_id
+		) as ret
+		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
+	) as full_table WHERE 1 = 1 $condition";
+
 	$data = $wpdb->get_result($query);
 	return $data;
 
