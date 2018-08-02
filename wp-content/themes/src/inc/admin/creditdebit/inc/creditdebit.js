@@ -223,11 +223,8 @@ function payment_calculation_cd(){
 }
 
 function duePaidCusCd(customer = 0){
-    if(jQuery('.creditdebit_id').val() != 0){
-        var action = 'DuePaidUpdate';
-    } else {
-         var action = 'DuePaid';
-    }
+  
+        var action = 'checkCustomerBalanceAjax';
         jQuery.ajax({
             type: "POST",
             dataType : "json",
@@ -240,14 +237,15 @@ function duePaidCusCd(customer = 0){
             },
             success: function (data) {
 
-                var due_data = data.due_data;
+                var due_data = data
+
                 var total_due = parseFloat(0);
                 if(due_data){
-                    jQuery.each( due_data, function(a,b) {
+                    jQuery.each( data, function(a,b) {
                     total_due = parseFloat(b.current_due) + total_due;
                     var existing_count  = parseInt( jQuery('#due_tab_cd tr').length );
                     var current_row     = existing_count + 1; 
-                    var tab_data = '<tr class="due_data_cd"><td style="padding:5px;">' + b.sale_id + '<input type="hidden" name="due_detail['+current_row+'][due_id]" value="'+b.sale_id+'" style="width:20px;" class="due_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_search_id]" value="'+b.inv_id+'" style="width:20px;" class="due_search_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_year]" value="'+b.financial_year+'" style="width:20px;" class="due_year_cd"/><input type="hidden" name="due_detail['+current_row+'][type_payment]" class="type_payment_cd" value="due"/></td><td style="padding:5px;">' + b.current_due + '<input type="hidden" name="due_detail['+current_row+'][due_amount]" value="'+b.current_due+'" style="width:20px;" class="due_amount_cd"/></td><td style="padding:5px;"><input type="text" name="due_detail['+current_row+'][paid_due]" class="paid_due_cd" tabindex="-1" value="" readonly style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="paid_due_hidden" class="paid_due_hidden_cd" value="0"/></td><td><table class="duePaymentType_cd"></table></td></tr>';
+                    var tab_data = '<tr class="due_data_cd"><td style="padding:5px;">' + b.id + '<input type="hidden" name="due_detail['+current_row+'][due_id]" value="'+b.id+'" style="width:20px;" class="due_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_search_id]" value="'+b.id+'" style="width:20px;" class="due_search_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_year]" value="'+b.financial_year+'" style="width:20px;" class="due_year_cd"/><input type="hidden" name="due_detail['+current_row+'][type_payment]" class="type_payment_cd" value="due"/></td><td style="padding:5px;">' + b.customer_pending + '<input type="hidden" name="due_detail['+current_row+'][due_amount]" value="'+b.customer_pending+'" style="width:20px;" class="due_amount_cd"/></td><td style="padding:5px;"><input type="text" name="due_detail['+current_row+'][paid_due]" class="paid_due_cd" tabindex="-1" value="" readonly style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="paid_due_hidden" class="paid_due_hidden_cd" value="0"/></td><td><table class="duePaymentType_cd"></table></td></tr>';
                     jQuery('#due_tab_cd').append(tab_data);
                     }); 
                 jQuery('.total_due_text').text(total_due);                 

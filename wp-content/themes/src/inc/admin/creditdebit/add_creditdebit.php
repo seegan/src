@@ -23,6 +23,7 @@
 
 <?php
 $lot = false;
+$credit_debit = false;
 if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 	$credit_id = $_GET['id'];
 }
@@ -52,8 +53,8 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 							<?php }
 							else {
 								?>
-							<select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due" data-dvalue="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : ''; ?>" data-dtext="<?php echo ($credit_debit)? $credit_debit['customer_tab']->name: ''; ?>">
-								<option selected value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : '';  ?>"><?php echo ($credit_debit) ? $credit_debit['customer_tab']->name : '';  ?></option>
+								<select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due" data-dvalue="" data-dtext="">
+								<option selected value=""></option>
 							</select>  
 							<?php }
 							?>

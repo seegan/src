@@ -3104,25 +3104,30 @@ function getBillPaymentTotal($bill_id = 0) {
 }
 
 
+
+
+
+
 function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 
 	if( $condition == 'full' ) {
-		$condition = '';
+		$cond = '';
 	}
 	if( $condition == 'due' ) {
-		$condition = 'full_table.customer_pending > 0';
+		$cond = 'AND full_table.customer_pending > 0';
 	}
 	if( $condition == 'balance' ) {
-		$condition = 'full_table.customer_pending < 0';
+		$cond = 'AND full_table.customer_pending < 0';
 	}
-
-	global $wpdb;
 
 	$query = "SELECT * FROM
 	(
 		SELECT 
 		s.id,
 	    s.customer_id,
+	    s.invoice_id,
+	    s.financial_year,
+
 	    ( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE s.sale_total END ) as sale_total,
 	    ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE payment.total_paid END ) as total_paid,
 	    ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE ret.return_total END ) as return_total,
@@ -3155,12 +3160,25 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 		  	FROM wp_return as r WHERE r.active = 1 AND r.customer_id = $customer_id GROUP BY r.sale_id
 		) as ret
 		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
-	) as full_table WHERE 1 = 1 $condition";
+	) as full_table WHERE 1 = 1 $cond";
 
-	$data = $wpdb->get_result($query);
+
+	global $wpdb;
+	$data = $wpdb->get_results($query);
 	return $data;
-
 }
+
+
+
+function checkCustomerBalanceAjax() {
+	$customer_id = isset($_POST['id'] ) ? $_POST['id'] : '';
+	$data = checkCustomerBalance($customer_id, 'due');
+	echo json_encode($data);
+	die();
+}
+
+add_action( 'wp_ajax_checkCustomerBalanceAjax', 'checkCustomerBalanceAjax');
+add_action( 'wp_ajax_nopriv_checkCustomerBalanceAjax', 'checkCustomerBalanceAjax');
 
 
 
