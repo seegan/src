@@ -40,9 +40,7 @@
                         <span>
                             <input type="radio" name="shop_name" value="rice_mandy"><label class="choice">Saravana Rice Mandy</label>
                         </span>
-                         <span>
-                            <input type="radio" name="shop_name" value="counter"><label class="choice">Counter</label>
-                        </span>                        
+                                               
                     </span>
                     <span class="left">
                         <legend class="choiceFld">GST Bill To</legend>
@@ -54,9 +52,9 @@
                              <span>
                                 <input type="radio" name="gst_type" value="igst" class="gst_type"><label class="choice">Other</label>
                             </span>
-                             <span>
+                            <!--  <span>
                                 <input type="radio" name="gst_type" value="no_gst" class="gst_type"><label class="choice">No GST</label>
-                            </span>
+                            </span> -->
                         </div>
                     </span>
                 </div>
@@ -193,7 +191,7 @@
                             <div class="div-table-head" style="width: 75px;">S.No</div>
                             <div class="div-table-head" style="width: 160px;">Lot Number</div>
                             <div class="div-table-head" style="width: 50px;">Sale Option</div>
-                            <div class="div-table-head" style="width: 180px;">Weight</div>
+                            <div class="div-table-head" style="width: 200px;">Weight</div>
                             <div class="div-table-head" style="width: 150px;">Product Name</div>
                             <div class="div-table-head" style="width: 90px;">Unit Price (MRP)</div>
                             <div class="div-table-head" style="width: 100px;">Discounted price</div>

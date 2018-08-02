@@ -100,10 +100,6 @@
                         <span>
                             <input type="radio" name="shop_name" value="rice_mandy" <?php echo $rice_mandy_checked; ?>>
                             <label class="choice">Saravana Rice Mandy</label>
-                        </span>
-                         <span>
-                            <input type="radio" name="shop_name" value="counter" <?php echo $counter_checked; ?>>
-                            <label class="choice">Counter</label>
                         </span>                    
                     </span>
                     <span class="left">
@@ -116,9 +112,9 @@
                              <span>
                                 <input type="radio" name="gst_type" value="igst" class="gst_type" <?php echo $igst_checked ?>><label class="choice">Other</label>
                             </span>
-                             <span>
+                             <!-- <span>
                                 <input type="radio" name="gst_type" value="no_gst" class="gst_type" <?php echo $nogst_checked ?>><label class="choice">No GST</label>
-                            </span>
+                            </span> -->
                         </div>
                     </span>
                 </div>

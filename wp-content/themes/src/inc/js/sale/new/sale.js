@@ -218,14 +218,14 @@ jQuery('#close_check_availa_box').live('click', function(){
 });
 
   //New Old User Change inside Bill
-  jQuery('.new_user_a').on('click', function() {
+  jQuery('.new_user_a').live('click', function() {
     jQuery('.new_user_a,.customer_old').css('display', 'none');
     jQuery('.old_user_a,.customer_new').css('display', 'block');
     jQuery('.popup-add-customer').trigger('click');
     jQuery('.user_type').val('new'); 
   });
 
-  jQuery('.old_user_a').on('click', function() {
+  jQuery('.old_user_a').live('click', function() {
     jQuery('.new_user_a,.customer_old').css('display', 'block');
     jQuery('.new_user, .old_user_a,.customer_new').css('display', 'none');
     jQuery('.user_type').val('old');
