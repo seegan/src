@@ -93,10 +93,14 @@ function populate_select2(this_data = '', v) {
         if(e.params.data.slab_system == 0){
             jQuery(this).parent().parent().find('.sale_as[value="bag"]').prop("checked", true);
             jQuery(this).parent().parent().find('.sale_as').attr("disabled", true);
+            jQuery(this).parent().parent().find('.bag_display').css('display', 'inline-block');
+            jQuery(this).parent().parent().find('.kg_display').css('display', 'none');
             preSelect = 'bag';
         }   else{
             jQuery(this).parent().parent().find('.sale_as[value="kg"]').prop("checked", true);
             jQuery(this).parent().parent().find('.sale_as').attr("disabled", false);
+            jQuery(this).parent().parent().find('.kg_display').css('display', 'inline-block');
+            jQuery(this).parent().parent().find('.bag_display').css('display', 'none');
             preSelect = 'kg';
         }
         //console.log(jQuery(this).parent().parent().parent().find('input[name="sale_as"][value="'+preSelect +'"]').prop('checked', true));
@@ -388,6 +392,16 @@ function updateSaleTotal() {
   paymentOperations();
 }
 jQuery('.sale_as').live('change',function(){
+  if(jQuery(this).val() == 'kg') {
+        jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'none');
+        jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'inline-block');
+    }
+    else {
+        jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'none');
+        jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'inline-block');
+     
+    }
+
     triggerTotalCalculate(jQuery(this).parent().parent().parent().parent().parent().parent());
 
 });

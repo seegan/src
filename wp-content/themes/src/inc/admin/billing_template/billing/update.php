@@ -58,7 +58,18 @@
     }
 ?>
 
-
+<style>
+    .kg_display {
+       /* display: none;*/
+        font-size: 18px;
+        font-weight: 900;
+    }
+    .bag_display {
+        /*display: none;*/
+        font-size: 18px;
+        font-weight: 900;
+    }
+</style>
 <div class="form-grid">
     <form method="post" name="new_billing" id="new_billing" class="leftLabel" onsubmit="return false;">
         <ul>
@@ -367,7 +378,8 @@
                                       <div class="slab_system_yes" style="display:<?php echo $slab_yes_display ?>;">
                                         <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
                                       </div>
-
+                                      <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>(Kg)</span>
+                                      <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>(Bag)</span>
                                     </div>
                                     <div class="weight_cal_tooltip">
                                       <div class="tooltip tootip-black" data-stockalert="1">
@@ -531,7 +543,8 @@
                                         <div class="slab_system_yes" style="display:none;">
                                             <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
                                         </div>
-
+                                      <span class="kg_display">(Kg)</span>
+                                      <span class="bag_display">(Bag)</span>
                                     </div>
                                     <div class="weight_cal_tooltip">
                                       <div class="tooltip tootip-black" data-stockalert="1">
@@ -544,7 +557,7 @@
                                     </div>
                                      <div>
                                         <span class="">
-                                            <span class="sale_as_name_kg">  Kg  : <input type="radio" name="sale_as" class="sale_as" value="kg" checked></span>
+                                            <span class="sale_as_name_kg">  Kg  : <input type="radio" name="sale_as" class="sale_as"  value="kg" checked></span>
                                             <span class="sale_as_name_bag"> Bag :<input type="radio" name="sale_as" class="sale_as" value="bag"></span>
                                         </span>
                                     </div>

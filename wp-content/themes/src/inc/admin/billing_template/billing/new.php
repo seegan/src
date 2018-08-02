@@ -1,3 +1,16 @@
+
+<style>
+    .kg_display {
+        display: none;
+        font-size: 18px;
+        font-weight: 900;
+    }
+    .bag_display {
+        display: none;
+        font-size: 18px;
+        font-weight: 900;
+    }
+</style>
 <div class="form-grid">
     <form method="post" name="new_billing" id="new_billing" class="leftLabel" onsubmit="return false;">
         <ul>
@@ -242,7 +255,8 @@
                                       <div class="slab_system_yes" style="display:none;">
                                         <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
                                       </div>
-
+                                      <span class="kg_display">(Kg)</span>
+                                      <span class="bag_display">(Bag)</span>
                                     </div>
 
                                     <div class="weight_cal_tooltip">
