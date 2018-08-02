@@ -179,8 +179,8 @@
         ?>
                 
       <tr>
-        <td valign='top' align='center'><?php echo $i; ?></td>
-        <td valign='top' align='left'>
+        <td valign='top' class="dotted_border_bottom" align='center'><?php echo $i; ?></td>
+        <td valign='top' class="dotted_border_bottom" align='left'>
         <?php
           if($value->brand_display === '1') {
             echo $value->brand_name;
@@ -196,7 +196,7 @@
         <!-- <td valign='top' align='center'><?php echo $value->product_name ?></td> -->
         <!-- <td valign='top' align='center'></td> -->
         <!-- <td valign='top' align='left'><?php echo $value->unit_price; ?></td> -->
-        <td valign='top' align='right'><?php echo $value->sale_value; ?></td></tr>
+        <td valign='top' class="dotted_border_bottom" align='right'><br><?php echo $value->sale_value; ?></td></tr>
       </tr>
       <?php
           }
@@ -214,8 +214,8 @@
       </tr> -->
       
        <tr> 
-         <td class="dotted_border_top " colspan="6" valign='top' align='center'><b>AMOUNT</b></td>
-         <td  class="dotted_border_top " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$bill_data['bill_data']->sale_value.'</b>'; ?></span></td>
+         <td class=" " colspan="6" valign='top' align='center'><b>AMOUNT</b></td>
+         <td  class=" " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$bill_data['bill_data']->sale_value.'</b>'; ?></span></td>
       </tr>
 
      <!--  <tr> 
