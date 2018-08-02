@@ -187,8 +187,8 @@
           } else {
             echo $value->lot_number; 
           }
-          echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.$value->price_orig_hidden;
-          echo "<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+          echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$value->price_orig_hidden;
+          echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp";
           echo  $value->unit_price.' x '.(float) $value->sale_weight;
         ?>
         </td>
