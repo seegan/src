@@ -377,9 +377,8 @@ function updateSaleTotal() {
   final_total = (cardswip + final_total1).toFixed(2);
 
   jQuery('.final_total').val(final_total).change();
-//  PayFromPrevoius(final_total,jQuery('.due_bal_input').val());
-//    payment_calculation();
-    jQuery('.payment_amount').trigger('change');
+
+    paymentOperations();
 }
 
 jQuery('.sale_as').live('change',function(){
