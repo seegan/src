@@ -316,3 +316,6 @@ address .fa {
      border-bottom: 3px solid;
     background: none;
 }
+input[type="checkbox"][readonly] {
+  pointer-events: none;
+}
