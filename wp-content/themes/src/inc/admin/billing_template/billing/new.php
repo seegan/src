@@ -111,7 +111,7 @@
                     <span class="left">
                         <div class="align">
                             <div class="counter-cash">
-                                Counter Cash
+                                Counter Sale
                             </div>
                         </div>           
                     </span>              
@@ -122,11 +122,11 @@
                 <div class="fieldwrap input-uniform">
                     <span class="left">
                         <span>
-                            <input type="radio" name="customer_type" value="retail" checked><label class="choice">Retail</label>
+                            <input type="radio" name="customer_type" value="retail" checked><label class="choice">Retail Bill</label>
                         </span>
                         &nbsp;&nbsp;
                         <span>
-                            <input type="radio" name="customer_type" value="wholesale"><label class="choice">Wholesale</label>
+                            <input type="radio" name="customer_type" value="wholesale"><label class="choice">Wholesale Bill</label>
                         </span>
                     </span>
                     <span class="left">
@@ -192,10 +192,10 @@
                             <div class="div-table-head" style="width: 160px;">Lot Number</div>
                             <div class="div-table-head" style="width: 50px;">Sale Option</div>
                             <div class="div-table-head" style="width: 200px;">Weight</div>
-                            <div class="div-table-head" style="width: 150px;">Product Name</div>
+                            <div class="div-table-head" style="width: 150px;">Product Name<br/>(Bill Display Name)</div>
                             <div class="div-table-head" style="width: 90px;">Unit Price (MRP)</div>
                             <div class="div-table-head" style="width: 100px;">Discounted price</div>
-                            <div class="div-table-head" style="width: 100px;">Margin price</div>
+                            <div class="div-table-head" style="width: 100px;">End price</div>
                             <div class="div-table-head nogst_exclude" style="width: 70px;">Amount (Tax Less)</div>
                             <div class="div-table-head cgst_display">CGST</div>
                             <div class="div-table-head cgst_display" style="width: 50px;">CGST Value</div>

@@ -140,7 +140,7 @@
 
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
                   <b>Buyer,</b><br>
-                  <?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Cash': $bill_data['customer_data']->name;?>
+                  <?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Sale': $bill_data['customer_data']->name;?>
                   <b><?php echo $customer_name; ?></b><br>
                   <?php echo $bill_data['customer_data']->mobile; ?><br>
                   <?php echo $bill_data['customer_data']->mobile1;  ?><br>

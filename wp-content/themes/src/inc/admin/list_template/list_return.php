@@ -172,7 +172,7 @@
 				<td><?php echo $b_value->return_date; ?></td>
 				<td>
 					<?php
-						$customer_name = ($b_value->customer_id != 0) ? $b_value->customer_name : 'Counter Cash';
+						$customer_name = ($b_value->customer_id != 0) ? $b_value->customer_name : 'Counter Sale';
 						echo $customer_name;
 					?>
 				</td>

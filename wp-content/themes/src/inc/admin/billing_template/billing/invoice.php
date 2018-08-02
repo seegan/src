@@ -94,7 +94,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 				<div class="customer_info_bar">
 					<h4>Customer Information</h4>
 					<ul>
-						<?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Cash': $bill_data['customer_data']->name;?>
+						<?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Sale': $bill_data['customer_data']->name;?>
 						<li><span>Name : </span><?php echo $customer_name; ?> </li>
 						<li><span>Mobile : </span><?php echo $bill_data['customer_data']->mobile; ?></li>
 						<li><span>Address : </span><?php echo $bill_data['customer_data']->address; ?> </li>

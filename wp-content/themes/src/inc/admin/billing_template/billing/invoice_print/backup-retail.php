@@ -161,10 +161,10 @@
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>SNO</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Lot No</th>
-<!--         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top' >MRP</th>
+        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top' >MRP</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>PRODUCT<br>NAME</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>QTY</th>
-        <th class="dotted_border_top dotted_border_bottom"  valign='top' align='center'>Dis.Rs</th> -->
+        <th class="dotted_border_top dotted_border_bottom"  valign='top' align='center'>Dis.Rs</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>TOTAL</th>
       </tr>
       <tr>
@@ -179,25 +179,26 @@
         ?>
                 
       <tr>
-        <td valign='top' align='center'><?php echo $i; ?></td>
-        <td valign='top' align='left'>
-        <?php
-          echo $value->price_orig_hidden;
-          if($value->brand_display === '1') {
-            echo $value->brand_name;
-          } else {
-            echo $value->lot_number; 
-          }
-          echo "<br>&nbsp&nbsp&nbsp";
-          echo (float) $value->sale_weight .'x'.$value->unit_price;
+      <td valign='top' align='center'><?php echo $i; ?></td>
+      <td valign='top' align='center'>
+      <?php
+        if($value->brand_display === '1') {
+          echo $value->brand_name;
+        } else {
+          echo $value->lot_number; 
+        }
+      ?>
+      </td>
+      <td valign='top' align='center'><?php echo $value->price_orig_hidden; ?></td>
+      <td valign='top' align='center'>
+        <?php 
+          echo $value->product_name;
         ?>
-        </td>
-        <!-- <td valign='top' align='center'><?php echo $value->price_orig_hidden; ?></td> -->
-        <!-- <td valign='top' align='center'><?php echo $value->product_name ?></td> -->
-        <!-- <td valign='top' align='center'></td> -->
-        <!-- <td valign='top' align='left'><?php echo $value->unit_price; ?></td> -->
-        <td valign='top' align='right'><?php echo $value->sale_value; ?></td></tr>
-      </tr>
+      </td>
+      <td valign='top' align='center'><?php echo (float) $value->sale_weight; ?></td>
+      <td valign='top' align='left'><?php echo $value->unit_price; ?></td>
+      <td valign='top' align='right'><?php echo $value->sale_value; ?></td></tr>
+
       <?php
           }
         } 

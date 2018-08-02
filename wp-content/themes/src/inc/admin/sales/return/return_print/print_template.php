@@ -117,7 +117,7 @@
     </table>
 
     <table cellspacing='3' cellpadding='3' WIDTH='100%' >
-      <tr><?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Cash': $bill_data['customer_data']->name;?>
+      <tr><?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Sale': $bill_data['customer_data']->name;?>
         <td valign='top' WIDTH='50%'>Customer : <?php echo $customer_name; ?> </td>         
         <td valign='top' WIDTH='50%'>Address : <?php echo $bill_data['customer_data']->address;?></td>         
       </tr>

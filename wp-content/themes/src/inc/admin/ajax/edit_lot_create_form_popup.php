@@ -151,7 +151,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 						    <div class="div-table-head">From Weight</div>
 						    <div class="div-table-head">To Weight</div>
 						    <div class="div-table-head">Discount Price</div>
-						    <div class="div-table-head">Margin Price</div>
+						    <div class="div-table-head">End Price</div>
 						    <div class="div-table-head">Option</div>
 						</div>
 
