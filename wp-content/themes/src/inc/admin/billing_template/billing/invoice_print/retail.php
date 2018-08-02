@@ -181,13 +181,18 @@
                 
       <tr>
       <td valign='top' align='center'><?php echo $i; ?></td>
-      <td valign='top' align='center'><?php echo $value->lot_number; ?></td>
+      <td valign='top' align='center'>
+      <?php
+        if($value->brand_display === '1') {
+          echo $value->brand_name;
+        } else {
+          echo $value->lot_number; 
+        }
+      ?>
+      </td>
       <td valign='top' align='center'>
         <?php 
           echo $value->product_name;
-          if($value->brand_display === '1') {
-            echo "<small>( ".$value->brand_name." )</small>";
-          }
         ?>
       </td>
       <td valign='top' align='center'><?php echo $value->hsn_code; ?></td>

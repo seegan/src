@@ -198,20 +198,18 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 									} else {
 										echo $bill_original;
 									}
-								?>
-							<?php echo $i_value->lot_number; ?>
+							
+									if($i_value->brand_display === '1') {
+										echo $i_value->brand_name;
+									} else {
+										echo $i_value->lot_number; 
+									}
+							 ?>
 								
 							</td>
 							<td><?php echo $i_value->basic_price; ?></td>
 							<td>
 								<?php echo $i_value->product_name; ?>
-								<?php
-
-									if($i_value->brand_display === '1') {
-										echo "<small>( ".$r_value->brand_name." )</small>";
-									}
-								?>
-
 							</td>
 							<td><?php echo $i_value->unit_price; ?></td>
 							<td>

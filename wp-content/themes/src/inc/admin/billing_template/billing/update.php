@@ -374,12 +374,13 @@
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" value="<?php echo $b_value->weight; ?>" readonly style="display: none;">
                                             <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo $b_value->sale_weight; ?>" readonly style="display: none;">
+                                            <span class="bag_display">Bag</span>
                                         </div>
                                       <div class="slab_system_yes" style="display:<?php echo $slab_yes_display ?>;">
                                         <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
+                                        <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Kg</span>
+                                        <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Bag</span>
                                       </div>
-                                      <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>(Kg)</span>
-                                      <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>(Bag)</span>
                                     </div>
                                     <div class="weight_cal_tooltip">
                                       <div class="tooltip tootip-black" data-stockalert="1">
@@ -539,12 +540,13 @@
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" style="display: none;">
                                             <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" style="display: none;">
+                                            <span class="bag_display">Bag</span>
                                         </div>
                                         <div class="slab_system_yes" style="display:none;">
                                             <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
+                                            <span class="kg_display">Kg</span>
+                                            <span class="bag_display">Bag</span>
                                         </div>
-                                      <span class="kg_display">(Kg)</span>
-                                      <span class="bag_display">(Bag)</span>
                                     </div>
                                     <div class="weight_cal_tooltip">
                                       <div class="tooltip tootip-black" data-stockalert="1">

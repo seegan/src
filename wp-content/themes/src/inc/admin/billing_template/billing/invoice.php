@@ -161,18 +161,17 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 									} else {
 										echo $bill_original;
 									}
+									if($i_value->brand_display === '1') {
+										echo $i_value->brand_name;
+									} else {
+										echo $i_value->lot_number; 
+									}
+
 								?>
-							<?php echo $i_value->lot_number; ?>
 								
 							</td>
 							<td>
 								<?php echo $i_value->product_name; ?>
-								<?php
-
-									if($i_value->brand_display === '1') {
-										echo "<small>( ".$i_value->brand_name." )</small>";
-									}
-								?>
 
 							</td>
 							<td><?php echo $i_value->hsn_code; ?></td>

@@ -24,14 +24,10 @@
       padding: 0;
     }
 
-
-
   }
 
 
 </style>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -222,14 +218,19 @@
 
 
 				<tr class=" text_center">
-					<td><?php echo $i_value->lot_number; ?></td>
+					<td>
+					    <?php
+					       	if($value->brand_display === '1') {
+					          echo $value->brand_name;
+					        } else {
+					          echo $value->lot_number; 
+					        }
+					    ?>
+					</td>
 					<td><?php echo $value->hsn_code; ?></td>
 					<td>
 						<?php 
 							echo $value->product_name;
-							if($value->brand_display === '1') {
-								echo "<small>( ".$value->brand_name." )</small>";
-							}
 					 	?>
 					</td>
 					<td><?php echo (float) $value->sale_weight; ?></td>                

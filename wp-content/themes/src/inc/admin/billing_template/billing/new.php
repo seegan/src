@@ -251,12 +251,13 @@
                                         <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" readonly style="display: none;">
                                         <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;">
                                         <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight KG" readonly style="display: none;"> 
+                                        <span class="bag_display">Bag</span>
                                       </div>
                                       <div class="slab_system_yes" style="display:none;">
                                         <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
+                                        <span class="kg_display">Kg</span>
+                                        <span class="bag_display">Bag</span>
                                       </div>
-                                      <span class="kg_display">(Kg)</span>
-                                      <span class="bag_display">(Bag)</span>
                                     </div>
 
                                     <div class="weight_cal_tooltip">
