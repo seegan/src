@@ -175,6 +175,8 @@
             if(isset($bill_data['bill_detail_data']) AND count($bill_data['bill_detail_data'])>0 ) {
               $i=0;
               foreach ($bill_data['bill_detail_data'] as $value) {
+                $slab_type = ($value->slab == 1) ? 'Kg' : 'Bag';
+                $bag_display = ($value->slab == 1) ? '' : '('.$value->bag_weight.'Bag)';
                 $i++;
         ?>
                 
@@ -183,13 +185,13 @@
         <td valign='top' class="dotted_border_bottom" align='left'>
         <?php
           if($value->brand_display === '1') {
-            echo $value->brand_name;
+            echo $value->brand_name.$bag_display;
           } else {
-            echo $value->lot_number; 
+            echo $value->lot_number.$bag_display; 
           }
           echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$value->price_orig_hidden;
           echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-          echo  $value->unit_price.' x '.(float) $value->sale_weight;
+          echo  $value->unit_price.' x '.(float) $value->sale_weight.$slab_type ;
         ?>
         </td>
         <!-- <td valign='top' align='center'><?php echo $value->price_orig_hidden; ?></td> -->
