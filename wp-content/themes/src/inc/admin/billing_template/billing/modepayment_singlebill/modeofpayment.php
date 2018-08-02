@@ -174,7 +174,7 @@
 		</tr>
 		<tr style="font-weight:bold;">
 			<td>To Pay:
-				<input type="checkbox" name="to_pay_checkbox"  class="to_pay_checkbox"  style="width: 20px;height: 18px;" >
+				<div style="display:none;"><input type="checkbox" name="to_pay_checkbox" checked  class="to_pay_checkbox"  style="width: 20px;height: 18px;" ></div>
 
 			</td>
 			<td>	
