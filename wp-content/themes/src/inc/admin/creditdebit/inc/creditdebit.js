@@ -221,16 +221,18 @@ function duePaidCusCd(customer = 0){
                 var total_due = parseFloat(0);
                 if(data){
                     jQuery.each( data, function(a,b) { 
-                    var existing_count  = parseInt( jQuery('#due_tab_cd tr').length );
-                    var current_row     = existing_count + 1; 
-                    var customer_pending    = parseFloat(b.customer_pending);
-                    var current_screen_paid = parseFloat(b.current_screen_paid);
-                    var current_screen_pending = current_screen_paid + customer_pending;
+                      var existing_count  = parseInt( jQuery('#due_tab_cd tr').length );
+                      var current_row     = existing_count + 1; 
+                      var customer_pending    = parseFloat(b.customer_pending);
+                      var current_screen_paid = parseFloat(b.current_screen_paid);
+                      var current_screen_pending = current_screen_paid + customer_pending;
 
-                    total_due = current_screen_pending + total_due;
+                      if(current_screen_pending > 0) {
+                        var tab_data = '<tr class="due_data_cd"><td style="padding:5px;">' + b.id + '<input type="hidden" name="due_detail['+current_row+'][due_id]" value="'+b.id+'" style="width:20px;" class="due_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_search_id]" value="'+b.invoice_id+'" style="width:20px;" class="due_search_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_year]" value="'+b.financial_year+'" style="width:20px;" class="due_year_cd"/><input type="hidden" name="due_detail['+current_row+'][type_payment]" class="type_payment_cd" value="due"/></td><td style="padding:5px;"><span class="actual_due">' + customer_pending + '</span><input type="hidden" name="due_detail['+current_row+'][due_amount]" value="'+current_screen_pending+'" style="width:20px;" class="due_amount_cd"/></td><td style="padding:5px;"><input type="text" name="due_detail['+current_row+'][paid_due]" class="paid_due_cd" tabindex="-1" value="" readonly style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="paid_due_hidden" class="paid_due_hidden_cd" value="0"/></td><td><table class="duePaymentType_cd"></table></td></tr>';
+                        jQuery('#due_tab_cd').append(tab_data);
+                      }
+                      total_due = current_screen_pending + total_due;
 
-                    var tab_data = '<tr class="due_data_cd"><td style="padding:5px;">' + b.id + '<input type="hidden" name="due_detail['+current_row+'][due_id]" value="'+b.id+'" style="width:20px;" class="due_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_search_id]" value="'+b.invoice_id+'" style="width:20px;" class="due_search_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_year]" value="'+b.financial_year+'" style="width:20px;" class="due_year_cd"/><input type="hidden" name="due_detail['+current_row+'][type_payment]" class="type_payment_cd" value="due"/></td><td style="padding:5px;">' + current_screen_pending + '<input type="hidden" name="due_detail['+current_row+'][due_amount]" value="'+current_screen_pending+'" style="width:20px;" class="due_amount_cd"/></td><td style="padding:5px;"><input type="text" name="due_detail['+current_row+'][paid_due]" class="paid_due_cd" tabindex="-1" value="" readonly style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="paid_due_hidden" class="paid_due_hidden_cd" value="0"/></td><td><table class="duePaymentType_cd"></table></td></tr>';
-                    jQuery('#due_tab_cd').append(tab_data);
                     }); 
                 jQuery('.total_due_text').text(total_due);                 
                 jQuery('.total_due').val(total_due); 
@@ -254,7 +256,6 @@ function deleteDueCashCd(uniquename){
         jQuery(this).find('[ref-uniquename="'+uniquename+'"]').remove();
         var previous_paid = billBalancePaidIndividualCd(jQuery(this));
         jQuery(this).find('.paid_due_cd').val(previous_paid);
-
     });
     individualBillPaidCalculationCd();
     calPayto();
@@ -292,13 +293,16 @@ function individualBillPaidCalculationCd(){
             if(bill_due >= current_row_pay_total) {
 
                 jQuery(this).find('.paid_due_cd').val(current_row_pay_total);
-                var str = '<tr class="aa" ref-uniquename="'+uniquename+'"><td class="ab">'+ type_text +' - ' + bal +'<input type="hidden" readonly ref-uniquename="'+uniquename+'" ref-paytype="'+pay_type+'" class="row_cash_paid_cd" tabindex="-1" name="duepayAmount[]['+type_payment+']" value="'+bal+'"></td><input type="hidden" name="duepayUniquename[]['+type_payment+']" value="'+uniquename+'"/><input type="hidden" name="duePaytype[]['+type_payment+']" value="'+pay_type+'" readonly/><input type="hidden" name="dueId[]['+type_payment+']" value="'+id+'"/><input type="hidden" name="dueYear[]['+type_payment+']" value="'+year+'"/><input type="hidden" name="dueInvid[]['+type_payment+']" value="'+inv_id+'"/><input type="hidden" name="dueDueAmount[]['+type_payment+']" value="'+due_amount+'"/></tr>';
-                jQuery(this).find('.duePaymentType_cd').append(str);
+                dueRowBalanceChange(jQuery(this));
+                if(bal != 0) {
+                  var str = '<tr class="aa" ref-uniquename="'+uniquename+'"><td class="ab">'+ type_text +' - ' + bal +'<input type="hidden" readonly ref-uniquename="'+uniquename+'" ref-paytype="'+pay_type+'" class="row_cash_paid_cd" tabindex="-1" name="duepayAmount[]['+type_payment+']" value="'+bal+'"></td><input type="hidden" name="duepayUniquename[]['+type_payment+']" value="'+uniquename+'"/><input type="hidden" name="duePaytype[]['+type_payment+']" value="'+pay_type+'" readonly/><input type="hidden" name="dueId[]['+type_payment+']" value="'+id+'"/><input type="hidden" name="dueYear[]['+type_payment+']" value="'+year+'"/><input type="hidden" name="dueInvid[]['+type_payment+']" value="'+inv_id+'"/><input type="hidden" name="dueDueAmount[]['+type_payment+']" value="'+due_amount+'"/></tr>';
+                  jQuery(this).find('.duePaymentType_cd').append(str);
+                }
                 bal = 0;
-                return false;
             } else {
                 var current_pay = ((bill_due - due_paid));
                 jQuery(this).find('.paid_due_cd').val(bill_due);
+                dueRowBalanceChange(jQuery(this));
                 if(current_pay != 0 ){
                     var str = '<tr class="aa" ref-uniquename="'+uniquename+'"><td class="ab">'+ type_text +' - ' + current_pay +'<input type="hidden" readonly ref-uniquename="'+uniquename+'" ref-paytype="'+pay_type+'" class="row_cash_paid_cd" tabindex="-1" name="duepayAmount[]['+type_payment+']" value="'+current_pay+'"></td><input type="hidden" name="duepayUniquename[]['+type_payment+']" value="'+uniquename+'"/><input type="hidden" name="duePaytype[]['+type_payment+']" value="'+pay_type+'" readonly/><input type="hidden" name="dueId[]['+type_payment+']" value="'+id+'"/><input type="hidden" name="dueYear[]['+type_payment+']" value="'+year+'"/><input type="hidden" name="dueInvid[]['+type_payment+']" value="'+inv_id+'"/><input type="hidden" name="dueDueAmount[]['+type_payment+']" value="'+due_amount+'"/></tr>';
                     jQuery(this).find('.duePaymentType_cd').append(str);    
@@ -308,8 +312,18 @@ function individualBillPaidCalculationCd(){
            
         });  
     }); 
-calPayto();
+  calPayto();
 }
+
+function dueRowBalanceChange(selector = '') {
+  var due_from_screen = parseFloat(jQuery(selector).find('.due_amount_cd').val());
+  var paid_due = parseFloat(jQuery(selector).find('.paid_due_cd').val());
+  var actual_due = due_from_screen-paid_due;
+  jQuery(selector).find('.actual_due').text(actual_due);
+}
+
+
+
 
 function billBalancePaidIndividualCd(selector) {
     var sum = 0;
