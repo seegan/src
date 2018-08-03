@@ -3109,7 +3109,7 @@ function getBillPaymentTotal($bill_id = 0) {
 
 
 
-function checkCustomerBalance($customer_id = 0, $condition = 'full') {
+function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_screen = 'full', $ref_id = 0) {
 
 	if( $condition == 'full' ) {
 		$cond = '';
@@ -3120,6 +3120,8 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 	if( $condition == 'balance' ) {
 		$cond = 'AND full_table.customer_pending < 0';
 	}
+
+
 
 	$query = "SELECT * FROM
 	(
@@ -3140,7 +3142,10 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 	    	( ( CASE WHEN s.sale_total IS NULL THEN 0.00 ELSE s.sale_total END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) )
 	        -
 	        ( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN s.pay_to_bal IS NULL THEN 0.00 ELSE s.pay_to_bal END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) )
-	    ) as customer_pending
+	    ) as customer_pending,
+
+	    ( CASE WHEN (screen.current_screen_paid) IS NULL THEN 0.00 ELSE SUM(screen.current_screen_paid) END ) as current_screen_paid
+	    
 	    FROM
 		wp_sale as s 
 	    
@@ -3152,6 +3157,17 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 		  	FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1 AND p.customer_id = $customer_id GROUP BY p.sale_id
 		) as payment
 		ON s.id = payment.payment_sale_id
+
+		LEFT JOIN 
+		( 
+			SELECT  
+		  	( CASE WHEN (scr.amount) IS NULL THEN 0.00 ELSE SUM(scr.amount) END ) as current_screen_paid,
+		  	scr.sale_id as screen_sale_id
+		  	FROM wp_payment as scr WHERE scr.payment_type != 'credit' AND scr.reference_screen = '$current_screen'  AND reference_id = $ref_id AND scr.active = 1 AND scr.customer_id = $customer_id GROUP BY scr.sale_id
+		) as screen
+		ON s.id = screen.screen_sale_id
+
+
 		LEFT JOIN 
 		(
 		  	SELECT 
@@ -3166,6 +3182,8 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 
 	global $wpdb;
 	$data = $wpdb->get_results($query);
+
+
 	return $data;
 }
 
@@ -3173,7 +3191,11 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full') {
 
 function checkCustomerBalanceAjax() {
 	$customer_id = isset($_POST['id'] ) ? $_POST['id'] : '';
-	$data = checkCustomerBalance($customer_id, 'due');
+	$reference_id = isset($_POST['reference_id'] ) ? $_POST['reference_id'] : 0;
+	$reference_screen = isset($_POST['reference_screen'] ) ? $_POST['reference_screen'] : 'full';
+
+
+	$data = checkCustomerBalance($customer_id, 'due', $reference_screen, $reference_id);
 	echo json_encode($data);
 	die();
 }
