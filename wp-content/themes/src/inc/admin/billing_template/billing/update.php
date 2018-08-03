@@ -705,7 +705,7 @@
                             <div class="div-table-col sale-option">
                             </div>
                         </div> -->
-                        <div class="div-table-row">
+                        <div class="div-table-row" style="display:none">
                             <div class="div-table-col total-block-extra"></div>
                             <div class="div-table-col total-block-extra">
                             </div>

@@ -92,13 +92,13 @@ function populate_select2(this_data = '', v) {
         var preSelect = '';
         if(e.params.data.slab_system == 0){
             jQuery(this).parent().parent().find('.sale_as[value="bag"]').prop("checked", true);
-            jQuery(this).parent().parent().find('.sale_as').attr("disabled", true);
+            jQuery(this).parent().parent().find('.sale_as').attr("readonly", true);
             jQuery(this).parent().parent().find('.bag_display').css('display', 'inline-block');
             jQuery(this).parent().parent().find('.kg_display').css('display', 'none');
             preSelect = 'bag';
         }   else{
             jQuery(this).parent().parent().find('.sale_as[value="kg"]').prop("checked", true);
-            jQuery(this).parent().parent().find('.sale_as').attr("disabled", false);
+            jQuery(this).parent().parent().find('.sale_as').attr("readonly", false);
             jQuery(this).parent().parent().find('.kg_display').css('display', 'inline-block');
             jQuery(this).parent().parent().find('.bag_display').css('display', 'none');
             preSelect = 'kg';

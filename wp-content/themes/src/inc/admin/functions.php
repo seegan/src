@@ -1441,6 +1441,7 @@ function update_bill(){
 			//Combain lot and dummy lot and skip duplicate
 			if($s_value['lot_parent'] && $s_value['type_bill_h'] == 'original') {
 				$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
+
 				$bagWeightInKg 	= $s_value['bagWeightInKg'];
 	
 				if($s_value['lot_slab'] == 1) {
