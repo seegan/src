@@ -232,7 +232,7 @@ function duePaidCusCd(customer = 0){
                     var current_row     = existing_count + 1; 
                     var customer_pending    = parseFloat(b.customer_pending);
                     var current_screen_paid = parseFloat(b.current_screen_paid);
-                    var current_screen_pending = parseFloat(b.current_screen_paid);
+                    var current_screen_pending = current_screen_paid + customer_pending;
 
                     var tab_data = '<tr class="due_data_cd"><td style="padding:5px;">' + b.id + '<input type="hidden" name="due_detail['+current_row+'][due_id]" value="'+b.id+'" style="width:20px;" class="due_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_search_id]" value="'+b.invoice_id+'" style="width:20px;" class="due_search_id_cd"/><input type="hidden" name="due_detail['+current_row+'][due_year]" value="'+b.financial_year+'" style="width:20px;" class="due_year_cd"/><input type="hidden" name="due_detail['+current_row+'][type_payment]" class="type_payment_cd" value="due"/></td><td style="padding:5px;">' + b.current_screen_pending + '<input type="hidden" name="due_detail['+current_row+'][due_amount]" value="'+b.current_screen_pending+'" style="width:20px;" class="due_amount_cd"/></td><td style="padding:5px;"><input type="text" name="due_detail['+current_row+'][paid_due]" class="paid_due_cd" tabindex="-1" value="" readonly style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="paid_due_hidden" class="paid_due_hidden_cd" value="0"/></td><td><table class="duePaymentType_cd"></table></td></tr>';
                     jQuery('#due_tab_cd').append(tab_data);
