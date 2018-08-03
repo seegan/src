@@ -69,6 +69,9 @@
         font-size: 18px;
         font-weight: 900;
     }
+    input[type="radio"][readonly] {
+        pointer-events: none;
+    }
 </style>
 <div class="form-grid">
     <form method="post" name="new_billing" id="new_billing" class="leftLabel" onsubmit="return false;">
@@ -389,7 +392,7 @@
                                     </div>
                                     <div>
                                         <span class="">
-                                            <span class="sale_as_name_kg">Kg  : <input type="radio" name="sale_as" class="sale_as" value="kg" <?php if($b_value->sale_as == 'kg') { echo 'checked'; } ?>></span>
+                                            <span class="sale_as_name_kg">Kg  : <input type="radio" name="sale_as" class="sale_as" value="kg" <?php if($b_value->slab == 0){ echo 'readonly'; } if($b_value->sale_as == 'kg') { echo 'checked'; } ?>></span>
                                             <span class="sale_as_name_bag">Bag :<input type="radio" name="sale_as" class="sale_as" value="bag" <?php if($b_value->sale_as == 'bag') { echo 'checked'; } ?> ></span>
                                         </span>
                                     </div>

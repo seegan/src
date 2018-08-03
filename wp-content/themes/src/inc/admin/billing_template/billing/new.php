@@ -10,7 +10,11 @@
         font-size: 18px;
         font-weight: 900;
     }
+    input[type="radio"][readonly] {
+        pointer-events: none;
+    }
 </style>
+
 <div class="form-grid">
     <form method="post" name="new_billing" id="new_billing" class="leftLabel" onsubmit="return false;">
         <ul>
