@@ -3166,8 +3166,6 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 		  	FROM wp_payment as scr WHERE scr.payment_type != 'credit' AND scr.reference_screen = '$current_screen'  AND reference_id = $ref_id AND scr.active = 1 AND scr.customer_id = $customer_id GROUP BY scr.sale_id
 		) as screen
 		ON s.id = screen.screen_sale_id
-
-
 		LEFT JOIN 
 		(
 		  	SELECT 
@@ -3189,13 +3187,84 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 
 
 
+
+
+function getCurrentScreenBill($customer_id = 0, $current_screen = 'full', $ref_id = 0) {
+
+
+	$query = "SELECT * FROM
+	(
+		SELECT 
+		s.id,
+	    s.customer_id,
+	    s.invoice_id,
+	    s.financial_year,
+
+	    ( CASE WHEN (s.sale_total) IS NULL THEN 0.00 ELSE s.sale_total END ) as sale_total,
+	    ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE payment.total_paid END ) as total_paid,
+	    ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE ret.return_total END ) as return_total,
+		( CASE WHEN (s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) as sale_to_pay,
+	    ( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE ret.return_to_pay END ) as return_to_pay,
+		( ( CASE WHEN s.sale_total IS NULL THEN 0.00 ELSE s.sale_total END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) ) as actual_sale,
+		( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN s.pay_to_bal IS NULL THEN 0.00 ELSE s.pay_to_bal END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) ) as actual_paid,
+	    (
+	    	( ( CASE WHEN s.sale_total IS NULL THEN 0.00 ELSE s.sale_total END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) )
+	        -
+	        ( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN s.pay_to_bal IS NULL THEN 0.00 ELSE s.pay_to_bal END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) )
+	    ) as customer_pending,
+
+	    ( CASE WHEN (screen.current_screen_paid) IS NULL THEN 0.00 ELSE SUM(screen.current_screen_paid) END ) as current_screen_paid
+	    
+	    FROM
+		wp_sale as s 
+	    
+		LEFT JOIN 
+		( 
+			SELECT  
+		  	( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
+		  	p.sale_id as payment_sale_id
+		  	FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1 AND p.customer_id = $customer_id GROUP BY p.sale_id
+		) as payment
+		ON s.id = payment.payment_sale_id
+
+		LEFT JOIN 
+		( 
+			SELECT  
+		  	( CASE WHEN (scr.amount) IS NULL THEN 0.00 ELSE SUM(scr.amount) END ) as current_screen_paid,
+		  	scr.sale_id as screen_sale_id
+		  	FROM wp_payment as scr WHERE scr.payment_type != 'credit' AND scr.reference_screen = '$current_screen'  AND reference_id = $ref_id AND scr.active = 1 AND scr.customer_id = $customer_id GROUP BY scr.sale_id
+		) as screen
+		ON s.id = screen.screen_sale_id
+		LEFT JOIN 
+		(
+		  	SELECT 
+		  	( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
+		  	( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
+		  	r.sale_id as return_sale_id
+		  	FROM wp_return as r WHERE r.active = 1 AND r.customer_id = $customer_id GROUP BY r.sale_id
+		) as ret
+		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
+	) as full_table";
+
+
+	global $wpdb;
+	$data = $wpdb->get_results($query);
+
+
+	return $data;
+}
+
+
+
+
+
 function checkCustomerBalanceAjax() {
 	$customer_id = isset($_POST['id'] ) ? $_POST['id'] : '';
 	$reference_id = isset($_POST['reference_id'] ) ? $_POST['reference_id'] : 0;
 	$reference_screen = isset($_POST['reference_screen'] ) ? $_POST['reference_screen'] : 'full';
 
 
-	$data = checkCustomerBalance($customer_id, 'due', $reference_screen, $reference_id);
+	$data = getCurrentScreenBill($customer_id, $reference_screen, $reference_id);
 	echo json_encode($data);
 	die();
 }
