@@ -115,7 +115,7 @@
 		</div>
 		<div class="form_detail">
 			<label>
-				Selling Price (Rs)
+				MRP
 			</label>
 			<div class="slab">
 				<input type="text" name="basic_price" class="basic_price" autocomplete="off" value="0.00">
@@ -134,7 +134,7 @@
 						    <div class="div-table-head">S.No</div>
 						    <div class="div-table-head">From Weight</div>
 						    <div class="div-table-head">To Weight</div>
-							<div class="div-table-head">Discount Price</div>
+							<div class="div-table-head">Discountant Price</div>
 							<div class="div-table-head">End Price</div>
 						    <div class="div-table-head">Option</div>
 						</div>
@@ -174,7 +174,7 @@
 						    <div class="div-table-head" style="display:none;">To Weight</div>
 						    <div class="div-table-head">Bag Count</div>
 						    <div class="div-table-head">Price/Bag</div>
-						    <div class="div-table-head">Margin Price/Bag</div>
+						    <div class="div-table-head">End Price/Bag</div>
 						</div>
 
 				    	<div data-repeater-item class="repeterin div-table-row">
@@ -208,8 +208,8 @@
 						    <div class="div-table-head">S.No</div>
 						    <div class="div-table-head">From Weight</div>
 						    <div class="div-table-head">To Weight</div>
-							<div class="div-table-head">Discount Price</div>
-							<div class="div-table-head">Margin Price</div>
+							<div class="div-table-head">Discountant Price</div>
+							<div class="div-table-head">End Price</div>
 						    <div class="div-table-head">Option</div>
 						</div>
 
@@ -247,8 +247,8 @@
 						    <div class="div-table-head" style="display:none;">From Weight</div>
 						    <div class="div-table-head" style="display:none;">To Weight</div>
 						    <div class="div-table-head">Bag Count</div>
-						    <div class="div-table-head">Price/Bag</div>
-						    <div class="div-table-head">Margin Price/Bag</div>
+						    <div class="div-table-head">Discountant Price/Bag</div>
+						    <div class="div-table-head">End Price/Bag</div>
 						</div>
 
 				    	<div data-repeater-item class="repeterin div-table-row">
@@ -354,7 +354,6 @@
 
 					<div class="retail_no_slab_dummy" style="display:none;">
 					  	<div class="div-table">
-
 						    <div class="div-table-row">
 							    <div class="div-table-head" style="display:none;">From Weight</div>
 							    <div class="div-table-head" style="display:none;">To Weight</div>
@@ -380,7 +379,6 @@
 							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" autocomplete="off" value="0.00">
 							    </div>
 					        </div>
-
 					    </div>
 					</div>
 

@@ -131,7 +131,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 		</div>
 		<div class="form_detail">
 			<label>
-				Selling Price (Rs)
+				MRP
 			</label>
 			<div class="slab">
 				<input type="text" name="basic_price" class="basic_price" autocomplete="off" value="<?php echo $lot_details['lot_data']->basic_price; ?>">
@@ -150,7 +150,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 						    <div class="div-table-head">S.No</div>
 						    <div class="div-table-head">From Weight</div>
 						    <div class="div-table-head">To Weight</div>
-						    <div class="div-table-head">Discount Price</div>
+						    <div class="div-table-head">Discountant Price</div>
 						    <div class="div-table-head">End Price</div>
 						    <div class="div-table-head">Option</div>
 						</div>
@@ -222,8 +222,8 @@ if( $lot_details['original_retail'] && $original_slab_system == '1' && count($lo
 						    <div class="div-table-head" style="display:none;">From Weight</div>
 						    <div class="div-table-head" style="display:none;">To Weight</div>
 						    <div class="div-table-head">Bag Count</div>
-						    <div class="div-table-head">Price/Bag</div>
-						    <div class="div-table-head">Margin Price/Bag</div>
+						    <div class="div-table-head">Discountant Price/Bag</div>
+						    <div class="div-table-head">End Price/Bag</div>
 						</div>
 
 <?php
@@ -284,8 +284,8 @@ if( $lot_details['original_retail'] && $original_slab_system != '1' && count($lo
 						    <div class="div-table-head">S.No</div>
 						    <div class="div-table-head">From Weight</div>
 						    <div class="div-table-head">To Weight</div>
-						   	<div class="div-table-head">Discount Price</div>
-							<div class="div-table-head">Margin Price</div>
+						   	<div class="div-table-head">Discountant Price</div>
+							<div class="div-table-head">End Price</div>
 						    <div class="div-table-head">Option</div>
 						</div>
 
@@ -354,8 +354,8 @@ if( $lot_details['original_wholesale'] && $original_slab_system == '1' && count(
 						    <div class="div-table-head" style="display:none;">From Weight</div>
 						    <div class="div-table-head" style="display:none;">To Weight</div>
 						    <div class="div-table-head">Bag Count</div>
-						   <div class="div-table-head">Price/Bag</div>
-						    <div class="div-table-head">Margin Price/Bag</div>
+						   <div class="div-table-head">Discountant Price/Bag</div>
+						    <div class="div-table-head">End Price/Bag</div>
 						</div>
 <?php
 if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count($lot_details['original_wholesale'])>0 ) {

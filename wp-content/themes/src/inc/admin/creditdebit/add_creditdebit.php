@@ -61,6 +61,9 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 							
 							
 						</span>
+						<!-- <select name="billing_customer_due" id="billing_customer_due" class="billing_customer_due" data-dvalue="<?php echo ($credit_debit) ? $credit_debit['customer_tab']->customer_id : ''; ?>" data-dtext="<?php echo ($credit_debit) ? $credit_debit['customer_tab']->name : ''; ?>">
+								<option selected value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->customer_id : ''; ?>"> <?php echo ($credit_debit) ? $credit_debit['customer_tab']->name : ''; ?></option>
+							</select>  --> 
 					</div>
 				</li>
 				<li>
@@ -88,6 +91,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
+							<span class="total_due_text"></span>
 							<input type="hidden" id="total_due" name="total_due"  class="form-control col-md-7 col-xs-12 total_due" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->due_amount : 0; ?>"/>
 						</span>
 					</div>
