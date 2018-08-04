@@ -52,22 +52,6 @@ jQuery(document).ready(function(){
     });
 
 
-    jQuery(".customer_type").on('keydown',  function(e) { 
-      var keyCode = e.keyCode || e.which; 
-       if(event.shiftKey && event.keyCode == 9) {  
-         e.preventDefault(); 
-        jQuery('.credit_submit').focus();
-      }
-      else if (keyCode == 9) { 
-        e.preventDefault(); 
-        jQuery('#creditdebit_customer').select();
-      } 
-      else {
-        jQuery('.customer_type').focus();
-      }
-    });
-
-
     jQuery.validator.setDefaults({
       debug: true,
       success: "valid"
@@ -184,7 +168,6 @@ jQuery('.payment_sub_delete_cd').live('click',function(e){
     var uniquename = jQuery(this).parent().parent().find('.payment_amount_cd').data('uniquename');
     deleteDueCashCd(uniquename);  
 });
-
 
 
 

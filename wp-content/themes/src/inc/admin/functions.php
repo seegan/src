@@ -327,6 +327,7 @@ function post_customer_create_popup(){
 	    'mobile1' => esc_attr($params['customer_mobile1']),
 	    'address' => esc_attr($params['customer_address']),
 	    'type' => esc_attr($params['customer_type']),
+	    'gst_number' => esc_attr($params['gst_number']),
 	    'payment_type' => esc_attr($params['payment_type']),
 	    'created_at' => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) )
 	));
@@ -365,6 +366,7 @@ function post_customer_edit_popup(){
 	    'mobile1' => esc_attr($params['customer_mobile1']),
 	    'address' => esc_attr($params['customer_address']),
 	    'type' => esc_attr($params['customer_type']),
+	    'gst_number' => esc_attr($params['gst_number']),
 	    'payment_type' => esc_attr($params['payment_type'])
 	), array( 'id' => $params['customer_id'] ) ) ) {
 		$data['roll_id'] = ( isset($params['roll_id']) && $params['roll_id'] != '') ? $params['roll_id'] : '';
@@ -378,6 +380,7 @@ function post_customer_edit_popup(){
 		$content .= "<td>".$params['customer_mobile1']."</td>";
 		$content .= "<td>".$params['customer_address']."</td>";
 		$content .= "<td>".$params['customer_type']."</td>";
+		$content .= "<td>".$params['gst_number']."</td>";
 		$content .= "<td class='center'>";
 		$content .= "<span><a class='action-icons c-edit customer_edit' title='Edit' data-roll='".$params['roll_id']."' data-id='".$params['customer_id']."'>Edit</a></span>";
 		$content .= "<span><a class='action-icons c-delete user_delete' href='#' title='delete' data-id='".$params['customer_id']."' data-roll='".$params['roll_id']."'>Delete</a>";
@@ -1436,12 +1439,12 @@ function update_bill(){
 		if(isset($s_value['brand_checkbox_input'])) {
 			$brand_display = 1;
 		}
-
+		$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
 		if($s_value['lot_number'])
 		{
 			//Combain lot and dummy lot and skip duplicate
 			if($s_value['lot_parent'] && $s_value['type_bill_h'] == 'original') {
-				$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
+				//$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
 
 				$bagWeightInKg 	= $s_value['bagWeightInKg'];
 	
@@ -3314,3 +3317,16 @@ function addReturn($lot_id = 0, $return_count = 0) {
 }
 
 
+function PhoneNumberDupliaction(){
+	global $wpdb;
+	$customer_table = $wpbb->prefix.'customers';
+	$phone_number   = $_POST['phone_number'];
+	$query = "SELECT phone_number from  $customer_table where phone_number = '$phone_number' and active = 1";
+	$exists = $wpdb->get_row($query);
+	if($exists){
+		return true;
+	}
+ 	else {
+ 		return false;
+ 	}
+}

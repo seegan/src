@@ -1,3 +1,22 @@
+
+<?php
+  $gst_extemted = 0;
+if($bill_data['bill_data']->gst_to == 'cgst'){
+  foreach( $gst_data['gst_data'] as $g_data) {
+    $gst_extemted = $g_data->sale_sgst + $gst_extemted;
+  }
+
+} else if($bill_data['bill_data']->gst_to == 'igst'){
+  foreach( $gst_data['gst_data'] as $g_data) {
+    $gst_extemted = $g_data->sale_igst + $gst_extemted;
+  }
+} else {
+  $gst_extemted  = 0;
+}
+ ?>
+
+
+
 <style type="text/css" >
 
 	
@@ -136,8 +155,8 @@
     <div class="text-center" >CASH BILL</div>
     <table cellspacing='3' cellpadding='3' WIDTH='100%' >
       <tr>
-        <td valign='top' WIDTH='70%'>Inv No : <b><?php echo $bill_data['bill_data']->invoice_id; ?></b></td>
-        <td valign='top' WIDTH='100%'>Date : <?php $timestamp = $bill_fdata->invoice_date; 
+        <td valign='top' WIDTH='65%'>Inv No : <b><?php echo $bill_data['bill_data']->invoice_id; ?></b></td>
+        <td valign='top' WIDTH='100%'>Date : <?php $timestamp = $bill_data['bill_data']->invoice_date; 
         $splitTimeStamp = explode(" ",$timestamp);
         echo $date = $splitTimeStamp[0];?></td>    
       </tr>
@@ -225,21 +244,13 @@
             }
           ?>
               
-				
-        <?php 
-
-        if(isset($gst_data)) {
-          $total_tax=0;
-          foreach( $gst_data as $g_data) {
-            $total_tax = ( $g_data->sale_igst) +$total_tax;
-            $gst_tot = $g_data->sale_igst + $gst_tot;
-          }
-          if($gst_tot == '0.00'){
-            echo "<div class='exempted'><span><b>GST EXEMPTED</span></b></div>";
-          }
-        } 
+				<?php 
+        if($gst_extemted == 0) {
+          echo "<div class='exempted'><span><b>GST EXEMPTED</span></b></div>";
+        }
+        ?>
+       
         
-      ?>
       <?php if($bill_data['bill_data']->gst_to == 'cgst'){ ?>
           <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="font-size:15px;" >
       <thead>

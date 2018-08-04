@@ -1,3 +1,9 @@
+<style type="text/css">
+.gst_num_div{
+	display:none;
+}
+</style>
+
 <div class="form-grid">
 	<form method="post" name="add_customer" id="add_customer" class="popup_form" onsubmit="return false;">
 		<div class="form_detail">
@@ -28,6 +34,11 @@
 				<option value="Wholesale">Wholesale</option>
 				<option value="Bulk">Bulk</option>
 			</select>
+		</div>
+		<div class="form_detail gst_num_div">
+			<label style="width: 115px;">GST Number
+			</label>
+			<input type="text" id="gst_number" name="gst_number"  autocomplete="off" value="">
 		</div>
 		<div class="form_detail">
 			<label>Payment Method</label>

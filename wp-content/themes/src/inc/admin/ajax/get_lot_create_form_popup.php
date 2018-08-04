@@ -22,7 +22,7 @@
 			
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Alternate Name
+			<label style="width: 115px;">Alternate(Display) Name
 			</label>
 			<span>
 				<input type="text" id="brand_name" name="brand_name" autocomplete="off">
@@ -279,14 +279,14 @@
 			<div class="dummy_slot_number" style="margin-top:20px;">
 				<h2 style="text-align:center;">Dummy Lot Data</h2>
 				<div class="form_detail">
-					<label>Dummy Lot Number
+					<label>Dummy Lot (Search)
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
 					<input type="text" id="dummy_slot_number" name="dummy_slot_number" autocomplete="off">
 				</div>
 				<div class="form_detail">
 					<label>
-						Alternate Name
+						Alternate(Display) Name
 					</label>
 					<div class="slab">
 						<input type="text" name="dummy_brand_name" id="dummy_brand_name" autocomplete="off">

@@ -1,3 +1,33 @@
+
+jQuery(document).on('change','#add_customer .customer_type',function(){
+    var type = jQuery(this).val();
+
+    if(type == 'Wholesale'){
+        jQuery('.gst_num_div').css('display','block');
+        // console.log(jQuery('.gst_num_div').css('display','block'));
+        // console.log(type);
+    } else {
+        jQuery('.gst_num_div').css('display','none');
+    }
+    
+});
+
+
+jQuery(document).on('change','#edit_customer .customer_type',function(){
+    var type = jQuery(this).val();
+
+    if(type == 'Wholesale'){
+        jQuery('.gst_num_div').css('display','block');
+        // console.log(jQuery('.gst_num_div').css('display','block'));
+        // console.log(type);
+    } else {
+        jQuery('.gst_num_div').css('display','none');
+    }
+    
+});
+
+
+
 jQuery('a.customer_edit').live('click', function(e) {
     e.preventDefault();
     jQuery('#src_info_box').bPopup({
@@ -18,7 +48,6 @@ jQuery('#edit_customer .submit-button').live('click',function () {
         alert_popup('<span class="error_msg">Enter the mandatory fields!!</span>', 'Alert!');
     }
 });
-
 
 
 

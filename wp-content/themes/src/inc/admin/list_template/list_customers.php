@@ -59,6 +59,7 @@
 				<th>Customer Name</th>
 				<th>Address</th>
 				<th>Customer Type</th>
+				<th>Gst Number</th>
 				<th>Payment Type</th>
 				<th>Purchase Value</th>
 				<th>Total Paid</th>
@@ -81,6 +82,7 @@
 				</td>
 				<td><?php echo $customer_value->address; ?></td>
 				<td><?php echo $customer_value->type; ?></td>
+				<td><?php echo $customer_value->gst_number; ?></td>
 				<td><?php echo ucfirst( $customer_value->payment_type ); ?></td>
 				<td><?php echo $customer_value->sale_total; ?></td>
 				<td><?php echo $customer_value->paid_total; ?></td>

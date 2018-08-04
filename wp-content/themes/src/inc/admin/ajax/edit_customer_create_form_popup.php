@@ -45,6 +45,13 @@
 				<option value="Bulk" <?php echo ($customer && $customer->type == 'Bulk') ? 'selected' : ''; ?>>Bulk</option>
 			</select>
 		</div>
+		<div class="form_detail gst_num_div" <?php if($customer->type == 'Wholesale'){
+			echo 'style=display:block';
+		} else { echo 'style=display:none'; } ?>>
+			<label style="width: 115px;">GST Number
+			</label>
+			<input type="text" id="gst_number" name="gst_number"  autocomplete="off" value="<?php echo $customer->gst_number;?>">
+		</div>
 		<div class="form_detail">
 			<label>Payment Method</label>
 			<div style="margin-top:10px;">

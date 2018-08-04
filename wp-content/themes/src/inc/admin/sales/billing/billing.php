@@ -10,6 +10,9 @@
 				<li>
 					<a href="<?php echo menu_page_url( 'new_bill', 0 ).'&bill_no='.$bill_no.'&action=invoice'; ?>" ><span class="icon-block-color invoice-c"></span>View Invoice</a>
 				</li>
+				<li>
+					<a href="javascript:void(0);" id="my-button" class="popup-add-customer"><span class="icon-block-color add-c"></span>Add New Customer</a>
+				</li>
 			</ul>
 		</div>
 		<div class="widget-top">

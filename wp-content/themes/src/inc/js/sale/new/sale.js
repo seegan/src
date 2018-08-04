@@ -147,7 +147,7 @@ function checkPaymentDue(id = 0) {
           if(b.invoice_id){
               var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" name="prev_pay['+i+'][id]" value="'+b.id+'"/></td><td style="">' + b.pay_to_bal + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+b.pay_to_bal+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
               jQuery('#bill_payment_in_bill').append(str1);  
-              payment_calculation();
+              //payment_calculation();
               i++;
           }
            
@@ -156,7 +156,7 @@ function checkPaymentDue(id = 0) {
     
       } else{
           jQuery('#bill_payment_in_bill').remove();
-          payment_calculation();
+          //payment_calculation();
       }
     }
 
