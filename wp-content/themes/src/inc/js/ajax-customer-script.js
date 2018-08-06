@@ -237,9 +237,52 @@ jQuery('.customer_filter #per_page, .customer_filter #customer_name, .customer_f
     }); 
 });
 
+jQuery(document).on('change','#customer_mobile',function(){
+    jQuery.ajax({
+        type:"POST",
+        url : frontendajax.ajaxurl,
+        dataType : "json",
+        data : {
+            action : 'PhoneNumberDuplication',
+            phone  : jQuery('.customer_mobile').val(),
+        },
+        success : function(data){
+            if(data){
+                alert('Phone number Already Exists!');
+                jQuery('.customer_mobile').val('');
+            }
+        }
+    });
+});
 
 jQuery(document).ready(function(){
     jQuery("#search_from" ).datepicker({dateFormat: "yy-mm-dd"});
     jQuery("#search_to" ).datepicker({dateFormat: "yy-mm-dd"});
 });
 /*End Updated for filter 11/10/16*/
+
+
+
+
+//From Lot Submit button (tab and shif + tab action)
+jQuery(document).on("keydown", "#add_customer .submit-button, #edit_customer .submit-button", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('input[name ="payment_type"]').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('#edit_customer #customer_name, #add_customer #customer_name').focus();
+    }
+  }
+});
+
+//From Lot Number (tab and shif + tab action)
+jQuery(document).on("keydown", "#edit_customer #customer_name, #add_customer #customer_name", function(e) {
+  var keyCode = e.keyCode || e.which; 
+  if(event.shiftKey && event.keyCode == 9) {  
+     e.preventDefault(); 
+    jQuery('#edit_customer .submit-button, #add_customer .submit-button').focus();
+  }
+});

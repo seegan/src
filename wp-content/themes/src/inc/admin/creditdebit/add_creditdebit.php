@@ -127,6 +127,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 									<?php 
 										if($credit_debit) {
 											$i = 1;
+											
 											foreach ($credit_debit['sub_tab'] as $p_value) {
 													if($p_value->payment_type !='credit') { 
 														echo '<tr  class="payment_table_cd" >

@@ -12,6 +12,7 @@ function create_popup(action = '', title = '') {
             jQuery('#popup-content').html(data);
 
             jQuery('.popup_form').find('#lot_number').focus();
+            jQuery('.popup_form').find('.customer_name').focus();
         }
     });
 }
@@ -33,6 +34,7 @@ function edit_popup(action= '', title = '', data = '') {
             jQuery('#popup-content').html(data);
 
             jQuery('.popup_form').find('#lot_number').focus();
+            jQuery('.popup_form').find('.customer_name').focus();
         }
     });
 

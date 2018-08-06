@@ -33,7 +33,7 @@
 	        $page_arg['amount'] = $this->amount;
 	    	$page_arg['date'] = $this->date;
 		    $page_arg['cpage'] = '%#%';
-
+			$data['start_count'] = 1;
 		    $condition = '';
 		    // if($this->type != '-') {
 		    // 	$condition .= " AND type LIKE '".$this->type."%' ";
@@ -54,7 +54,6 @@
 
 		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 		    $data['total']              = $wpdb->get_var( $total_query );
-		    //$page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
 		    $page               = $this->cpage;
 		    $ppage 				= $this->ppage;
 		    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;

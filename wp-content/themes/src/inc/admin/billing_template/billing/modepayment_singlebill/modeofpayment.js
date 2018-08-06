@@ -161,3 +161,63 @@ function paymentOperations(selector = false) {
     }
 
 }
+
+
+jQuery('.prev_bal_check').live('change',function(){
+    jQuery(this).parent().parent().find('.bill_payment').css('display','none');
+    var selector = jQuery(this).parent().parent();
+    if(this.checked){
+        if (confirm("You want to take this amount for next sale???")) {
+                var sale_id = selector.find('.prev_pay_id').val();
+                var pay_to_bal = selector.find('.pay_to_bal').val();
+                jQuery.ajax({
+                    type : 'POST',
+                    dataType : 'json',
+                    url:frontendajax.ajaxurl,
+                    data : {
+                        action      : 'addPaytoIntoBill',
+                        sale_id     : sale_id,
+                        pay_to_bal  : pay_to_bal, 
+                    },
+                    success : function(data){
+                        if(data){
+                            selector.remove();
+                        } else {
+                            console.log('Something went Wrong');
+                        }
+                       
+                       
+                    }
+
+                });
+            }
+
+        else {
+            jQuery(this).attr('checked',false);
+        }
+     }
+});
+
+jQuery(document).on('click','.delivery_need',function(){
+    var delivery  = jQuery('.delivery_need:checked').val();
+    if(delivery == "yes"){
+        jQuery('.delivery_display').css('display','block');
+    }
+    else {
+        jQuery('.delivery_display').css('display','none');
+    }
+
+});
+
+
+function isNumberKeyDelivery(evt){
+
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode( key );
+    var regex = /^[0-9.+, ]+$/;
+    if( !regex.test(key) ) {
+        theEvent.returnValue = false;
+        if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+}

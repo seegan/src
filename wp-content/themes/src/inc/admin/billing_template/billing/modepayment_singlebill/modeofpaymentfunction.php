@@ -304,4 +304,21 @@ as cus_full_detail where cus_full_detail.customer_id = ${customer_id}  GROUP by 
 add_action( 'wp_ajax_customer_balance', 'customer_balance' );
 add_action( 'wp_ajax_nopriv_customer_balance', 'customer_balance' );
 
+function addPaytoIntoBill(){
+	global $wpdb;
+	$sale_table = $wpdb->prefix.'sale';
+	$sale_id   		= $_POST['sale_id'];
+	$pay_to_bal 	= $_POST['pay_to_bal'];
+	$query 			= "UPDATE ${sale_table} set pay_to_bal = pay_to_bal + $pay_to_bal where id = $sale_id and active = 1";
+	$exists 		= $wpdb->query($query);
+	$data = ($exists)? 1 : 0 ;
+ 	echo json_encode($data);
+ 	die();
+}
+
+add_action( 'wp_ajax_addPaytoIntoBill', 'addPaytoIntoBill');
+add_action( 'wp_ajax_nopriv_addPaytoIntoBill', 'addPaytoIntoBill');
+
+
+
 ?>

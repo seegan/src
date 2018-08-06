@@ -17,10 +17,10 @@
 <div class="form-grid">
 	<form method="post" name="edit_customer" id="edit_customer" class="popup_form" onsubmit="return false;">
 		<div class="form_detail">
-			<label>Customer Named
+			<label>Customer Name
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="customer_name" name="customer_name" autocomplete="off" value="<?php echo ($customer) ? $customer->name : ''; ?>">
+			<input type="text" id="customer_name" name="customer_name" class="customer_name" autocomplete="off" value="<?php echo ($customer) ? $customer->name : ''; ?>">
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Customer Mobile

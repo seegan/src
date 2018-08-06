@@ -3,9 +3,10 @@
    global $wpdb;
     $credit_table               = $wpdb->prefix.'creditdebit';
     $credit_table_details       = $wpdb->prefix.'creditdebit_details';
-    $payment_table              = $wpdb->prefix.'payment';   
+    $payment_table              = $wpdb->prefix.'payment';  
+    $start_count = 1; 
 
-    if($_GET['action']=='delete'){
+    if(isset($_GET['action']) && $_GET['action']=='delete'){
         $id = $_GET['delete_id'];
         $data_delete=$wpdb->update( $credit_table ,array( 'active' =>'0' ),array( 'id' => $id ));
         $wpdb->update($credit_table_details, array('active' => 0), array('cd_id' => $id));  

@@ -8,7 +8,7 @@ add_action( 'admin_head', 'hide_update_notice', 1 );
 
 
 function my_footer_shh() {
-/*	remove_filter( 'update_footer', 'core_update_footer' ); 
+	remove_filter( 'update_footer', 'core_update_footer' ); 
 	remove_submenu_page( 'index.php', 'update-core.php' );
 	remove_menu_page( 'jetpack' );                    //Jetpack* 
 	remove_menu_page( 'edit.php' );                   //Posts
@@ -19,7 +19,7 @@ function my_footer_shh() {
 	remove_menu_page( 'plugins.php' );                //Plugins
 	remove_menu_page( 'users.php' );                  //Users
 	remove_menu_page( 'tools.php' );                  //Tools
-	remove_menu_page( 'options-general.php' );        //Settings*/
+	remove_menu_page( 'options-general.php' );        //Settings
 }
 add_action( 'admin_menu', 'my_footer_shh' );
 
@@ -3181,7 +3181,6 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
 	) as full_table WHERE 1 = 1 $cond";
 
-
 	global $wpdb;
 	$data = $wpdb->get_results($query);
 
@@ -3250,7 +3249,6 @@ function getCurrentScreenBill($customer_id = 0, $current_screen = 'full', $ref_i
 		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
 	) as full_table";
 
-
 	global $wpdb;
 	$data = $wpdb->get_results($query);
 
@@ -3277,6 +3275,15 @@ add_action( 'wp_ajax_checkCustomerBalanceAjax', 'checkCustomerBalanceAjax');
 add_action( 'wp_ajax_nopriv_checkCustomerBalanceAjax', 'checkCustomerBalanceAjax');
 
 
+function getCustomerBillBalance() {
+	$customer_id = isset($_POST['customer_id'] ) ? $_POST['customer_id'] : '';
+	$data = checkCustomerBalance($customer_id, 'balance');
+	echo json_encode($data);
+	die();
+}
+
+add_action( 'wp_ajax_getCustomerBillBalance', 'getCustomerBillBalance');
+add_action( 'wp_ajax_nopriv_getCustomerBillBalance', 'getCustomerBillBalance');
 
 
 function lessStock($lot_id = 0, $stock_count = 0) {
@@ -3317,16 +3324,19 @@ function addReturn($lot_id = 0, $return_count = 0) {
 }
 
 
-function PhoneNumberDupliaction(){
+function PhoneNumberDuplication(){
 	global $wpdb;
-	$customer_table = $wpbb->prefix.'customers';
-	$phone_number   = $_POST['phone_number'];
-	$query = "SELECT phone_number from  $customer_table where phone_number = '$phone_number' and active = 1";
-	$exists = $wpdb->get_row($query);
-	if($exists){
-		return true;
-	}
- 	else {
- 		return false;
- 	}
+	$customer_table = $wpdb->prefix.'customers';
+	$phone_number   = $_POST['phone'];
+	$query 			= "SELECT mobile from  $customer_table where mobile = '$phone_number' and active = 1";
+	$exists 		= $wpdb->get_row($query);
+	$data = ($exists)? 1 : 0 ;
+
+ 	echo json_encode($data);
+ 	die();
 }
+
+add_action( 'wp_ajax_PhoneNumberDuplication', 'PhoneNumberDuplication');
+add_action( 'wp_ajax_nopriv_PhoneNumberDuplication', 'PhoneNumberDuplication');
+
+

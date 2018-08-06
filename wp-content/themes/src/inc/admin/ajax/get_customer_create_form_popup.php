@@ -10,13 +10,13 @@
 			<label>Customer Name
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="customer_name" name="customer_name" autocomplete="off">
+			<input type="text" id="customer_name" name="customer_name" class="customer_name" autocomplete="off">
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Customer Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="customer_mobile" name="customer_mobile" pattern="[0-9]*" autocomplete="off">
+			<input type="text" id="customer_mobile" name="customer_mobile" class="customer_mobile" pattern="[0-9]*" autocomplete="off">
 		</div>
 		<div class="form_detail" style="width: 95%;">
 			<label>Customer Address</label>

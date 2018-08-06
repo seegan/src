@@ -12,31 +12,43 @@
     input[type="checkbox"][readonly] {
 	  pointer-events: none;
 	}
-    
+    .payment_div {
+    	width: 50%;
+    	float: left;
+    }
 </style>
 <?php  
-	$bill_pdata = get_paymenttype($bill_data['bill_data']->id);
+	$current_due = 0;
+	$customer_bal = false;
 	if(isset($_GET['action']) && $_GET['action'] == 'update'){	
 		$bill_id = $bill_data['bill_data']->id;
 	} else{
-		$bill_id = $unlocked_val['id'];
-	}
 
-	$current_due = checkBillBalance($bill_id);
-	$cod = 0.00;
-	$pay_to = 0.00;
-	if($current_due > 0 ) {
-		$cod = $current_due;
-		$pay_to = 0.00;
+		$bill_id = $unlocked_val['id'];
+		$bill_data['bill_data'] = false;
 	}
-	if($current_due < 0) {
+	if($bill_data['bill_data']){
+		$bill_pdata = get_paymenttype($bill_data['bill_data']->id);
+		$current_due = checkBillBalance($bill_id);
 		$cod = 0.00;
-		$pay_to = (-1*$current_due);
+		$pay_to = 0.00;
+		if($current_due > 0 ) {
+			$cod = $current_due;
+			$pay_to = 0.00;
+		}
+		if($current_due < 0) {
+			$cod = 0.00;
+			$pay_to = (-1*$current_due);
+		}
+		$customer_bal = checkCustomerBalance($bill_data['customer_data']->id,'balance');	
 	}
+	
 
 
 ?>
- <div class="previous-payment-due">
+
+<div class = "payment_div">
+	<div class="previous-payment-due">
     <div class="billing-structure">
 		<br/>
 		Current bill Due <span class="tot_due_txt"><?php echo $current_due;  ?></span>
@@ -126,33 +138,6 @@
 	</tbody>
 </table>
 
-<br/>
-
-<table class="payment_tab div-table-row">
-	<thead>
-		<th></th>
-		<th></th>
-		<th></th>
-		<th></th>
-	</thead>
-	<tbody class="bill_payment_in_bill" id="bill_payment_in_bill">
-		<?php 
-			if($bill_data['bill_data']) {
-				$i = 1;
-				foreach ($bill_pdata as $p_value) {
-					if($p_value->payment_type == 'credit'){ 
-						echo '<tr  class="payment_cheque" >
-						<td style="padding:5px;">'.ucfirst($p_value->payment_type).' <input type="hidden" value="'.$p_value->payment_type.'" name="pay_cheque" class="pay_cheque"  /> </td>
-						<td style="padding:5px;"><input type="text" value ="'.$p_value->amount.'" name="pay_amount_cheque" class="pay_amount_cheque" readonly style="width: 74px;"/><input type="hidden" name="reference_screen" value="'.$p_value->reference_screen.'" /><input type="hidden" name="reference_id" value="'.$p_value->reference_id.'" /></td>
-						<td style="width: 190px;">'.$p_value->payment_date.'</td>
-						</tr>';
-					}
-					$i++;
-				}	
-			}
-		?>
-	</tbody>
-</table>
 
 <br/>
 <table class="payment_tab div-table-row">
@@ -197,6 +182,66 @@
 <input type="hidden" name="payment_total_without_pre" class="payment_total_without_pre" value="<?php echo ( $bill_data['bill_data']) ? $bill_data['bill_data']->total_pay_without_prec : 0;  ?>"/>
 <br/>
 
+</div>
+ 
+ <div class="payment_div">
+	<table class="payment_tab_current_screen div-table-row" <?php if($customer_bal && isset($bill_data['bill_data'])) { echo 'style="display:block"'; }  else { echo 'style="display:none;"'; }?>>
+		<thead>
+			<th>Invoice Id</th>
+			<th>Amonut</th>
+			<th>Paid</th>
+		</thead>
+		<tbody class="bill_payment_in_bill" id="bill_payment_in_bill">
+			<?php
+				if(isset($bill_data['bill_data']) && $customer_bal){
+					$i=1;
+					foreach ($customer_bal as $pay_to_bal) {
+						if($pay_to_bal->id !=$bill_id){
+							$customer_pending = (-1 * $pay_to_bal->customer_pending);
+							echo '<tr class="bill_payment">
+							<td>'.$pay_to_bal->invoice_id.'<input type="hidden" name="prev_pay['.$i.'][id]" value="'.$pay_to_bal->id.'" class="prev_pay_id"></td>
+							<td style="">'.$customer_pending.'<input type="hidden" name="prev_pay['.$i.'][pay_to_bal]" value="'.$customer_pending.'" style="" class="pay_to_bal"></td>
+							<td style=""><input type="checkbox" name="prev_pay['.$i.'][prev_bal_check]" class="prev_bal_check"></td>
+							</tr>';
+							$i++;
+						}
+						
+					}
+				}
+			
+			 ?>
+		</tbody>
+	</table>
+	<br/>
+	<br/>
+	<div>
+		Delivery: 
+		<div>
+			<?php if(isset($_GET['update'])) { 
+				
+				$is_delivery = $bill_fdata->is_delivery;
+				 ?>
+				<input type="radio" name="delivery_need" value="no"  class="delivery_need" <?php if($is_delivery == '0'){ echo 'checked'; } ?>/> No
+				<input type="radio" name="delivery_need" value="yes"  class="delivery_need" <?php if($is_delivery == '1'){ echo 'checked'; } ?> /> Yes
+				<div class="delivery_display" style="display:none;">
+					
+					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" value="<?php echo $bill_fdata->home_delivery_name; ?>" autocomplete="off"/>
+					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" value="<?php echo $bill_fdata->home_delivery_mobile; ?>"  autocomplete="off"/>
+					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"><?php echo $bill_fdata->home_delivery_address; ?></textarea>	
+				</div>
+			<?php } else { ?>
+
+				<input type="radio" name="delivery_need" value="no" class="delivery_need" checked /> No
+				<input type="radio" name="delivery_need" value="yes" class="delivery_need" /> Yes
+				<div class="delivery_display" style="display:none;">
+					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" /><br>
+					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" onkeypress="return isNumberKeyDelivery(event)"/><br>
+					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"></textarea><br>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
 
 
 

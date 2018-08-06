@@ -113,25 +113,29 @@ function formatCustomerNameResult(data) {
 
 function checkPaymentDue(id = 0) {
   customerBalance(id);
+if(jQuery('#bill_payment_in_bill').length > 0){
+  jQuery('#bill_payment_in_bill').remove();
+}
+   var sale_id = jQuery('#billing_no').val();
   jQuery.ajax({
     type: "POST",
     dataType: "json",
     url: frontendajax.ajaxurl,
     data: {
-      action      : 'check_balance_ajax',
+      action      : 'getCustomerBillBalance',
       customer_id  : id,
     },
-    success: function (data) 
-    { 
-      if(data.success) 
+    success: function (data) { 
+    
+      if(data) 
       {
-        var data = data;
+        jQuery('.payment_tab_current_screen').css('display','block');
         var i = 1;
         jQuery.each( data, function(a,b) {
-          if(b.invoice_id){
-              var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" name="prev_pay['+i+'][id]" value="'+b.id+'"/></td><td style="">' + b.pay_to_bal + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+b.pay_to_bal+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
+          if(b.invoice_id && b.id != sale_id){
+              var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" name="prev_pay['+i+'][id]" value="'+b.id+'" class="prev_pay_id"/></td><td style="">' + Math.abs(b.customer_pending) + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+ Math.abs(b.customer_pending)+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
               jQuery('#bill_payment_in_bill').append(str1);  
-//              payment_calculation();
+              //payment_calculation();
               i++;
           }
            
@@ -140,9 +144,10 @@ function checkPaymentDue(id = 0) {
     
       } else{
           jQuery('#bill_payment_in_bill').remove();
-        //  payment_calculation();
+          jQuery('.payment_tab_current_screen').css('display','none');
       }
     }
+
   });
 
 }
