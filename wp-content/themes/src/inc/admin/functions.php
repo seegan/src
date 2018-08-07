@@ -1394,22 +1394,23 @@ function update_bill(){
 	parse_str($_POST['bill_data'], $params);
 
 	global $wpdb;
-	$lots_table = $wpdb->prefix. 'lots';
-	$stock_table = $wpdb->prefix. 'stock';
-	$sales_table = $wpdb->prefix. 'sale';
+	$lots_table 		= $wpdb->prefix. 'lots';
+	$stock_table 		= $wpdb->prefix. 'stock';
+	$sales_table 		= $wpdb->prefix. 'sale';
+	$delivery_table 	= $wpdb->prefix. 'delivery_address';
 
 //	$payment_history = $wpdb->prefix. 'payment_history';
 	$installment_table = $wpdb->prefix. 'payment_installment';
 	$lots_sale_detail_table = $wpdb->prefix. 'sale_detail';
 
 	$stock_not_avail = array();
+	
 
 	$billing_date 	= $params['billing_date'];
 	$billing_no 	= $params['billing_no'];
-
 	$shop_name 		= $params['shop_name'];
 	$gst_type 		= $params['gst_type'];
-	$home_delivery 	= $params['home_delivery'];
+	$home_delivery 	= $params['delivery_need'];
 
 	if($params['bill_by_name'] == 'no') {
 		$billing_customer = 0;
@@ -1500,6 +1501,9 @@ function update_bill(){
 			    'sale_total' => $final_total,
 			    'invoice_date' => $billing_date,
 			    'delivery_avail' => $home_delivery,
+			    'delivery_name' => $params['delivery_name'],
+			    'delivery_phone' => $params['delivery_phone'],
+			    'delivery_address' => $params['delivery_address'],
 			    'gst_to' => $gst_type,
 			    'payment_done' => $payment_done,
 			    'last_update_by' => get_current_user_id(),
@@ -1532,6 +1536,18 @@ function update_bill(){
 					lessSale($lot_id, $sale_weight);
 				}
 			}
+		}
+
+
+		//Delivery address add
+		if($home_delivery == 1){
+			$delivery_address = array(
+				'customer_id'		=> $billing_customer,
+				'delivery_name' 	=> $params['delivery_name'],
+				'delivery_phone' 	=> $params['delivery_phone'],
+				'delivery_address' 	=> $params['delivery_address'],
+				);
+			$wpdb->insert($delivery_table,$delivery_address);
 		}
 
 
@@ -1596,13 +1612,14 @@ function update_bill_last(){
 	$lots_sale_detail_table = $wpdb->prefix. 'sale_detail';
 	$payment_history 		= $wpdb->prefix. 'payment_history';
 	$installment_table 		= $wpdb->prefix. 'payment_installment';
+	$delivery_table 		= $wpdb->prefix. 'delivery_address';
 	$stock_not_avail 		= array();
 
 	$billing_date 			= $params['billing_date'];
 	$billing_no 			= $params['billing_no'];
 	$shop_name 				= $params['shop_name'];
-	$gst_type = $params['gst_type'];
-	$home_delivery = $params['home_delivery'];
+	$gst_type 				= $params['gst_type'];
+	$home_delivery 			= $params['delivery_need'];
 
 	if($params['bill_by_name'] == 'no') {
 		$billing_customer = 0;
@@ -1732,6 +1749,9 @@ function update_bill_last(){
 			    'sale_total' => $final_total,
 			    'invoice_date' => $billing_date,
 			    'delivery_avail' => $home_delivery,
+			    'delivery_name' => $params['delivery_name'],
+			    'delivery_phone' => $params['delivery_phone'],
+			    'delivery_address' => $params['delivery_address'],
 			    'gst_to' => $gst_type,
 			    'payment_done' => $payment_done,
 			    'last_update_by' => get_current_user_id(),
@@ -1755,6 +1775,23 @@ function update_bill_last(){
 		$codCheck = isset($params['cod_check'])? 1 : 0;
 		$paymentCheck = isset($params['to_pay_checkbox'])? 1 : 0;
 		AddOtherPayments($codCheck, $params['cod_amount'],$paymentCheck,$params['to_pay'],$params['balance'],$billing_no);
+
+
+
+		//Delivery address add
+		if($params['delivery_need'] == '1'){
+			$delivery_address = array(
+				'customer_id'		=> $billing_customer,
+				'delivery_name' 	=> $params['delivery_name'],
+				'delivery_phone' 	=> $params['delivery_phone'],
+				'delivery_address' 	=> $params['delivery_address'],
+				);
+			$wpdb->insert($delivery_table,$delivery_address);
+		}
+
+
+
+
 
 
 		$previous_data_query = "SELECT * FROM ${lots_sale_detail_table} WHERE sale_id = $billing_no AND active = 1";
@@ -3276,8 +3313,13 @@ add_action( 'wp_ajax_nopriv_checkCustomerBalanceAjax', 'checkCustomerBalanceAjax
 
 
 function getCustomerBillBalance() {
+	$data['success'] = 0;
 	$customer_id = isset($_POST['customer_id'] ) ? $_POST['customer_id'] : '';
-	$data = checkCustomerBalance($customer_id, 'balance');
+	$data['result'] = checkCustomerBalance($customer_id, 'balance');
+
+	if($data['result'] && count($data['result']) > 0){
+		$data['success'] = 1;
+	} 
 	echo json_encode($data);
 	die();
 }
@@ -3338,5 +3380,4 @@ function PhoneNumberDuplication(){
 
 add_action( 'wp_ajax_PhoneNumberDuplication', 'PhoneNumberDuplication');
 add_action( 'wp_ajax_nopriv_PhoneNumberDuplication', 'PhoneNumberDuplication');
-
 

@@ -32,7 +32,7 @@ jQuery(document).ready(function(){
   }).on("select2:select", function (e) {
     jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
     checkPaymentDue(e.params.data.id);
-    
+    generateDeliveryAddress(e.params.data.id);
 
   });
 
@@ -141,21 +141,19 @@ function checkPaymentDue(id = 0) {
     },
     success: function (data) { 
     
-      if(data) 
+      if(data.success == 1) 
       {
         jQuery('.payment_tab_current_screen').css('display','block');
         var i = 1;
-        jQuery.each( data, function(a,b) {
-          if(b.invoice_id && b.id !=sale_id){
+        jQuery.each( data.result, function(a,b) {
+          if(b.invoice_id && b.id != sale_id){
               var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" name="prev_pay['+i+'][id]" value="'+b.id+'" class="prev_pay_id"/></td><td style="">' + Math.abs(b.customer_pending) + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+ Math.abs(b.customer_pending)+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
               jQuery('#bill_payment_in_bill').append(str1);  
               //payment_calculation();
               i++;
           }
            
-      });
-
-    
+        });
       } else{
           jQuery('#bill_payment_in_bill').remove();
           jQuery('.payment_tab_current_screen').css('display','none');

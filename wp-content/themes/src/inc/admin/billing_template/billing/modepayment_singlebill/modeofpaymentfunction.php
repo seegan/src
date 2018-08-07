@@ -319,6 +319,23 @@ function addPaytoIntoBill(){
 add_action( 'wp_ajax_addPaytoIntoBill', 'addPaytoIntoBill');
 add_action( 'wp_ajax_nopriv_addPaytoIntoBill', 'addPaytoIntoBill');
 
+function getCustomerAddress(){
+	global $wpdb;
+
+	$customer_table = $wpdb->prefix.'customers';
+	$customer_id = $_POST['customer_id'];
+	$query 	= "SELECT * from $customer_table where id = $customer_id and active = 1";
+	if($data['results'] = $wpdb->get_row($query)){
+		$data['success'] = 1;
+	}  else{
+		$data['success'] = 0;
+	}
+	echo json_encode($data);
+	die();
+}
+
+add_action( 'wp_ajax_getCustomerAddress', 'getCustomerAddress');
+add_action( 'wp_ajax_nopriv_getCustomerAddress', 'getCustomerAddress');
 
 
 ?>

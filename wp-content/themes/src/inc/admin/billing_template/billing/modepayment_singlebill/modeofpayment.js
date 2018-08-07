@@ -200,7 +200,7 @@ jQuery('.prev_bal_check').live('change',function(){
 
 jQuery(document).on('click','.delivery_need',function(){
     var delivery  = jQuery('.delivery_need:checked').val();
-    if(delivery == "yes"){
+    if(delivery == 1){
         jQuery('.delivery_display').css('display','block');
     }
     else {
@@ -220,4 +220,23 @@ function isNumberKeyDelivery(evt){
         theEvent.returnValue = false;
         if(theEvent.preventDefault) theEvent.preventDefault();
     }
+}
+function generateDeliveryAddress(customer_id = 0){
+    jQuery.ajax({
+        type:"POST",
+        dataType : 'json',
+        url : frontendajax.ajaxurl,
+        data :{
+            action      : 'getCustomerAddress',
+            customer_id : customer_id,
+        },
+        success : function(data){
+            if(data.success){
+                jQuery('.delivery_name').val(data.results.name);
+                jQuery('.delivery_phone').val(data.results.mobile);
+                jQuery('.delivery_address').val(data.results.address);
+
+            } 
+        }
+    });
 }

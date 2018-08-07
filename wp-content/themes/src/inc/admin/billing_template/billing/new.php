@@ -63,18 +63,7 @@
                     </span>
                 </div>
             </li>
-            <li>
-                <legend class="choiceFld">Home Delivery</legend>
-                <div class="fieldwrap input-uniform">
-                    <span>
-                        <input type="radio" name="home_delivery" value="0" checked><label class="choice">No</label>
-                    </span>
-                    &nbsp;&nbsp;                                   
-                     <span>
-                        <input type="radio" name="home_delivery" value="1"><label class="choice">Yes</label>
-                    </span>
-                </div>
-            </li>
+            
             <li>
                 <legend class="choiceFld">Bill By Name</legend>
                 <div class="fieldwrap input-uniform">
@@ -263,13 +252,13 @@
                                     </div>
 
                                     <div class="weight_cal_tooltip">
-                                      <div class="tooltip tootip-black" data-stockalert="1">
-                                        <span class="tooltiptext">
-                                            Slab System : <span class="slab_sys_txt">--</span>
-                                            <hr class="tooltip-hr">
-                                            Stock Avail : <span class="stock_weight_txt">--</span> kg
-                                        </span>
-                                      </div>
+                                        <div class="tooltip tootip-black" data-stockalert="1">
+                                            <span class="tooltiptext">
+                                                Slab System : <span class="slab_sys_txt">--</span>
+                                                <hr class="tooltip-hr">
+                                                Stock Avail : <span class="stock_weight_txt">--</span> kg
+                                            </span>
+                                        </div>
                                     </div>
                                     <div>
                                         <span class="">

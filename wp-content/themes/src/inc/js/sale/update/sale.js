@@ -35,6 +35,7 @@ jQuery(document).ready(function(){
   }).on("select2:select", function (e) {
     jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
     checkPaymentDue(e.params.data.id);
+    generateDeliveryAddress(e.params.data.id);
 
 
   });
@@ -113,10 +114,7 @@ function formatCustomerNameResult(data) {
 
 function checkPaymentDue(id = 0) {
   customerBalance(id);
-if(jQuery('#bill_payment_in_bill').length > 0){
-  jQuery('#bill_payment_in_bill').remove();
-}
-   var sale_id = jQuery('#billing_no').val();
+  var sale_id = jQuery('#billing_no').val();
   jQuery.ajax({
     type: "POST",
     dataType: "json",
@@ -127,14 +125,14 @@ if(jQuery('#bill_payment_in_bill').length > 0){
     },
     success: function (data) { 
     
-      if(data) 
+      if(data.success) 
       {
         jQuery('.payment_tab_current_screen').css('display','block');
         var i = 1;
-        jQuery.each( data, function(a,b) {
+        jQuery.each( data.result, function(a,b) {
           if(b.invoice_id && b.id != sale_id){
               var str1            = '<tr class="bill_payment"><td>'+b.invoice_id+'<input type="hidden" name="prev_pay['+i+'][id]" value="'+b.id+'" class="prev_pay_id"/></td><td style="">' + Math.abs(b.customer_pending) + '<input type="hidden" name="prev_pay['+i+'][pay_to_bal]" value="'+ Math.abs(b.customer_pending)+'" style="" class="pay_to_bal"/></td><td style=""><input type="checkbox" name="prev_pay['+i+'][prev_bal_check]" class="prev_bal_check" /></tr>';
-              jQuery('#bill_payment_in_bill').append(str1);  
+              jQuery('#bill_payment_in_bill').append(str1); 
               //payment_calculation();
               i++;
           }
