@@ -10,9 +10,6 @@
         font-size: 18px;
         font-weight: 900;
     }
-    input[type="radio"][readonly] {
-        pointer-events: none;
-    }
 </style>
 
 <div class="form-grid">
@@ -290,7 +287,7 @@
                                     <div class="product_name_data" style="display: inline-block;"></div>
                                     (<div class="brand_name_data" style="display: inline-block;"></div>)
                                     <div class="brand_checkbox" style="width: 20px;position: absolute;right: 0;top: 25%;">
-                                        <input type="checkbox" name="brand_checkbox_input" class="brand_checkbox_input" value="1" checked>
+                                        <input type="checkbox" name="brand_checkbox_input" class="brand_checkbox_input" value="1" checked style="display:none;">
                                     </div>
                                 </div>
                                 <div class="div-table-col unit-price-orig">
@@ -302,6 +299,7 @@
                                 <div class="div-table-col sale-unit-price">
                                   <div class="sale_unit_price">
                                     <input type="text" name="unit_price_original" class="unit_price" value="0">
+                                    <input type="hidden" name="unit_price_for_calc" class="unit_price_for_calc" value="0">
                                     <input type="text" name="unit_price_duplicate" class="unit_price_input" value="0">
                                   </div>
                                 </div>

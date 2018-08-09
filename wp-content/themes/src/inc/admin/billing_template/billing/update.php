@@ -416,7 +416,7 @@
                                     <div class="product_name_data" style="display: inline-block;"><?php echo $b_value->product_name; ?></div>
                                     (<div class="brand_name_data" style="display: inline-block;"><?php echo $b_value->brand_name; ?></div>)
                                     <div class="brand_checkbox" style="width: 20px;position: absolute;right: 0;top: 25%;">
-                                        <input type="checkbox" name="brand_checkbox_input" class="brand_checkbox_input" value="<?php echo $b_value->brand_display; ?>" <?php echo ($b_value->brand_display == 1) ? 'checked' : ''; ?>>
+                                        <input type="checkbox" name="brand_checkbox_input" class="brand_checkbox_input" style="display:none;" value="<?php echo $b_value->brand_display; ?>" <?php echo ($b_value->brand_display == 1) ? 'checked' : ''; ?>>
                                     </div>
                                 </div>
                                 <div class="div-table-col unit-price-orig">
@@ -428,10 +428,11 @@
                                 <div class="div-table-col sale-unit-price">
                                   <div class="sale_unit_price">
                                     <input type="text" name="unit_price_original" class="unit_price" value="<?php echo $b_value->unit_price; ?>">
+                                    <input type="hidden" name="unit_price_for_calc" class="unit_price_for_calc" value="<?php echo $b_value->unit_price; ?>">
                                     <input type="text" name="unit_price_duplicate" class="unit_price_input" value="<?php echo $b_value->unit_price; ?>">
                                   </div>
                                 </div>
-                                 <div class="div-table-col sale-margin-price">
+                                <div class="div-table-col sale-margin-price">
                                   <div class="sale_margin_price_div">
                                     <?php echo $b_value->margin_price; ?>
                                   </div>

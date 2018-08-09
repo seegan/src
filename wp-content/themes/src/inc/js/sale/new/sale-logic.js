@@ -194,7 +194,7 @@ jQuery('.unit_price, .unit_price_input').live('change', function(){
   var selector = jQuery(this).parent().parent().parent();
 //Compare with margin price
   var unit_price = isNaN(parseFloat(jQuery(this).val())) ? 0 : parseFloat(jQuery(this).val());
-
+  var unit_price_display  = isNaN(parseFloat(jQuery(this).parent().parent().parent().find('.unit_price_for_calc').val())) ? 0 : parseFloat(jQuery(this).parent().parent().parent().find('.unit_price_for_calc').val());
   var margin_price = isNaN(parseFloat(jQuery(this).parent().parent().parent().find('.margin_price').val())) ? 0 : parseFloat(jQuery(this).parent().parent().parent().find('.margin_price').val());
 
 
@@ -210,7 +210,7 @@ jQuery('.unit_price, .unit_price_input').live('change', function(){
 
   if(unit_price < margin_price){
     alert("Discountant Price dose not less than Margin Price!!!");
-    jQuery(this).val(margin_price);
+    jQuery(this).val(unit_price_display);
   }
   calculateGST(selector);
 });
@@ -354,6 +354,7 @@ function triggerTotalCalculate(selector) {
           var obj = jQuery.parseJSON(data);
           if(obj.success == 1) {
             jQuery(selector).find('.sale_unit_price .unit_price').val(obj.price_detail.price);
+            jQuery(selector).find('.sale_unit_price .unit_price_for_calc').val(obj.price_detail.price);
             jQuery(selector).find('.sale_margin_price_div_hidden .margin_price').val(obj.price_detail.margin_price);
             jQuery(selector).find('.sale_margin_price_div').text(obj.price_detail.margin_price);
             calculateGST(selector);
