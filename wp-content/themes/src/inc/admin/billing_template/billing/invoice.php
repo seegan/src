@@ -118,6 +118,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 				<table class=display>
 					<thead>
 						<tr>
+							
 							<th  class="first-col">Lot number</th>
 							<th>Product Name</th>
 							<th>Hsn Code</th>
@@ -151,6 +152,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 
 					?>
 						<tr>
+							
 							<td class="row">
 							<?php 
 									//echo '<div class="row-no">'.$i.'</div>';

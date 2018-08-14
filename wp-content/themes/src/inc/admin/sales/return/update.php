@@ -15,8 +15,8 @@
     </div>
     <div class="widget-top" style="">
         <h4>Update Return</h4>
-        <div><?php echo 'Return ID : '.$return_id; ?></div>
-        <div><?php echo 'Invoice ID : '.$return_data['return_data']->sale_id; ?></div>
+        <div style="font-size: 21px;"><?php echo 'Return ID : '.$return_id; ?></div>
+        <div style="font-size: 21px;"><?php echo 'Invoice ID : '.$return_data['return_data']->sale_id; ?></div>
     </div>
 
 
