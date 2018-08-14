@@ -10,6 +10,9 @@
         font-size: 18px;
         font-weight: 900;
     }
+    input[type="radio"][readonly] {
+        pointer-events: none;
+    }
 </style>
 
 <div class="form-grid">
