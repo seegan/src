@@ -171,8 +171,8 @@
 
       <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="border-bottom: 1px dashed #000;">
        <tr> 
-         <td class="dotted_border_top " colspan="6" valign='top' align='center'><b>BILL AMOUNT</b></td>
-         <td  class="dotted_border_top " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$bill_data['bill_data']->sale_total.'</b>'; ?>&nbsp;&nbsp;&nbsp;</span></td>
+         <td class="dotted_border_top " colspan="6" valign='top' align='center'><b>TOTAL RETURN</b></td>
+         <td  class="dotted_border_top " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$return_data['return_data']->total_amount.'</b>'; ?>&nbsp;&nbsp;&nbsp;</span></td>
       </tr>
     </table>
 

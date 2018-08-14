@@ -62,7 +62,7 @@ jQuery(document).ready(function(){
       var gst_percentage = jQuery(selector).find('.gst_percentage').val();
 
       var return_price = return_weight*price_per_kg;
-
+console.log(return_price);
       var cgst_per = (parseFloat(gst_percentage) / 2).toFixed(2);
       var igst_per = parseFloat(gst_percentage).toFixed(2);
 

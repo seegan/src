@@ -150,7 +150,8 @@
 		<thead>
 			<tr>
 				<th>Bill No</th>
-				<th>Year</th>
+                <th>Year</th>
+				<th>Return Id</th>
 				<th>Delivery Date</th>
 				<th>Customer</th>
 				<th>Bill type</th>
@@ -167,7 +168,8 @@
 					$start_count++;
 		?>
 			<tr id="return-data-<?php echo $b_value->return_id; ?>">
-				<td><?php echo $b_value->invoice_id; ?></td>
+                <td><?php echo $b_value->invoice_id; ?></td>
+				<td><?php echo $b_value->return_id; ?></td>
 				<td><?php echo $b_value->financial_year; ?></td>
 				<td><?php echo $b_value->return_date; ?></td>
 				<td>

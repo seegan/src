@@ -148,9 +148,9 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 					?>
 						<tr>
 							<td colspan="2">
-								<label>Bill Amount &nbsp;(Rs)</label>
+								<label>Total Return &nbsp;(Rs)</label>
 							</td>
-							<td><?php echo $bill_data['bill_data']->sale_total; ?></td>
+							<td><?php echo $return_data['return_data']->total_amount; ?></td>
 						</tr>
 					</tbody>
 				</table>

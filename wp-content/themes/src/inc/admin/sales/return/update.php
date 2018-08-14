@@ -1,38 +1,22 @@
 <?php
     $return_id = (isset($_GET['return_id'])) ? $_GET['return_id'] : 0;
     $return_data = (isset($_GET['return_id'])) ? get_return_data($_GET['return_id']) : false;
-var_dump($return_data);
+
 ?>
     <div style="width: 100%;">
         <ul class="icons-labeled">
             <li>
                 <a href="<?php echo menu_page_url( 'bill_return', 0 ).'&return_id='.$return_id.'&action=view'; ?>" ><span class="icon-block-color coins-c"></span>View Return</a>
             </li>
-            <li>
-                <a href="<?php echo menu_page_url( 'new_bill', 0 ).'&bill_no='.$bill_no.'&action=invoice'; ?>" ><span class="icon-block-color invoice-c"></span>Print Return</a>
-            </li>
+            <!-- <li>
+                <a href="<?php //echo menu_page_url( 'bill_return', 0 ).'&return_id='.$bill_no.'&action=invoice'; ?>" ><span class="icon-block-color invoice-c"></span>Print Return</a>
+            </li> -->
         </ul>
     </div>
-    <div class="widget-top" style="height: 78px;">
+    <div class="widget-top" style="">
         <h4>Update Return</h4>
-        <div>
-            <form action="" method="GET">
-                <input type="hidden" name="page" value="bill_return">
-                <select name="financial_year">
-                    <?php 
-                        for ($i = 2010; $i < 2051; $i++) { 
-                            if($financial_year == $i) {
-                                echo "<option selected>".$i."</option>";
-                            } else {
-                                echo "<option >".$i."</option>";
-                            }
-                        }
-                    ?>
-                </select>
-                <input type="text" name="inv_no" value="<?php echo $invoice_id; ?>">
-                <input type="submit" value="Submit">
-            </form>
-        </div>
+        <div><?php echo 'Return ID : '.$return_id; ?></div>
+        <div><?php echo 'Invoice ID : '.$return_data['return_data']->sale_id; ?></div>
     </div>
 
 
@@ -45,11 +29,11 @@ var_dump($return_data);
         </div>
 
 
-        <input type="hidden" name="gst_from" value="<?php echo $gst_from; ?>" class="gst_from">
+        <input type="hidden" name="gst_from" value="<?php echo $gst_from = $return_data['return_data']->gst_from; ?>" class="gst_from">
         <input type="hidden" name="customer_id" value="<?php echo $return_data['return_data']->sale_id; ?>">
         <input type="hidden" name="sale_id" value="<?php echo $return_data['return_data']->sale_id; ?>">
         <input type="hidden" name="return_id" value="<?php echo $return_id; ?>">
-        <table class="display">
+        <table class="display return_table">
             <thead>
                 <tr>
                     <th rowspan="2">S.No</th>
@@ -95,8 +79,16 @@ var_dump($return_data);
                     if($return_data && is_array($return_data['return_detail']) && count($return_data['return_detail']) > 0) {
                         $row_count = 1;
                         foreach ($return_data['return_detail'] as $s_value) {
+                            if($gst_from == 'cgst') {
+                                $gst_percentage = ($s_value->cgst * 2);
+                            } else if($gst_from == 'igst') {
+                                $gst_percentage = $s_value->igst;
+                            } else {
+                                $gst_percentage = 0;
+                            }
                 ?>
                     <tr>
+                        <td><?php echo $row_count; ?></td>
                         <td><?php echo $s_value->lot_number; ?></td>
                         <td>
                             <div>
@@ -110,18 +102,19 @@ var_dump($return_data);
                                     ?>
                                 </div>
                                 <div style="float:left;width:150px;">
-                                    <input type="text" value="<?php echo $s_value->return_weight; ?>" name="return_data[<?php echo $row_count; ?>][return_weight]">
+                                    <input type="text" value="<?php echo $s_value->return_weight; ?>"  class="return_weight" name="return_data[<?php echo $row_count; ?>][return_weight]">
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->sale_detail_id; ?>">
+                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][gst_percentage]" value="<?php echo $gst_percentage; ?>" class="gst_percentage">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][return_detail_id]" value="<?php echo $s_value->id ?>">
                                 </div>
                                 <div style="clear:both;" class="">
                                 </div>
                             </div>
                         </td>
-                         <td><?php echo $amt_per_kg; ?></td>
+                         <td><?php echo $s_value->amt_per_kg; ?><input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" class="amt_per_kg" value="<?php echo $s_value->amt_per_kg; ?>"></td>
                         <td>
-                            <div class="taxless_amt_txt">0.00</div>
+                            <div class="taxless_amt_txt"><?php echo $s_value->taxless_amount; ?></div>
                             <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="<?php echo $s_value->taxless_amount; ?>">
                         </td>
 
@@ -174,14 +167,14 @@ var_dump($return_data);
                     }
                 ?>
                  <tr>
-                    <td colspan="13"><div class="text-right">Total Return</div></td>
+                    <td colspan="9"><div class="text-right">Total Return</div></td>
                     <td>
                         <div class="total_return_txt"><?php echo $return_data['return_data']->total_amount; ?></div>
                         <input type="hidden" name="total_return" value="<?php echo $return_data['return_data']->total_amount; ?>" class="total_return">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="13"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="#return_to_check" class="return_to_check"/></td></div>
+                    <td colspan="9"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check"/></td></div>
                     <td>
                         <input type="hidden" class="previous_pay_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>">
                         <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) ?></div>

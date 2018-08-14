@@ -16,6 +16,7 @@ function sale_return($value='')
 		'customer_id' => $params['customer_id'],
 		'total_amount' => $params['total_return'],
 		'key_amount' => $pay_to_bal,
+		'gst_from'   => $params['gst_from'],
 		'return_date' => $return_date,
 		);
 	$wpdb->insert($return_table,$return_data);
@@ -100,12 +101,13 @@ function sale_return_update($value='')
 		'sale_id' => $sale_id, 
 		'customer_id' => $params['customer_id'],
 		'total_amount' => $params['total_return'],
-		'key_amount' => 'key_amount' + $pay_to_bal,
+		'gst_from'   => $params['gst_from'],
 		'return_date' => $return_date,
 		);
 
 	$wpdb->update($return_table, $return_data, array('id' => $return_id));
-
+	$sql_update = "UPDATE $return_table set key_amount = key_amount + $pay_to_bal WHERE id = $return_id";
+	$wpdb->query($sql_update);
 	
 	if(isset($params['return_data']) && $params['return_data']) {
 		foreach ($params['return_data'] as $return) {
