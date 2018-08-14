@@ -45,7 +45,7 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
       <input type="text" id="weight" autocomplete="off" value="" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
 		</div>
     <div class="form_detail">
-      <label style="width: 115px;">Kg / Bag
+      <label style="width: 115px;">Kg
         <abbr class="require" title="Required Field">*</abbr>
       </label>
       <input type="text" id="count" name="stock_count" required autocomplete="off" value="" style="color: #000;">

@@ -36,7 +36,7 @@ $stock_details = get_stock_data_by_id($stock_id);
       <input type="text" id="weight" autocomplete="off" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['total_weight']; ?>">
 		</div>
     <div class="form_detail">
-      <label style="width: 115px;">Kg / Bag
+      <label style="width: 115px;">Kg
         <abbr class="require" title="Required Field">*</abbr>
       </label>
       <input type="text" id="count" name="stock_count" required autocomplete="off" value="<?php echo $stock_details['bags_count']; ?>" style="color: #000;">
