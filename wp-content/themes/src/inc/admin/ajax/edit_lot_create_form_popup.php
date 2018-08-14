@@ -36,10 +36,17 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 			<input type="text" id="lot_number" value="<?php echo $lot_details['lot_number']; ?>" name="lot_number">
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Alternate(Display) Name
+			<label style="width: 115px;">Customer Bill Display Name
 			</label>
 			<input type="text" id="brand_name" name="brand_name" autocomplete="off" value="<?php echo $lot_details['lot_data']->brand_name; ?>">
 		</div>
+	<!-- 	<div class="form_detail">
+			<label style="width: 115px;">Search Name
+			</label>
+			<span>
+				<input type="text" id="search_name" name="search_name" autocomplete="off" value="<?php //echo $lot_details['lot_data']->search_name; ?>">
+			</span>
+		</div> -->
 		<div class="form_detail">
 			<label>Product Type
 				<abbr class="require" title="Required Field">*</abbr>
@@ -419,11 +426,18 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 				</div>
 				<div class="form_detail">
 					<label>
-						Alternate(Display) Name
+						Customer Bill Display Name
 					</label>
 					<div class="slab">
 						<input type="text" name="dummy_brand_name" id="dummy_brand_name" autocomplete="off" value="<?php echo ($lot_details['dummy_lot_data'] && $lot_details['dummy_lot_data']->brand_name) ? $lot_details['dummy_lot_data']->brand_name : ''; ?>">
 					</div>
+				</div>
+				<div class="form_detail">
+					<label style="width: 115px;">Dummy Lot Search Name
+					</label>
+					<span>
+						<input type="text" id="search_name_dummy" name="search_name_dummy" autocomplete="off" value="<?php echo ($lot_details['dummy_lot_data'] && $lot_details['dummy_lot_data']->brand_name) ? $lot_details['dummy_lot_data']->search_name : ''; ?>">
+					</span>
 				</div>
 				<div class="form_detail">
 					<label>Slab System ?

@@ -22,12 +22,19 @@
 			
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Alternate(Display) Name
+			<label style="width: 115px;"> Customer Bill Display Name
 			</label>
 			<span>
 				<input type="text" id="brand_name" name="brand_name" autocomplete="off">
 			</span>
 		</div>
+		<!-- <div class="form_detail">
+			<label style="width: 115px;">Search Name
+			</label>
+			<span>
+				<input type="text" id="search_name" name="search_name" autocomplete="off">
+			</span>
+		</div> -->
 		<div class="form_detail">
 			<label>Product Type
 				<abbr class="require" title="Required Field">*</abbr>
@@ -286,11 +293,18 @@
 				</div>
 				<div class="form_detail">
 					<label>
-						Alternate(Display) Name
+						Customer Bill Display Name
 					</label>
 					<div class="slab">
 						<input type="text" name="dummy_brand_name" id="dummy_brand_name" autocomplete="off">
 					</div>
+				</div>
+				<div class="form_detail">
+					<label style="width: 115px;">Dummy Lot Search Name
+					</label>
+					<span>
+						<input type="text" id="search_name_dummy" name="search_name_dummy" autocomplete="off">
+					</span>
 				</div>
 				<div class="form_detail">
 					<label>Slab System ?

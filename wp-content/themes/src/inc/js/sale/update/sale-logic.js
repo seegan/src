@@ -28,7 +28,7 @@ function populate_select2(this_data = '', v) {
             var results = [];
             return {
                 results: jQuery.map(data.items, function(obj) {
-                    return { id: obj.id, lot_number:obj.lot_number, brand_name: obj.brand_name, product_name:obj.product_name, weight:obj.weight, slab_system: obj.slab_system, lot_type: obj.lot_type, parent_id: obj.parent_id, par_id:obj.par_id, stock_bal:obj.stock_bal, basic_price:obj.basic_price, stock_alert:obj.stock_alert, hsn_code:obj.hsn_code, gst_percentage:obj.gst_percentage  };
+                    return { id: obj.id, lot_number:obj.lot_number, brand_name: obj.brand_name, product_name:obj.product_name, weight:obj.weight, slab_system: obj.slab_system, lot_type: obj.lot_type, parent_id: obj.parent_id, par_id:obj.par_id, stock_bal:obj.stock_bal, basic_price:obj.basic_price, stock_alert:obj.stock_alert, hsn_code:obj.hsn_code, gst_percentage:obj.gst_percentage, search_name:obj.search_name   };
                 })
             };
           },
@@ -131,9 +131,13 @@ function formatState (state) {
   if (!state.id) {
     return state.id;
   }
+  var search_name = '';
+  if(state.search_name && state.search_name != '') {
+    search_name = '<br>( '+state.search_name+' )';
+  }
   var $state = jQuery(
     '<span>' +
-      state.lot_number +
+      state.lot_number + search_name +
     '</span>'
   );
   return $state;

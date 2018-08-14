@@ -616,6 +616,8 @@ function lot_create_submit_popup() {
 	$gst_percentage = $params['gst_percentage'];
 
 	$lot_number = $params['lot_number'];
+	// $search_name = $params['search_name'];
+	$search_dummy_name = $params['search_name_dummy'];
 	$dummy_lot_number = $params['dummy_slot_number'];
 
 	$brand_name = $params['brand_name'];
@@ -641,6 +643,7 @@ function lot_create_submit_popup() {
 
 		$lot_original = array(
 				'lot_number'   		=> $lot_number,
+				// 'search_name'   	=> $search_name,
 				'brand_name'   		=> $brand_name,
 				'product_name' 		=> $product_name,
 				'weight'       		=> $weight,
@@ -732,6 +735,7 @@ function lot_create_submit_popup() {
 
 				$lot_dummy = array(
 					'lot_number' 	=> $dummy_lot_number,
+					'search_name'   => $search_dummy_name,
 					'brand_name' 	=> $dummy_brand_name,
 					'product_name' 	=> $product_name,
 					'weight' 		=> $weight,
@@ -848,7 +852,9 @@ function lot_update_submit_popup() {
 	$hsn_code = $params['hsn_code'];
 	$gst_percentage = $params['gst_percentage'];
 
-	$lot_number = $params['lot_number'];
+	$lot_number 	= $params['lot_number'];
+	// $search_name 	= $params['search_name'];
+	$search_dummy_name 	= $params['search_name_dummy'];
 	$lot_id = $params['lot_id'];
 
 	$dummy_lot_number = $params['dummy_slot_number'];
@@ -880,6 +886,7 @@ function lot_update_submit_popup() {
 
 		$lot_original = array(
 				'brand_name' => $brand_name,
+				// 'search_name'  => $search_name,
 				'product_name' => $product_name,
 				'weight' => $weight,
 				'lot_type' => 'original',
@@ -962,6 +969,7 @@ function lot_update_submit_popup() {
 
 			$lot_dummy = array(
 					'lot_number' 		=> $dummy_lot_number,
+					'search_name'       => $search_dummy_name,
 					'brand_name' 		=> $dummy_brand_name,
 					'product_name' 		=> $product_name,
 					'weight' 			=> $weight,
