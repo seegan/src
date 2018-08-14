@@ -1868,11 +1868,27 @@ function getBillDetail($bill_no = 0){
 
 		$bill_id = $data['bill_data']->id;
 		$bill_detail_query = "SELECT *, sdo.id as sale_detail_id FROM wp_sale_detail sdo
-
 JOIN (
+	SELECT 
+		tt1.*, 
+		(tt1.stock_total - tt1.sale_total) as stock_bal 
+		from 
 
-SELECT tt1.*, (tt1.stock_total - tt1.sale_total) as stock_bal from ( select *, ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id, ( SELECT ( case WHEN SUM(total_weight) Then SUM(total_weight) ELSE 0 END ) from wp_stock s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, ( SELECT ( case WHEN SUM(sale_weight) Then SUM(sale_weight) ELSE 0 END ) from wp_sale_detail sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total from wp_lots as l WHERE  active = 1 ) as tt1
-) as lt ON lt.par_id = sdo.lot_parent_id WHERE sdo.sale_id = ${bill_id} AND sdo.lot_id = lt.id AND sdo.active=1";
+		( select *, ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id, 
+
+			(l.sale_balance - l.return_balance) as sale_total,
+			l.stock_balance as stock_total
+			from wp_lots 
+			
+			as l WHERE  active = 1
+		) as tt1
+	) as lt 
+ON lt.par_id = sdo.lot_parent_id 
+WHERE sdo.sale_id = ${bill_id} 
+AND 
+sdo.lot_id = lt.id 
+AND 
+sdo.active=1";
 
 
 	$data['bill_detail_data'] = $wpdb->get_results($bill_detail_query);
@@ -3049,13 +3065,12 @@ function gst_group_igst($id = 0) {
 	$sale_table_detail 	= $wpdb->prefix. 'sale_detail';
 	$sale_table       	= $wpdb->prefix. 'sale';
 
-
 	$query_igst ="SELECT sale_details.igst_percentage,sale_details.hsn_code,
 	 sum(sale_details.igst_value) as sale_igst, 
 	 sum(sale_details.sale_value) as sale_total, 
 	 sum(sale_details.sale_weight) as sale_unit,
 	sum(sale_details.taxless_amt) as sale_amt FROM ${sale_table} as sale 
-	left join ${sale_table_detail} as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1 and sale.id = ${id} group by sale_details.igst_percentage";
+	left join ${sale_table_detail} as sale_details on sale.id= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1 and sale.id = ${id} group by sale_details.igst_percentage";
 
 	$data['gst_data']	= $wpdb->get_results($query_igst);
 	return $data;

@@ -121,11 +121,8 @@ function populate_select2(this_data = '', v) {
       jQuery(this).parent().parent().find('.stock_weight_txt').text(e.params.data.stock_bal);
 
       updateBalanceStock(e.params.data.par_id, e.params.data.stock_bal, e.params.data.stock_alert);
-
       triggerTotalCalculate(jQuery(this).parent().parent());
 
-    //console.log(jQuery(this).parent().parent())
-    //console.log(e.params.data); 
   });
 
 }
@@ -303,9 +300,7 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
   var used_stock = 0;
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
     if(jQuery(this).attr('lot-slabsys') == 1) {
-
       used_stock = parseFloat(used_stock) + parseFloat(jQuery(this).find('.slab_system_yes .total').val(), 10) ;
-
     } else {
       used_stock = parseFloat(used_stock) + parseFloat(jQuery(this).find('.slab_system_no .total').val(), 10) ;
     }

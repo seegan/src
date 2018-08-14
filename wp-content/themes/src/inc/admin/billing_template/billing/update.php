@@ -1,7 +1,7 @@
 <?php
     $bill_no = isset($_GET['bill_no']) ? $_GET['bill_no'] : $_GET['inv_id'];
     $bill_data = getBillDetail($bill_no);
-    $bill_return_data = getBillReturnDetail($bill_no);
+
 
     $rice_center_checked = '';
     $rice_mandy_checked = '';
@@ -407,9 +407,9 @@
                                     <div class="weight_cal_tooltip" style="width:25px;float:left;">
                                       <div class="tooltip tootip-black" data-stockalert="1">
                                         <span class="tooltiptext">
-                                            Slab System : <span class="slab_sys_txt">--</span>
+                                            Slab System : <span class="slab_sys_txt"><?php echo ( $b_value->slab == 0 ) ? 'No' : 'Yes';  ; ?></span>
                                             <hr class="tooltip-hr">
-                                            Stock Avail : <span class="stock_weight_txt">--</span> kg
+                                            Stock Avail : <span class="stock_weight_txt"><?php echo $b_value->stock_bal; ?></span> kg
                                         </span>
                                       </div>
                                     </div>
