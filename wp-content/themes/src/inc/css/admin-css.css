@@ -719,9 +719,6 @@ li.main_menu >ul {
 .weight_cal_section {
     float: left;
 }
-.weight_cal_tooltip {
-    margin-left: 10px;
-}
 
 hr.tooltip-hr {
     border-bottom: 0;

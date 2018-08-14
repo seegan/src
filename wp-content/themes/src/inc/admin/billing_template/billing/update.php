@@ -245,7 +245,7 @@
                             <div class="div-table-head" style="width: 75px;">S.No</div>
                             <div class="div-table-head" style="width: 160px;">Lot Number</div>
                             <div class="div-table-head" style="width: 50px;">Sale Option</div>
-                            <div class="div-table-head" style="width: 240px;">Weight</div>
+                            <div class="div-table-head" style="width: 220px;">Weight</div>
                             <div class="div-table-head" style="width: 150px;">Product Name<br/>(Bill Display Name)</div>
                             <div class="div-table-head" style="width: 90px;">Unit Price (MRP)</div>
                             <div class="div-table-head" style="width: 100px;">Discounted price</div>
@@ -370,31 +370,22 @@
                                     <div class="weight_cal_section">
                                         <input type="hidden" name="hsn_code" class="hsn_code" value="<?php echo $b_value->hsn_code; ?>">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="<?php echo $b_value->bag_weight; ?>" autocomplete="off" placeholder=""> 
-                                        <div class="slab_system_no" style="display:<?php echo $slab_no_display ?>;">
+                                        <div class="slab_system_no" style="width: 100px;display:<?php echo $slab_no_display ?>;">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" value="<?php echo $b_value->weight; ?>" readonly style="display: none;">
                                             <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo $b_value->sale_weight; ?>" readonly style="display: none;">
                                             <span class="bag_display">Bag</span>
                                         </div>
-                                      <div class="slab_system_yes" style="display:<?php echo $slab_yes_display ?>;">
-                                        <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
-                                        <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Kg</span>
-                                        <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Bag</span>
-                                      </div>
+                                        <div class="slab_system_yes" style="width: 100px;display:<?php echo $slab_yes_display ?>;">
+                                            <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
+                                            <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Kg</span>
+                                            <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Bag</span>
+                                        </div>
                                     </div>
-                                    <div class="weight_cal_tooltip">
-                                      <div class="tooltip tootip-black" data-stockalert="1">
-                                        <span class="tooltiptext">
-                                            Slab System : <span class="slab_sys_txt">--</span>
-                                            <hr class="tooltip-hr">
-                                            Stock Avail : <span class="stock_weight_txt">--</span> kg
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div>
+                                    <div style="padding-top:6px;">
                                         <span class="">
-                                            <span class="sale_as_name_kg">Kg  : <input type="radio" name="sale_as" class="sale_as" value="kg" <?php if($b_value->slab == 0){ echo 'readonly'; } if($b_value->sale_as == 'kg') { echo 'checked'; } ?>></span>
-                                            <span class="sale_as_name_bag">Bag :<input type="radio" name="sale_as" class="sale_as" value="bag" <?php if($b_value->sale_as == 'bag') { echo 'checked'; } ?> ></span>
+                                            <span class="sale_as_name_kg"><input type="radio" name="sale_as" class="sale_as" value="kg" <?php if($b_value->slab == 0){ echo 'readonly'; } if($b_value->sale_as == 'kg') { echo 'checked'; } ?>> - Kg </span>  | 
+                                            <span class="sale_as_name_bag"> Bag - <input type="radio" name="sale_as" class="sale_as" value="bag" <?php if($b_value->sale_as == 'bag') { echo 'checked'; } ?> ></span>
                                         </span>
                                     </div>
                                     <div style="clear:both;"></div>
@@ -409,11 +400,20 @@
                                     </div>
                                     <div style="clear:both;"></div>
                                   </div>
-
-
                                 </div>
 
                                 <div class="div-table-col sale-brand" style="position:relative;">
+
+                                    <div class="weight_cal_tooltip" style="width:25px;float:left;">
+                                      <div class="tooltip tootip-black" data-stockalert="1">
+                                        <span class="tooltiptext">
+                                            Slab System : <span class="slab_sys_txt">--</span>
+                                            <hr class="tooltip-hr">
+                                            Stock Avail : <span class="stock_weight_txt">--</span> kg
+                                        </span>
+                                      </div>
+                                    </div>
+
                                     <div class="product_name_data" style="display: inline-block;"><?php echo $b_value->product_name; ?></div>
                                     (<div class="brand_name_data" style="display: inline-block;"><?php echo $b_value->brand_name; ?></div>)
                                     <div class="brand_checkbox" style="width: 20px;position: absolute;right: 0;top: 25%;">
@@ -538,31 +538,22 @@
                                     <div class="weight_cal_section">
                                         <input type="hidden" name="hsn_code" class="hsn_code">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="" autocomplete="off" placeholder=""> 
-                                        <div class="slab_system_no">
-                                            <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" style="display: none;">
-                                            <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count">
+                                        <div class="slab_system_no" style="width: 100px;">
+                                            <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" style="display: none;width: 55px;">
+                                            <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" style="display: none;">
                                             <span class="bag_display">Bag</span>
                                         </div>
-                                        <div class="slab_system_yes" style="display:none;">
+                                        <div class="slab_system_yes" style="display:none;width: 100px;">
                                             <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
                                             <span class="kg_display">Kg</span>
                                             <span class="bag_display">Bag</span>
                                         </div>
                                     </div>
-                                    <div class="weight_cal_tooltip">
-                                      <div class="tooltip tootip-black" data-stockalert="1">
-                                        <span class="tooltiptext">
-                                            Slab System : <span class="slab_sys_txt">--</span>
-                                            <hr class="tooltip-hr">
-                                            Stock Avail : <span class="stock_weight_txt">--</span> kg
-                                        </span>
-                                      </div>
-                                    </div>
-                                     <div>
+                                     <div style="padding-top:6px;">
                                         <span class="">
-                                            <span class="sale_as_name_kg">  Kg  : <input type="radio" name="sale_as" class="sale_as"  value="kg" checked></span>
-                                            <span class="sale_as_name_bag"> Bag :<input type="radio" name="sale_as" class="sale_as" value="bag"></span>
+                                            <span class="sale_as_name_kg"><input type="radio" name="sale_as" class="sale_as"  value="kg" checked> - Kg </span> | 
+                                            <span class="sale_as_name_bag"> Bag - <input type="radio" name="sale_as" class="sale_as" value="bag"></span>
                                         </span>
                                     </div>
                                     <div style="clear:both;"></div>
@@ -583,6 +574,15 @@
                                 </div>
 
                                 <div class="div-table-col sale-brand" style="position:relative;">
+                                    <div class="weight_cal_tooltip" style="width:25px;float:left;">
+                                      <div class="tooltip tootip-black" data-stockalert="1">
+                                        <span class="tooltiptext">
+                                            Slab System : <span class="slab_sys_txt">--</span>
+                                            <hr class="tooltip-hr">
+                                            Stock Avail : <span class="stock_weight_txt">--</span> kg
+                                        </span>
+                                      </div>
+                                    </div>
                                     <div class="product_name_data" style="display: inline-block;"></div>
                                     (<div class="brand_name_data" style="display: inline-block;"></div>)
                                     <div class="brand_checkbox" style="width: 20px;position: absolute;right: 0;top: 25%;">
