@@ -330,12 +330,15 @@ function triggerTotalCalculate(selector) {
   if(jQuery(selector).attr('lot-slabsys') == 1) {
     if(jQuery(selector).find('.sale_as[value="kg"]').attr("checked")) {
       var total_weight = jQuery(selector).find('.slab_system_yes .total').val();
+      total_weight = isNaN(total_weight) ? total_weight : 0;
     }
     else{
       var total_weight = jQuery(selector).find('.slab_system_yes .total').val() * jQuery(selector).find('.bagWeightInKg').val();
+      total_weight = isNaN(total_weight) ? total_weight : 0;
     }
   } else {
-    var total_weight = jQuery(selector).find('.slab_system_no .total').val();
+      var total_weight = jQuery(selector).find('.slab_system_no .total').val();
+      total_weight = isNaN(total_weight) ? total_weight : 0;
   }
   
   if(jQuery(selector).find('.type_bill:radio:checked').val() == 'duplicate') {

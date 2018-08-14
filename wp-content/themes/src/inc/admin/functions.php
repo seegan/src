@@ -1697,10 +1697,10 @@ function update_bill_last(){
 				$bill_detail_id = getToken($lots_sale_detail_table);
 			}
 				
-	
+		$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
 			//Combain lot and dummy lot and skip duplicate
 			if($s_value['lot_parent'] && $s_value['type_bill_h'] == 'original') {
-				$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
+
 				$bagWeightInKg 	= $s_value['bagWeightInKg'];
 
 
