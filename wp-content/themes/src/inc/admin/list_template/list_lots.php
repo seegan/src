@@ -59,7 +59,7 @@
 			<tr>
 				<th>Sl. No</th>
 				<th>Lot Number</th>
-				<th>Brand Name</th>
+				<th>Display Name</th>
 				<th>Product Name</th>
 				<th>Action</th>
 			</tr>

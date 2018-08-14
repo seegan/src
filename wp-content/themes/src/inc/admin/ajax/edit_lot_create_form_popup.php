@@ -36,7 +36,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 			<input type="text" id="lot_number" value="<?php echo $lot_details['lot_number']; ?>" name="lot_number">
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Alternate Name
+			<label style="width: 115px;">Alternate(Display) Name
 			</label>
 			<input type="text" id="brand_name" name="brand_name" autocomplete="off" value="<?php echo $lot_details['lot_data']->brand_name; ?>">
 		</div>
@@ -419,7 +419,7 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 				</div>
 				<div class="form_detail">
 					<label>
-						Alternate Name
+						Alternate(Display) Name
 					</label>
 					<div class="slab">
 						<input type="text" name="dummy_brand_name" id="dummy_brand_name" autocomplete="off" value="<?php echo ($lot_details['dummy_lot_data'] && $lot_details['dummy_lot_data']->brand_name) ? $lot_details['dummy_lot_data']->brand_name : ''; ?>">
