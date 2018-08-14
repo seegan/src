@@ -159,6 +159,7 @@ input[type="checkbox"][readonly] {
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][gst_percentage]" value="<?php echo $gst_percentage ?>" class="gst_percentage">
+                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][bill_type]" value="<?php echo $s_value->bill_type; ?>" class="bill_type">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>

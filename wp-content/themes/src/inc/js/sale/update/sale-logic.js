@@ -51,6 +51,7 @@ function populate_select2(this_data = '', v) {
       jQuery(this).parent().parent().find('.sale_unit_price input').val(0);
       jQuery(this).parent().parent().find('.sale_total_price input').val(0);
       
+      jQuery(this).parent().parent().find('.hsn_code').val(e.params.data.hsn_code);
       jQuery(this).parent().parent().find('.bagWeightInKg').val(e.params.data.weight);
 
       jQuery(this).parent().parent().attr('lot-id', e.params.data.id);

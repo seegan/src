@@ -243,7 +243,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
           <?php
             }
           ?>
-              
+   <br/>           
 				<?php 
         if($gst_extemted == 0) {
           echo "<div class='exempted'><span><b>GST EXEMPTED</span></b></div>";
@@ -252,15 +252,35 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
        
         
       <?php if($bill_data['bill_data']->gst_to == 'cgst'){ ?>
-          <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="font-size:15px;" >
+    <table WIDTH='100%' class="table table-striped" style="font-size:15px;">
+        <thead>
+            <tr>
+                <th class="dotted_border_bottom">HSN Code</th>
+                <th class="dotted_border_bottom">Taxable Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php  
+      if(isset($gst_data)) { 
+        foreach( $gst_data['gst_data'] as $g_data) {
+      ?>
+            <tr>
+                <td><div class="text-center"><?php  echo $g_data->hsn_code; ?></div></td>
+                <td><div class="text-center"><?php  echo $g_data->sale_amt; ?></div></td>
+            </tr>
+        <?php 
+        }
+      }
+    ?>
+        </tbody>
+    </table>
+     <br/> 
+     <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="font-size:15px;" >
       <thead>
         <tr>
-          <th colspan="5" class="dotted_border_bottom"  align="center" >GST Details</th>
+          <th colspan="4" class="dotted_border_bottom"  align="center" >GST Details</th>
         </tr>     
         <tr>
-          <th valign='top' class="center-th" style="width:90px;padding:0;" rowspan="2">
-            <div class="text-center">Taxable Value(Rs)</div>
-          </th>
           <th class="center-th" style="padding: 0;" colspan="2">
             <div class="text-center">CGST</div>
           </th>
@@ -285,7 +305,6 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         foreach( $gst_data['gst_data'] as $g_data) {
       ?>
           <tr class="">
-            <td class=""><div class="text-right"><?php  echo $g_data->sale_amt; ?></div></td>
             <td class=""><div class="text-center"><?php echo $g_data->cgst_percentage; ?></div></td>
             <td class=""><div class="text-right"><?php echo $g_data->sale_cgst; ?></div></td>
             <td class=""><div class="text-center"><?php echo $g_data->cgst_percentage; ?></div></td>
@@ -300,13 +319,12 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     ?>
       <tr class="">
         <td class=""><div class="text-right"></div></td>
-        <td class=""><div class="text-right"></div></td>
         <td class=""><div class="text-right"><?php echo $gst_tot; ?></div></td>
         <td class=""><div class="text-right"></div></td>
         <td class=""><div class="text-right"><?php echo $gst_tot; ?></div></td>
       </tr>
       <tr>
-        <td  class="dotted_border_bottom" colspan="4">
+        <td  class="dotted_border_bottom" colspan="3">
           <div class="text-center">
             <b>Total Tax</b>
           </div>
@@ -327,15 +345,18 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         </tr>     
         <tr>
           <th valign='top' class="center-th" style="padding:0;" rowspan="2">
+            <div class="text-center">Hsn Code</div>
+          </th>
+           <th valign='top' class="center-th" style="padding:0;" rowspan="2">
             <div class="text-center">Taxable Value(Rs)</div>
           </th>
-          <th class="center-th" style="padding: 0;" colspan="4">
+          <th class="center-th" style="padding: 0;" colspan="2">
             <div class="text-center">IGST</div>
           </th>
         </tr>
         <tr>
           <th style="padding: 0;" colspan="2"><div class="text-center">%</div></th>
-          <th style="padding: 0;" colspan="2"><div class="text-right">Amount</div></th>
+          <th style="padding: 0;" colspan="2"><div class="text-right">Amt(Rs)</div></th>
         </tr>
       </thead>
       <tbody>
@@ -348,7 +369,8 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         foreach( $gst_data['gst_data']as $g_data) {
       ?>
           <tr class="">
-            <td class=""><div class="text-right"><?php  echo $g_data->sale_amt; ?></div></td>
+            <td class=""><div class="text-center"><?php  echo $g_data->hsn_code; ?></div></td>
+            <td class=""><div class="text-center"><?php  echo $g_data->sale_amt; ?></div></td>
             <td class="" colspan="2"><div class="text-center"><?php echo $g_data->igst_percentage; ?></div></td>
             <td class="" colspan="2"><div class="text-right"><?php echo $g_data->sale_igst; ?></div></td>
           </tr>
@@ -358,10 +380,6 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 
         }
       } ?>
-      <tr class="">
-        <td class="" colspan="4"><div class="text-right"></div></td>
-        <td class=""><div class="text-right"><?php echo $gst_tot; ?></div></td>
-      </tr>
       <tr>
         <td  class="dotted_border_bottom" colspan="4">
           <div class="text-center">
@@ -382,9 +400,9 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     if($is_delivery == '1') { ?>
   <table>
     <tr><td><b>Delivery To</b></td><td>  </td></tr>
-    <tr><td>Name</td><td>  : <?php echo $bill_data['customer_data']->name; ?></td></tr>
-    <tr><td>Address</td><td>  : <?php echo $bill_data['customer_data']->address; ?></td></tr>
-    <tr><td>Phone No</td><td>  : <?php echo $bill_data['customer_data']->mobile; ?></td></tr>
+    <tr><td>Name</td><td>  : <?php echo $bill_data['bill_data']->delivery_name; ?></td></tr>
+    <tr><td>Address</td><td>  : <?php echo $bill_data['bill_data']->delivery_address; ?></td></tr>
+    <tr><td>Phone No</td><td>  : <?php echo $bill_data['bill_data']->delivery_phone; ?></td></tr>
   </table> 
   <?php } ?>
 

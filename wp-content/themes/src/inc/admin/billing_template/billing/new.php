@@ -212,6 +212,7 @@
                                             <input type="hidden" name="type_bill_h" class="type_bill_h" value="original">
                                             <!-- For NST -->
                                             <input type="hidden" name="type_bill_s" class="type_bill_s" value="original">
+                                           
                                         </div>
                                     </div>
                                     <div class="rowno">1</div>
@@ -237,6 +238,7 @@
                                 <div class="div-table-col sale-weight">
                                   <div class="weight-original-block">
                                     <div class="weight_cal_section">
+                                         <input type="hidden" name="hsn_code" class="hsn_code">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" autocomplete="off" placeholder=""> 
                                       <div class="slab_system_no">
                                         <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" readonly style="display: none;">

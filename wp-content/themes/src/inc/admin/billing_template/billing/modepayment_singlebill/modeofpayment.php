@@ -193,24 +193,6 @@
 			<th>Paid</th>
 		</thead>
 		<tbody class="bill_payment_in_bill" id="bill_payment_in_bill">
-			<?php
-				// if(isset($bill_data['bill_data']) && $customer_bal){
-				// 	$i=1;
-				// 	foreach ($customer_bal as $pay_to_bal) {
-				// 		if($pay_to_bal->id != $bill_id){
-				// 			$customer_pending = (-1 * $pay_to_bal->customer_pending);
-				// 			echo '<tr class="bill_payment">
-				// 			<td>'.$pay_to_bal->invoice_id.'<input type="hidden" name="prev_pay['.$i.'][id]" value="'.$pay_to_bal->id.'" class="prev_pay_id"></td>
-				// 			<td style="">'.$customer_pending.'<input type="hidden" name="prev_pay['.$i.'][pay_to_bal]" value="'.$customer_pending.'" style="" class="pay_to_bal"></td>
-				// 			<td style=""><input type="checkbox" name="prev_pay['.$i.'][prev_bal_check]" class="prev_bal_check"></td>
-				// 			</tr>';
-				// 			$i++;
-				// 		}
-						
-				// 	}
-				// }
-			
-			 ?>
 		</tbody>
 	</table>
 	<br/>
@@ -225,20 +207,20 @@
 				
 				 ?>
 				<input type="radio" name="delivery_need" value="0"  class="delivery_need" <?php if($is_delivery == '0'){ echo 'checked'; } ?>/> No
-				<input type="radio" name="delivery_need" value="1"  class="delivery_need" <?php if($is_delivery == '1'){ echo 'checked'; } ?> /> Yes <br/>
+				<input type="radio" name="delivery_need" value="1"  class="delivery_need" <?php if($is_delivery == '1'){ echo 'checked'; } ?> /> Yes <br/><br/>
 				<div class="delivery_display" <?php if($is_delivery == '0'){ echo 'style="display:none"'; } else { echo 'style="display:block"'; } ?>>
 					
-					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" value="<?php echo $bill_data['bill_data']->delivery_name; ?>" autocomplete="off"/><br/>
-					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" value="<?php echo $bill_data['bill_data']->delivery_phone; ?>"  autocomplete="off"/><br/>
+					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" value="<?php echo $bill_data['bill_data']->delivery_name; ?>" autocomplete="off"/><br/><br/>
+					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" value="<?php echo $bill_data['bill_data']->delivery_phone; ?>"  autocomplete="off"/><br/><br/>
 					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"><?php echo $bill_data['bill_data']->delivery_address; ?></textarea>	<br/>
 				</div>
 			<?php } else { ?>
 				<input type="radio" name="delivery_need" value="0" class="delivery_need" checked /> No
-				<input type="radio" name="delivery_need" value="1" class="delivery_need" /> Yes <br/>
+				<input type="radio" name="delivery_need" value="1" class="delivery_need" /> Yes <br/><br/>
 				<div class="delivery_display" style="display:none;">
-					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" /><br>
-					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" onkeypress="return isNumberKeyDelivery(event)"/><br>
-					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"></textarea><br>
+					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" /><br><br/>
+					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" onkeypress="return isNumberKeyDelivery(event)"/><br><br/>
+					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"></textarea><br><br/>
 				</div>
 			<?php } ?>
 		</div>

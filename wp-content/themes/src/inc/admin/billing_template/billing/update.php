@@ -368,6 +368,7 @@
 
                                   <div class="weight-original-block">
                                     <div class="weight_cal_section">
+                                        <input type="hidden" name="hsn_code" class="hsn_code" value="<?php echo $b_value->hsn_code; ?>">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="<?php echo $b_value->bag_weight; ?>" autocomplete="off" placeholder=""> 
                                         <div class="slab_system_no" style="display:<?php echo $slab_no_display ?>;">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" value="<?php echo $b_value->weight; ?>" readonly style="display: none;">
@@ -535,6 +536,7 @@
 
                                   <div class="weight-original-block">
                                     <div class="weight_cal_section">
+                                        <input type="hidden" name="hsn_code" class="hsn_code">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="" autocomplete="off" placeholder=""> 
                                         <div class="slab_system_no">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" style="display: none;">

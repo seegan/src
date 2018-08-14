@@ -141,17 +141,17 @@
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
                   <b>Buyer,</b><br>
                   <?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Sale': $bill_data['customer_data']->name;?>
-                  <b><?php echo $customer_name; ?></b><br>
-                  <?php echo $bill_data['customer_data']->mobile; ?><br>
+                  <b><?php echo  $customer_name; ?></b><br>
+                  <?php echo  $bill_data['customer_data']->mobile; ?><br>
                   <?php echo $bill_data['customer_data']->mobile1;  ?><br>
-                  <?php echo $bill_data['customer_data']->address;  ?><br>
+                  <?php echo  $bill_data['customer_data']->address;  ?><br>
                   <b> GST NO <?php echo "EWEWEW131313" ?></b>
                 </td>                 
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
                   <b>DELIVERY ADDRESS</b><br>
-                  <?php echo $customer_name; ?><br>
-                  <?php echo $bill_data['customer_data']->mobile1; ?><br>
-                  <?php echo $bill_data['customer_data']->address; ?><br>
+                  <?php echo ($bill_data['bill_data']->delivery_avail == '1')? $bill_data['bill_data']->delivery_name : $customer_name; ?><br>
+                  <?php echo ($bill_data['bill_data']->delivery_avail == '1')? $bill_data['bill_data']->delivery_phone : $bill_data['customer_data']->mobile1; ?><br>
+                  <?php echo ($bill_data['bill_data']->delivery_avail == '1')? $bill_data['bill_data']->delivery_address : $bill_data['customer_data']->address; ?><br>
                 </td>                
             </tr>
            <?php
