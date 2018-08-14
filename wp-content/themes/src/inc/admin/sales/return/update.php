@@ -1,7 +1,7 @@
 <?php
     $return_id = (isset($_GET['return_id'])) ? $_GET['return_id'] : 0;
     $return_data = (isset($_GET['return_id'])) ? get_return_data($_GET['return_id']) : false;
-
+var_dump($return_data);
 ?>
     <div style="width: 100%;">
         <ul class="icons-labeled">
@@ -45,14 +45,49 @@
         </div>
 
 
+        <input type="hidden" name="gst_from" value="<?php echo $gst_from; ?>" class="gst_from">
+        <input type="hidden" name="customer_id" value="<?php echo $return_data['return_data']->sale_id; ?>">
         <input type="hidden" name="sale_id" value="<?php echo $return_data['return_data']->sale_id; ?>">
         <input type="hidden" name="return_id" value="<?php echo $return_id; ?>">
         <table class="display">
             <thead>
                 <tr>
-                    <th>Lot no</th>
-                    <th style="width:200px;">Delivered</th>
-                    <th>Action</th>
+                    <th rowspan="2">S.No</th>
+                    <th rowspan="2">Product Name</th>
+                    <th rowspan="2">Return Qty</th>
+                    <th rowspan="2">Sold Price (Per Kg)</th>
+                    <th rowspan="2">Taxless Amt</th>
+                    <?php 
+                        if( $gst_from =='cgst' ) {
+                            echo "<th colspan='2'>CGST</th>";
+                            echo "<th colspan='2'>SGST</th>";
+                        }
+                    ?>
+                    <?php 
+                        if( $gst_from =='igst' ) {
+                            echo "<th colspan='2'>IGST</th>";
+                        }
+                    ?>
+                    <th rowspan="2">Sub total</th>
+                    <th rowspan="2">Action</th>
+                </tr>
+                <tr>
+                    <?php 
+                        if( $gst_from =='cgst' ) {
+                    ?>
+                    <th rowspan="2">Rate</th>
+                    <th rowspan="2">Amt.</th>
+                    <th rowspan="2">Rate</th>
+                    <th rowspan="2">Amt.</th>
+                    <?php 
+                        }
+                        if( $gst_from =='igst' ) {
+                    ?>
+                    <th rowspan="2">Rate</th>
+                    <th rowspan="2">Amt.</th>
+                    <?php
+                        }
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -84,6 +119,51 @@
                                 </div>
                             </div>
                         </td>
+                         <td><?php echo $amt_per_kg; ?></td>
+                        <td>
+                            <div class="taxless_amt_txt">0.00</div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="<?php echo $s_value->taxless_amount; ?>">
+                        </td>
+
+
+                        <?php 
+                            if( $gst_from =='cgst' ) {
+                        ?>
+                        <td>
+                            <div class="cgst_percentage_txt"><?php echo $s_value->cgst.'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_percentage]" class="cgst_percentage" value="<?php echo $s_value->cgst; ?>">
+                        </td>
+                        <td>
+                            <div class="cgst_txt"><?php echo $s_value->cgst_value; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][cgst_amt]" class="cgst_amt" value="<?php echo $s_value->cgst_value; ?>">
+                        </td>
+                        <td>
+                            <div class="cgst_percentage_txt"><?php echo $s_value->sgst.'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_percentage]" class="cgst_percentage" value="<?php echo $s_value->sgst; ?>">
+                        </td>
+                        <td>
+                            <div class="cgst_txt"><?php echo $s_value->sgst_value; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][sgst_amt]" class="cgst_amt" value="<?php echo $s_value->sgst_value; ?>">
+                        </td>
+                        <?php 
+                            }
+                            if( $gst_from =='igst' ) {
+                        ?>
+                        <td>
+                            <div class="igst_percentage_txt"><?php echo $s_value->igst.'%'; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_percentage]" class="igst_percentage" value="<?php echo $s_value->igst; ?>">
+                        </td>
+                        <td>
+                            <div class="igst_txt"><?php echo $s_value->igst_value; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][igst_amt]" class="igst_amt" value="<?php echo $s_value->igst_value; ?>">
+                        </td>
+                        <?php
+                            }
+                        ?>
+                        <td>
+                            <div class="return_amt_txt"><?php echo $s_value->subtotal; ?></div>
+                            <input type="hidden" name="return_data[<?php echo $row_count; ?>][return_amt]" class="return_amt" value="<?php echo $s_value->subtotal; ?>">
+                        </td>
                         <td>
                             <span><a class="action-icons c-delete return_delete" href="#" title="delete" data-id="<?php echo $s_value->id; ?>" data-action="return_detail">Delete</a></span>
                         </td>
@@ -93,6 +173,21 @@
                         }
                     }
                 ?>
+                 <tr>
+                    <td colspan="13"><div class="text-right">Total Return</div></td>
+                    <td>
+                        <div class="total_return_txt"><?php echo $return_data['return_data']->total_amount; ?></div>
+                        <input type="hidden" name="total_return" value="<?php echo $return_data['return_data']->total_amount; ?>" class="total_return">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="13"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="#return_to_check" class="return_to_check"/></td></div>
+                    <td>
+                        <input type="hidden" class="previous_pay_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>">
+                        <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) ?></div>
+                        <input type="hidden" name="return_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>" class="return_to_bal">
+                    </td>
+                </tr>
             </tbody>
         </table>
 

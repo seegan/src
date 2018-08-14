@@ -2890,7 +2890,7 @@ function get_return_data($return_id = 0) {
 
 	if($return_data) {
 		$data['return_data'] = $return_data;
-		$detail_query = "SELECT rd.id, rd.return_weight, rd.sale_detail_id, rd.lot_id, l.lot_number, sd.slab FROM ${return_detail_table} as rd JOIN ${lot_table} as l ON rd.lot_id = l.id JOIN ${sale_detail_table} as sd ON rd.sale_detail_id = sd.id WHERE rd.return_id = {$return_id} AND rd.active = 1 AND sd.active=1";
+		$detail_query = "SELECT rd.*, l.lot_number, sd.slab FROM ${return_detail_table} as rd JOIN ${lot_table} as l ON rd.lot_id = l.id JOIN ${sale_detail_table} as sd ON rd.sale_detail_id = sd.id WHERE rd.return_id = {$return_id} AND rd.active = 1 AND sd.active=1";
 		
 		$data['return_detail'] = $wpdb->get_results($detail_query);
 	}

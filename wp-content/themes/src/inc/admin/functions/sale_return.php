@@ -35,6 +35,7 @@ function sale_return($value='')
 					'sale_id'  => $sale_id, 
 					'sale_detail_id' => $return['sale_detail'],
 					'lot_id' => $return['return_lot'], 
+					'bill_type' =>$return['bill_type'],
 					'return_weight' => $return['return_weight'],
 					'amt_per_kg'   =>  $return['amt_per_kg'],
 					'taxless_amount'   =>  $return['taxless_amt'],
@@ -113,6 +114,7 @@ function sale_return_update($value='')
 			$exist_data = $wpdb->get_row($query);
 
 			$return_data = array( 
+				'bill_type'			=>  $return['bill_type'],
 				'return_weight' 	=>  $return['return_weight'],
 				'amt_per_kg'   		=>  $return['amt_per_kg'],
 				'taxless_amount'   	=>  $return['taxless_amt'],
