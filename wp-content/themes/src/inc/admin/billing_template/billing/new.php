@@ -262,7 +262,7 @@
                                     </div>
                                     <div>
                                         <span class="">
-                                            <span class="sale_as_name_kg">Kg  : <input type="radio" name="sale_as" class="sale_as" value="kg" checked></span>
+                                            <span class="sale_as_name_kg"><input type="radio" name="sale_as" class="sale_as" value="kg" checked>: Kg</span> | 
                                             <span class="sale_as_name_bag">Bag :<input type="radio" name="sale_as" class="sale_as" value="bag"></span>
                                         </span>
                                     </div>
