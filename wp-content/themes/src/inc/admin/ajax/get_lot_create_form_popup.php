@@ -336,7 +336,7 @@
 							    <div class="div-table-head">From Weight</div>
 							    <div class="div-table-head">To Weight</div>
 							    <div class="div-table-head">Discount Price</div>
-							    <div class="div-table-head">Margin Price</div>
+							    <div class="div-table-head">End Price</div>
 							    <div class="div-table-head">Option</div>
 							</div>
 
@@ -373,7 +373,7 @@
 							    <div class="div-table-head" style="display:none;">To Weight</div>
 							    <div class="div-table-head">Bag Count</div>
 							    <div class="div-table-head">Price/Bag</div>
-							    <div class="div-table-head">Margin Price/Bag</div>
+							    <div class="div-table-head">End Price/Bag</div>
 							</div>
 
 					    	<div data-repeater-item class="repeterin div-table-row">
@@ -405,7 +405,7 @@
 							    <div class="div-table-head">From Weight</div>
 							    <div class="div-table-head">To Weight</div>
 							    <div class="div-table-head">Discount Price</div>
-							    <div class="div-table-head">Margin Price</div>
+							    <div class="div-table-head">End Price</div>
 							    <div class="div-table-head">Option</div>
 							</div>
 
@@ -444,7 +444,7 @@
 							    <div class="div-table-head" style="display:none;">To Weight</div>
 							    <div class="div-table-head">Bag Count</div>
 							    <div class="div-table-head">Price/Bag</div>
-							    <div class="div-table-head">Margin Price/Bag</div>
+							    <div class="div-table-head">End Price/Bag</div>
 							</div>
 
 					    	<div data-repeater-item class="repeterin div-table-row">

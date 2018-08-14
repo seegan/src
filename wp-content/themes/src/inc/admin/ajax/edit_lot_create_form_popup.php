@@ -469,7 +469,7 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 							    <div class="div-table-head">From Weight</div>
 							    <div class="div-table-head">To Weight</div>
 							    <div class="div-table-head">Discount Price</div>
-							    <div class="div-table-head">Margin Price</div>
+							    <div class="div-table-head">End Price</div>
 							    <div class="div-table-head">Option</div>
 							</div>
 <?php
@@ -537,7 +537,7 @@ if( $lot_details['dummy_retail'] && $dummy_slab_system == '1' && count($lot_deta
 							    <div class="div-table-head" style="display:none;">From Weight</div>
 							    <div class="div-table-head" style="display:none;">To Weight</div>
 							    <div class="div-table-head">Price/Bag</div>
-							    <div class="div-table-head">Margin Price/Bag</div>
+							    <div class="div-table-head">End Price/Bag</div>
 							</div>
 
 <?php
@@ -598,7 +598,7 @@ if( $lot_details['dummy_retail'] && $dummy_slab_system != '1' && count($lot_deta
 							    <div class="div-table-head">From Weight</div>
 							    <div class="div-table-head">To Weight</div>
 							    <div class="div-table-head">Discount Price</div>
-							    <div class="div-table-head">Margin Price</div>
+							    <div class="div-table-head">End Price</div>
 							    <div class="div-table-head">Option</div>
 							</div>
 
@@ -668,7 +668,7 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system == '1' && count($lot_d
 							    <div class="div-table-head" style="display:none;">From Weight</div>
 							    <div class="div-table-head" style="display:none;">To Weight</div>
 							    <div class="div-table-head">Price/Bag</div>
-							    <div class="div-table-head">Margin Price/Bag</div>
+							    <div class="div-table-head">End Price/Bag</div>
 							</div>
 <?php
 if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_details['dummy_wholesale'])>0 ) {
