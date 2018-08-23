@@ -1452,8 +1452,7 @@ function update_bill(){
 		if($s_value['lot_number'])
 		{
 			//Combain lot and dummy lot and skip duplicate
-			if($s_value['lot_parent'] && $s_value['type_bill_h'] == 'original') {
-				//$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
+			if($s_value['lot_parent'] ) {
 
 				$bagWeightInKg 	= $s_value['bagWeightInKg'];
 	
@@ -1469,20 +1468,30 @@ function update_bill(){
 					$slab = 0;
 				}
 
+
+				if($s_value['type_bill_h'] != 'original') {
+					$bill_type = 'duplicate';
+					$bill_from = $s_value['type_bill_s'];
+					$lot_type = '-';
+				} else {
+					$bill_type = 'original';
+					$bill_from = $shop_name;
+
+					if($s_value['lot_number'] == $s_value['lot_parent']) {
+						$lot_type = 'real';
+					} else {
+						$lot_type = 'dummy';
+					}
+				}
+
 				//Original lot
 				if($s_value['lot_number'] == $s_value['lot_parent']) {
-					$update_sale[] = array('id' => $token_id,'bill_type' => 'original', 'bill_from' => $shop_name, 'lot_type' => 'real', 'lot_id' => $s_value['lot_number'], 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=> $saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight, 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display, 'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
+					$update_sale[] = array('id' => $token_id,'bill_type' => $bill_type, 'bill_from' => $bill_from, 'lot_type' => $lot_type, 'lot_id' => $s_value['lot_number'], 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=> $saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight, 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display, 'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
 				} else { //Dummy Lot
-					$update_sale[] = array('id' => $token_id,'bill_type' => 'original', 'bill_from' => $shop_name, 'lot_type' => 'dummy', 'lot_id' => $s_value['lot_number'], 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=> $saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight, 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display, 'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
+					$update_sale[] = array('id' => $token_id,'bill_type' => $bill_type, 'bill_from' => $bill_from, 'lot_type' => $lot_type, 'lot_id' => $s_value['lot_number'], 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=> $saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight, 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display, 'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
 				}
 
 
-			} else {
-				$bag_count   = 0.00;
-				$bag_weight  = 0.00;
-				$slab        = 1;
-
-				$update_sale[] = array('id' => $token_id,'bill_type' => 'duplicate', 'bill_from' => $s_value['type_bill_s'], 'lot_type' => '-', 'lot_id' => $s_value['lot_number'], 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => '-','slab' => $slab, 'sale_as'=> $saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight, 'sale_weight' => $s_value['lot_duplicate_total'], 'unit_price' => $s_value['unit_price_duplicate'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display, 'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
 			}
 
 		}
@@ -1547,18 +1556,6 @@ function update_bill(){
 				}
 			}
 		}
-
-
-		//Delivery address add
-		// if($home_delivery == 1){
-		// 	$delivery_address = array(
-		// 		'customer_id'		=> $billing_customer,
-		// 		'delivery_name' 	=> $params['delivery_name'],
-		// 		'delivery_phone' 	=> $params['delivery_phone'],
-		// 		'delivery_address' 	=> $params['delivery_address'],
-		// 		);
-		// 	$wpdb->insert($delivery_table,$delivery_address);
-		// }
 
 
 		//Remove old sale details
@@ -1726,23 +1723,29 @@ function update_bill_last(){
 					$slab = 0;
 				}
 
-				//Original lot
-				if( ($s_value['lot_number'] == $s_value['lot_parent']) OR ($s_value['lot_number2'] == $s_value['lot_parent']) ) {
-					$update_sale[] = array('id'=>$bill_detail_id,'bill_type' => 'original', 'bill_from' => $shop_name, 'home_delivery' => $home_delivery,  'lot_type' => 'real', 'lot_id' => $final_lot_number, 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=>$saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight , 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display,'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
-				} else { //Dummy Lot
-					$update_sale[] = array('id'=>$bill_detail_id,'bill_type' => 'original', 'bill_from' => $shop_name, 'home_delivery' => $home_delivery, 'lot_type' => 'dummy', 'lot_id' => $final_lot_number, 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=>$saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight , 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display,'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
+				if($s_value['type_bill_h'] != 'original') {
+					$bill_type = 'duplicate';
+					$bill_from = $s_value['type_bill_s'];
+					$lot_type = '-';
+				} else {
+					$bill_type = 'original';
+					$bill_from = $shop_name;
+
+					if($s_value['lot_number'] == $s_value['lot_parent']) {
+						$lot_type = 'real';
+					} else {
+						$lot_type = 'dummy';
+					}
 				}
 
-			} else {
+				//Original lot
+				if( ($s_value['lot_number'] == $s_value['lot_parent']) OR ($s_value['lot_number2'] == $s_value['lot_parent']) ) {
+					$update_sale[] = array('id'=>$bill_detail_id,'bill_type' => $bill_type, 'bill_from' => $bill_from, 'home_delivery' => $home_delivery,  'lot_type' => $lot_type, 'lot_id' => $final_lot_number, 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=>$saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight , 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display,'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
+				} else { //Dummy Lot
+					$update_sale[] = array('id'=>$bill_detail_id,'bill_type' => $bill_type, 'bill_from' => $bill_from, 'home_delivery' => $home_delivery, 'lot_type' => $lot_type, 'lot_id' => $final_lot_number, 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => $s_value['sale_type_h'],'slab' => $slab, 'sale_as'=>$saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight , 'sale_weight' => $weight, 'unit_price' => $s_value['unit_price_original'], 'margin_price'=>$s_value['sale_margin_price'], 'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display,'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
+				}
 
-				$bag_count = 0.00;
-				$bag_weight = 0.00;
-				$slab = 1;
-
-				$update_sale[] = array('id'=>$bill_detail_id,'bill_type' => 'duplicate', 'bill_from' => $s_value['type_bill_s'], 'home_delivery' => $home_delivery, 'lot_type' => '-', 'lot_id' => $final_lot_number, 'lot_parent_id' => $s_value['lot_parent'], 'sale_type' => '-','slab' => $slab, 'sale_as'=>$saleAs, 'bag_count' => $bag_count, 'bag_weight' => $bag_weight , 'sale_weight' => $s_value['lot_duplicate_total'], 'unit_price' => $s_value['unit_price_duplicate'], 'margin_price'=>$s_value['sale_margin_price'],  'sale_value' => $s_value['total_price'], 'sale_id' => $billing_no, 'made_by' => get_current_user_id(), 'price_orig_hidden' => $s_value['price_orig_hidden'], 'brand_display' => $brand_display,'hsn_code'=>$s_value['hsn_code'], 'taxless_amt' => $s_value['taxless_total'], 'cgst_percentage' => $s_value['cgst_per_total'], 'sgst_percentage' => $s_value['sgst_per_total'], 'igst_percentage' => $s_value['igst_per_total'], 'cgst_value' => $s_value['cgst_val_total'], 'sgst_value' => $s_value['sgst_val_total'], 'igst_value' => $s_value['igst_val_total'] );
 			}
-// var_dump($update_sale);
-// die();
 		}
 	}
 
