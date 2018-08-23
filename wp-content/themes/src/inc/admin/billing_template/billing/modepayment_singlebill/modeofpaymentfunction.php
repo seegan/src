@@ -338,4 +338,33 @@ add_action( 'wp_ajax_getCustomerAddress', 'getCustomerAddress');
 add_action( 'wp_ajax_nopriv_getCustomerAddress', 'getCustomerAddress');
 
 
+function mainDeliveryAdd($sale_id=0,$date=''){
+	global $wpdb;
+	$delivery_table = $wpdb->prefix.'delivery';
+	$insert 		= $wpdb->insert($delivery_table, array('sale_id'=>$sale_id,'delivery_date'=>$date));
+	if($insert){
+		$delivery_id = $wpdb->insert_id;
+		deliveryDetailsAdd($delivery_id,$sale_id);
+
+	} 
+	return true;
+}
+function deliveryDetailsAdd($sale_id = 0,$delivery_id =0) {	
+	global $wpdb;
+	$sale_details = $wpdb->prefix.'sale_detail';
+	$delivery_details = $wpdb->prefix.'delivery_detail';
+	$query = "SELECT id,lot_id,sale_weight from {$sale_details} where sale_id ={$sale_id} and active =1";
+	$results = $wpdb->get_results($query);
+	foreach ($results as $getvalue) {
+		$details = array(
+			'delivery_id' 		=>	$delivery_id,
+			'sale_id'     		=>	$sale_id,
+			'sale_detail_id' 	=> $getvalue->id,
+			'lot_id'            => $getvalue->lot_id,
+			'delivery_weight'   => $getvalue->sale_weight,
+			);
+		$wpdb->insert($delivery_details,$details);
+	}
+}
+
 ?>

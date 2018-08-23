@@ -75,14 +75,14 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 				cursor: pointer;
 			}
 		</style>
-<script>
-  function print_current_page()
-  {
-  	// window.print();
-  	var printPage = window.open(document.URL, '_blank');
-  	setTimeout(printPage.print(), 5);
-  }
-</script>
+		<script>
+		  function print_current_page()
+		  {
+		  	// window.print();
+		  	var printPage = window.open(document.URL, '_blank');
+		  	setTimeout(printPage.print(), 5);
+		  }
+		</script>
 		<div class = "print_content">
 			<div class = "print_header">
 				<div style="width: 320px; margin: 0 auto; padding: 5px 0px; height: 75px;">
@@ -99,6 +99,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 						<li><span>Mobile : </span><?php echo $bill_data['customer_data']->mobile; ?></li>
 						<li><span>Address : </span><?php echo $bill_data['customer_data']->address; ?> </li>
 						<li><span>Delivery Option : </span><?php echo ($bill_data['bill_data']->delivery_avail == '1')? 'yes':'no'; ?> </li>
+						<li><span>Deliveried All : </span><input type="checkbox" <?php echo ($bill_data['bill_data']->delivery_avail == '1')? 'checked':''; ?> name="deliveried_all" value="1" class="deliveried_all"> </li>
 						
 					</ul>
 				</div>
@@ -230,28 +231,6 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 							</td>
 							<td><?php echo $bill_data['bill_data']->sale_value; ?></td>
 						</tr>
-						<!-- <tr>
-							<td></td>
-							<td></td>
-							<?php //if($bill_data['bill_data']->gst_to == 'cgst'){ ?>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<?php  //} 
-		                    //if($bill_data['bill_data']->gst_to =='igst'){
-		                    ?>
-							<td></td>
-							<td></td>
-							<?php  //} ?>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td colspan="2">
-								<label>Discount &nbsp;(Rs)</label>
-							</td>
-							<td><?php //echo $bill_data['bill_data']->sale_discount_price; ?></td>
-						</tr> -->
 						<tr>
 							<td></td>
 							<td></td>
