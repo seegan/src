@@ -322,7 +322,7 @@
                                 }
                     ?>
 
-                        <div data-repeater-item class="repeterin div-table-row <?php echo $bill_type; ?>" lot-id="<?php echo $b_value->lot_id; ?>" lot-number="<?php echo $b_value->lot_number; ?>" lot-bagweight="<?php echo $b_value->weight; ?>" lot-bagcons="<?php echo $b_value->bag_weight; ?>" lot-slabsys="<?php echo $b_value->slab_system; ?>" lot-type="<?php echo $b_value->lot_type; ?>" lot-brand="<?php echo $b_value->brand_name; ?>" lot-product="<?php echo $b_value->product_name; ?>" lot-parent="<?php echo $b_value->par_id; ?>" stock-avail="<?php echo $b_value->stock_bal; ?>" lotr-tot-weight="<?php echo $b_value->sale_weight; ?>" lotr-unit-price="<?php echo $b_value->unit_price; ?>" lotr-sale-price="<?php echo $b_value->sale_value; ?>" hsn-code="<?php echo $b_value->hsn_code; ?>" gst-percentage="<?php echo $b_value->igst_percentage; ?>">
+                        <div data-repeater-item class="repeterin div-table-row" lot-id="<?php echo $b_value->lot_id; ?>" lot-number="<?php echo $b_value->lot_number; ?>" lot-bagweight="<?php echo $b_value->weight; ?>" lot-bagcons="<?php echo $b_value->bag_weight; ?>" lot-slabsys="<?php echo $b_value->slab_system; ?>" lot-type="<?php echo $b_value->lot_type; ?>" lot-brand="<?php echo $b_value->brand_name; ?>" lot-product="<?php echo $b_value->product_name; ?>" lot-parent="<?php echo $b_value->par_id; ?>" stock-avail="<?php echo $b_value->stock_bal; ?>" lotr-tot-weight="<?php echo $b_value->sale_weight; ?>" lotr-unit-price="<?php echo $b_value->unit_price; ?>" lotr-sale-price="<?php echo $b_value->sale_value; ?>" hsn-code="<?php echo $b_value->hsn_code; ?>" gst-percentage="<?php echo $b_value->igst_percentage; ?>">
 
                                 <div class="div-table-col sale-rowno">
 
@@ -370,13 +370,13 @@
                                     <div class="weight_cal_section">
                                         <input type="hidden" name="hsn_code" class="hsn_code" value="<?php echo $b_value->hsn_code; ?>">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="<?php echo $b_value->bag_weight; ?>" autocomplete="off" placeholder=""> 
-                                        <div class="slab_system_no" style="width: 100px;display:<?php echo $slab_no_display ?>;">
+                                        <div class="slab_system_no" style="text-align:left;width: 100px;display:<?php echo $slab_no_display ?>;">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" value="<?php echo $b_value->weight; ?>" readonly style="display: none;">
                                             <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo $b_value->sale_weight; ?>" readonly style="display: none;">
                                             <span class="bag_display">Bag</span>
                                         </div>
-                                        <div class="slab_system_yes" style="width: 100px;display:<?php echo $slab_yes_display ?>;">
+                                        <div class="slab_system_yes" style="text-align:left;width: 100px;display:<?php echo $slab_yes_display ?>;">
                                             <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
                                             <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Kg</span>
                                             <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Bag</span>
@@ -391,15 +391,6 @@
                                     <div style="clear:both;"></div>
                                   </div>
 
-
-                                  <div class="weight-duplicate-block">
-                                    <div class="weight_cal_section">
-                                      <div class="" style="display:block;">
-                                        <input type="text" name="lot_duplicate_total" class="total duplicate_total" autocomplete="off" placeholder="Weight" value="<?php echo $b_value->sale_weight; ?>" style="width: 55px;">
-                                      </div>
-                                    </div>
-                                    <div style="clear:both;"></div>
-                                  </div>
                                 </div>
 
                                 <div class="div-table-col sale-brand" style="position:relative;">
@@ -430,7 +421,6 @@
                                   <div class="sale_unit_price">
                                     <input type="text" name="unit_price_original" class="unit_price" value="<?php echo $b_value->unit_price; ?>">
                                     <input type="hidden" name="unit_price_for_calc" class="unit_price_for_calc" value="<?php echo $b_value->unit_price; ?>">
-                                    <input type="text" name="unit_price_duplicate" class="unit_price_input" value="<?php echo $b_value->unit_price; ?>">
                                   </div>
                                 </div>
                                 <div class="div-table-col sale-margin-price">
@@ -538,13 +528,13 @@
                                     <div class="weight_cal_section">
                                         <input type="hidden" name="hsn_code" class="hsn_code">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="" autocomplete="off" placeholder=""> 
-                                        <div class="slab_system_no" style="width: 100px;">
+                                        <div class="slab_system_no" style="width: 100px;text-align:left;">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" style="display: none;width: 55px;">
                                             <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" style="display: none;">
                                             <span class="bag_display">Bag</span>
                                         </div>
-                                        <div class="slab_system_yes" style="display:none;width: 100px;">
+                                        <div class="slab_system_yes" style="display:none;width: 100px;text-align:left;">
                                             <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
                                             <span class="kg_display">Kg</span>
                                             <span class="bag_display">Bag</span>
@@ -558,19 +548,6 @@
                                     </div>
                                     <div style="clear:both;"></div>
                                   </div>
-
-
-                                  <div class="weight-duplicate-block">
-                                    <div class="weight_cal_section">
-                                      <div class="" style="display:block;">
-                                        <input type="text" name="lot_duplicate_total" class="total duplicate_total" autocomplete="off" placeholder="Weight" value="0" style="width: 55px;">
-                                      </div>
-
-                                    </div>
-                                    <div style="clear:both;"></div>
-                                  </div>
-
-
                                 </div>
 
                                 <div class="div-table-col sale-brand" style="position:relative;">
@@ -598,7 +575,6 @@
                                 <div class="div-table-col sale-unit-price">
                                   <div class="sale_unit_price">
                                     <input type="text" name="unit_price_original" class="unit_price" value="0">
-                                    <input type="text" name="unit_price_duplicate" class="unit_price_input" value="0">
                                   </div>
                                 </div>
                                 <div class="div-table-col sale-margin-price">

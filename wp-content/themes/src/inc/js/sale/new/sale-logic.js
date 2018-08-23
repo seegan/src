@@ -76,7 +76,7 @@ function populate_select2(this_data = '', v) {
             jQuery(this).parent().parent().find('.slab_system_no').css('display', 'none');
             jQuery(this).parent().parent().find('.slab_system_yes').css('display', 'block');
             jQuery(this).parent().parent().find('.input_lot_slab').val(1);
-            jQuery(this).parent().parent().find('.total').val((e.params.data.weight)*1 );
+            jQuery(this).parent().parent().find('.total').val(1);
       } else {
             jQuery(this).parent().parent().find('.slab_system_yes').css('display', 'none');
             jQuery(this).parent().parent().find('.slab_system_no').css('display', 'block');
@@ -84,7 +84,7 @@ function populate_select2(this_data = '', v) {
 
             jQuery(this).parent().parent().find('.weight').val(e.params.data.weight);
             jQuery(this).parent().parent().find('.unit_count').val(1);
-            jQuery(this).parent().parent().find('.total').val(e.params.data.weight);
+            jQuery(this).parent().parent().find('.total').val(1);
       }
       
 
@@ -159,18 +159,6 @@ jQuery('.sale_type').live('change', function() {
   triggerTotalCalculate(jQuery(this).parent().parent().parent().parent());
 });
 
-jQuery('.type_bill').live('change', function() {
-  /*total calculate on type change*/
-  if(jQuery(this).val() == 'original') {
-    jQuery(this).parent().parent().parent().parent().removeClass('duplicate');
-    jQuery(this).parent().parent().parent().parent().addClass('original');
-  } else {
-    jQuery(this).parent().parent().parent().parent().removeClass('original');
-    jQuery(this).parent().parent().parent().parent().addClass('duplicate');
-  }
-  triggerTotalCalculate(jQuery(this).parent().parent().parent().parent());
-});
-
 jQuery('.type-slider .slide-in').live('click', function(){
   jQuery(this).parent().find('.active').removeClass('active');
   jQuery(this).addClass('active');
@@ -185,15 +173,15 @@ jQuery('.type-bill-slider .bill-slide-in').live('click', function(){
   jQuery(this).parent().find('.active').removeClass('active');
   jQuery(this).addClass('active');
 
-/*  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").attr('checked', 'checked');
-  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").change(); */
+  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").attr('checked', 'checked');
+  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").change(); 
 
   jQuery(this).parent().parent().find('.type_bill_h').val(jQuery(this).attr('data-stype'));
   jQuery(this).parent().parent().find('.type_bill_s').val(jQuery(this).attr('data-sstype'));
 });
 
 //Trigger total when unit price change
-jQuery('.unit_price, .unit_price_input').live('change', function(){
+jQuery('.unit_price').live('change', function(){
   var total_unit = jQuery(this).val();
   var selector = jQuery(this).parent().parent().parent();
 //Compare with margin price
@@ -231,6 +219,7 @@ function calculateGST(selector) {
   var lot_id = jQuery(selector).attr('lot-id');
   var gst_percentage = jQuery(selector).attr('gst-percentage');
   var sale_type = jQuery(selector).find('.sale_type:checked').val();
+  var unit_price = jQuery(selector).find('.sale_unit_price .unit_price').val();
 
   if(jQuery(selector).attr('lot-slabsys') == 1) {
     if(jQuery(selector).find('.sale_as[value="kg"]').attr("checked")) {
@@ -242,15 +231,13 @@ function calculateGST(selector) {
   } else {
     var total_weight = jQuery(selector).find('.slab_system_no .unit_count').val();
   }
-  
-  if(jQuery(selector).find('.type_bill:radio:checked').val() == 'duplicate') {
-    var total_weight = jQuery(selector).find('.duplicate_total').val();
-    var unit_price = jQuery(selector).find('.unit_price_input').val();
-  } else {
-    var unit_price = jQuery(selector).find('.sale_unit_price .unit_price').val();
-  }
 
   var row_total = total_weight*unit_price;
+
+  console.log(total_weight);
+  console.log(unit_price);
+
+
   var cgst_per = (parseFloat(gst_percentage) / 2).toFixed(2);
   var igst_per = parseFloat(gst_percentage).toFixed(2);
 
@@ -323,53 +310,50 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
 }
 
 function triggerTotalCalculate(selector) {
-
   jQuery('.bill-loader').css('display', 'block');
   var lot_id = jQuery(selector).attr('lot-id');
   var sale_type = jQuery(selector).find('.sale_type:checked').val();
   if(jQuery(selector).attr('lot-slabsys') == 1) {
     if(jQuery(selector).find('.sale_as[value="kg"]').attr("checked")) {
       var total_weight = jQuery(selector).find('.slab_system_yes .total').val();
-      total_weight = isNaN(total_weight) ? total_weight : 0;
+      total_weight = isNaN(total_weight) ? 0 : total_weight;
     }
     else{
       var total_weight = jQuery(selector).find('.slab_system_yes .total').val() * jQuery(selector).find('.bagWeightInKg').val();
-      total_weight = isNaN(total_weight) ? total_weight : 0;
+      total_weight = isNaN(total_weight) ? 0 : total_weight;
     }
   } else {
-      var total_weight = jQuery(selector).find('.slab_system_no .total').val();
-      total_weight = isNaN(total_weight) ? total_weight : 0;
+    var total_weight = jQuery(selector).find('.slab_system_no .total').val();
+    total_weight = isNaN(total_weight) ? 0 : total_weight;
   }
-  
-  if(jQuery(selector).find('.type_bill:radio:checked').val() == 'duplicate') {
-    var tot_weight = jQuery(selector).find('.duplicate_total').val();
-    var unit_price = jQuery(selector).find('.unit_price_input').val();
 
-    calculateGST(selector);
-    jQuery('.bill-loader').css('display', 'none');
-  } else {
-    jQuery.ajax({
-        type: "POST",
-        url: frontendajax.ajaxurl,
-        data: {
-          action : 'get_price_weight_based',
-          lot_id : lot_id,
-          sale_type : sale_type,
-          total_weight : total_weight,
-        },
-        success: function (data) {
-          var obj = jQuery.parseJSON(data);
-          if(obj.success == 1) {
-            jQuery(selector).find('.sale_unit_price .unit_price').val(obj.price_detail.price);
-            jQuery(selector).find('.sale_unit_price .unit_price_for_calc').val(obj.price_detail.price);
-            jQuery(selector).find('.sale_margin_price_div_hidden .margin_price').val(obj.price_detail.margin_price);
-            jQuery(selector).find('.sale_margin_price_div').text(obj.price_detail.margin_price);
-            calculateGST(selector);
-          }
-          jQuery('.bill-loader').css('display', 'none');
+
+
+  console.log(total_weight);
+
+  
+  jQuery.ajax({
+      type: "POST",
+      url: frontendajax.ajaxurl,
+      data: {
+        action : 'get_price_weight_based',
+        lot_id : lot_id,
+        sale_type : sale_type,
+        total_weight : total_weight,
+      },
+      success: function (data) {
+        var obj = jQuery.parseJSON(data);
+        if(obj.success == 1) {
+          jQuery(selector).find('.sale_unit_price .unit_price').val(obj.price_detail.price);
+          jQuery(selector).find('.sale_unit_price .unit_price_for_calc').val(obj.price_detail.price);
+          jQuery(selector).find('.sale_margin_price_div_hidden .margin_price').val(obj.price_detail.margin_price);
+          jQuery(selector).find('.sale_margin_price_div').text(obj.price_detail.margin_price);
+          calculateGST(selector);
         }
-    });
-  }
+        jQuery('.bill-loader').css('display', 'none');
+      }
+  });
+
 }
 
 function updateSaleTotal() {

@@ -1187,10 +1187,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
     position: relative;
 }
 
-.original .type-slider, .original .weight-original-block, .duplicate .weight-duplicate-block, .original .unit_price, .duplicate .unit_price_input {
+.original .weight-original-block, .duplicate .weight-duplicate-block, .original .unit_price, .duplicate .unit_price_input {
     display: block;
 }
-.duplicate .type-slider, .original .weight-duplicate-block, .duplicate .weight-original-block, .duplicate .unit_price, .original .unit_price_input {
+.original .weight-duplicate-block, .duplicate .weight-original-block, .duplicate .unit_price, .original .unit_price_input {
     display: none;
 }
 
