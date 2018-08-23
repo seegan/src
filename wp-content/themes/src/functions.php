@@ -11,6 +11,7 @@ require get_template_directory() . '/inc/admin/admin-dashboard.php';
 require get_template_directory() . '/inc/admin/report-functions.php';
 require get_template_directory() . '/inc/admin/creditdebit/function.php';
 require get_template_directory() . '/inc/admin/billing_template/billing/modepayment_singlebill/modeofpaymentfunction.php';
+require get_template_directory() . '/inc/admin/gst_report/function.php';
 
 
 function src_global_var() {

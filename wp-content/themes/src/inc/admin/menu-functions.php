@@ -93,6 +93,19 @@ function admin_menu_register(){
 	add_submenu_page('report_list', 'Stock Status Report', 'Stock Status Report', $src_premissions['reports'], 'report_list', 'report_list' );
 	add_submenu_page('report_list', 'Stock Sale Report', 'Stock Sale Report', $src_premissions['reports'], 'sale_report_list', 'sale_report_list' );
 
+	add_menu_page(
+	    __( 'GST Report', 'src'),
+	    'GST Report',
+	    $src_premissions['reports'],
+	    'igst_report',
+	    'igst_report',
+	    'dashicons-clipboard',
+	    9
+	);
+	add_submenu_page('igst_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_report', 'igst_report' );
+	add_submenu_page('igst_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_report', 'cgst_report' );
+
+
 
 	add_menu_page(
 	    __( 'Settings', 'src'),
@@ -203,16 +216,17 @@ function sale_report_list() {
 
 //<---- credit debit --->
 function credit_debit() {
-
     require 'creditdebit/listing/creditdebit_list.php';
-
 }
 
 function add_credit_debit() {
      require 'creditdebit/add_creditdebit.php';
 }
 
-
+//Gst Report
+function igst_report(){
+	require 'gst_report/listing/gst-list-accountant.php';
+}
 
 
 add_action( 'admin_bar_menu', 'wp_admin_bar_my_custom_account_menu', 11 );

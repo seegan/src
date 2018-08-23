@@ -279,7 +279,7 @@ function src_admin_confirm_box() {
 	}
 
 
- function get_customers( $args = array() ) {
+function get_customers($args = array()) {
 	global $wpdb;
 	$customer_table = $wpdb->prefix. 'customers';
 	$query = "SELECT * FROM {$customer_table}";
