@@ -185,8 +185,8 @@ jQuery('.type-bill-slider .bill-slide-in').live('click', function(){
   jQuery(this).parent().find('.active').removeClass('active');
   jQuery(this).addClass('active');
 
-  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").attr('checked', 'checked');
-  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").change();
+/*  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").attr('checked', 'checked');
+  jQuery(this).parent().parent().find("input[type=radio][value="+ jQuery(this).attr('data-stype') +"]").change(); */
 
   jQuery(this).parent().parent().find('.type_bill_h').val(jQuery(this).attr('data-stype'));
   jQuery(this).parent().parent().find('.type_bill_s').val(jQuery(this).attr('data-sstype'));
