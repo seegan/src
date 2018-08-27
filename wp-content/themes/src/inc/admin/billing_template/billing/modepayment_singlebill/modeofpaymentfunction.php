@@ -344,8 +344,8 @@ function mainDeliveryAdd($sale_id=0,$date=''){
 	$insert 		= $wpdb->insert($delivery_table, array('sale_id'=>$sale_id,'delivery_date'=>$date));
 	if($insert){
 		$delivery_id = $wpdb->insert_id;
-		deliveryDetailsAdd($delivery_id,$sale_id);
-
+		deliveryDetailsAdd($sale_id,$delivery_id);
+		checkDeliveryAndUpdate($sale_id);
 	} 
 	return true;
 }

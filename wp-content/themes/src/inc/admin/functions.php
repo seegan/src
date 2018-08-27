@@ -1411,8 +1411,6 @@ function update_bill(){
 	$installment_table = $wpdb->prefix. 'payment_installment';
 	$lots_sale_detail_table = $wpdb->prefix. 'sale_detail';
 
-	$stock_not_avail = array();
-	
 
 	$billing_date 	= $params['billing_date'];
 	$billing_no 	= $params['billing_no'];
@@ -1576,12 +1574,9 @@ function update_bill(){
 		}
 	}
 
-//Delivery Add 
-		if($home_delivery == '1'){
-
-			mainDeliveryAdd($billing_no,$billing_date);
-
-		}
+	if($home_delivery == '0'){
+		mainDeliveryAdd($billing_no,$billing_date);
+	}
 
 	echo json_encode($data);
 	die();
@@ -1627,7 +1622,6 @@ function update_bill_last(){
 	$payment_history 		= $wpdb->prefix. 'payment_history';
 	$installment_table 		= $wpdb->prefix. 'payment_installment';
 	$delivery_table 		= $wpdb->prefix. 'delivery_address';
-	$stock_not_avail 		= array();
 
 	$billing_date 			= $params['billing_date'];
 	$billing_no 			= $params['billing_no'];
@@ -1650,33 +1644,6 @@ function update_bill_last(){
 	$final_total 	= $params['final_total'];
 
 	$payment_done 	= ( $params['payment_done'] && $params['payment_done'] == 'on' ) ? 1 : 0; 
-
-	//To check and form stock availablity result
-	foreach ($data as $p_key => $p_value) {
-
-		$query = "
-		SELECT tt1.*, (tt1.stock_total - tt1.sale_total)as stock_bal  from 
-		(
-
-		select *,
-		( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) as par_id,
-		( SELECT  
-		 ( case WHEN SUM(total_weight)  Then SUM(total_weight) ELSE 0 END ) 
-		 from ${stock_table} s where s.active = 1 AND s.lot_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as stock_total, 
-		    
-		( SELECT 
-		 ( case WHEN SUM(sale_weight)  Then SUM(sale_weight) ELSE 0 END ) 
-		 from ${lots_sale_detail_table} sd where sd.active = 1 AND sd.bill_type = 'original' AND sd.lot_parent_id = ( case WHEN l.parent_id = 0 Then l.id ELSE l.parent_id END ) ) as sale_total
-		from ${lots_table} as l WHERE id = ${p_key} AND active = 1 
-
-		) as tt1";
-
-		$d_data = $wpdb->get_row( $query, ARRAY_A );
-
-		if($p_value > $d_data['stock_bal']) {
-			$stock_not_avail[$p_key] = 'Stock Not Avail!';
-		}
-	}
 
 
 
@@ -1785,25 +1752,13 @@ function update_bill_last(){
 
 //Update in all Payments
 
-		// $payment_total = $params['payment_total_without_pre'];
-
 		//Mode of payment
 		PaymentUpdate($params['payment_detail'],$params['payment_cash'],$params['pay_amount_cheque'], $billing_no,$billing_customer,$params['pay_pre_bal']);
 		
-
 		//Other Payments(COD,PREV_BAL,TO PAY and Balance)
 		$codCheck = isset($params['cod_check'])? 1 : 0;
 		$paymentCheck = isset($params['to_pay_checkbox'])? 1 : 0;
 		AddOtherPayments($codCheck, $params['cod_amount'],$paymentCheck,$params['to_pay'],$params['balance'],$billing_no);
-
-
-
-		//Delivery address add
-		if($params['delivery_need'] == '1'){
-			mainDeliveryAdd($billing_no,$billing_date);
-		}
-
-
 
 
 
@@ -1840,7 +1795,10 @@ function update_bill_last(){
 				addSale($a_value['lot_parent_id'], $a_value['sale_weight']);
 			}
 			
-		}		
+		}
+
+		//Delivery check
+		checkDeliveryAndUpdate($billing_no);		
 
 	}
 
@@ -3394,7 +3352,6 @@ function addReturn($lot_id = 0, $return_count = 0) {
 	$wpdb->query($sql_update);
 }
 
-
 function PhoneNumberDuplication(){
 	global $wpdb;
 	$customer_table = $wpdb->prefix.'customers';
@@ -3406,7 +3363,5 @@ function PhoneNumberDuplication(){
  	echo json_encode($data);
  	die();
 }
-
 add_action( 'wp_ajax_PhoneNumberDuplication', 'PhoneNumberDuplication');
 add_action( 'wp_ajax_nopriv_PhoneNumberDuplication', 'PhoneNumberDuplication');
-

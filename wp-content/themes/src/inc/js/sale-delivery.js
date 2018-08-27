@@ -66,7 +66,7 @@ jQuery('.delivery_item').live('click', function(){
         type: "POST",
         url: frontendajax.ajaxurl,
         data: {
-          action : 'sale_delivery',
+          action : 'sale_delivery_aj',
           delivery_data : jQuery('#new_delivery :input').serialize(),
         },
         success: function (data) {

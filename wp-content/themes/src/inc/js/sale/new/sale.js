@@ -71,14 +71,32 @@ jQuery(document).ready(function(){
     });
   });
 
-/*  jQuery('.print_bill').on('click',function(){
-      var inv_id = jQuery(this).attr('data-inv-id');
-      var datapass =   home_page.url+'invoice?inv_id='+inv_id;
 
-      // billing_list_single
-      var thePopup = window.open( datapass, "Customer Listing","scrollbars=yes,menubar=0,location=0,top=50,left=300,height=500,width=750" );
-        thePopup.print();  
-  });*/
+
+
+
+
+  jQuery('.customer_info_bar .deliveried_all').on('change', function () {
+    if(this.checked) {
+      var returnVal = confirm("Are you sure?");
+      jQuery(this).prop("checked", returnVal); 
+      if(returnVal) {
+        jQuery.ajax({
+          type: "POST",
+          dataType: "json",
+          url: frontendajax.ajaxurl,
+          data: {
+            action     : 'delveryall_aj',
+            bill_no  : jQuery('.delivery_bill_no').val(),
+          },
+          success: function (data) {
+
+          }
+        });
+      }     
+    }
+  });
+
 });
 
 function callGSTChange(gst_type='') {
@@ -230,5 +248,3 @@ jQuery('#close_check_availa_box').live('click', function(){
     jQuery('.new_user, .old_user_a,.customer_new').css('display', 'none');
     jQuery('.user_type').val('old');
   });
-
-

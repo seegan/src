@@ -81,8 +81,10 @@
                     if($sales && is_array($sales) && count($sales) > 0) {
                         $row_count = 1;
                         foreach ($sales as $s_value) {
+                            $delivery_class = ($s_value->delivery_balance > 0 ) ? 'r_white' : 'r_green';
+                            $delivery_disabled = ($s_value->delivery_balance > 0 ) ? '' : 'disabled';
                 ?>
-                    <tr>
+                    <tr class="<?php echo $delivery_class; ?>">
                         <td><?php echo $s_value->lot_id; ?></td>
                         <td><?php echo $s_value->lot_number; ?></td>
                         <td><?php echo $s_value->sale_weight; ?></td>
@@ -101,10 +103,9 @@
                                     ?>
                                 </div>
                                 <div style="float:left;width:150px;">
-                                    <input type="text" value="" name="delivery_data[<?php echo $row_count; ?>][delivery_weight]">
+                                    <input type="text" value="" name="delivery_data[<?php echo $row_count; ?>][delivery_weight]" <?php echo $delivery_disabled; ?>>
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="delivery_data[<?php echo $row_count; ?>][delivery_lot]">
                                     <input type="hidden" name="delivery_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
-                                    <input type="checkbox" class='delivery_all'>
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
