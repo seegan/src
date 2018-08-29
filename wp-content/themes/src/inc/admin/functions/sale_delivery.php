@@ -21,7 +21,7 @@ function sale_delivery_aj($value='') {
 	if(isset($params['delivery_data']) && $params['delivery_data']) {
 		foreach ($params['delivery_data'] as $delivery) {
 			if($delivery['delivery_weight'] > 0) {
-				$delivery_data = array( 'delivery_id' => $delivery_id, 'sale_id' => $sale_id, 'sale_detail_id' => $delivery['sale_detail'],'lot_id' => $delivery['delivery_lot'], 'delivery_weight' => $delivery['delivery_weight'] );
+				$delivery_data = array( 'delivery_id' => $delivery_id, 'sale_id' => $sale_id, 'sale_detail_id' => $delivery['sale_detail'],'lot_id' => $delivery['delivery_lot'], 'delivery_as' => $delivery['delivery_as'], 'user_weight' => $delivery['user_unit'], 'bag_weight' => $delivery['bag_weight'], 'delivery_weight' => $delivery['delivery_weight'] );
 				$wpdb->insert($delivery_detail_table, $delivery_data);			
 			}
 		}

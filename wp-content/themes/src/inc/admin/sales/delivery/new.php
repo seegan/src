@@ -72,7 +72,7 @@
                     <th>Delivered</th>
                     <th>Returned</th>
                     <th>Delivery Pending</th>
-                    <th style="width:200px;">Now</th>
+                    <th style="width:280px;">Now</th>
                     <th>Price</th>
                 </tr>
             </thead>
@@ -81,6 +81,10 @@
                     if($sales && is_array($sales) && count($sales) > 0) {
                         $row_count = 1;
                         foreach ($sales as $s_value) {
+                            $bag_checked = ($s_value->sale_as == 'bag') ? 'checked' : '';
+                            $kg_checked = ($s_value->sale_as == 'bag') ? '' : 'checked';
+                            $bag_kg = ($s_value->sale_as == 'bag') ? 'bag' : 'kg';
+
                             $delivery_class = ($s_value->delivery_balance > 0 ) ? 'r_white' : 'r_green';
                             $delivery_disabled = ($s_value->delivery_balance > 0 ) ? '' : 'disabled';
                 ?>
@@ -93,23 +97,26 @@
                         <td><?php echo $s_value->delivery_balance; ?></td>
                         <td>
                             <div>
-                                <div style="width: 30px;height: 30px;float:left;">
-                                    <?php 
-                                        if($s_value->slab == 1) {
-                                            echo'<img style="width:100%;" src="'.get_template_directory_uri().'/inc/img/weight.png">';
-                                        } else {
-                                            echo'<img style="width:100%;" src="'.get_template_directory_uri().'/inc/img/bag.png">';
-                                        }
-                                    ?>
+                                <div style="float:left;">
+                                    <div style="padding-top:6px;">
+                                        <span class="">
+                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" > - Kg</span> | 
+                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" ></span>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div style="float:left;width:150px;">
-                                    <input type="text" value="" name="delivery_data[<?php echo $row_count; ?>][delivery_weight]" <?php echo $delivery_disabled; ?>>
+                                <div style="float:left;width:100px;">
+                                    <input type="text" value="0" class="user_enrty_weight" name="delivery_data[<?php echo $row_count; ?>][user_unit]">
+                                    <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="delivery_data[<?php echo $row_count; ?>][bag_weight]">
+                                    <span class="delivery_sale_as" style="font-weight:bold;">
+                                        <?php echo ucfirst($bag_kg); ?>
+                                    </span>
+                                    <input type="hidden" value="" class="delivery_weight" name="delivery_data[<?php echo $row_count; ?>][delivery_weight]" <?php echo $delivery_disabled; ?>>
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="delivery_data[<?php echo $row_count; ?>][delivery_lot]">
                                     <input type="hidden" name="delivery_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
-
                         </td>
                         <td><?php echo $s_value->sale_value; ?></td>
                     </tr>

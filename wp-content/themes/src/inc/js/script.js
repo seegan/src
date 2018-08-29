@@ -1,3 +1,18 @@
+toCapitalize = function(text = '') {
+          var tokens = text.split(" ").filter(function(t) {return t != ""; }),
+              res = [],
+              i,
+              len,
+              component;
+          for (i = 0, len = tokens.length; i < len; i++) {
+              component = tokens[i];
+              res.push(component.substring(0, 1).toUpperCase());
+              res.push(component.substring(1));
+              res.push(" "); // put space back in
+          }
+    return res.join("")
+};
+
 
 function slugify(text){
   return text.toString().toLowerCase()
@@ -30,6 +45,3 @@ shortcut.add("Shift+V",function() {
 shortcut.add("Shift+C",function() {
   jQuery('.popup-add-customer').click();
 });
-
-
- 
