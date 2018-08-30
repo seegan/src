@@ -10,8 +10,6 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 } else {
 	$gst_data  = '';
 }
-
-
 $bill_original = '<div class="type-f type-original"></div>';
 $bill_duplicate = '<div class="type-f type-duplicate"></div>';
 $bill_healthcenter = '<div class="type-f type-health"></div>';
@@ -99,8 +97,17 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 						<li><span>Mobile : </span><?php echo $bill_data['customer_data']->mobile; ?></li>
 						<li><span>Address : </span><?php echo $bill_data['customer_data']->address; ?> </li>
 						<li><span>Delivery Option : </span><?php echo ($bill_data['bill_data']->delivery_avail == '1')? 'yes':'no'; ?> </li>
-						<li><span>Deliveried All : </span><input type="checkbox" <?php echo ($bill_data['bill_data']->delivery_avail == '1')? 'checked':''; ?> name="deliveried_all" value="1" class="deliveried_all"> </li>
-						
+						<li>
+							<?php
+								$delivered = (isset($bill_data['bill_data']) && $bill_data['bill_data']->is_delivered == 1) ? 'checked disabled' : '';
+							?>
+							<span>Delivered : </span>
+							<input type="checkbox" <?php echo $delivered; ?> name="deliveried_all" value="1" class="deliveried_all"> All
+							<br>
+							<br>
+							<span><a href="<?php echo menu_page_url( 'bill_delivery', 0 ).'&financial_year='.$bill_data['bill_data']->financial_year.'&inv_no='.$bill_data['bill_data']->invoice_id  ?>">Partial Delivery</a></span>
+						</li>
+						<input type="hidden" class="delivery_bill_no" value="<?php echo $bill_no; ?>">
 					</ul>
 				</div>
 				<div class="bill_info_bar">
@@ -119,7 +126,6 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 				<table class=display>
 					<thead>
 						<tr>
-							
 							<th  class="first-col">Lot number</th>
 							<th>Product Name</th>
 							<th>Hsn Code</th>
@@ -128,29 +134,27 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 							<th>Discounted Price</th>
 							<th>Amount(Taxless)</th>
 							<?php if($bill_data['bill_data']->gst_to =='cgst'){ ?>
-							<th>CGST</th>
-		                   	<th>CGST Amount</th>
-		                    <th>SGST</th>
-		                    <th>SGST Amount</th>
-		                    <?php  } 
+								<th>CGST</th>
+		                   		<th>CGST Amount</th>
+		                    	<th>SGST</th>
+		                    	<th>SGST Amount</th>
+		                    <?php } 
 		                    if($bill_data['bill_data']->gst_to =='igst'){
 		                    ?>
-		                    <th>IGST</th>
-		                    <th>IGST Amount</th>
+		                    	<th>IGST</th>
+		                    	<th>IGST Amount</th>
 		                    <?php } ?>
 		                    <th>Total</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php
-					//var_dump($bill_data['bill_detail_data']);
 						if(isset($bill_data['bill_detail_data']) AND count($bill_data['bill_detail_data'])>0 ) {
 							$i=0;
 							foreach ($bill_data['bill_detail_data'] as $i_value) {
 								$i++;
 
 								$kgToBagConversion = kgToBagConversion($i_value->sale_weight,$i_value->bag_weight);
-
 					?>
 						<tr>
 							

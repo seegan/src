@@ -1251,3 +1251,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
     position: relative;
     top: 25%;   
 }
+
+.r_white {
+    background: #fff;
+}
+.r_green {
+    background: #b2f7b1;
+}

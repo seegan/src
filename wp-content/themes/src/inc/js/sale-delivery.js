@@ -55,8 +55,32 @@ jQuery(document).ready(function(){
 
 
 
+  jQuery('.user_enrty_weight').on('keyup', function () {
+    deliveryWeightCal(jQuery(this).parent().parent().parent());
+  })
+  jQuery('.sale_as').on('change', function () {
+    deliveryWeightCal(jQuery(this).parent().parent().parent().parent().parent().parent());
+  })
+
 
 });
+
+function deliveryWeightCal(selector = '') {
+  var delivery_as = selector.find('.sale_as:checked').val();
+  var delivery_weight = isNaN(parseFloat(selector.find('.user_enrty_weight').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight').val());
+  var bag_weight = isNaN(parseFloat(selector.find('.bag_weight').val())) ? 0.00 : parseFloat(selector.find('.bag_weight').val());
+
+  if(delivery_as == 'bag') {
+    delivery_weight = delivery_weight * bag_weight;
+  }
+
+  selector.find('.delivery_sale_as').text(toCapitalize(delivery_as));
+  selector.find('.delivery_weight').val(delivery_weight);
+}
+
+
+
+
 
 
 
@@ -66,17 +90,17 @@ jQuery('.delivery_item').live('click', function(){
         type: "POST",
         url: frontendajax.ajaxurl,
         data: {
-          action : 'sale_delivery',
+          action : 'sale_delivery_aj',
           delivery_data : jQuery('#new_delivery :input').serialize(),
         },
         success: function (data) {
           jQuery('.bill-loader').css('display', 'none');
           var obj = jQuery.parseJSON(data);
-          if(obj.success == 1) {
+/*          if(obj.success == 1) {
             window.location.replace('admin.php?page=bill_delivery&delivery_id='+obj.delivery_id+'&action=view');
           } else {
             alert('Something went wrong!');
-          }
+          }*/
         }
     });
 
