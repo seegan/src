@@ -96,11 +96,11 @@ jQuery('.delivery_item').live('click', function(){
         success: function (data) {
           jQuery('.bill-loader').css('display', 'none');
           var obj = jQuery.parseJSON(data);
-/*          if(obj.success == 1) {
+          if(obj.success == 1) {
             window.location.replace('admin.php?page=bill_delivery&delivery_id='+obj.delivery_id+'&action=view');
           } else {
             alert('Something went wrong!');
-          }*/
+          }
         }
     });
 
