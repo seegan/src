@@ -1808,13 +1808,6 @@ add_action( 'wp_ajax_update_bill_last', 'update_bill_last' );
 add_action( 'wp_ajax_nopriv_update_bill_last', 'update_bill_last' );
 
 
-
-
-
-
-
-
-
 function getBillDetail($bill_no = 0){
 	$data['success'] = 0;
 	global $wpdb;
@@ -1830,7 +1823,6 @@ function getBillDetail($bill_no = 0){
 	$data['bill_data'] = $wpdb->get_row($bill_query);
 
 	if($data['bill_data']) {
-
 		$data['success'] = 1;
 		$customer_id = isset($data['bill_data']->customer_id) ? $data['bill_data']->customer_id : 0;
 		$data['customer_data'] =  getCustomerDetail($customer_id);

@@ -19,21 +19,18 @@
 		        $this->ppage 		= isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 5;
 		        $this->bill_from 	= isset( $_GET['bill_from'] ) ? $_GET['bill_from']  : date('Y-m-d');
 		        $this->bill_to 		= isset( $_GET['bill_to'] ) ? $_GET['bill_to']  : date('Y-m-d');
-		        $this->slap   = isset( $_GET['slap'] ) ? $_GET['slap']  : '';
+		        $this->slap   		= isset( $_GET['slap'] ) ? $_GET['slap']  : '';
 		    }
 		}
 
 
 
-		function stock_report_pagination( $args ) {
+		function stock_report_pagination_gst( $args ) {
 		    global $wpdb;
-		    $sale = $wpdb->prefix.'shc_sale';
-		    $sale_details =  $wpdb->prefix.'shc_sale_detail';
-		    $return_table = $wpdb->prefix.'shc_return_items_details';
-		    $ws_sale = $wpdb->prefix.'shc_ws_sale';
-		    $ws_sale_details = $wpdb->prefix.'shc_ws_sale_detail';
-		    $ws_return_table = $wpdb->prefix.'shc_ws_return_items_details';
-		    $lot_table = $wpdb->prefix.'shc_lots';
+		    $sale = $wpdb->prefix.'sale';
+		    $sale_details =  $wpdb->prefix.'sale_detail';
+		    $return_table = $wpdb->prefix.'return_detail';
+		    $lot_table = $wpdb->prefix.'lots';
 		    $customPagHTML      = "";
 
 			$page_arg = [];
@@ -55,83 +52,47 @@
 		    
 
 		  
-			$query = "SELECT report.*,lot.brand_name,lot.product_name,lot.hsn from (
-    SELECT (sum(final_ws_sale.bal_cgst)) as cgst_value, 
-    (sum(final_ws_sale.bal_total)) as total, 
-    (sum(final_ws_sale.bal_unit)) as total_unit, 
-    (sum(final_ws_sale.bal_amt)) as amt, 
-    final_ws_sale.gst as gst, 
-    final_ws_sale.lot_id from 
-    (
-        SELECT 
-        (case when return_table.return_cgst is null then sale_table.sale_cgst else sale_table.sale_cgst - return_table.return_cgst end ) as bal_cgst, 
-        (case when return_table.return_total is null then sale_table.sale_total else sale_table.sale_total - return_table.return_total end ) as bal_total, 
-        (case when return_table.return_unit is null then sale_table.sale_unit else sale_table.sale_unit - return_table.return_unit end) as bal_unit, 
-        (case when return_table.return_amt is null then sale_table.sale_amt else sale_table.sale_amt - return_table.return_amt end ) as bal_amt, sale_table.cgst as gst, 
-        sale_table.lot_id FROM ( 
-            SELECT sale_details.cgst,sale_details.lot_id, 
-            sum(sale_details.cgst_value) as sale_cgst, 
-            sum(sale_details.sgst_value) sale_sgst, 
-           	sum(sale_details.sub_total) as sale_total, 
-            sum(sale_details.sale_unit) as sale_unit, 
-            sum(sale_details.amt) as sale_amt 
-            FROM ${sale} as sale 
-            left join 
-            ${sale_details} as sale_details 
-            on sale.`id`= sale_details.sale_id 
-            WHERE sale.active = 1 and sale_details.active = 1 AND DATE(sale.modified_at) >= date('$bill_from') AND DATE(sale.modified_at) <= date('$bill_to') group by sale_details.lot_id ) 
-        as sale_table left join ( 
-           SELECT ret_tab.* FROM  (
-       SELECT return_details.cgst,
-       return_details.lot_id, 
-       sum(return_details.cgst_value) as return_cgst, 
-       sum(return_details.sgst_value) as return_sgst, 
-       sum(return_details.sub_total) as return_total , 
-       sum(return_details.return_unit) as return_unit, 
-       sum(return_details.amt) as return_amt,
-       return_details.sale_id from ${return_table} as return_details  
-       WHERE return_details.active = 1 AND DATE(return_details.modified_at) >= date('$bill_from') AND DATE(return_details.modified_at) <= date('$bill_to')  
-       group by return_details.lot_id) as ret_tab 
-    left join ${sale} as sale 
-    on sale.id = ret_tab.sale_id ) as return_table on sale_table.lot_id = return_table.lot_id union ALL
-SELECT 
-(case when ws_return_table.return_cgst is null then ws_sale_table.sale_cgst else ws_sale_table.sale_cgst - ws_return_table.return_cgst end ) as bal_cgst, 
-(case when ws_return_table.return_total is null then ws_sale_table.sale_total else ws_sale_table.sale_total - ws_return_table.return_total end ) as bal_total, 
-(case when ws_return_table.return_unit is null then ws_sale_table.sale_unit else ws_sale_table.sale_unit - ws_return_table.return_unit end) as bal_unit, 
-(case when ws_return_table.return_amt is null then ws_sale_table.sale_amt else ws_sale_table.sale_amt - ws_return_table.return_amt end ) as bal_amt, 
-ws_sale_table.cgst as gst, ws_sale_table.lot_id 
-FROM ( 
-    SELECT ws_sale_details.cgst,ws_sale_details.lot_id, 
-    sum(ws_sale_details.cgst_value) as sale_cgst, 
-    sum(ws_sale_details.sgst_value) sale_sgst, 
-    sum(ws_sale_details.sub_total) as sale_total, 
-    sum(ws_sale_details.sale_unit) as sale_unit, 
-    sum(ws_sale_details.amt) as sale_amt FROM 
-    ${ws_sale} as sale 
-    left join 
-    ${ws_sale_details} as ws_sale_details
-    on  sale.`id`= ws_sale_details.sale_id 
-    WHERE sale.active = 1 and ws_sale_details.active = 1 AND DATE(sale.modified_at) >= date('$bill_from') AND DATE(sale.modified_at) <= date('$bill_to') group by ws_sale_details.lot_id
-) as ws_sale_table left join ( 
-   SELECT ws_ret_tab.* FROM  (
-       SELECT ws_return_details.cgst,
-       ws_return_details.lot_id, 
-       sum(ws_return_details.cgst_value) as return_cgst, 
-       sum(ws_return_details.sgst_value) as return_sgst, 
-       sum(ws_return_details.sub_total) as return_total , 
-       sum(ws_return_details.return_unit) as return_unit, 
-       sum(ws_return_details.amt) as return_amt,
-       ws_return_details.sale_id from ${ws_return_table} as ws_return_details  
-       WHERE ws_return_details.active = 1 AND DATE(ws_return_details.modified_at) >= date('$bill_from') AND DATE(ws_return_details.modified_at) <= date('$bill_to')  
-       group by ws_return_details.lot_id) as ws_ret_tab 
-    left join ${ws_sale} as sale 
-    on sale.id = ws_ret_tab.sale_id
-) as ws_return_table
-on ws_sale_table.lot_id = ws_return_table.lot_id ) 
-as final_ws_sale group by final_ws_sale.lot_id )
-as report 
-left join ${lot_table} as 
-lot on report.lot_id=lot.id WHERE report.total_unit > 0 ${condition}";
+			$query = "SELECT * from (
+    SELECT 
+    (sum(fin_tab.bal_cgst)) as cgst_value, 
+    (sum(fin_tab.bal_total)) as total, 
+    (sum(fin_tab.bal_unit)) as total_unit, 
+    (sum(fin_tab.bal_amt)) as amt,fin_tab.gst as gst 
+
+    from (SELECT 
+          (case when return_table.return_cgst is null then sale_table.sale_cgst else sale_table.sale_cgst - return_table.return_cgst end ) as bal_cgst, 
+          (case when return_table.return_total is null then sale_table.sale_total else sale_table.sale_total - return_table.return_total end ) as bal_total,
+          (case when return_table.return_unit is null then sale_table.sale_unit else  sale_table.sale_unit - return_table.return_unit end) as bal_unit,
+          (case when return_table.return_amt is null then sale_table.sale_amt else sale_table.sale_amt - return_table.return_amt end ) as bal_amt,
+          sale_table.cgst as gst
+          FROM 
+          (
+              SELECT sale_details.cgst_percentage as cgst,
+              sum(sale_details.cgst_value) as sale_cgst, 
+              sum(sale_details.sgst_value) sale_sgst, 
+              sum(sale_details.sale_value) as sale_total, 
+              sum(sale_details.sale_weight) as sale_unit,
+              sum(sale_details.taxless_amt) as sale_amt FROM wp_sale as sale left join wp_sale_detail as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1 and sale.invoice_date <= '2018-8-30' group by sale_details.cgst_percentage
+          ) as sale_table 
+          left join
+          (
+              SELECT 
+                 return_details.cgst as cgst,
+                 sum(return_details.cgst_value) as return_cgst, 
+                 sum(return_details.sgst_value) as return_sgst, 
+                 sum(return_details.subtotal) as return_total ,
+                 sum(return_details.return_weight) as return_unit,
+                 sum(return_details.taxless_amount) as return_amt,
+                 return_tab.return_date,
+                 return_tab.id as return_id,
+                 return_tab.sale_id 
+                 FROM wp_return as return_tab 
+                 left join 
+                wp_return_detail as return_details 
+                on return_tab.id=return_details.return_id 
+                where return_tab.active=1 and return_details.active=1 and return_tab.return_date <= '2018-8-30' group by return_details.cgst
+          ) as return_table 
+          on sale_table.cgst = return_table.cgst ) as fin_tab GROUP by fin_tab.gst ) as report WHERE report.total_unit > 0 ${condition}";
 
 		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
@@ -188,14 +149,11 @@ lot on report.lot_id=lot.id WHERE report.total_unit > 0 ${condition}";
 
 	}
 	
-	function return_report_pagination( $args ) {
+	function return_report_pagination_gst( $args ) {
 		    global $wpdb;
 		  
-		    $return_table = $wpdb->prefix.'shc_return_items_details';
-			$ws_return_table = $wpdb->prefix.'shc_ws_return_items_details';
-		    
-		    
-		    $lot_table = $wpdb->prefix.'shc_lots';
+		    $return_table = $wpdb->prefix.'return_detail';    
+		    $lot_table = $wpdb->prefix.'lots';
 		    $customPagHTML      = "";
 
 			$page_arg = [];
@@ -227,25 +185,14 @@ lot on report.lot_id=lot.id WHERE report.total_unit > 0 ${condition}";
  (SELECT return_details.cgst,return_details.lot_id, 
   sum(return_details.cgst_value) as return_cgst, 
   sum(return_details.sgst_value) as return_sgst, 
-  sum(return_details.sub_total) as return_total , 
-  sum(return_details.return_unit) as return_unit, 
-  sum(return_details.amt) as return_amt 
+  sum(return_details.subtotal) as return_total , 
+  sum(return_details.return_weight) as return_unit, 
+  sum(return_details.taxless_amount	) as return_amt 
   FROM  ${return_table} as return_details 
-  WHERE return_details.active = 1 AND DATE(return_details.modified_at) >= date('$bill_from') AND DATE(return_details.modified_at) <= date('$bill_to') group by return_details.lot_id
-union all
-SELECT 
-  ws_return_details.cgst,
-  ws_return_details.lot_id, 
-  sum(ws_return_details.cgst_value) as return_cgst, 
-  sum(ws_return_details.sgst_value) as return_sgst, 
-  sum(ws_return_details.sub_total) as return_total , 
-  sum(ws_return_details.return_unit) as return_unit, 
-  sum(ws_return_details.amt) as return_amt 
-  FROM  ${ws_return_table} as ws_return_details 
-  WHERE ws_return_details.active = 1 AND DATE(ws_return_details.modified_at) >= date('$bill_from') AND DATE(ws_return_details.modified_at) <= date('$bill_to') group by ws_return_details.lot_id
+  WHERE return_details.active = 1 group by return_details.lot_id
  ) as full_return_tab group by full_return_tab.lot_id) as r_table 
 left join 
-(select id,cgst,sgst,product_name,brand_name from ${lot_table} WHERE active=1) as lot_tab on lot_tab.id =r_table.lot_id  ${condition}";
+(select id,gst_percentage as cgst,product_name,brand_name from ${lot_table} WHERE active=1) as lot_tab on lot_tab.id =r_table.lot_id  ${condition}";
 
 
 		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
@@ -253,7 +200,6 @@ left join
 	        $status_query       = "SELECT SUM(cgst_value) as total_cgst,sum(return_unit) as sold_qty,sum(subtotal) as sub_tot,sum(amt) as tot_amt FROM (${query}) AS combined_table";
 			$data['s_result']   = $wpdb->get_row( $status_query );
 		    $data['total']      = $wpdb->get_var( $total_query );
-
 		    //$page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
 		    $page               = $this->cpage;
 		    $ppage 				= $this->ppage;

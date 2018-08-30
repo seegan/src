@@ -82,8 +82,8 @@ function admin_menu_register(){
 
 
 	add_menu_page(
-	    __( 'Report', 'src'),
-	    'Report',
+	    __( 'Stock Report', 'src'),
+	    'Stock Report',
 	    $src_premissions['reports'],
 	    'report_list',
 	    'report_list',
@@ -105,7 +105,17 @@ function admin_menu_register(){
 	add_submenu_page('igst_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_report', 'igst_report' );
 	add_submenu_page('igst_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_report', 'cgst_report' );
 
-
+	add_menu_page(
+	    __( 'Return Report', 'src'),
+	    'Return Report',
+	    $src_premissions['reports'],
+	    'igst_return_report',
+	    'igst_return_report',
+	    'dashicons-clipboard',
+	    10
+	);
+	add_submenu_page('igst_return_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_return_report', 'igst_return_report' );
+	add_submenu_page('igst_return_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_return_report', 'cgst_return_report' );
 
 	add_menu_page(
 	    __( 'Settings', 'src'),
@@ -223,10 +233,25 @@ function add_credit_debit() {
      require 'creditdebit/add_creditdebit.php';
 }
 
-//Gst Report
+//<------Gst Report----->
 function igst_report(){
 	require 'gst_report/listing/gst-list-accountant.php';
 }
+function cgst_report(){
+	require 'gst_report/listing/cgst-list-accountant.php';
+}
+
+//<------ Gst Return  Report ------->
+function igst_return_report(){
+	require 'gst_report/listing/igst-return-report.php';
+}
+
+function cgst_return_report(){
+	require 'gst_report/listing/cgst-return-report.php';
+}
+
+
+
 
 
 add_action( 'admin_bar_menu', 'wp_admin_bar_my_custom_account_menu', 11 );

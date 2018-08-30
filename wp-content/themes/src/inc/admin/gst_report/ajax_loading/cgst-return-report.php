@@ -6,7 +6,7 @@
         'items_per_page' => $report->ppage ,
         'condition' => '',
     );
-    $stock_report = $report->stock_report_pagination_gst($result_args);
+    $stock_report = $report->return_report_pagination_gst($result_args);
 ?>
 <style>
 .pointer td{
@@ -23,7 +23,8 @@
                         <tr class="headings">
                             <th>Total Stock Sold Out</th>
                             <th>Total Taxless Amount</th>
-                            <th>Total IGST(Rs)</th>
+                            <th>Total CGST(Rs)</th>
+                            <th>Total SGST(Rs)</th>
                             <th>Total COGS</th>
                         </tr>
                     </thead>
@@ -31,7 +32,8 @@
                         <tr>
                             <td><?php echo $stock_report['s_result']->sold_qty; ?></td>
                             <td><?php echo $stock_report['s_result']->tot_amt; ?></td>
-                            <td><?php echo $stock_report['s_result']->total_cgst + $stock_report['s_result']->total_cgst; ?></td>
+                            <td><?php echo $stock_report['s_result']->total_cgst; ?></td>
+                            <td><?php echo $stock_report['s_result']->total_cgst; ?></td>
                             <td><?php echo $stock_report['s_result']->sub_tot; ?></td>
                         </tr>
                     </tbody>
@@ -43,13 +45,19 @@
                 <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
-                            <th >S.No</th>
-                            <th class="column-title">Number of  <br/>Goods Sold</th>
-                            <th class="column-title">Taxless Amount</th>
-                            <th style="border-bottom: none;" class="column-title" >IGST RATE</th>  
-                            <th style="border-bottom: none;" class="column-title" >IGST AMOUNT</th>
+                            <th rowspan="2" >S.No</th>
+                            <th rowspan="2" class="column-title">Number of  <br/>Goods Sold</th>
+                            <th rowspan="2" class="column-title">Taxless Amount</th>
+                            <th colspan="2" style="border-bottom: none;" class="column-title" >RATE</th>  
+                            <th colspan="2" style="border-bottom: none;" class="column-title" >AMOUNT</th>
                            
-                            <th class="column-title">Cost Of <br/> Goods Sold(COGS)</th>                           
+                            <th rowspan="2" class="column-title">Cost Of <br/> Goods Sold(COGS)</th>                           
+                        </tr>
+                        <tr class="text_bold text_center">
+                          <th style="border-top: none;text-align: center;" class="column-title" >CGST(%)</th>
+                          <th style="border-top: none;text-align: center;" class="column-title" >SGST(%)</th>
+                          <th style="border-top: none;text-align: center;" class="column-title" >CGST</th>
+                          <th style="border-top: none;text-align: center;" class="column-title" >SGST</th>
                         </tr>
                     </thead>
                     <tbody style="text-align: center;">
@@ -66,9 +74,10 @@
                                     </td>
                                     <td class=""><?php echo round($b_value->total_unit); ?></td>
                                     <td class=""><?php echo $b_value->amt; ?></td> 
-                                    <td class=""><?php echo $b_value->gst; ?> </td>
-                                    <td class=""><?php echo $b_value->cgst_value + $b_value->cgst_value; ?></td>
-                                    
+                                    <td class=""><?php echo $b_value->gst/2; ?> </td>
+                                    <td class=""><?php echo $b_value->gst/2; ?> </td>
+                                    <td class=""><?php echo $b_value->cgst_value; ?></td>
+                                    <td class=""><?php echo $b_value->cgst_value; ?></td>
                                     <td class=""><?php echo $b_value->total; ?></td>                               
                                 </tr>
                     <?php
@@ -83,10 +92,28 @@
         </div>
 
 
+<!-- 
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="paging_simple_numbers" id="datatable-fixed-header_paginate">
+                    <?php
+                    echo $stock_report['pagination'];
+                    ?>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <?php  echo $stock_report['status_txt']; ?>
+            </div>
+        </div>
+ -->
+
         
 <script>
     jQuery(document).ready(function($) {
         $('#welcome-panel').after($('#custom-id').show());
     });
 </script>
+
+
+
 

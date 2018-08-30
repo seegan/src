@@ -6,7 +6,7 @@
         'items_per_page' => $report->ppage ,
         'condition' => '',
     );
-    $stock_report = $report->stock_report_pagination_gst($result_args);
+    $stock_report = $report->return_report_pagination_gst($result_args);
 ?>
 <style>
 .pointer td{
