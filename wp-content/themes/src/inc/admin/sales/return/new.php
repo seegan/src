@@ -112,10 +112,18 @@ input[type="checkbox"][readonly] {
                 </tr>
             </thead>
             <tbody>
-                <?php
+                <?php echo "<pre>";
                     if($sales && is_array($sales) && count($sales) > 0) {
                         $row_count = 1;
                         foreach ($sales as $s_value) {
+
+                            $bag_checked = ($s_value->sale_as == 'bag') ? 'checked' : '';
+                            $kg_checked = ($s_value->sale_as == 'bag') ? '' : 'checked';
+                            $bag_kg = ($s_value->sale_as == 'bag') ? 'bag' : 'kg';
+
+                            $return_class = ($s_value->return_avail > 0 ) ? 'r_white' : 'r_red';
+                            $return_disabled = ($s_value->return_avail <= 0 ) ? 'disabled' : '';
+
                             $amt_per_kg = ( $s_value->slab == 1 ) ? $s_value->unit_price : ($s_value->unit_price / $s_value->bag_weight );
                             if($gst_from == 'cgst') {
                                 $gst_percentage = ($s_value->cgst_percentage * 2);
@@ -144,27 +152,40 @@ input[type="checkbox"][readonly] {
                         </td>
                         <td>
                             <div>
-                                <div style="width: 30px;height: 30px;float:left;">
-                                    <?php 
-                                        if($s_value->slab == 1) {
-                                            echo'<img style="width:100%;" src="'.get_template_directory_uri().'/inc/img/weight.png">';
-                                        } else {
-                                            echo'<img style="width:100%;" src="'.get_template_directory_uri().'/inc/img/bag.png">';
-                                        }
-                                    ?>
+                                <div style="float:left;">
+                                    <div style="padding-top:6px;">
+                                        <span class="">
+                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" > - Kg</span> | 
+                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" ></span>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div style="float:left;width:150px;">
-                                    <input type="text" value="0" name="return_data[<?php echo $row_count; ?>][return_weight]" class="return_weight">
-                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg">
+                                <div style="float:left;width:100px;">
+                                    <input type="hidden" value="0" name="return_data[<?php echo $row_count; ?>][return_weight]" class="return_weight">
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][gst_percentage]" value="<?php echo $gst_percentage ?>" class="gst_percentage">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][bill_type]" value="<?php echo $s_value->bill_type; ?>" class="bill_type">
+
+
+                                    <input type="text" value="0" class="user_enrty_weight" name="delivery_data[<?php echo $row_count; ?>][user_unit]" <?php echo $return_disabled; ?>>
+                                    <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="delivery_data[<?php echo $row_count; ?>][bag_weight]">
+                                    <span class="delivery_sale_as" style="font-weight:bold;">
+                                        <?php echo ucfirst($bag_kg); ?>
+                                    </span>
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>
+
+
+
+
+
+
                         </td>
-                        <td><?php echo $amt_per_kg; ?></td>
+                        <td>
+                            <input type="text" style="width:100px;" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg">
+                        </td>
                         <td>
                             <div class="taxless_amt_txt">0.00</div>
                             <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="0.00">

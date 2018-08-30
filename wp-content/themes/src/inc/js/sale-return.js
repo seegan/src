@@ -50,19 +50,54 @@ jQuery(document).ready(function(){
     });
 
 
+    jQuery('.return_table .sale_as').on('change', function () {
+      returnAmtWeightCal(jQuery(this).parent().parent().parent().parent().parent().parent());
+    });
+    jQuery('.return_table .user_enrty_weight').on('keyup', function(){
+      returnAmtWeightCal(jQuery(this).parent().parent().parent());
+    });
+    jQuery('.return_table .amt_per_kg').on('keyup', function(){
+      returnAmtWeightCal(jQuery(this).parent());
+    });
 
 
-    jQuery('.return_table .return_weight').on('change', function () {
 
-      var gst_from = jQuery('.gst_from').val();
 
-      var return_weight = jQuery(this).val();
-      var selector = jQuery(this).parent().parent().parent().parent();
-      var price_per_kg = jQuery(selector).find('.amt_per_kg').val();
-      var gst_percentage = jQuery(selector).find('.gst_percentage').val();
 
-      var return_price = return_weight*price_per_kg;
+
+
+
+});
+
+
+function  returnAmtWeightCal(selector = '') {
+
+  var return_as = selector.find('.sale_as:checked').val();
+  var return_weight = isNaN(parseFloat(selector.find('.user_enrty_weight').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight').val());
+  var bag_weight = isNaN(parseFloat(selector.find('.bag_weight').val())) ? 0.00 : parseFloat(selector.find('.bag_weight').val());
+
+  if(return_as == 'bag') {
+    return_weight = return_weight * bag_weight;
+  }
+
+
+  var gst_from = jQuery(document).find('.gst_from').val();
+  var price_per_kg = selector.parent().find('.amt_per_kg').val();
+
+  var gst_percentage = selector.find('.gst_percentage').val();
+  var return_price = return_weight*price_per_kg;
+
+
+
+console.log(gst_percentage);
 console.log(return_price);
+
+
+
+/*
+      
+
+
       var cgst_per = (parseFloat(gst_percentage) / 2).toFixed(2);
       var igst_per = parseFloat(gst_percentage).toFixed(2);
 
@@ -88,9 +123,10 @@ console.log(return_price);
       jQuery(selector).find('.return_amt_txt').text(return_price);
       jQuery(selector).find('.return_amt').val(return_price);
 
-      updateReturnTotal();
-    })
-});
+      updateReturnTotal();*/
+}
+
+
 
 
 function updateReturnTotal() {
