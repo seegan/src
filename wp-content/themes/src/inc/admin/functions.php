@@ -3355,3 +3355,19 @@ function PhoneNumberDuplication(){
 }
 add_action( 'wp_ajax_PhoneNumberDuplication', 'PhoneNumberDuplication');
 add_action( 'wp_ajax_nopriv_PhoneNumberDuplication', 'PhoneNumberDuplication');
+
+
+
+function bagKgSplitter($weight = 0, $bag_weight = 0) {
+  	$str = (string) ($weight/$bag_weight);
+  	$splitted = explode(".",$str);
+  	$whole = (float) (isset($splitted[0]) ? $splitted[0] : 0 );
+  	$num = (isset($splitted[1]) ? $splitted[1] : 0 );
+  	$num = '0.'.$num;
+  	$string = '';
+  	$whole = ($whole) ? $whole : 0;
+	$string .= ($whole > 1) ? $whole.' Bags' : $whole.' Bag';
+  	$string .= ($num && $num > 0) ? ', '.($num*$bag_weight).' Kg' : '';
+
+  	return $string;
+}

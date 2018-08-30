@@ -87,26 +87,28 @@
 
                             $delivery_class = ($s_value->delivery_balance > 0 ) ? 'r_white' : 'r_green';
                             $delivery_disabled = ($s_value->delivery_balance > 0 ) ? '' : 'disabled';
+
+                            $bag_weight = ($s_value->bag_weight) ? $s_value->bag_weight : 0.00;
                 ?>
                     <tr class="<?php echo $delivery_class; ?>">
                         <td><?php echo $s_value->lot_id; ?></td>
                         <td><?php echo $s_value->lot_number; ?></td>
-                        <td><?php echo $s_value->sale_weight; ?></td>
-                        <td><?php echo $s_value->tot_delivered; ?></td>
-                        <td><?php echo $s_value->tot_returned; ?></td>
-                        <td><?php echo $s_value->delivery_balance; ?></td>
+                        <td><?php echo $s_value->sale_weight.'Kg ('.bagKgSplitter($s_value->sale_weight, $bag_weight).')'; ?></td>
+                        <td><?php echo $s_value->tot_delivered.'Kg ('.bagKgSplitter($s_value->tot_delivered, $bag_weight).')'; ?></td>
+                        <td><?php echo $s_value->tot_returned.'Kg ('.bagKgSplitter($s_value->tot_returned, $bag_weight).')'; ?></td>
+                        <td><?php echo $s_value->delivery_balance.'Kg ('.bagKgSplitter($s_value->delivery_balance, $bag_weight).')'; ?></td>
                         <td>
                             <div>
                                 <div style="float:left;">
                                     <div style="padding-top:6px;">
                                         <span class="">
-                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" > - Kg</span> | 
-                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" ></span>
+                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" <?php echo $delivery_disabled ?> > - Kg</span> | 
+                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" <?php echo $delivery_disabled ?> ></span>
                                         </span>
                                     </div>
                                 </div>
                                 <div style="float:left;width:100px;">
-                                    <input type="text" value="0" class="user_enrty_weight" name="delivery_data[<?php echo $row_count; ?>][user_unit]">
+                                    <input type="text" value="0" class="user_enrty_weight" name="delivery_data[<?php echo $row_count; ?>][user_unit]" <?php echo $delivery_disabled ?> >
                                     <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="delivery_data[<?php echo $row_count; ?>][bag_weight]">
                                     <span class="delivery_sale_as" style="font-weight:bold;">
                                         <?php echo ucfirst($bag_kg); ?>

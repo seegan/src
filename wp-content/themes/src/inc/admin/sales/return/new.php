@@ -75,7 +75,7 @@ input[type="checkbox"][readonly] {
                     <th rowspan="2">Order Weight</th>
                     <th rowspan="2">Delivery Qty</th>
                     <th rowspan="2">Previous Return</th>
-                    <th rowspan="2">Balance Qty</th>
+                    <th rowspan="2">Avail to Return</th>
                     <th rowspan="2">Return Qty</th>
                     <th rowspan="2">Sold Price (Per Kg)</th>
                     <th rowspan="2">Taxless Amt</th>
@@ -115,6 +115,7 @@ input[type="checkbox"][readonly] {
                 <?php echo "<pre>";
                     if($sales && is_array($sales) && count($sales) > 0) {
                         $row_count = 1;
+                        echo "<pre>";
                         foreach ($sales as $s_value) {
 
                             $bag_checked = ($s_value->sale_as == 'bag') ? 'checked' : '';
@@ -132,31 +133,33 @@ input[type="checkbox"][readonly] {
                             } else {
                                 $gst_percentage = 0;
                             }
+
+                            $bag_weight = ($s_value->bag_weight) ? $s_value->bag_weight : 0.00;
                 ?>
-                    <tr>
+                    <tr class="<?php echo $return_class; ?>">
                         <td><?php echo $row_count; ?></td>
                         <td>
                             <?php echo $s_value->lot_number; ?>
                         </td>
                         <td>
-                            <?php echo $s_value->sale_weight; ?>
+                            <?php echo $s_value->sale_weight.'Kg ('.bagKgSplitter($s_value->sale_weight, $bag_weight).')'; ?>
                         </td>
                         <td>
-                            <?php echo $s_value->tot_delivered; ?>
+                            <?php echo $s_value->tot_delivered.'Kg ('.bagKgSplitter($s_value->tot_delivered, $bag_weight).')'; ?>
                         </td>
                         <td>
-                            <?php echo $s_value->tot_returned; ?>
+                            <?php echo $s_value->tot_returned.'Kg ('.bagKgSplitter($s_value->tot_returned, $bag_weight).')'; ?>
                         </td>
                         <td>
-                            <?php echo $s_value->return_avail; ?>
+                            <?php echo $s_value->return_avail.'Kg ('.bagKgSplitter($s_value->return_avail, $bag_weight).')'; ?>
                         </td>
                         <td>
                             <div>
                                 <div style="float:left;">
                                     <div style="padding-top:6px;">
                                         <span class="">
-                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" > - Kg</span> | 
-                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" ></span>
+                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="return_data[<?php echo $row_count; ?>][return_as]" <?php echo $return_disabled ?> > - Kg</span> | 
+                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="return_data[<?php echo $row_count; ?>][return_as]" <?php echo $return_disabled ?> ></span>
                                         </span>
                                     </div>
                                 </div>
@@ -168,8 +171,8 @@ input[type="checkbox"][readonly] {
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][bill_type]" value="<?php echo $s_value->bill_type; ?>" class="bill_type">
 
 
-                                    <input type="text" value="0" class="user_enrty_weight" name="delivery_data[<?php echo $row_count; ?>][user_unit]" <?php echo $return_disabled; ?>>
-                                    <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="delivery_data[<?php echo $row_count; ?>][bag_weight]">
+                                    <input type="text" value="0" class="user_enrty_weight" name="return_data[<?php echo $row_count; ?>][user_unit]" <?php echo $return_disabled; ?>>
+                                    <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="return_data[<?php echo $row_count; ?>][bag_weight]">
                                     <span class="delivery_sale_as" style="font-weight:bold;">
                                         <?php echo ucfirst($bag_kg); ?>
                                     </span>
@@ -177,14 +180,9 @@ input[type="checkbox"][readonly] {
                                 <div style="clear:both;"></div>
                             </div>
 
-
-
-
-
-
                         </td>
                         <td>
-                            <input type="text" style="width:100px;" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg">
+                            <input type="text" style="width:100px;" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?>>
                         </td>
                         <td>
                             <div class="taxless_amt_txt">0.00</div>
