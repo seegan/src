@@ -305,12 +305,9 @@ left join
 
 			function stock_report_pagination_accountant( $args ) {
 		    global $wpdb;
-		    $sale = $wpdb->prefix.'shc_sale';
-		    $sale_details =  $wpdb->prefix.'shc_sale_detail';
-		    $return_table = $wpdb->prefix.'shc_return_items_details';
-		    $ws_sale = $wpdb->prefix.'shc_ws_sale';
-		    $ws_sale_details = $wpdb->prefix.'shc_ws_sale_detail';
-		    $ws_return_table = $wpdb->prefix.'shc_ws_return_items_details';
+		    $sale = $wpdb->prefix.'sale';
+		    $sale_details =  $wpdb->prefix.'sale_detail';
+		    $return_table = $wpdb->prefix.'return_items_details';
 		    $customPagHTML      = "";
 
 			$page_arg = [];
@@ -394,7 +391,7 @@ left join
 							) as ws_return_table 
 							on ws_sale_table.cgst = ws_return_table.cgst ) as fin_tab GROUP by fin_tab.gst ) as report WHERE report.total_unit > 0 ${condition_final}";
 		            
-
+var_dump($query);
 
 		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
