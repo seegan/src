@@ -145,7 +145,7 @@
                   <?php echo  $bill_data['customer_data']->mobile; ?><br>
                   <?php echo $bill_data['customer_data']->mobile1;  ?><br>
                   <?php echo  $bill_data['customer_data']->address;  ?><br>
-                  <b> GST NO <?php echo "EWEWEW131313" ?></b>
+                  <b> GST NO <?php $bill_data['customer_data']->gst_number; ?></b>
                 </td>                 
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
                   <b>DELIVERY ADDRESS</b><br>
@@ -185,11 +185,11 @@
 					 ?>
 			   
 				<tr class="text_bold text_center">
-				  <td rowspan="2">Lot. No</td>
+				  <td rowspan="2">Brand name/Lot No</td>
 				  <td rowspan="2">HSN CODE</td>
 				  <td rowspan="2" style="width: 200px;">PRODUCTS</td>
 				  <td rowspan="2">QTY</td>
-				  <td rowspan="2">MRP Per Piece</td>
+				  <td rowspan="2">MRP Per (bag/kg)</td>
 				  <td rowspan="2">Discounted Price</td>
 				  <td rowspan="2" class="yes_gst">AMOUNT</td>
 				  <td colspan="2" class="cgst_td">CGST</td>
@@ -249,7 +249,7 @@
 				}
 
 				?>   
-				<tr>
+				<!-- <tr>
 				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Total (Hire Charges)</div></td>
 				  <td>
 					<div class="text-center"> 
@@ -257,7 +257,7 @@
 					  
 					</div>
 				  </td>
-				</tr> 
+				</tr>  -->
 				<!-- <tr>
 				  <td colspan="<?php //if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Discount (Hire Charges)</div></td>
 				  <td>
@@ -267,7 +267,7 @@
 					</div>
 				  </td>
 				</tr> -->
-				<tr>
+				<!-- <tr>
 				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Card Swipping Fee  (Rs)</div></td>
 				  <td>
 					<div class="text-center"> 
@@ -275,9 +275,9 @@
 					  
 					</div>
 				  </td>
-				</tr> 
+				</tr>  -->
 				<tr>
-				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Final Total  (Rs)</div></td>
+				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Total  (Rs)</div></td>
 				  <td>
 					<div class="text-center"> 
 					  <?php echo $bill_data['bill_data']->sale_total; ?>
@@ -304,20 +304,11 @@
 			  </tbody>
 			</table>
 			</div>
-
-			<?php 
-			if(isset($gst_data)) {
-			  $total_tax=0;
-			  foreach( $gst_data as $g_data) {
-				$total_tax = (  $g_data->sale_igst) +$total_tax;
-				$gst_tot = $g_data->sale_igst + $gst_tot;
-			  }
-			  if($gst_tot == '0.00'){
-				echo "<div class='exempted'><span><b>GST EXEMPTED</span></b></div>";
-			  }
-			} 
-			
-		  ?>
+		<?php 
+        if($gst_extemted == 0) {
+          echo "<div class='exempted'><span><b>GST EXEMPTED</span></b></div>";
+        }
+        ?>
 		  <!-- TAX TABLE START -->
 		<?php 
 	  		if($bill_data['bill_data']->gst_to == 'cgst' ||  $bill_data['bill_data']->gst_to == 'igst'){ 

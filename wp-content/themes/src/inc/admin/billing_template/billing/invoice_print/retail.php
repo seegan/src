@@ -179,7 +179,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" >
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>SNO</th>
-        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Lot No</th>
+        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Products</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Bags, Kg</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>TOTAL</th>
       </tr>
@@ -306,8 +306,8 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 
       <?php  
       if(isset($gst_data)) { 
-          $total_tax=0;
-          $gst_tot=0;
+          $total_tax    = 0;
+          $gst_tot      = 0;
         foreach( $gst_data['gst_data'] as $g_data) {
       ?>
           <tr class="">
@@ -323,12 +323,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         }
       }
     ?>
-      <tr class="">
-        <td class=""><div class="text-right"></div></td>
-        <td class=""><div class="text-right"><?php echo $gst_tot; ?></div></td>
-        <td class=""><div class="text-right"></div></td>
-        <td class=""><div class="text-right"><?php echo $gst_tot; ?></div></td>
-      </tr>
+
       <tr>
         <td  class="dotted_border_bottom" colspan="3">
           <div class="text-center">
