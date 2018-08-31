@@ -192,7 +192,7 @@
   WHERE return_details.active = 1 group by return_details.lot_id
  ) as full_return_tab group by full_return_tab.lot_id) as r_table 
 left join 
-(select id,gst_percentage as cgst,product_name,brand_name from ${lot_table} WHERE active=1) as lot_tab on lot_tab.id =r_table.lot_id  ${condition}";
+(select id,gst_percentage as gst,product_name,brand_name from ${lot_table} WHERE active=1) as lot_tab on lot_tab.id =r_table.lot_id  ${condition}";
 
 
 		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";

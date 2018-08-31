@@ -1485,20 +1485,109 @@ FROM
     WHERE ( sd.active = 1 OR sd.item_status = 'return' )
 ) as sale LEFT JOIN wp_lots l ON l.id = sale.lot_parent_id WHERE 1 = 1
 */
+$query = "SELECT full_sale.*,
+(case when final_return.return_weight is null then full_sale.tot_weight else full_sale.tot_weight - final_return.return_weight end ) as final_tot_weight, 
+(case when final_return.return_total is null then full_sale.tot_sale_value else full_sale.tot_sale_value - final_return.return_total end ) as final_tot_sale_value,
+(case when final_return.return_igst is null then full_sale.igst_amount else full_sale.igst_amount - final_return.return_igst end ) as final_igst_amount,
+(case when final_return.return_cgst is null then full_sale.cgst_amount else full_sale.cgst_amount - final_return.return_cgst end ) as final_cgst_amount,
+(case when final_return.return_sgst is null then full_sale.sgst_amount else full_sale.sgst_amount - final_return.return_sgst end ) as final_sgst_amount,
+(case when final_return.return_taxless_amt is null then full_sale.sale_taxless else full_sale.sale_taxless - final_return.return_taxless_amt end ) as taxless_amount
+from  
+(
+    SELECT sale.*, 
+l.lot_number, 
+l.brand_name, 
+l.product_name,
+l.buying_price, 
+sum(sale.taxless_amt) as sale_taxless,
+SUM(sale.igst_percentage) as igst,
+SUM(case when sale.gst_to='igst' then sale.igst_value else '-' end ) as igst_amount,
+SUM(sale.cgst_percentage) as cgst,
+SUM(case when sale.gst_to='cgst' then sale.cgst_value else '-' end) as cgst_amount,
+SUM(sale.sgst_percentage) as sgst,
+SUM(case when sale.gst_to='cgst' then sale.sgst_value else '-' end ) as sgst_amount,
+SUM(sale.sale_weight) as tot_weight, 
+(sale.sale_value) as tot_sale_value, COUNT(1) as tot_item 
+FROM 
+( 
+    SELECT 
+    s.id as sale_id, 
+    s.order_shop, 
+    s.customer_type, 
+    s.invoice_date, 
+    s.invoice_status,
+    s.gst_to,
+    s.active as invoice_active, 
+    sd.id as sale_detail_id, 
+    sd.lot_id,
+    sd.lot_parent_id, 
+    sd.sale_type, 
+    sd.sale_weight, 
+    sd.taxless_amt,
+    sd.unit_price, 
+    sd.sale_value, 
+    sd.sale_tax, 
+    sd.bill_type, 
+    sd.bill_from, 
+    sd.cgst_percentage, 
+    sd.cgst_value,
+    sd.sgst_percentage, 
+    sd.sgst_value,
+    sd.igst_percentage, 
+    sd.igst_value,
+    sd.lot_type, 
+    sd.item_status, 
+    sd.made_by, 
+    sd.active as sale_detail_active 
+    FROM wp_sale_detail as sd JOIN wp_sale as s 
+    ON s.id = sd.sale_id WHERE 
+    ( 
+        sd.active = 1 OR sd.item_status = 'return' 
+    ) 
+) as sale 
+LEFT JOIN 
+wp_lots l ON l.id = sale.lot_parent_id
+WHERE 1 = 1 ${args['condition']}
+GROUP BY item_status, bill_type, lot_parent_id
+) as full_sale left join 
+(
+    SELECT 
+    return_details.igst as igst,
+    return_details.igst as cgst,
+    return_details.igst as sgst,
+    return_tab.gst_from,
+    return_details.lot_id as lot_id,
+    sum(return_details.taxless_amount) as return_taxless_amt,
+    sum(case when return_tab.gst_from = 'igst' then return_details.igst_value else '-' end ) as return_igst,
+    sum(case when return_tab.gst_from = 'cgst' then return_details.igst_value else '-' end ) as return_cgst,  
+    sum(case when return_tab.gst_from = 'cgst' then return_details.igst_value else '-' end ) as return_sgst,
+    sum(return_details.subtotal) as return_total ,
+    sum(return_details.return_weight) as return_weight,
+    sum(return_details.taxless_amount) as return_amt,
+    return_tab.return_date,
+    return_tab.id as return_id,
+    return_tab.sale_id
+    FROM wp_return as return_tab 
+    left join 
+    wp_return_detail as return_details 
+    on return_tab.id=return_details.return_id 
+    where return_tab.active=1 and return_details.active=1 ${args['condition_return']} group by return_details.lot_id 
+) as final_return on full_sale.lot_id = final_return.lot_id
+";
 
-    $query = "SELECT sale.*, l.lot_number, l.brand_name, l.product_name,l.buying_price, SUM(sale.sale_weight) as tot_weight, SUM(sale.sale_value) as tot_sale_value,SUM(sale.sale_weight * l.buying_price ) as tot_buying, COUNT(1) as tot_item
-FROM
-(    SELECT 
-    s.id as sale_id, s.order_shop, s.customer_type, s.invoice_date, s.invoice_status, s.active as invoice_active, 
-    sd.id as sale_detail_id, sd.lot_id, sd.lot_parent_id, sd.sale_type, sd.sale_weight, sd.unit_price, sd.sale_value, sd.sale_tax, sd.bill_type, sd.bill_from, sd.lot_type, sd.item_status, sd.made_by, sd.active as sale_detail_active 
-    FROM ${sale_detail} as sd 
-    JOIN ${sale_table} as s 
-    ON s.id = sd.sale_id 
-    WHERE ( sd.active = 1 OR sd.item_status = 'return' )
-) as sale LEFT JOIN ${lots_table} l ON l.id = sale.lot_parent_id 
-WHERE 1 = 1 ${args['condition']} GROUP BY item_status, bill_type, lot_parent_id ";
+//     $query = "SELECT sale.*, l.lot_number, l.brand_name, l.product_name,l.buying_price, SUM(sale.sale_weight) as tot_weight, SUM(sale.sale_value) as tot_sale_value,SUM(sale.sale_weight * l.buying_price ) as tot_buying, COUNT(1) as tot_item
+// FROM
+// (    SELECT 
+//     s.id as sale_id, s.order_shop, s.customer_type, s.invoice_date, s.invoice_status, s.active as invoice_active, 
+//     sd.id as sale_detail_id, sd.lot_id, sd.lot_parent_id, sd.sale_type, sd.sale_weight, sd.unit_price, sd.sale_value, sd.sale_tax, sd.bill_type, sd.bill_from, sd.lot_type, sd.item_status, sd.made_by, sd.active as sale_detail_active 
+//     FROM ${sale_detail} as sd 
+//     JOIN ${sale_table} as s 
+//     ON s.id = sd.sale_id 
+//     WHERE ( sd.active = 1 OR sd.item_status = 'return' )
+// ) as sale LEFT JOIN ${lots_table} l ON l.id = sale.lot_parent_id 
+// WHERE 1 = 1 ${args['condition']} GROUP BY item_status, bill_type, lot_parent_id ";
 
-
+// var_dump($query);
 
 /*    $query ="SELECT sale.*, l.lot_number, l.brand_name, l.product_name
 FROM
@@ -1513,7 +1602,7 @@ FROM
 
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
-    $status_query        = "SELECT SUM(tot_weight) as weight_s, SUM(tot_sale_value) as sale_s ,SUM(tot_buying) as buying_s FROM (${query}) AS combined_table";
+    $status_query        = "SELECT SUM(final_tot_weight) as weight_s, SUM(final_tot_sale_value) as sale_s  FROM (${query}) AS combined_table";
     $data['s_result']         = $wpdb->get_row( $status_query );
 
     $total              = $wpdb->get_var( $total_query );
