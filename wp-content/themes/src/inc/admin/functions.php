@@ -1648,7 +1648,7 @@ function update_bill_last(){
 
 
 	foreach ($params['group_retail'] as $s_key => $s_value) {
-
+		$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
 		$brand_display = 0;
 		if(isset($s_value['brand_checkbox_input'])) {
 			$brand_display = 1;
@@ -1670,12 +1670,11 @@ function update_bill_last(){
 				$bill_detail_id = getToken($lots_sale_detail_table);
 			}
 				
-		$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
+				
 			//Combain lot and dummy lot and skip duplicate
-			if($s_value['lot_parent'] && $s_value['type_bill_h'] == 'original') {
+			if($s_value['lot_parent']) {
 
 				$bagWeightInKg 	= $s_value['bagWeightInKg'];
-
 
 
 				if($s_value['lot_slab'] == 1) {
@@ -1715,6 +1714,7 @@ function update_bill_last(){
 			}
 		}
 	}
+
 
 
 	if(1 == 1 && $billing_no && $billing_no != 0) {
