@@ -663,7 +663,6 @@ li.main_menu >ul {
 
     .div-table-col{
     text-align: center;
-    background: #fff;
     border-right: #ddd 1px solid;
     color: #000;
     display:table-cell; padding: 5px; }
@@ -1260,4 +1259,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
 }
 .r_red {
     background: #ffc7c7;
+}
+
+.disabled-true {
+    background: #ffe2e2;;
+}
+.disabled-false {
+    background: #fff;
 }

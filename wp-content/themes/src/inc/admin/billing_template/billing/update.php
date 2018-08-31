@@ -341,7 +341,7 @@
 
                                     <div class="rowno"><?php echo $i; ?></div>
                                 </div>
-                                <div class="div-table-col sale-lot-no">
+                                <div class="div-table-col sale-lot-no" style="height:55px;">
                                     <input type="hidden" name="lot_parent" class="input_lot_parent" value="<?php echo $b_value->lot_parent_id; ?>">
                                     <input type="hidden" name="lot_slab" class="input_lot_slab" value="<?php echo $b_value->slab_system; ?>">
                                     <input type="hidden"  name="lot_number2" id="lot_number2" value="<?php echo $b_value->lot_id; ?>">

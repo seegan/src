@@ -24,7 +24,6 @@
 	if(isset($_GET['action']) && $_GET['action'] == 'update'){	
 		$bill_id = $bill_data['bill_data']->id;
 	} else {
-
 		$bill_id = $unlocked_val['id'];
 		$bill_data['bill_data'] = false;
 	}
@@ -51,8 +50,12 @@
 <div class = "payment_div">
 	<div class="previous-payment-due">
     <div class="billing-structure">
-		<br/>
-		Current bill Due <span class="tot_due_txt"><?php echo $current_due;  ?></span>
+    	<?php 
+    	$cus_bal = checkCustomerBalance($bill_data['customer_data']->id, 'due', 'billing_screen', $bill_id, 'row')->actual_pending;
+    	?>
+    	Customer Previous Due : Rs. <span class="tot_customer_due_txt"><?php echo ($cus_bal) ? $cus_bal : 0.00; ?></span>
+    	<br>
+		Current bill Due : Rs. <span class="tot_due_txt"><?php echo $current_due;  ?></span>
 		<input type="hidden" class="form-control tot_due" value="<?php echo $current_due;  ?>" name="tot_due">
     </div>
 </div>

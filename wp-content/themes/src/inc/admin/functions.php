@@ -3039,7 +3039,7 @@ function gst_group_igst($id = 0) {
 
 }
 
-function kgToBagConversion($kg = 0,$bag_weight = 0){
+/*function kgToBagConversion($kg = 0,$bag_weight = 0){
 	if($kg >= $bag_weight){
 		$divide = $kg/$bag_weight;
 		return $divide;
@@ -3047,7 +3047,7 @@ function kgToBagConversion($kg = 0,$bag_weight = 0){
 		return false;
 	}
 }
-
+*/
 
 
 function check_unique_lot() {
@@ -3127,7 +3127,7 @@ function getBillPaymentTotal($bill_id = 0) {
 
 
 
-function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_screen = 'full', $ref_id = 0) {
+function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_screen = 'full', $ref_id = 0, $result = 'result') {
 
 	if( $condition == 'full' ) {
 		$cond = '';
@@ -3138,8 +3138,6 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 	if( $condition == 'balance' ) {
 		$cond = 'AND full_table.customer_pending < 0';
 	}
-
-
 
 	$query = "SELECT * FROM
 	(
@@ -3196,8 +3194,12 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 	) as full_table WHERE 1 = 1 $cond";
 
 	global $wpdb;
-	$data = $wpdb->get_results($query);
-
+	if($result == 'result') {
+		$data = $wpdb->get_results($query);
+	} else {
+		$row_query = "SELECT f.customer_id, sum(f.customer_pending) as customer_pending, sum(f.current_screen_paid) as current_screen_paid, (sum(f.customer_pending) - sum(f.current_screen_paid) ) as actual_pending FROM ($query) as f GROUP BY f.customer_id";
+		$data = $wpdb->get_row($row_query);
+	}
 
 	return $data;
 }

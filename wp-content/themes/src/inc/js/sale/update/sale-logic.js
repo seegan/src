@@ -77,48 +77,50 @@ function populate_select2(this_data = '', v) {
         jQuery(this).parent().parent().find('.slab_system_no').css('display', 'none');
         jQuery(this).parent().parent().find('.slab_system_yes').css('display', 'block');
         jQuery(this).parent().parent().find('.input_lot_slab').val(1);
-        jQuery(this).parent().parent().find('.total').val(1 );
+
+        var input_unit = (e.params.data.stock_bal <= 0)  ? 0 : 1;
+        var input_diabled_txt = (e.params.data.stock_bal <= 0)  ? true : false;
+        var input_diabled = (jQuery(this).parent().parent().find('.type_bill_s').val() == 'out_stock') ? false : input_diabled_txt;
+        jQuery(this).parent().parent().find('.total').val(input_unit).attr('disabled',input_diabled);
       } else {
         jQuery(this).parent().parent().find('.slab_system_yes').css('display', 'none');
         jQuery(this).parent().parent().find('.slab_system_no').css('display', 'block');
         jQuery(this).parent().parent().find('.input_lot_slab').val(0);
-
         jQuery(this).parent().parent().find('.weight').val(e.params.data.weight);
-        jQuery(this).parent().parent().find('.unit_count').val(1);
-        jQuery(this).parent().parent().find('.total').val(1);
+
+        var input_unit = (e.params.data.stock_bal <= 0)  ? 0 : 1;
+        var input_diabled_txt = (e.params.data.stock_bal <= 0)  ? true : false;
+        var input_diabled = (jQuery(this).parent().parent().find('.type_bill_s').val() == 'out_stock') ? false : input_diabled_txt;
+
+        jQuery(this).parent().parent().find('.unit_count').val(input_unit).attr('disabled',input_diabled);
+        jQuery(this).parent().parent().find('.total').val(input_unit).attr('disabled',input_diabled);
       }
 
+      var disabled_calss =  'disabled-'+input_diabled;
+      jQuery(this).parent().parent().removeClass('disabled-true, disabled-false').addClass(disabled_calss);
 
-
-        var preSelect = '';
-        if(e.params.data.slab_system == 0){
-            jQuery(this).parent().parent().find('.sale_as[value="bag"]').prop("checked", true);
-            jQuery(this).parent().parent().find('.sale_as').attr("readonly", true);
-            jQuery(this).parent().parent().find('.bag_display').css('display', 'inline-block');
-            jQuery(this).parent().parent().find('.kg_display').css('display', 'none');
-            preSelect = 'bag';
-        }   else{
-            jQuery(this).parent().parent().find('.sale_as[value="kg"]').prop("checked", true);
-            jQuery(this).parent().parent().find('.sale_as').attr("readonly", false);
-            jQuery(this).parent().parent().find('.kg_display').css('display', 'inline-block');
-            jQuery(this).parent().parent().find('.bag_display').css('display', 'none');
-            preSelect = 'kg';
-        }
+      var preSelect = '';
+      if(e.params.data.slab_system == 0){
+          jQuery(this).parent().parent().find('.sale_as[value="bag"]').prop("checked", true);
+          jQuery(this).parent().parent().find('.sale_as').attr("readonly", true);
+          jQuery(this).parent().parent().find('.bag_display').css('display', 'inline-block');
+          jQuery(this).parent().parent().find('.kg_display').css('display', 'none');
+          preSelect = 'bag';
+      }   else{
+          jQuery(this).parent().parent().find('.sale_as[value="kg"]').prop("checked", true);
+          jQuery(this).parent().parent().find('.sale_as').attr("readonly", false);
+          jQuery(this).parent().parent().find('.kg_display').css('display', 'inline-block');
+          jQuery(this).parent().parent().find('.bag_display').css('display', 'none');
+          preSelect = 'kg';
+      }
         //console.log(jQuery(this).parent().parent().parent().find('input[name="sale_as"][value="'+preSelect +'"]').prop('checked', true));
-
-
-
-
-
-
-
-      
 
       //Tooltip Update
       jQuery(this).parent().parent().find('.tooltip').attr('data-stockalert', e.params.data.stock_alert);
       var slab_sys_txt = (e.params.data.slab_system == 1) ? 'yes' : 'no';
       jQuery(this).parent().parent().find('.slab_sys_txt').text(slab_sys_txt);
       jQuery(this).parent().parent().find('.stock_weight_txt').text(e.params.data.stock_bal);
+
 
       updateBalanceStock(e.params.data.par_id, e.params.data.stock_bal, e.params.data.stock_alert);
       triggerTotalCalculate(jQuery(this).parent().parent());
@@ -161,7 +163,6 @@ jQuery('.sale_type').live('change', function() {
   triggerTotalCalculate(jQuery(this).parent().parent().parent().parent());
 });
 
-
 jQuery('.type-slider .slide-in').live('click', function(){
   jQuery(this).parent().find('.active').removeClass('active');
   jQuery(this).addClass('active');
@@ -181,6 +182,15 @@ jQuery('.type-bill-slider .bill-slide-in').live('click', function(){
 
   jQuery(this).parent().parent().find('.type_bill_h').val(jQuery(this).attr('data-stype'));
   jQuery(this).parent().parent().find('.type_bill_s').val(jQuery(this).attr('data-sstype'));
+
+  var input_diabled_txt = (jQuery(this).parent().parent().parent().parent().find('.stock_weight_txt').text() <= 0)  ? true : false;
+  var input_diabled = (jQuery(this).attr('data-sstype') == 'out_stock') ? false : input_diabled_txt;
+  jQuery(this).parent().parent().parent().parent().find('.unit_count').attr('disabled',input_diabled);
+  jQuery(this).parent().parent().parent().parent().find('.total').attr('disabled',input_diabled);
+
+  var disabled_calss =  'disabled-'+input_diabled;
+  jQuery(this).parent().parent().parent().parent().removeClass('disabled-true, disabled-false').addClass(disabled_calss);
+
 });
 
 //Trigger total when unit price change
@@ -208,8 +218,6 @@ jQuery('.unit_price').live('change', function(){
     alert("Discountant Price dose not less than Margin Price!!!");
     jQuery(this).val(unit_price_display);
   }
-
-
   calculateGST(selector);
 });
 
@@ -371,17 +379,13 @@ function updateSaleTotal() {
 }
 jQuery('.sale_as').live('change',function(){
   if(jQuery(this).val() == 'kg') {
-        jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'none');
-        jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'inline-block');
+      jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'none');
+      jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'inline-block');
+    } else {
+      jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'none');
+      jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'inline-block');
     }
-    else {
-        jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'none');
-        jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'inline-block');
-     
-    }
-
     triggerTotalCalculate(jQuery(this).parent().parent().parent().parent().parent().parent());
-
 });
 
 jQuery('.discount, .cardswip').live('change', function(){

@@ -180,6 +180,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>SNO</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Lot No</th>
+        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Bags, Kg</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>TOTAL</th>
       </tr>
       <tr>
@@ -203,10 +204,15 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
           } else {
             echo $value->lot_number.$bag_display; 
           }
-          echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$value->price_orig_hidden;
+          echo '<span style="float:right;">'.$value->price_orig_hidden.'</span>';
           echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
           echo  $value->unit_price.' x '.(float) $sale_weight.$slab_type ;
         ?>
+        </td>
+        <td valign='top' class="dotted_border_bottom">
+          <?php 
+          echo bagKgSplitter($value->sale_weight, $value->bag_weight);
+          ?>
         </td>
         <td valign='top' class="dotted_border_bottom" align='right'><br><?php echo $value->sale_value; ?></td></tr>
       </tr>

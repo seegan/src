@@ -13,6 +13,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 $bill_original = '<div class="type-f type-original"></div>';
 $bill_duplicate = '<div class="type-f type-duplicate"></div>';
 $bill_healthcenter = '<div class="type-f type-health"></div>';
+
 ?>
 		<style type="text/css">
 			body{-webkit-print-color-adjust:exact}
@@ -153,8 +154,6 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 							$i=0;
 							foreach ($bill_data['bill_detail_data'] as $i_value) {
 								$i++;
-
-								$kgToBagConversion = kgToBagConversion($i_value->sale_weight,$i_value->bag_weight);
 					?>
 						<tr>
 							
@@ -173,20 +172,16 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 									} else {
 										echo $i_value->lot_number; 
 									}
-
 								?>
-								
 							</td>
 							<td>
 								<?php echo $i_value->product_name; ?>
-
 							</td>
 							<td><?php echo $i_value->hsn_code; ?></td>
 							<td>
 								<strong>
 									<?php
-										$bag_txt = ($kgToBagConversion) ? ' ('. $kgToBagConversion.' Bags)' : '';
-										echo (float) $i_value->sale_weight.$bag_txt ; 
+										echo $i_value->sale_weight.'Kg ('.bagKgSplitter($i_value->sale_weight, $i_value->bag_weight).')'; 
 									?>
 								</strong>
 							</td>

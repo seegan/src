@@ -31,7 +31,7 @@ jQuery(document).ready(function(){
       templateSelection: formatCustomerName
   }).on("select2:select", function (e) {
     jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
-    checkPaymentDue(e.params.data.id);
+    checkPaymentDue(e.params.data.id, jQuery('#billing_no').val());
     generateDeliveryAddress(e.params.data.id);
 
   });
@@ -145,9 +145,8 @@ function formatCustomerNameResult(data) {
 }
 
 
-function checkPaymentDue(id = 0) {
-  customerBalance(id);
-
+function checkPaymentDue(id = 0, bill_id=0) {
+  customerBalance(id, bill_id);
   var sale_id = jQuery('#billing_no').val();
   jQuery.ajax({
     type: "POST",
@@ -181,20 +180,22 @@ function checkPaymentDue(id = 0) {
   });
 }
 
-function customerBalance(customer_id = 0){
+function customerBalance(customer_id = 0, bill_id = 0){
     jQuery.ajax({
         type: "POST",
         dataType : "json",
         url: frontendajax.ajaxurl,
         data: {
             id      : customer_id,
+            bill_id : bill_id,
             action  :'customer_balance'
         },
           success: function (data) {
-            jQuery('.due_bal').text(data.final_bal);
-            jQuery('.due_bal_input').val(data.final_bal);
-            //rowCalculate();
-
+            if(data != null) {
+              jQuery('.tot_customer_due_txt').text(data.actual_pending);
+            } else {
+              jQuery('.tot_customer_due_txt').text(0);
+            }
         }
     });
 }

@@ -217,7 +217,7 @@
                                     </div>
                                     <div class="rowno">1</div>
                                 </div>
-                                <div class="div-table-col sale-lot-no">
+                                <div class="div-table-col sale-lot-no" style="height:55px;">
                                     <input type="hidden" name="lot_parent" class="input_lot_parent"  value="0">
                                     <input type="hidden" name="lot_slab" class="input_lot_slab" value="0">
                                     <select name="lot_number" class="lot_id"></select>
@@ -455,7 +455,6 @@
                                 <div class="final_total_price">
                                     <input  type="text" name="final_total" class="final_total text-right" value="0.00" readonly="">
                                     <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="0.00">
-                                    <input  type="hidden" name="customer_due" class="customer_due" value="<?php echo checkBillBalance($unlocked_val['id']); ?>">
                                 </div>                             
                             </div>
                             <div class="div-table-col option-delete">
