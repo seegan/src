@@ -127,17 +127,43 @@
     	$con = true;
     }
 
+    if($date_from != '' && $date_to == '') {
+        if($con == false) {
+            $condition_return .= " AND DATE(return_tab.return_date) >= '".$date_from."' ";
+        } else {
+            $condition_return .= " AND DATE(return_tab.return_date) >= '".$date_from."' ";
+        }
+        $con = true;
+    }
+    if($date_from == '' && $date_to != '') {
+        if($con == false) {
+            $condition_return .= " AND DATE(return_tab.return_date) <= '".$date_to."' ";
+        } else {
+            $condition_return .= " AND DATE(return_tab.return_date) <= '".$date_to."' ";
+        }
+        $con = true;
+    }
+    if($date_from != '' && $date_to != '') {
+        if($con == false) {
+            $condition_return .= " AND ( DATE(return_tab.return_date) >= '".$date_from."' AND DATE(return_tab.return_date) <= '".$date_to."') ";
+        } else {
+            $condition_return .= " AND ( DATE(return_tab.return_date) >= '".$date_from."' AND DATE(return_tab.return_date) <= '".$date_to."') ";
+        }
+        $con = true;
+    }
+
 
 
     /*End Updated for filter 11/10/16*/
 
 
 	$result_args = array(
-		'orderby_field' => 'sale.invoice_date',
+		'orderby_field' => 'full_sale.invoice_date',
 		'page' => $cpage ,
 		'order_by' => 'DESC',
 		'items_per_page' => $ppage ,
-		'condition' => $condition,
+        'condition' => $condition,
+		'condition_return' => $condition_return,
 	);
 
 	$sales = sale_detail_list_pagination($result_args);
@@ -151,17 +177,12 @@
                 <tr>
                     <th>Sale Weight (Kg)</th>
                     <th>Sale Value (Rs)</th>
-                    <th>Profit (Rs)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><?php echo $sales['s_result']->weight_s; ?></td>
                     <td><?php echo $sales['s_result']->sale_s; ?></td>
-                    <td><?php $buying = $sales['s_result']->buying_s;
-                            $sale = $sales['s_result']->sale_s;
-                            echo $sale - $buying;
-                     ?></td>
                 </tr>
             </tbody>
         </table>
@@ -172,17 +193,27 @@
 	<table class="display">
 		<thead>
 			<tr>
-                <th>Sl. No</th>
-				<th>Lot Number</th>
-                <th>Brand Name</th>
-				<th>Product Name</th>
-                <th>Item Status</th>
-                <th>Bill Type</th>
-				<th>Stock Weight (Kg)</th>
-                <th>Sale Value (Kg)</th>
-                <th>Buying Value (Kg)</th>
-				<th>Profit</th>
+                <th rowspan="2" class="column-title">Sl. No</th>
+				<th rowspan="2" class="column-title">Lot Number</th>
+                <th rowspan="2" class="column-title">Brand Name</th>
+				<th rowspan="2" class="column-title">Product Name</th>
+                <th rowspan="2" class="column-title">Item Status</th>
+                <th rowspan="2" class="column-title">Bill Type</th>
+                <th rowspan="2" class="column-title">Stock Weight (Kg)</th>
+                <th rowspan="2" class="column-title">Taxless Amount</th>
+                <th colspan="3" style="border-bottom: none;" class="column-title" >RATE</th>  
+                <th colspan="3" style="border-bottom: none;" class="column-title" >AMOUNT</th>
+				
+                <th rowspan="2" class="column-title"> Sale Value (Kg)</th>
 			</tr>
+            <tr class="text_bold text_center">
+              <th style="border-top: none;text-align: center;" class="column-title" >IGST(%)</th>
+              <th style="border-top: none;text-align: center;" class="column-title" >CGST(%)</th>
+              <th style="border-top: none;text-align: center;" class="column-title" >SGGST(%)</th>
+              <th style="border-top: none;text-align: center;" class="column-title" >IGST</th>
+              <th style="border-top: none;text-align: center;" class="column-title" >CGST</th>
+              <th style="border-top: none;text-align: center;" class="column-title" >SGST</th>
+            </tr>
 		</thead>
 		<tbody>
 		<?php
@@ -199,10 +230,16 @@
 				<td><?php echo $s_value->product_name; ?></td>
 				<td><?php echo $s_value->item_status; ?></td>
                 <td><?php echo $s_value->bill_type; ?></td>
-				<td><?php echo $s_value->tot_weight; ?></td>
-                <td><?php echo $s_value->tot_sale_value; ?></td>
-                <td><?php echo $s_value->tot_buying; ?></td>
-                <td><?php echo ($s_value->tot_sale_value - $s_value->tot_buying); ?></td>
+                <td><?php echo $s_value->final_tot_weight; ?></td>
+                <td><?php echo $s_value->taxless_amount; ?></td>
+                <td><?php echo $s_value->igst; ?></td>            
+                <td><?php echo $s_value->cgst; ?></td>    
+                <td><?php echo $s_value->sgst; ?></td>
+                <td><?php echo $s_value->igst_amount; ?></td>
+                <td><?php echo $s_value->cgst_amount; ?></td>
+                <td><?php echo $s_value->sgst_amount; ?></td>
+                
+                <td><?php echo $s_value->final_tot_sale_value; ?></td>
 			</tr>
 		<?php
 				}

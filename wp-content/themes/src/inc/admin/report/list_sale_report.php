@@ -60,7 +60,7 @@
         <option value="return" <?php echo ($item_status == 'return') ? 'selected' : ''; ?>>Return</option>
     </select>
 
-    <select name="bill_type" id="bill_type">
+    <select name="bill_type"  id="bill_type">
         <option value="-" <?php echo ($bill_type == '-') ? 'selected' : ''; ?>>Bill Type</option>
         <option value="original" <?php echo ($bill_type == 'original') ? 'selected' : ''; ?>>Original</option>
         <option value="duplicate" <?php echo ($bill_type == 'duplicate') ? 'selected' : ''; ?>>Duplicate</option>

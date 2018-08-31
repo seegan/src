@@ -46,6 +46,8 @@
                     <thead>
                         <tr class="headings">
                             <th rowspan="2" >S.No</th>
+                            <th rowspan="2" class="column-title">Product <br/> Name</th>
+                            <th rowspan="2" class="column-title">Brand <br/> Name</th>
                             <th rowspan="2" class="column-title">Number of  <br/>Goods Sold</th>
                             <th rowspan="2" class="column-title">Taxless Amount</th>
                             <th colspan="2" style="border-bottom: none;" class="column-title" >RATE</th>  
@@ -72,13 +74,15 @@
                                     <td class="a-center">
                                         <?php echo $i; ?>
                                     </td>
-                                    <td class=""><?php echo round($b_value->total_unit); ?></td>
+                                    <td class=""><?php echo $b_value->product_name; ?></td>
+                                    <td class=""><?php echo $b_value->brand_name; ?></td>
+                                    <td class=""><?php echo round($b_value->return_unit); ?></td>
                                     <td class=""><?php echo $b_value->amt; ?></td> 
                                     <td class=""><?php echo $b_value->gst/2; ?> </td>
                                     <td class=""><?php echo $b_value->gst/2; ?> </td>
                                     <td class=""><?php echo $b_value->cgst_value; ?></td>
                                     <td class=""><?php echo $b_value->cgst_value; ?></td>
-                                    <td class=""><?php echo $b_value->total; ?></td>                               
+                                    <td class=""><?php echo $b_value->subtotal; ?></td>                               
                                 </tr>
                     <?php
                                 $i++;
