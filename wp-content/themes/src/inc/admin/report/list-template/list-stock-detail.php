@@ -172,6 +172,7 @@
 		<tbody>
 		<?php
 			if(isset($stocks['result']) AND count($stocks['result']) > 0 AND $stocks){
+
 				$start_count = $stocks['start_count'];
 
 				foreach ($stocks['result'] as $s_value) {
@@ -182,9 +183,9 @@
 				<td><?php echo $s_value->lot_number; ?></td>
 				<td><?php echo $s_value->brand_name; ?></td>
 				<td><?php echo $s_value->product_name; ?></td>
-				<td><?php echo $s_value->stock_tot; ?></td>
-				<td><?php echo $s_value->sale_tot; ?></td>
-				<td><?php echo $s_value->bal_stock; ?></td>
+				<td><?php echo $s_value->stock_tot.'Kg ('.bagKgSplitter($s_value->stock_tot, $s_value->bag_weight).')';; ?></td>
+				<td><?php echo $s_value->sale_tot.'Kg ('.bagKgSplitter($s_value->sale_tot, $s_value->bag_weight).')';; ?></td>
+				<td><?php echo $s_value->bal_stock.'Kg ('.bagKgSplitter($s_value->bal_stock, $s_value->bag_weight).')';; ?></td>
 			</tr>
 		<?php
 				}

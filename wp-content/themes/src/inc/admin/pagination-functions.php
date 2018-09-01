@@ -1349,7 +1349,7 @@ function stock_detail_list_pagination( $args ) {
         ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  ) as bal_stock
     FROM 
     (
-        SELECT l.id, l.lot_number, l.brand_name, l.product_name,  
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name, l.weight as bag_weight,  
         (CASE 
             WHEN l.parent_id = 0 
             THEN l.id
@@ -1522,6 +1522,7 @@ FROM
     sd.lot_id,
     sd.lot_parent_id, 
     sd.sale_type, 
+    sd.bag_weight,
     sd.sale_weight, 
     sd.taxless_amt,
     sd.unit_price, 

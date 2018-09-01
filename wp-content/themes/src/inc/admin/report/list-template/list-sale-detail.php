@@ -230,7 +230,7 @@
 				<td><?php echo $s_value->product_name; ?></td>
 				<td><?php echo $s_value->item_status; ?></td>
                 <td><?php echo $s_value->bill_type; ?></td>
-                <td><?php echo $s_value->final_tot_weight; ?></td>
+                <td><?php echo $s_value->final_tot_weight.'Kg ('.bagKgSplitter($s_value->final_tot_weight, $s_value->bag_weight).')'; ?></td>
                 <td><?php echo $s_value->taxless_amount; ?></td>
                 <td><?php echo $s_value->igst; ?></td>            
                 <td><?php echo $s_value->cgst; ?></td>    

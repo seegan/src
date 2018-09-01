@@ -50,11 +50,11 @@
                         <legend class="choiceFld">GST Bill To</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
-                                <input type="radio" name="gst_type" value="cgst" checked class="gst_type"><label class="choice">Tamilnadu</label>
+                                <input type="radio" name="gst_type" value="cgst" checked class="gst_type"><label class="choice">GST</label>
                             </span>
                             &nbsp;&nbsp;                                   
                              <span>
-                                <input type="radio" name="gst_type" value="igst" class="gst_type"><label class="choice">Other</label>
+                                <input type="radio" name="gst_type" value="igst" class="gst_type"><label class="choice">IGST</label>
                             </span>
                             <!--  <span>
                                 <input type="radio" name="gst_type" value="no_gst" class="gst_type"><label class="choice">No GST</label>
