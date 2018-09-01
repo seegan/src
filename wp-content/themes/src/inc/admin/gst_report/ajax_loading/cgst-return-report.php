@@ -76,7 +76,7 @@
                                     </td>
                                     <td class=""><?php echo $b_value->product_name; ?></td>
                                     <td class=""><?php echo $b_value->brand_name; ?></td>
-                                    <td class=""><?php echo round($b_value->return_unit); ?></td>
+                                    <td class=""><?php echo $b_value->return_unit; ?></td>
                                     <td class=""><?php echo $b_value->amt; ?></td> 
                                     <td class=""><?php echo $b_value->gst/2; ?> </td>
                                     <td class=""><?php echo $b_value->gst/2; ?> </td>

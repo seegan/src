@@ -64,7 +64,7 @@
                                     <td class="a-center">
                                         <?php echo $i; ?>
                                     </td>
-                                    <td class=""><?php echo round($b_value->total_unit); ?></td>
+                                    <td class=""><?php echo $b_value->total_unit; ?></td>
                                     <td class=""><?php echo $b_value->amt; ?></td> 
                                     <td class=""><?php echo $b_value->gst; ?> </td>
                                     <td class=""><?php echo $b_value->cgst_value + $b_value->cgst_value; ?></td>
