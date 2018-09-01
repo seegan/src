@@ -1461,18 +1461,6 @@ function sale_detail_list_pagination($args) {
     $sale_detail = $wpdb->prefix.'sale_detail';
     $customPagHTML      = "";
 
-
-/*SELECT sale.*, l.lot_number, l.brand_name, l.product_name
-FROM
-(    SELECT 
-    s.id as sale_id, s.invoice_id, s.customer_id, s.order_shop, s.customer_type, s.invoice_date, s.invoice_status, s.active as invoice_active, 
-    sd.id as sale_detail_id, sd.lot_id, sd.lot_parent_id, sd.sale_type, sd.sale_weight, sd.unit_price, sd.sale_value, sd.sale_tax, sd.bill_type, sd.lot_type, sd.item_status, sd.made_by, sd.active as sale_detail_active 
-    FROM wp_sale_detail as sd 
-    JOIN wp_sale as s 
-    ON s.id = sd.sale_id 
-    WHERE ( sd.active = 1 OR sd.item_status = 'return' )
-) as sale LEFT JOIN wp_lots l ON l.id = sale.lot_parent_id WHERE 1 = 1
-*/
 $query = "SELECT full_sale.*,
 (case when final_return.return_weight is null then full_sale.tot_weight else full_sale.tot_weight - final_return.return_weight end ) as final_tot_weight, 
 (case when final_return.return_total is null then full_sale.tot_sale_value else full_sale.tot_sale_value - final_return.return_total end ) as final_tot_sale_value,
