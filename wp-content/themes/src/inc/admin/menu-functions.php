@@ -83,16 +83,15 @@ function admin_menu_register(){
 
 	add_menu_page(
 	    __( 'Stock Report', 'src'),
-	    'Stock Report',
+	    'Report',
 	    $src_premissions['reports'],
-	    'report_list',
-	    'report_list',
+	    'sale_report_list',
+	    'sale_report_list',
 	    'dashicons-clipboard',
 	    9
 	);
-	add_submenu_page('report_list', 'Stock Status Report', 'Stock Status Report', $src_premissions['reports'], 'report_list', 'report_list' );
-	add_submenu_page('report_list', 'Stock Sale Report', 'Stock Sale Report', $src_premissions['reports'], 'sale_report_list', 'sale_report_list' );
-
+	add_submenu_page('sale_report_list', 'Sale Report', 'Sale Report', $src_premissions['reports'], 'sale_report_list', 'sale_report_list' );
+	add_submenu_page('sale_report_list', 'Stock Balance', 'Stock Balance', $src_premissions['reports'], 'report_list', 'report_list' );
 	add_menu_page(
 	    __( 'GST Report', 'src'),
 	    'GST Report',

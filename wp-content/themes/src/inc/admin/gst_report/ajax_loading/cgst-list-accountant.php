@@ -46,7 +46,7 @@
                     <thead>
                         <tr class="headings">
                             <th rowspan="2" >S.No</th>
-                            <th rowspan="2" class="column-title">Number of  <br/>Goods Sold</th>
+                            <th rowspan="2" class="column-title">Goods Sold</th>
                             <th rowspan="2" class="column-title">Taxless Amount</th>
                             <th colspan="2" style="border-bottom: none;" class="column-title" >RATE</th>  
                             <th colspan="2" style="border-bottom: none;" class="column-title" >AMOUNT</th>
@@ -72,13 +72,13 @@
                                     <td class="a-center">
                                         <?php echo $i; ?>
                                     </td>
-                                    <td class=""><?php echo $b_value->total_unit; ?></td>
-                                    <td class=""><?php echo $b_value->amt; ?></td> 
-                                    <td class=""><?php echo $b_value->gst/2; ?> </td>
-                                    <td class=""><?php echo $b_value->gst/2; ?> </td>
-                                    <td class=""><?php echo $b_value->cgst_value; ?></td>
-                                    <td class=""><?php echo $b_value->cgst_value; ?></td>
-                                    <td class=""><?php echo $b_value->total; ?></td>                               
+                                    <td class=""><?php echo $b_value->total_unit.' Kg'; ?></td>
+                                    <td class=""><?php echo 'Rs '.$b_value->amt; ?></td> 
+                                    <td class=""><?php echo ($b_value->gst/2).'%'; ?> </td>
+                                    <td class=""><?php echo ($b_value->gst/2).'%'; ?> </td>
+                                    <td class=""><?php echo 'Rs '.$b_value->cgst_value; ?></td>
+                                    <td class=""><?php echo 'Rs '.$b_value->cgst_value; ?></td>
+                                    <td class=""><?php echo 'Rs '.$b_value->total; ?></td>                               
                                 </tr>
                     <?php
                                 $i++;

@@ -44,7 +44,7 @@
                     <thead>
                         <tr class="headings">
                             <th >S.No</th>
-                            <th class="column-title">Number of  <br/>Goods Sold</th>
+                            <th class="column-title">Goods Sold (Kg)</th>
                             <th class="column-title">Taxless Amount</th>
                             <th style="border-bottom: none;" class="column-title" >IGST RATE</th>  
                             <th style="border-bottom: none;" class="column-title" >IGST AMOUNT</th>
@@ -64,12 +64,12 @@
                                     <td class="a-center">
                                         <?php echo $i; ?>
                                     </td>
-                                    <td class=""><?php echo $b_value->total_unit; ?></td>
-                                    <td class=""><?php echo $b_value->amt; ?></td> 
-                                    <td class=""><?php echo $b_value->gst; ?> </td>
-                                    <td class=""><?php echo $b_value->cgst_value + $b_value->cgst_value; ?></td>
+                                    <td class=""><?php echo $b_value->total_unit.' Kg'; ?></td>
+                                    <td class=""><?php echo 'Rs '.$b_value->amt; ?></td> 
+                                    <td class=""><?php echo $b_value->gst.'%'; ?> </td>
+                                    <td class=""><?php echo 'Rs '.($b_value->cgst_value + $b_value->cgst_value) ; ?></td>
                                     
-                                    <td class=""><?php echo $b_value->total; ?></td>                               
+                                    <td class=""><?php echo 'Rs '.$b_value->total; ?></td>                               
                                 </tr>
                     <?php
                                 $i++;

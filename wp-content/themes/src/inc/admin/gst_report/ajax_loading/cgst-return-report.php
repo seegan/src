@@ -48,7 +48,7 @@
                             <th rowspan="2" >S.No</th>
                             <th rowspan="2" class="column-title">Product <br/> Name</th>
                             <th rowspan="2" class="column-title">Brand <br/> Name</th>
-                            <th rowspan="2" class="column-title">Number of  <br/>Goods Sold</th>
+                            <th rowspan="2" class="column-title">Goods Sold</th>
                             <th rowspan="2" class="column-title">Taxless Amount</th>
                             <th colspan="2" style="border-bottom: none;" class="column-title" >RATE</th>  
                             <th colspan="2" style="border-bottom: none;" class="column-title" >AMOUNT</th>

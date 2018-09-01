@@ -44,7 +44,7 @@
                     <thead>
                         <tr class="headings">
                             <th >S.No</th>
-                            <th class="column-title">Number of  <br/>Goods Sold</th>
+                            <th class="column-title">Goods Sold</th>
                             <th class="column-title">Taxless Amount</th>
                             <th style="border-bottom: none;" class="column-title" >IGST RATE</th>  
                             <th style="border-bottom: none;" class="column-title" >IGST AMOUNT</th>
