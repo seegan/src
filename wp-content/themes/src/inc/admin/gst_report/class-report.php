@@ -72,7 +72,7 @@
               sum(sale_details.sgst_value) sale_sgst, 
               sum(sale_details.sale_value) as sale_total, 
               sum(sale_details.sale_weight) as sale_unit,
-              sum(sale_details.taxless_amt) as sale_amt FROM wp_sale as sale left join wp_sale_detail as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1 and sale.invoice_date <= '2018-8-30' group by sale_details.cgst_percentage
+              sum(sale_details.taxless_amt) as sale_amt FROM wp_sale as sale left join wp_sale_detail as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1  group by sale_details.cgst_percentage
           ) as sale_table 
           left join
           (
@@ -90,7 +90,7 @@
                  left join 
                 wp_return_detail as return_details 
                 on return_tab.id=return_details.return_id 
-                where return_tab.active=1 and return_details.active=1 and return_tab.return_date <= '2018-8-30' group by return_details.cgst
+                where return_tab.active=1 and return_details.active=1  group by return_details.cgst
           ) as return_table 
           on sale_table.cgst = return_table.cgst ) as fin_tab GROUP by fin_tab.gst ) as report WHERE report.total_unit > 0 ${condition}";
 
