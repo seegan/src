@@ -1325,18 +1325,6 @@ CASE
     return $data;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 function stock_detail_list_pagination( $args ) {
 
     global $wpdb;
@@ -1344,7 +1332,7 @@ function stock_detail_list_pagination( $args ) {
     $sale_detail = $wpdb->prefix.'sale_detail';
     $stock_detail = $wpdb->prefix.'stock';
     $customPagHTML      = "";
-    $query              = "SELECT * FROM (SELECT lot.*, (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END)  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,     (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) return_tot,
+    $query              = "SELECT * FROM (SELECT lot.*, ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,     (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) return_tot,
     
         ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  ) as bal_stock
     FROM 
