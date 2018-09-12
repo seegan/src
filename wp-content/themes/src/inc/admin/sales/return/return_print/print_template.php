@@ -148,8 +148,8 @@
     <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" >
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>SNO</th>
-        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Lot No</th>
-        <th class="dotted_border_top dotted_border_bottom text-rigth"  valign='top'>Return Weight</th>
+        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Lot/Brand</th>
+        <th class="dotted_border_top dotted_border_bottom text-rigth"  valign='top'>Return Qty</th>
       </tr>
      <?php 
           if(isset($return_data['return_detail']) AND count($return_data['return_detail'])>0 ) {
@@ -171,7 +171,7 @@
 
       <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="border-bottom: 1px dashed #000;">
        <tr> 
-         <td class="dotted_border_top " colspan="6" valign='top' align='center'><b>TOTAL RETURN</b></td>
+         <td class="dotted_border_top " colspan="6" valign='top' align='center'><b>TOTAL RETURN VALUE(Rs.)</b></td>
          <td  class="dotted_border_top " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$return_data['return_data']->total_amount.'</b>'; ?>&nbsp;&nbsp;&nbsp;</span></td>
       </tr>
     </table>
@@ -180,7 +180,73 @@
             }
           ?>
               
-	
+	    <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="" >
+      <thead>
+        <tr>
+          <th colspan="5" class="dotted_border_bottom"  align="center" >GST Details</th>
+        </tr>     
+      <tr>
+        <th valign='top' class="center-th" style="width:90px;padding:0;" rowspan="2">
+        <div class="text-center">Taxable Value</div>
+        </th>
+        <th class="center-th" style="padding: 0;" colspan="2">
+        <div class="text-center">CGST</div>
+        </th>
+        <th class="center-th" style="padding: 0;" colspan="2">
+        <div class="text-center">SGST</div>
+        </th>
+      </tr>
+      <tr>
+        <th style="padding: 0;width: 70px;"><div class="text-center">Rate</div></th>
+        <th style="padding: 0;width: 70px;"><div class="text-right">Amount</div></th>
+        <th style="padding: 0;width: 70px;"><div class="text-center">Rate</div></th>
+        <th style="padding: 0;width: 70px;"><div class="text-right">Amount</div></th>
+      </tr>
+      </thead>
+      <tbody>
+
+    <?php
+        if($bill_data && $bill_ldata && count($bill_ldata)>0) {
+          $i = 1;
+          $gst_tot= 0;
+          $total_tax = 0.00;
+          foreach ($bill_ldata as $d_value) {
+      ?>
+         
+          <tr class="">
+            <td class=""><div class="text-center"><?php  echo $d_value->amt; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $d_value->cgst + 0; echo ' %'; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $d_value->cgst_value; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $d_value->sgst + 0; echo ' %';  ?> </div></td>
+            <td class=""><div class="text-center"><?php echo $d_value->sgst_value; ?></div></td>
+          </tr>
+           <?php 
+           $total_tax = ( 2 * $d_value->cgst_value) +$total_tax;
+           $gst_tot = $d_value->cgst_value + $gst_tot;
+
+        }
+      } ?>
+      <tr class="">
+        <td class=""><div class="text-center"></div></td>
+        <td class=""><div class="text-center"></div></td>
+        <td class=""><div class="text-center"><?php echo $gst_tot; ?></div></td>
+        <td class=""><div class="text-center"></div></td>
+        <td class=""><div class="text-center"><?php echo $gst_tot; ?></div></td>
+      </tr>
+      <tr>
+        <td  class="dotted_border_bottom" colspan="4">
+        <div class="text-center">
+          <b>Total Tax</b>
+        </div>
+        </td>
+        <td class="dotted_border_bottom" >
+        <div class="text-center">
+         <b><?php echo $total_tax; ?></b>
+        </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
     <div style="text-align: center;" >Thank You !!!. Visit Again !!!.</div>
   </div>
 <div>

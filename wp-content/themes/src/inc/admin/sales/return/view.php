@@ -5,7 +5,7 @@ $return_data = get_return_data($return_id);
 
 $bill_id = isset($return_data['return_data']) ? $return_data['return_data']->sale_id : 0;
 $bill_data = getBillDetail($bill_id);
-
+$gst_from = $return_data['return_data']->gst_from;
 if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 	echo "<script>";
 		echo "jQuery(document).ready(function(){print_current_page();});";
@@ -121,11 +121,43 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 			<div class="table-simple">
 				<table class="display" style="width: 600px;">
 					<thead>
-						<tr>
-							<th class="first-col">S.No</th>
-							<th>Product</th>
-							<th>Return Weight</th>
-						</tr>
+						<<tr>
+		                    <th rowspan="2">S.No</th>
+		                    <th rowspan="2">Product Name</th>
+		                    <th rowspan="2">Return Qty</th>
+		                    <th rowspan="2">Sold Price (Per Kg)</th>
+		                    <th rowspan="2">Taxless Amt</th>
+		                    <?php 
+		                        if( $gst_from =='cgst' ) {
+		                            echo "<th colspan='2'>CGST</th>";
+		                            echo "<th colspan='2'>SGST</th>";
+		                        }
+		                    ?>
+		                    <?php 
+		                        if( $gst_from =='igst' ) {
+		                            echo "<th colspan='2'>IGST</th>";
+		                        }
+		                    ?>
+		                    <th rowspan="2">Sub total</th>
+		                </tr>
+		                <tr>
+		                    <?php 
+		                        if( $gst_from =='cgst' ) {
+		                    ?>
+		                    <th rowspan="2">Rate</th>
+		                    <th rowspan="2">Amt.</th>
+		                    <th rowspan="2">Rate</th>
+		                    <th rowspan="2">Amt.</th>
+		                    <?php 
+		                        }
+		                        if( $gst_from =='igst' ) {
+		                    ?>
+		                    <th rowspan="2">Rate</th>
+		                    <th rowspan="2">Amt.</th>
+		                    <?php
+		                        }
+		                    ?>
+                		</tr>
 					</thead>
 					<tbody>
 					<?php
@@ -133,13 +165,62 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 							$i=0;
 							foreach ($return_data['return_detail'] as $i_value) {
 								$i++;
+								 if($gst_from == 'cgst') {
+	                                $gst_percentage = ($i_value->cgst * 2);
+	                            } else if($gst_from == 'igst') {
+	                                $gst_percentage = $i_value->igst;
+	                            } else {
+	                                $gst_percentage = 0;
+	                            }
 					?>
 						<tr>
 							<td><?php echo $i; ?></td>
 							<td class="row">
 								<?php echo $i_value->lot_number; ?>
 							</td>
-							<td><?php echo $i_value->return_weight; ?></td>
+							<td class="row">
+								<?php echo $i_value->return_weight; ?>
+							</td>
+							<td class="row">
+								<?php echo $i_value->amt_per_kg; ?>
+							</td>
+							<td class="row">
+								<?php echo $i_value->taxless_amount; ?>
+							</td>
+							<?php 
+                            if( $gst_from =='cgst' ) {
+                        	?>
+                        	 <td>
+	                            <?php echo $i_value->cgst.'%'; ?>
+	                            
+	                        </td>
+	                        <td>
+	                            <?php echo $i_value->cgst_value; ?>
+	                           
+	                        </td>
+	                        <td>
+	                            <?php echo $i_value->sgst.'%'; ?>
+	                            
+	                        </td>
+	                        <td>
+	                            <?php echo $i_value->sgst_value; ?>
+	                        </td>
+                    		 <?php 
+                            }
+                            if( $gst_from =='igst' ) {
+	                        ?>
+	                        <td>
+	                            <?php echo $i_value->igst.'%'; ?>   
+	                        </td>
+	                        <td>
+	                            <?php echo $i_value->igst_value; ?>
+	                        </td>
+	                        <?php
+	                            }
+	                        ?>
+							<td class="row">
+								<?php echo $i_value->subtotal; ?>
+							</td>
 						</tr>
 					<?php
 							}
@@ -147,7 +228,8 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 
 					?>
 						<tr>
-							<td colspan="2">
+
+							<td colspan="<?php echo ($gst_from =='igst')? "7" : "9";?>">
 								<label>Total Return &nbsp;(Rs)</label>
 							</td>
 							<td><?php echo $return_data['return_data']->total_amount; ?></td>
