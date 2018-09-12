@@ -444,7 +444,7 @@ div.checker.focus span.checked, div.checker:hover span.checked {
     margin: 0px 10px;
 }
 .search_bar select {
-    padding: 5px;
+    padding: 3px;
     border: 1px solid #ddd;
 }
 .search_bar input {

@@ -27,224 +27,323 @@
 
 		function stock_report_pagination_gst( $args ) {
 		    global $wpdb;
-		    $sale = $wpdb->prefix.'sale';
-		    $sale_details =  $wpdb->prefix.'sale_detail';
-		    $return_table = $wpdb->prefix.'return_detail';
-		    $lot_table = $wpdb->prefix.'lots';
+		    $lots_table = $wpdb->prefix. 'lots';
+		    $sale_table = $wpdb->prefix.'sale';
+		    $sale_detail = $wpdb->prefix.'sale_detail';
 		    $customPagHTML      = "";
-
-			$page_arg = [];
-			$page_arg['ppage'] = $args['items_per_page'];
-	    	$page_arg['product_name'] = $this->product_name;
-	    	$page_arg['bill_from'] = $this->bill_from;
-	    	$page_arg['bill_to'] = $this->bill_to;
-	    	$page_arg['slap'] = $this->slap;
-		    $page_arg['cpage'] = '%#%';
-
-		    $condition = '';  
-
-
-		    $bill_from = $this->bill_from;
-		    $bill_to   = $this->bill_to;
-   			if($this->slap != '') {
-		    	$condition .= "AND report.gst = ".$this->slap;
-		    }
 		    
+			$query = "SELECT f.*, 
+l.weight as parent_bag_weight, 
+l.lot_number as parent_lot_number,
+l.hsn_code,
+sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_amt, sum(f.cgst_value) as tot_cgst, sum(f.sgst_value) as tot_sgst, sum(f.igst_value) as tot_igst FROM wp_lots as l JOIN 
 
-		  
-			$query = "SELECT * from (
-    SELECT 
-    (sum(fin_tab.bal_cgst)) as cgst_value, 
-    (sum(fin_tab.bal_total)) as total, 
-    (sum(fin_tab.bal_unit)) as total_unit, 
-    (sum(fin_tab.bal_amt)) as amt,fin_tab.gst as gst 
+(
+    (
+        SELECT 
+            l.id as lot_id, 
+            l.lot_number, 
+            l.brand_name, 
+            l.product_name, 
+            (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END) as parent_id,
+            sd.sale_as as bag_kg, 
+            sd.bag_weight, 
+            sd.sale_weight as weight, 
+            sd.sale_value as amt, 
+            sd.bill_type, 
+            sd.lot_type, 
+            sd.made_by, 
+            sd.taxless_amt, 
+            sd.cgst_percentage as cgst, 
+            sd.sgst_percentage as sgst, 
+            sd.igst_percentage as igst, 
+            (CASE WHEN s.gst_to = 'cgst' THEN sd.cgst_value ELSE 0.00 END) as cgst_value, 
+            (CASE WHEN s.gst_to = 'cgst' THEN sd.sgst_value ELSE 0.00 END) as sgst_value, 
+            (CASE WHEN s.gst_to = 'igst' THEN sd.igst_value ELSE 0.00 END) as igst_value, 
+            'sale' as report_type,
+            s.gst_to as gst_type
+        FROM wp_sale as s 
+        LEFT JOIN wp_sale_detail as sd 
+        ON s.id = sd.sale_id 
+        LEFT JOIN wp_lots as l 
+        ON l.id = sd.lot_id 
+        WHERE ${args['sale_condition']} AND s.active = 1 AND sd.active = 1
+    )
 
-    from (SELECT 
-          (case when return_table.return_cgst is null then sale_table.sale_cgst else sale_table.sale_cgst - return_table.return_cgst end ) as bal_cgst, 
-          (case when return_table.return_total is null then sale_table.sale_total else sale_table.sale_total - return_table.return_total end ) as bal_total,
-          (case when return_table.return_unit is null then sale_table.sale_unit else  sale_table.sale_unit - return_table.return_unit end) as bal_unit,
-          (case when return_table.return_amt is null then sale_table.sale_amt else sale_table.sale_amt - return_table.return_amt end ) as bal_amt,
-          sale_table.cgst as gst
-          FROM 
-          (
-              SELECT sale_details.cgst_percentage as cgst,
-              sum(sale_details.cgst_value) as sale_cgst, 
-              sum(sale_details.sgst_value) sale_sgst, 
-              sum(sale_details.sale_value) as sale_total, 
-              sum(sale_details.sale_weight) as sale_unit,
-              sum(sale_details.taxless_amt) as sale_amt FROM wp_sale as sale left join wp_sale_detail as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1  group by sale_details.cgst_percentage
-          ) as sale_table 
-          left join
-          (
-              SELECT 
-                 return_details.cgst as cgst,
-                 sum(return_details.cgst_value) as return_cgst, 
-                 sum(return_details.sgst_value) as return_sgst, 
-                 sum(return_details.subtotal) as return_total ,
-                 sum(return_details.return_weight) as return_unit,
-                 sum(return_details.taxless_amount) as return_amt,
-                 return_tab.return_date,
-                 return_tab.id as return_id,
-                 return_tab.sale_id 
-                 FROM wp_return as return_tab 
-                 left join 
-                wp_return_detail as return_details 
-                on return_tab.id=return_details.return_id 
-                where return_tab.active=1 and return_details.active=1  group by return_details.cgst
-          ) as return_table 
-          on sale_table.cgst = return_table.cgst ) as fin_tab GROUP by fin_tab.gst ) as report WHERE report.total_unit > 0 ${condition}";
+    UNION ALL
+    
+    (
+        SELECT 
+            l.id as lot_id, 
+            l.lot_number, 
+            l.brand_name, 
+            l.product_name, 
+            (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END) as parent_id,
+            rd.return_as as bag_kg,
+            rd.bag_weight,
+            -(rd.return_weight) as weight, 
+            -(rd.subtotal) as amt,
+            rd.bill_type, 
+            l.lot_type,
+            rd.made_by, 
+            -(rd.taxless_amount) as taxless_amt,
+            rd.cgst as cgst, 
+            rd.sgst as sgst, 
+            rd.igst as igst, 
+            (CASE WHEN s.gst_to = 'cgst' THEN -(rd.cgst_value) ELSE 0.00 END) as cgst_value, 
+            (CASE WHEN s.gst_to = 'cgst' THEN -(rd.sgst_value) ELSE 0.00 END) as sgst_value, 
+            (CASE WHEN s.gst_to = 'igst' THEN -(rd.igst_value) ELSE 0.00 END) as igst_value,
+            'return' as report_type,
+             s.gst_to as gst_type
+        FROM wp_return as r 
+        LEFT JOIN wp_return_detail as rd
+        ON r.id = rd.return_id 
+        LEFT JOIN wp_lots as l 
+        ON l.id = rd.lot_id 
+        LEFT JOIN wp_sale as s 
+        ON s.id = r.sale_id
+        WHERE ${args['return_condition']} AND r.active = 1 AND rd.active = 1 AND s.active = 1
+    )
+    
+) as f 
+ON l.id = f.parent_id
+WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
 
-		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
+    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
-	        $status_query       = "SELECT SUM(cgst_value) as total_cgst,sum(total_unit) as sold_qty,sum(total) as sub_tot,sum(amt) as tot_amt FROM (${query}) AS combined_table";
-			$data['s_result']   = $wpdb->get_row( $status_query );
-		    $data['total']      = $wpdb->get_var( $total_query );
+    $status_query        = "SELECT SUM(combined_table.tot_weight) as weight_s, SUM(combined_table.tot_taxless) as taxless_s, SUM(combined_table.tot_cgst) as cgst_s, SUM(combined_table.tot_sgst) as sgst_s, SUM(combined_table.tot_igst) as igst_s, SUM(combined_table.tot_amt) as sale_s  FROM (${query}) AS combined_table";
+    $data['s_result']         = $wpdb->get_row( $status_query );
 
-		    //$page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
-		    $page               = $this->cpage;
-		    $ppage 				= $this->ppage;
-		    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
+    $total              = $wpdb->get_var( $total_query );
+    $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
+    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
-		    $data['result']         = $wpdb->get_results( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
 
-		    $totalPage         = ceil($data['total'] / $args['items_per_page']);
+    $totalPage         = ceil($total / $args['items_per_page']);
 
-		    if($totalPage > 1){
-		        $data['start_count'] = ($ppage * ($page-1));
+    /*END Updated for filter 11/10/16*/
 
-		        $pagination = paginate_links( array(
-		                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=list_report')),
-		                'format' => '',
-		                'type' => 'array',
-		                'prev_text' => __('prev'),
-		                'next_text' => __('next'),
-		                'total' => $totalPage,
-		                'current' => $page
-		                )
-		            );
-		        if ( ! empty( $pagination ) ) : 
-		            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
-		            foreach ($pagination as $key => $page_link ) {
-		                if( strpos( $page_link, 'current' ) !== false ) {
-		                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
-		                } else {
-		                    $customPagHTML .=  '<li>'.$page_link.'</li>';
-		                }
-		            }
-		            $customPagHTML .=  '</ul>';
-		        endif;
-		    }
+    if(isset($_POST['action']) && $_POST['action'] == 'stock_sale_filter_list') {
+        $ppage          = $_POST['per_page'];
+        $lot_number     = $_POST['lot_number'];
+        $date_from      = $_POST['date_from'];
+        $date_to        = $_POST['date_to'];
+        $bill_type      = $_POST['bill_type'];
+        $item_status    = $_POST['item_status'];
+        $lot_type       = $_POST['lot_type'];
+    } else {
+        $ppage              = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
+        $lot_number         = isset( $_GET['lot_number'] ) ? $_GET['lot_number']  : '';
+        $date_from          = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
+        $date_to            = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
+        $bill_type          = isset( $_GET['bill_type'] ) ? $_GET['bill_type']  : '-';
+        $item_status        = isset( $_GET['item_status'] ) ? $_GET['item_status']  : '-';
+        $lot_type           = isset( $_GET['lot_type'] ) ? $_GET['lot_type']  : '-';
+    }
 
-		    $data['pagination'] = $customPagHTML;
-		    $end_count = $data['start_count'] + count($data['result']);
 
-		    if( $end_count == 0){
-		    	$start_count = 0;
-		    }
-		    else {
-		    	$start_count = $data['start_count'] + 1;
-		    }
-		    $data['status_txt'] = "<div class='dataTables_info' role='status' aria-live='polite'>Showing ".$start_count." to ".$end_count." of ".$data['total']." entries</div>";
-		    return $data;
+    $page_arg = [];
+
+
+    if($lot_number != '') {
+        $page_arg['lot_number'] = $lot_number;
+    }
+    if($date_from != '') {
+        $page_arg['date_from'] = $date_from;
+    }
+    if($date_to != '') {
+        $page_arg['date_to'] = $date_to;
+    }
+    if($bill_type != '-') {
+        $page_arg['bill_type'] = $bill_type;
+    }
+    if($item_status != '-') {
+        $page_arg['item_status'] = $item_status;
+    }
+    if($lot_type != '-') {
+        $page_arg['lot_type'] = $lot_type;
+    }
+
+
+
+    $page_arg['cpage'] = '%#%';
+    $page_arg['ppage'] = $args['items_per_page'];
+    /*END Updated for filter 11/10/16*/
+
+    if($totalPage > 1){
+        $data['start_count'] = ($ppage * ($page-1));
+
+        $pagination = paginate_links( array(
+                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=sale_report_list')),
+                'format' => '',
+                'type' => 'array',
+                'prev_text' => __('prev'),
+                'next_text' => __('next'),
+                'total' => $totalPage,
+                'current' => $page
+                )
+            );
+        if ( ! empty( $pagination ) ) : 
+            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
+            foreach ($pagination as $key => $page_link ) {
+                if( strpos( $page_link, 'current' ) !== false ) {
+                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
+                } else {
+                    $customPagHTML .=  '<li>'.$page_link.'</li>';
+                }
+            }
+            $customPagHTML .=  '</ul>';
+        endif;
+    }
+
+    $data['pagination'] = $customPagHTML;
+    return $data;
 
 	}
 	
 	function return_report_pagination_gst( $args ) {
 		    global $wpdb;
-		  
-		    $return_table = $wpdb->prefix.'return_detail';    
-		    $lot_table = $wpdb->prefix.'lots';
+		    $lots_table = $wpdb->prefix. 'lots';
+		    $sale_table = $wpdb->prefix.'sale';
+		    $sale_detail = $wpdb->prefix.'sale_detail';
 		    $customPagHTML      = "";
-
-			$page_arg = [];
-			$page_arg['ppage'] = $args['items_per_page'];
-	    	$page_arg['product_name'] = $this->product_name;
-	    	$page_arg['bill_from'] = $this->bill_from;
-	    	$page_arg['bill_to'] = $this->bill_to;
-	    	$page_arg['slap'] = $this->slap;
-		    $page_arg['cpage'] = '%#%';
-
-		    $condition = '';  
-
-
-		    $bill_from = $this->bill_from;
-		    $bill_to   = $this->bill_to;
-   			if($this->slap != '') {
-		    	$condition .= " WHERE cgst = ".$this->slap;
-		    }
 		    
+			$query = "SELECT f.*, 
+l.weight as parent_bag_weight, 
+l.lot_number as parent_lot_number,
+l.hsn_code,
+sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_amt, sum(f.cgst_value) as tot_cgst, sum(f.sgst_value) as tot_sgst, sum(f.igst_value) as tot_igst FROM wp_lots as l JOIN 
 
-		  
-			$query = "SELECT * from 
-(select 
- full_return_tab.lot_id,
- sum(full_return_tab.return_cgst) as cgst_value,
- sum(full_return_tab.return_amt) as amt,
- sum(full_return_tab.return_unit) as return_unit,
- sum(full_return_tab.return_total) as subtotal from 
- (SELECT return_details.cgst,return_details.lot_id, 
-  sum(return_details.cgst_value) as return_cgst, 
-  sum(return_details.sgst_value) as return_sgst, 
-  sum(return_details.subtotal) as return_total , 
-  sum(return_details.return_weight) as return_unit, 
-  sum(return_details.taxless_amount	) as return_amt 
-  FROM  ${return_table} as return_details 
-  WHERE return_details.active = 1 group by return_details.lot_id
- ) as full_return_tab group by full_return_tab.lot_id) as r_table 
-left join 
-(select id,gst_percentage as gst,product_name,brand_name from ${lot_table} WHERE active=1) as lot_tab on lot_tab.id =r_table.lot_id  ${condition}";
+(
+    SELECT 
+        l.id as lot_id, 
+        l.lot_number, 
+        l.brand_name, 
+        l.product_name, 
+        (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END) as parent_id,
+        rd.return_as as bag_kg,
+        rd.bag_weight,
+        -(rd.return_weight) as weight, 
+        -(rd.subtotal) as amt,
+        rd.bill_type, 
+        l.lot_type,
+        rd.made_by, 
+        -(rd.taxless_amount) as taxless_amt,
+        rd.cgst as cgst, 
+        rd.sgst as sgst, 
+        rd.igst as igst, 
+        (CASE WHEN s.gst_to = 'cgst' THEN -(rd.cgst_value) ELSE 0.00 END) as cgst_value, 
+        (CASE WHEN s.gst_to = 'cgst' THEN -(rd.sgst_value) ELSE 0.00 END) as sgst_value, 
+        (CASE WHEN s.gst_to = 'igst' THEN -(rd.igst_value) ELSE 0.00 END) as igst_value,
+        'return' as report_type,
+         s.gst_to as gst_type
+    FROM wp_return as r 
+    LEFT JOIN wp_return_detail as rd
+    ON r.id = rd.return_id 
+    LEFT JOIN wp_lots as l 
+    ON l.id = rd.lot_id 
+    LEFT JOIN wp_sale as s 
+    ON s.id = r.sale_id
+    WHERE ${args['return_condition']} AND r.active = 1 AND rd.active = 1 AND s.active = 1
+) as f 
+
+ON l.id = f.parent_id
+
+WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
 
 
-		    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
+    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
-	        $status_query       = "SELECT SUM(cgst_value) as total_cgst,sum(return_unit) as sold_qty,sum(subtotal) as sub_tot,sum(amt) as tot_amt FROM (${query}) AS combined_table";
-			$data['s_result']   = $wpdb->get_row( $status_query );
-		    $data['total']      = $wpdb->get_var( $total_query );
-		    //$page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
-		    $page               = $this->cpage;
-		    $ppage 				= $this->ppage;
-		    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
+    $status_query        = "SELECT SUM(combined_table.tot_weight) as weight_s, SUM(combined_table.tot_taxless) as taxless_s, SUM(combined_table.tot_cgst) as cgst_s, SUM(combined_table.tot_sgst) as sgst_s, SUM(combined_table.tot_igst) as igst_s, SUM(combined_table.tot_amt) as sale_s  FROM (${query}) AS combined_table";
+    $data['s_result']         = $wpdb->get_row( $status_query );
 
-		    $data['result']         = $wpdb->get_results( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
-		    $totalPage         = ceil($data['total'] / $args['items_per_page']);
+    $total              = $wpdb->get_var( $total_query );
+    $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
+    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
-		    if($totalPage > 1){
-		        $data['start_count'] = ($ppage * ($page-1));
+    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
 
-		        $pagination = paginate_links( array(
-		                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=list_return')),
-		                'format' => '',
-		                'type' => 'array',
-		                'prev_text' => __('prev'),
-		                'next_text' => __('next'),
-		                'total' => $totalPage,
-		                'current' => $page
-		                )
-		            );
-		        if ( ! empty( $pagination ) ) : 
-		            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
-		            foreach ($pagination as $key => $page_link ) {
-		                if( strpos( $page_link, 'current' ) !== false ) {
-		                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
-		                } else {
-		                    $customPagHTML .=  '<li>'.$page_link.'</li>';
-		                }
-		            }
-		            $customPagHTML .=  '</ul>';
-		        endif;
-		    }
+    $totalPage         = ceil($total / $args['items_per_page']);
 
-		    $data['pagination'] = $customPagHTML;
-		    $end_count = $data['start_count'] + count($data['result']);
+    /*END Updated for filter 11/10/16*/
 
-		    if( $end_count == 0){
-		    	$start_count = 0;
-		    }
-		    else {
-		    	$start_count = $data['start_count'] + 1;
-		    }
-		    $data['status_txt'] = "<div class='dataTables_info' role='status' aria-live='polite'>Showing ".$start_count." to ".$end_count." of ".$data['total']." entries</div>";
-		    return $data;
+    if(isset($_POST['action']) && $_POST['action'] == 'stock_sale_filter_list') {
+        $ppage          = $_POST['per_page'];
+        $lot_number     = $_POST['lot_number'];
+        $date_from      = $_POST['date_from'];
+        $date_to        = $_POST['date_to'];
+        $bill_type      = $_POST['bill_type'];
+        $item_status    = $_POST['item_status'];
+        $lot_type       = $_POST['lot_type'];
+    } else {
+        $ppage              = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
+        $lot_number         = isset( $_GET['lot_number'] ) ? $_GET['lot_number']  : '';
+        $date_from          = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
+        $date_to            = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
+        $bill_type          = isset( $_GET['bill_type'] ) ? $_GET['bill_type']  : '-';
+        $item_status        = isset( $_GET['item_status'] ) ? $_GET['item_status']  : '-';
+        $lot_type           = isset( $_GET['lot_type'] ) ? $_GET['lot_type']  : '-';
+    }
+
+
+    $page_arg = [];
+
+
+    if($lot_number != '') {
+        $page_arg['lot_number'] = $lot_number;
+    }
+    if($date_from != '') {
+        $page_arg['date_from'] = $date_from;
+    }
+    if($date_to != '') {
+        $page_arg['date_to'] = $date_to;
+    }
+    if($bill_type != '-') {
+        $page_arg['bill_type'] = $bill_type;
+    }
+    if($item_status != '-') {
+        $page_arg['item_status'] = $item_status;
+    }
+    if($lot_type != '-') {
+        $page_arg['lot_type'] = $lot_type;
+    }
+
+
+
+    $page_arg['cpage'] = '%#%';
+    $page_arg['ppage'] = $args['items_per_page'];
+    /*END Updated for filter 11/10/16*/
+
+    if($totalPage > 1){
+        $data['start_count'] = ($ppage * ($page-1));
+
+        $pagination = paginate_links( array(
+                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=sale_report_list')),
+                'format' => '',
+                'type' => 'array',
+                'prev_text' => __('prev'),
+                'next_text' => __('next'),
+                'total' => $totalPage,
+                'current' => $page
+                )
+            );
+        if ( ! empty( $pagination ) ) : 
+            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
+            foreach ($pagination as $key => $page_link ) {
+                if( strpos( $page_link, 'current' ) !== false ) {
+                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
+                } else {
+                    $customPagHTML .=  '<li>'.$page_link.'</li>';
+                }
+            }
+            $customPagHTML .=  '</ul>';
+        endif;
+    }
+
+    $data['pagination'] = $customPagHTML;
+    return $data;
+
 
 	}
 

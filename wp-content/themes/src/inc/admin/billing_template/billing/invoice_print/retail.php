@@ -210,9 +210,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         ?>
         </td>
         <td valign='top' class="dotted_border_bottom">
-          <?php 
-          echo bagKgSplitter($value->sale_weight, $value->bag_weight);
-          ?>
+          <span style="font-size: 12px;"><?php echo bagKgSplitter($value->sale_weight, $value->bag_weight); ?></span>
         </td>
         <td valign='top' class="dotted_border_bottom" align='right'><br><?php echo $value->sale_value; ?></td></tr>
       </tr>

@@ -22,12 +22,12 @@
         $condition .= " AND f.report_type  = '".$item_status."' ";
         $con = true;
     }
-    $sale_condition = "( DATE(s.invoice_date) >= '".$date_from."' AND DATE(s.invoice_date) <= '".$date_to."') AND s.gst_to = 'cgst' ";
-    $return_condition = "( DATE(r.return_date) >= '".$date_from."' AND DATE(r.return_date) <= '".$date_to."') AND s.gst_to = 'cgst' ";
+    $sale_condition = "( DATE(s.invoice_date) >= '".$date_from."' AND DATE(s.invoice_date) <= '".$date_to."') AND s.gst_to = 'igst' ";
+    $return_condition = "( DATE(r.return_date) >= '".$date_from."' AND DATE(r.return_date) <= '".$date_to."') AND s.gst_to = 'igst' ";
 
     $result_args = array(
-        'orderby_field' => 'f.cgst',
-        'page' => $cpage,
+        'orderby_field' => 'f.igst',
+        'page' => $cpage ,
         'order_by' => 'ASC',
         'items_per_page' => $ppage ,
         'condition'     => $condition,
@@ -54,8 +54,7 @@
                             <tr class="headings">
                                 <th>Total Stock Sold Out</th>
                                 <th>Total Taxless Amount</th>
-                                <th>Total CGST(Rs)</th>
-                                <th>Total SGST(Rs)</th>
+                                <th>Total IGST(Rs)</th>
                                 <th>Total COGS</th>
                             </tr>
                         </thead>
@@ -63,8 +62,7 @@
                             <tr>
                                 <td><?php echo $sales['s_result']->weight_s.' Kg'; ?></td>
                                 <td><?php echo $sales['s_result']->taxless_s; ?></td>
-                                <td><?php echo $sales['s_result']->cgst_s; ?></td>
-                                <td><?php echo $sales['s_result']->sgst_s; ?></td>
+                                <td><?php echo $sales['s_result']->igst_s; ?></td>
                                 <td><?php echo $sales['s_result']->sale_s; ?></td>
                             </tr>
                         </tbody>
@@ -81,15 +79,13 @@
                         <th rowspan="2" class="column-title">Sl. No</th>
                         <th rowspan="2" class="column-title">Sale Weight (Kg)</th>
                         <th rowspan="2" class="column-title">Taxless Amount</th>
-                        <th colspan="2" style="border-bottom: none;" class="column-title" >RATE</th>  
-                        <th colspan="2" style="border-bottom: none;" class="column-title" >AMOUNT</th>
+                        <th style="border-bottom: none;" class="column-title" >RATE</th>  
+                        <th style="border-bottom: none;" class="column-title" >AMOUNT</th>
                         <th rowspan="2" class="column-title"> Sale Value (Kg)</th>
                     </tr>
                     <tr class="text_bold text_center">
-                      <th style="border-top: none;text-align: center;" class="column-title" >CGST(%)</th>
-                      <th style="border-top: none;text-align: center;" class="column-title" >SGGST(%)</th>
-                      <th style="border-top: none;text-align: center;" class="column-title" >CGST</th>
-                      <th style="border-top: none;text-align: center;" class="column-title" >SGST</th>
+                      <th style="border-top: none;text-align: center;" class="column-title" >IGST(%)</th>
+                      <th style="border-top: none;text-align: center;" class="column-title" >IGST</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,10 +101,8 @@
                         <td><?php echo $start_count; ?></td>
                         <td><?php echo $s_value->tot_weight.' Kg'; ?></td>
                         <td><?php echo $s_value->tot_taxless; ?></td>
-                        <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->cgst; ?></td>
-                        <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->sgst; ?></td>
-                        <td><?php echo $s_value->tot_cgst; ?></td>
-                        <td><?php echo $s_value->tot_sgst; ?></td>
+                        <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->igst; ?></td>
+                        <td><?php echo $s_value->tot_igst; ?></td>
                         <td><?php echo $s_value->tot_amt; ?></td>
                     </tr>
                 <?php

@@ -25,10 +25,10 @@
     <select name="slab" class="slab">
         <option value="-" >GST Tax %</option>
         <option value="0.00" <?php echo ($report->slab == '0.00') ? 'selected' : '' ?>>0 %</option>
-        <option value="2.50" <?php echo ($report->slab == '2.50') ? 'selected' : '' ?>>5 %</option>
-        <option value="6.00" <?php echo ($report->slab == '6.00') ? 'selected' : '' ?>>12 %</option>
-        <option value="9.00" <?php echo ($report->slab == '9.00') ? 'selected' : '' ?>>18 %</option>
-        <option value="14.00" <?php echo ($report->slab == '14.00') ? 'selected' : '' ?>>28 %</option>
+        <option value="2.50" <?php echo ($report->slab == '5.00') ? 'selected' : '' ?>>5 %</option>
+        <option value="6.00" <?php echo ($report->slab == '12.00') ? 'selected' : '' ?>>12 %</option>
+        <option value="9.00" <?php echo ($report->slab == '18.00') ? 'selected' : '' ?>>18 %</option>
+        <option value="14.00" <?php echo ($report->slab == '28.00') ? 'selected' : '' ?>>28 %</option>
     </select>
     <input type="text" name="bill_from" class="bill_from form-control" value="<?php echo date('Y-m-d'); ?>" placeholder="Bill From">
     <input type="text" name="bill_to" class="bill_to form-control" value="<?php echo date('Y-m-d'); ?>" placeholder="Bill To">
@@ -38,6 +38,6 @@
 
 
 <div class="widget-content module table-simple list_customers">
-    <?php include( get_template_directory().'/inc/admin/gst_report/ajax_loading/cgst-return-report.php' ); ?>
+    <?php include( get_template_directory().'/inc/admin/gst_report/ajax_loading/igst-list-accountant.php' ); ?>
 </div>
 

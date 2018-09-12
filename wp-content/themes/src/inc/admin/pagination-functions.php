@@ -1461,125 +1461,88 @@ function sale_detail_list_pagination($args) {
     $sale_detail = $wpdb->prefix.'sale_detail';
     $customPagHTML      = "";
 
-$query = "SELECT full_sale.*,
-(case when final_return.return_weight is null then full_sale.tot_weight else full_sale.tot_weight - final_return.return_weight end ) as final_tot_weight, 
-(case when final_return.return_total is null then full_sale.tot_sale_value else full_sale.tot_sale_value - final_return.return_total end ) as final_tot_sale_value,
-(case when final_return.return_igst is null then full_sale.igst_amount else full_sale.igst_amount - final_return.return_igst end ) as final_igst_amount,
-(case when final_return.return_cgst is null then full_sale.cgst_amount else full_sale.cgst_amount - final_return.return_cgst end ) as final_cgst_amount,
-(case when final_return.return_sgst is null then full_sale.sgst_amount else full_sale.sgst_amount - final_return.return_sgst end ) as final_sgst_amount,
-(case when final_return.return_taxless_amt is null then full_sale.sale_taxless else full_sale.sale_taxless - final_return.return_taxless_amt end ) as taxless_amount
-from  
+$query = "SELECT f.*, 
+l.weight as parent_bag_weight, 
+l.lot_number as parent_lot_number,
+sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_amt, sum(f.cgst_value) as tot_cgst, sum(f.sgst_value) as tot_sgst, sum(f.igst_value) as tot_igst FROM wp_lots as l JOIN 
+
 (
-    SELECT sale.*, 
-l.lot_number, 
-l.brand_name, 
-l.product_name,
-l.buying_price, 
-sum(sale.taxless_amt) as sale_taxless,
-SUM(sale.igst_percentage) as igst,
-SUM(case when sale.gst_to='igst' then sale.igst_value else '-' end ) as igst_amount,
-SUM(sale.cgst_percentage) as cgst,
-SUM(case when sale.gst_to='cgst' then sale.cgst_value else '-' end) as cgst_amount,
-SUM(sale.sgst_percentage) as sgst,
-SUM(case when sale.gst_to='cgst' then sale.sgst_value else '-' end ) as sgst_amount,
-SUM(sale.sale_weight) as tot_weight, 
-(sale.sale_value) as tot_sale_value, COUNT(1) as tot_item 
-FROM 
-( 
-    SELECT 
-    s.id as sale_id, 
-    s.order_shop, 
-    s.customer_type, 
-    s.invoice_date, 
-    s.invoice_status,
-    s.gst_to,
-    s.active as invoice_active, 
-    sd.id as sale_detail_id, 
-    sd.lot_id,
-    sd.lot_parent_id, 
-    sd.sale_type, 
-    sd.bag_weight,
-    sd.sale_weight, 
-    sd.taxless_amt,
-    sd.unit_price, 
-    sd.sale_value, 
-    sd.sale_tax, 
-    sd.bill_type, 
-    sd.bill_from, 
-    sd.cgst_percentage, 
-    sd.cgst_value,
-    sd.sgst_percentage, 
-    sd.sgst_value,
-    sd.igst_percentage, 
-    sd.igst_value,
-    sd.lot_type, 
-    sd.item_status, 
-    sd.made_by, 
-    sd.active as sale_detail_active 
-    FROM wp_sale_detail as sd JOIN wp_sale as s 
-    ON s.id = sd.sale_id WHERE 
-    ( 
-        sd.active = 1 OR sd.item_status = 'return' 
-    ) 
-) as sale 
-LEFT JOIN 
-wp_lots l ON l.id = sale.lot_parent_id
-WHERE 1 = 1 ${args['condition']}
-GROUP BY item_status, bill_type, lot_parent_id
-) as full_sale left join 
-(
-    SELECT 
-    return_details.igst as igst,
-    return_details.igst as cgst,
-    return_details.igst as sgst,
-    return_tab.gst_from,
-    return_details.lot_id as lot_id,
-    sum(return_details.taxless_amount) as return_taxless_amt,
-    sum(case when return_tab.gst_from = 'igst' then return_details.igst_value else '-' end ) as return_igst,
-    sum(case when return_tab.gst_from = 'cgst' then return_details.igst_value else '-' end ) as return_cgst,  
-    sum(case when return_tab.gst_from = 'cgst' then return_details.igst_value else '-' end ) as return_sgst,
-    sum(return_details.subtotal) as return_total ,
-    sum(return_details.return_weight) as return_weight,
-    sum(return_details.taxless_amount) as return_amt,
-    return_tab.return_date,
-    return_tab.id as return_id,
-    return_tab.sale_id
-    FROM wp_return as return_tab 
-    left join 
-    wp_return_detail as return_details 
-    on return_tab.id=return_details.return_id 
-    where return_tab.active=1 and return_details.active=1 ${args['condition_return']} group by return_details.lot_id 
-) as final_return on full_sale.lot_id = final_return.lot_id
-";
+    (
+        SELECT 
+            l.id as lot_id, 
+            l.lot_number, 
+            l.brand_name, 
+            l.product_name, 
+            (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END) as parent_id,
+            sd.sale_as as bag_kg, 
+            sd.bag_weight, 
+            sd.sale_weight as weight, 
+            sd.sale_value as amt, 
+            sd.bill_type, 
+            sd.lot_type, 
+            sd.made_by, 
+            sd.taxless_amt, 
+            sd.cgst_percentage as cgst, 
+            sd.sgst_percentage as sgst, 
+            sd.igst_percentage as igst, 
+            (CASE WHEN s.gst_to = 'cgst' THEN sd.cgst_value ELSE 0.00 END) as cgst_value, 
+            (CASE WHEN s.gst_to = 'cgst' THEN sd.sgst_value ELSE 0.00 END) as sgst_value, 
+            (CASE WHEN s.gst_to = 'igst' THEN sd.igst_value ELSE 0.00 END) as igst_value, 
+            'sale' as report_type,
+            s.gst_to as gst_type
+        FROM wp_sale as s 
+        LEFT JOIN wp_sale_detail as sd 
+        ON s.id = sd.sale_id 
+        LEFT JOIN wp_lots as l 
+        ON l.id = sd.lot_id 
+        WHERE ${args['sale_condition']} AND s.active = 1 AND sd.active = 1
+    )
 
-//     $query = "SELECT sale.*, l.lot_number, l.brand_name, l.product_name,l.buying_price, SUM(sale.sale_weight) as tot_weight, SUM(sale.sale_value) as tot_sale_value,SUM(sale.sale_weight * l.buying_price ) as tot_buying, COUNT(1) as tot_item
-// FROM
-// (    SELECT 
-//     s.id as sale_id, s.order_shop, s.customer_type, s.invoice_date, s.invoice_status, s.active as invoice_active, 
-//     sd.id as sale_detail_id, sd.lot_id, sd.lot_parent_id, sd.sale_type, sd.sale_weight, sd.unit_price, sd.sale_value, sd.sale_tax, sd.bill_type, sd.bill_from, sd.lot_type, sd.item_status, sd.made_by, sd.active as sale_detail_active 
-//     FROM ${sale_detail} as sd 
-//     JOIN ${sale_table} as s 
-//     ON s.id = sd.sale_id 
-//     WHERE ( sd.active = 1 OR sd.item_status = 'return' )
-// ) as sale LEFT JOIN ${lots_table} l ON l.id = sale.lot_parent_id 
-// WHERE 1 = 1 ${args['condition']} GROUP BY item_status, bill_type, lot_parent_id ";
+    UNION ALL
+    
+    (
+        SELECT 
+            l.id as lot_id, 
+            l.lot_number, 
+            l.brand_name, 
+            l.product_name, 
+            (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END) as parent_id,
+            rd.return_as as bag_kg,
+            rd.bag_weight,
+            -(rd.return_weight) as weight, 
+            -(rd.subtotal) as amt,
+            rd.bill_type, 
+            l.lot_type,
+            rd.made_by, 
+            -(rd.taxless_amount) as taxless_amt,
+            rd.cgst as cgst, 
+            rd.sgst as sgst, 
+            rd.igst as igst, 
+            (CASE WHEN s.gst_to = 'cgst' THEN -(rd.cgst_value) ELSE 0.00 END) as cgst_value, 
+            (CASE WHEN s.gst_to = 'cgst' THEN -(rd.sgst_value) ELSE 0.00 END) as sgst_value, 
+            (CASE WHEN s.gst_to = 'igst' THEN -(rd.igst_value) ELSE 0.00 END) as igst_value,
+            'return' as report_type,
+             s.gst_to as gst_type
+        FROM wp_return as r 
+        LEFT JOIN wp_return_detail as rd
+        ON r.id = rd.return_id 
+        LEFT JOIN wp_lots as l 
+        ON l.id = rd.lot_id 
+        LEFT JOIN wp_sale as s 
+        ON s.id = r.sale_id
+        WHERE ${args['return_condition']} AND r.active = 1 AND rd.active = 1 AND s.active = 1
+    )
+    
+) as f 
 
-// var_dump($query);
+ON l.id = f.parent_id
 
-/*    $query ="SELECT sale.*, l.lot_number, l.brand_name, l.product_name
-FROM
-(    SELECT 
-    s.id as sale_id, s.invoice_id, s.customer_id, s.order_shop, s.customer_type, s.invoice_date, s.invoice_status, s.active as invoice_active, 
-    sd.id as sale_detail_id, sd.lot_id, sd.lot_parent_id, sd.sale_type, sd.sale_weight, sd.unit_price, sd.sale_value, sd.sale_tax, sd.bill_type, sd.lot_type, sd.item_status, sd.made_by, sd.active as sale_detail_active 
-    FROM ${sale_detail} as sd 
-    JOIN ${sale_table} as s 
-    ON s.id = sd.sale_id 
-    WHERE ( sd.active = 1 OR sd.item_status = 'return' )
-) as sale LEFT JOIN ${lots_table} l ON l.id = sale.lot_parent_id WHERE 1 = 1 ${args['condition']}";*/
+WHERE 1=1 ${args['condition']} GROUP BY f.lot_id ";
+
 
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
-    $status_query        = "SELECT SUM(final_tot_weight) as weight_s, SUM(final_tot_sale_value) as sale_s  FROM (${query}) AS combined_table";
+    $status_query        = "SELECT SUM(combined_table.tot_weight) as weight_s, SUM(combined_table.tot_amt) as sale_s  FROM (${query}) AS combined_table";
     $data['s_result']         = $wpdb->get_row( $status_query );
 
     $total              = $wpdb->get_var( $total_query );
@@ -1590,40 +1553,32 @@ FROM
 
     $totalPage         = ceil($total / $args['items_per_page']);
 
-
     /*END Updated for filter 11/10/16*/
 
     if(isset($_POST['action']) && $_POST['action'] == 'stock_sale_filter_list') {
         $ppage          = $_POST['per_page'];
         $lot_number     = $_POST['lot_number'];
-        $search_brand   = $_POST['search_brand'];
-        $search_product = $_POST['search_product'];
-        $item_status    = $_POST['item_status'];
-        $bill_type      = $_POST['bill_type'];
-
         $date_from      = $_POST['date_from'];
         $date_to        = $_POST['date_to'];
+        $bill_type      = $_POST['bill_type'];
+        $item_status    = $_POST['item_status'];
+        $lot_type       = $_POST['lot_type'];
     } else {
         $ppage              = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
         $lot_number         = isset( $_GET['lot_number'] ) ? $_GET['lot_number']  : '';
-        $search_brand       = isset( $_GET['search_brand'] ) ? $_GET['search_brand']  : '';
-        $search_product     = isset( $_GET['search_product'] ) ? $_GET['search_product']  : '';
-        $item_status        = isset( $_GET['item_status'] ) ? $_GET['item_status']  : '-';
-        $bill_type          = isset( $_GET['bill_type'] ) ? $_GET['bill_type']  : '-';
         $date_from          = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
         $date_to            = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
+        $bill_type          = isset( $_GET['bill_type'] ) ? $_GET['bill_type']  : '-';
+        $item_status        = isset( $_GET['item_status'] ) ? $_GET['item_status']  : '-';
+        $lot_type           = isset( $_GET['lot_type'] ) ? $_GET['lot_type']  : '-';
     }
 
 
     $page_arg = [];
+
+
     if($lot_number != '') {
         $page_arg['lot_number'] = $lot_number;
-    }
-    if($search_brand != '') {
-        $page_arg['search_brand'] = $search_brand;
-    }
-    if($search_product != '') {
-        $page_arg['search_product'] = $search_product;
     }
     if($date_from != '') {
         $page_arg['date_from'] = $date_from;
@@ -1631,12 +1586,18 @@ FROM
     if($date_to != '') {
         $page_arg['date_to'] = $date_to;
     }
-    if($item_status != '-') {
-        $page_arg['item_status'] = $item_status;
-    }
     if($bill_type != '-') {
         $page_arg['bill_type'] = $bill_type;
     }
+    if($item_status != '-') {
+        $page_arg['item_status'] = $item_status;
+    }
+    if($lot_type != '-') {
+        $page_arg['lot_type'] = $lot_type;
+    }
+
+
+
     $page_arg['cpage'] = '%#%';
     $page_arg['ppage'] = $args['items_per_page'];
     /*END Updated for filter 11/10/16*/

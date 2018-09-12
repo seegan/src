@@ -1467,19 +1467,14 @@ function update_bill(){
 				}
 
 
+				$lot_type = ($s_value['lot_number'] == $s_value['lot_parent']) ? 'original' : 'dummy'; 
+
 				if($s_value['type_bill_h'] != 'original') {
 					$bill_type = 'duplicate';
 					$bill_from = $s_value['type_bill_s'];
-					$lot_type = '-';
 				} else {
 					$bill_type = 'original';
 					$bill_from = $shop_name;
-
-					if($s_value['lot_number'] == $s_value['lot_parent']) {
-						$lot_type = 'real';
-					} else {
-						$lot_type = 'dummy';
-					}
 				}
 
 				//Original lot
@@ -1689,19 +1684,14 @@ function update_bill_last(){
 					$slab = 0;
 				}
 
+				$lot_type = ($s_value['lot_number'] == $s_value['lot_parent']) ? 'original' : 'dummy'; 
+
 				if($s_value['type_bill_h'] != 'original') {
 					$bill_type = 'duplicate';
 					$bill_from = $s_value['type_bill_s'];
-					$lot_type = '-';
 				} else {
 					$bill_type = 'original';
 					$bill_from = $shop_name;
-
-					if($s_value['lot_number'] == $s_value['lot_parent']) {
-						$lot_type = 'real';
-					} else {
-						$lot_type = 'dummy';
-					}
 				}
 
 				//Original lot

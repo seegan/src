@@ -96,25 +96,25 @@ function admin_menu_register(){
 	    __( 'GST Report', 'src'),
 	    'GST Report',
 	    $src_premissions['reports'],
-	    'igst_report',
-	    'igst_report',
+	    'cgst_report',
+	    'cgst_report',
 	    'dashicons-clipboard',
 	    9
 	);
-	add_submenu_page('igst_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_report', 'igst_report' );
-	add_submenu_page('igst_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_report', 'cgst_report' );
+	add_submenu_page('cgst_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_report', 'cgst_report' );
+	add_submenu_page('cgst_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_report', 'igst_report' );
 
 	add_menu_page(
 	    __( 'Return Report', 'src'),
 	    'Return Report',
 	    $src_premissions['reports'],
-	    'igst_return_report',
-	    'igst_return_report',
+	    'cgst_return_report',
+	    'cgst_return_report',
 	    'dashicons-clipboard',
 	    10
 	);
-	add_submenu_page('igst_return_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_return_report', 'igst_return_report' );
-	add_submenu_page('igst_return_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_return_report', 'cgst_return_report' );
+	add_submenu_page('cgst_return_report', 'SGST/CGST Report', 'SGST/CGST Report', $src_premissions['reports'], 'cgst_return_report', 'cgst_return_report' );
+	add_submenu_page('cgst_return_report', 'IGST Report', 'IGST Report', $src_premissions['reports'], 'igst_return_report', 'igst_return_report' );
 
 	add_menu_page(
 	    __( 'Settings', 'src'),
@@ -234,7 +234,7 @@ function add_credit_debit() {
 
 //<------Gst Report----->
 function igst_report(){
-	require 'gst_report/listing/gst-list-accountant.php';
+	require 'gst_report/listing/igst-list-accountant.php';
 }
 function cgst_report(){
 	require 'gst_report/listing/cgst-list-accountant.php';
