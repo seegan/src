@@ -32,125 +32,148 @@
 	}
 
 	$bill_data = explode("-",$bill_total);
-	$price = isset($bill_data[0]) ? trim($bill_data[0]) : '';
-	$price_to = isset($bill_data[1]) ? trim($bill_data[1]) : '';
+	$price     = isset($bill_data[0]) ? trim($bill_data[0]) : '';
+	$price_to  = isset($bill_data[1]) ? trim($bill_data[1]) : '';
 
 
     $con = false;
     $condition = '';
     if($invoice_no != '') {
     	if($con == false) {
-    		$condition .= " AND s1.invoice_id = '".$invoice_no."' ";
+    		$condition .= " AND bill.invoice_id = '".$invoice_no."' ";
     	} else {
-    		$condition .= " AND s1.invoice_id = '".$invoice_no."' ";
+    		$condition .= " AND bill.invoice_id = '".$invoice_no."' ";
     	}
     	$con = true;
     }
     if($customer_name != '') {
    		if($con == false) {
-    		$condition .= " AND ( s1.name LIKE '".$customer_name."%' OR s1.mobile LIKE '".$customer_name."%' ) ";
+    		$condition .= " AND ( bill.name LIKE '".$customer_name."%' OR bill.mobile LIKE '".$customer_name."%' ) ";
     	} else {
-    		$condition .= " AND ( s1.name LIKE '".$customer_name."%' OR s1.mobile LIKE '".$customer_name."%' ) ";
+    		$condition .= " AND ( bill.name LIKE '".$customer_name."%' OR bill.mobile LIKE '".$customer_name."%' ) ";
     	}
     	$con = true;
     }
     if($customer_type != '-') {
    		if($con == false) {
-    		$condition .= " AND s1.type = '".$customer_type."' ";
+    		$condition .= " AND bill.type = '".$customer_type."' ";
     	} else {
-    		$condition .= " AND s1.type = '".$customer_type."' ";
+    		$condition .= " AND bill.type = '".$customer_type."' ";
     	}
     	$con = true;
     }
 
-    if($shop != '-') {
-   		if($con == false) {
-    		$condition .= " AND s1.order_shop = '".$shop."' ";
-    	} else {
-    		$condition .= " AND s1.order_shop = '".$shop."' ";
-    	}
-    	$con = true;
-    }
+    // if($shop != '-') {
+   	// 	if($con == false) {
+    // 		$condition .= " AND bill.order_shop = '".$shop."' ";
+    // 	} else {
+    // 		$condition .= " AND bill.order_shop = '".$shop."' ";
+    // 	}
+    // 	$con = true;
+    // }
 
 
-    if($delivery != '-') {
-   		if($con == false) {
-    		$condition .= " AND s1.invoice_status = '".$delivery."' ";
-    	} else {
-    		$condition .= " AND s1.invoice_status = '".$delivery."' ";
-    	}
-    	$con = true;
-    }
+    // if($delivery != '-') {
+   	// 	if($con == false) {
+    // 		$condition .= " AND bill.invoice_status = '".$delivery."' ";
+    // 	} else {
+    // 		$condition .= " AND bill.invoice_status = '".$delivery."' ";
+    // 	}
+    // 	$con = true;
+    // }
 
-    if($payment_done != '-') {
-   		if($con == false) {
-    		$condition .= " AND s1.payment_done = '".$payment_done."' ";
-    	} else {
-    		$condition .= " AND s1.payment_done = '".$payment_done."' ";
-    	}
-    	$con = true;
-    }
+    // if($payment_done != '-') {
+   	// 	if($con == false) {
+    // 		$condition .= " AND bill.payment_done = '".$payment_done."' ";
+    // 	} else {
+    // 		$condition .= " AND bill.payment_done = '".$payment_done."' ";
+    // 	}
+    // 	$con = true;
+    // }
 
     if($price != '' && $price_to == '') {
    		if($con == false) {
-    		$condition .= " AND s1.sale_total = ".$price." ";
+    		$condition .= " AND bill.sale_total = ".$price." ";
     	} else {
-    		$condition .= " AND s1.sale_total = ".$price." ";
+    		$condition .= " AND bill.sale_total = ".$price." ";
     	}
     	$con = true;
     }
 
     if($price != '' && $price_to != '') {
    		if($con == false) {
-    		$condition .= " AND ( s1.sale_total >= ".$price." AND s1.sale_total <= ".$price_to.") ";
+    		$condition .= " AND ( bill.sale_total >= ".$price." AND bill.sale_total <= ".$price_to.") ";
     	} else {
-    		$condition .= " AND ( s1.sale_total >= ".$price." AND s1.sale_total <= ".$price_to.") ";
+    		$condition .= " AND ( bill.sale_total >= ".$price." AND bill.sale_total <= ".$price_to.") ";
     	}
     	$con = true;
     }
 
     if($date_from != '' && $date_to == '') {
    		if($con == false) {
-    		$condition .= " AND DATE(s1.invoice_date) >= '".$date_to."' ";
+    		$condition .= " AND DATE(bill.invoice_date) >= '".$date_to."' ";
     	} else {
-    		$condition .= " AND DATE(s1.invoice_date) >= '".$date_to."' ";
+    		$condition .= " AND DATE(bill.invoice_date) >= '".$date_to."' ";
     	}
     	$con = true;
     }
     if($date_from == '' && $date_to != '') {
    		if($con == false) {
-    		$condition .= " AND DATE(s1.invoice_date) <= '".$date_from."' ";
+    		$condition .= " AND DATE(bill.invoice_date) <= '".$date_from."' ";
     	} else {
-    		$condition .= " AND DATE(s1.invoice_date) <= '".$date_from."' ";
+    		$condition .= " AND DATE(bill.invoice_date) <= '".$date_from."' ";
     	}
     	$con = true;
     }
     if($date_from != '' && $date_to != '') {
    		if($con == false) {
-    		$condition .= " AND ( DATE(s1.invoice_date) >= '".$date_from."' AND DATE(s1.invoice_date) <= '".$date_to."' ) ";
+    		$condition .= " AND ( DATE(bill.invoice_date) >= '".$date_from."' AND DATE(bill.invoice_date) <= '".$date_to."' ) ";
     	} else {
-    		$condition .= " AND ( DATE(s1.invoice_date) >= '".$date_from."' AND DATE(s1.invoice_date) <= '".$date_to."' ) ";
+    		$condition .= " AND ( DATE(bill.invoice_date) >= '".$date_from."' AND DATE(bill.invoice_date) <= '".$date_to."' ) ";
     	}
     	$con = true;
     }
 
-    $condition .= " AND s1.locked = 1 ";
+    $condition .= " AND bill.locked = 1 ";
     /*End Updated for filter 11/10/16*/
 
 
 	$result_args = array(
-		'orderby_field' => 's1.id',
-		'page' => $cpage ,
-		'order_by' => 'DESC',
-		'items_per_page' => $ppage ,
-		'condition' => $condition,
+		'orderby_field'  	=> 'bill.id',
+		'page' 				=> $cpage ,
+		'order_by' 			=> 'DESC',
+		'items_per_page' 	=> $ppage ,
+		'condition' 		=> $condition,
 	);
 	$bills = billing_list_pagination_updated($result_args);
-
-/*
-echo "<pre>";
-var_dump($bills);*/
 ?>
+		<div class="x_content" style="width:100%;">
+            <div class="table-responsive" style="width:800px;margin: 0 auto;margin-bottom:20px;">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th>Total Cash</th>
+                            <th>Total Card</th>
+                            <th>Total Cheque</th>
+                            <th>Total Internet<br>Banking</th>
+                            <th>Total Credit</th>
+                            <th>Total Sale</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <tr>
+                            <td><?php echo $bills['s_result']->cash_amount; ?></td>
+                            <td><?php echo $bills['s_result']->card_amount; ?></td>
+                            <td><?php echo $bills['s_result']->cheque_amount; ?></td>
+                            <td><?php echo $bills['s_result']->net_banking_amount; ?></td>
+                            <td><?php echo $bills['s_result']->sale_value - ($bills['s_result']->cash_amount + $bills['s_result']->card_amount + $bills['s_result']->cheque_amount + $bills['s_result']->net_banking_amount); ?></td>
+                            <td><?php echo $bills['s_result']->sale_value; ?></td>
+                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>
 	<table class="display">
 		<thead>
 			<tr>
@@ -160,9 +183,10 @@ var_dump($bills);*/
 				<th>Bill Date</th>
 				<th>Shop</th>
 				<th>Customer Detail</th>
-				<th>Discount</th>
+				<th>Payment Type</th>
 				<th>Total</th>
 				<th>Delivery</th>
+				<th>Payment</th>
 				<th>Billing Details</th>
 				<th>Action</th>
 			</tr>
@@ -174,17 +198,14 @@ var_dump($bills);*/
 
 				foreach ($bills['result'] as $b_value) {
 					$start_count++;
-
-					if($b_value->invoice_status == 'pending') {
-						$invoice_status = '<span class="c-pending">Waiting</span>';
+				
+					if($b_value->is_delivered == 0) {
+						$invoice_status = '<span class="c-process">Pending</span>';
 					}
-					if($b_value->invoice_status == 'process') {
-						$invoice_status = '<span class="c-process">Process</span>';
-					}
-					if($b_value->invoice_status == 'delivered') {
+					if($b_value->is_delivered == 1) {
 						$invoice_status = '<span class="c-delivered">Delivered</span>';
-					}
-					$payment_done = ($b_value->payment_done == 0) ? '<div class="round-c payment-red"></div>' : '<div class="round-c payment-green"></div>';
+					}	
+					$payment_done = ($b_value->to_be_paid > 0) ? '<div class="round-c payment-red"></div>' : '<div class="round-c payment-green"></div>';
 		?>
 			<tr id="customer-data-<?php echo $b_value->id; ?>">
 				<td><?php echo $start_count; ?></td>
@@ -192,21 +213,39 @@ var_dump($bills);*/
 					$made_by = get_userdata($b_value->made_by);
 				 	echo ($made_by->user_login) ? $made_by->user_login : '-';
 				?></td>
-				<td style="position:relative;">
+				<td>
 					<?php echo $b_value->invoice_id; ?>
-					<?php echo $payment_done; ?>
 				</td>
 				<td><?php echo $b_value->invoice_date; ?></td>
 				<td><?php echo $b_value->order_shop; ?></td>
 				<td><?php echo $b_value->name.' ('.$b_value->mobile.')<br>('.$b_value->type .')'; ?></td>
-				<td><?php echo $b_value->sale_discount_price; ?></td>
+				<td><?php 
+					if($b_value->cash_amount > 0)  {
+						echo 'Cash :'.$b_value->cash_amount.'<br>'; 
+					}
+					if($b_value->card_amount > 0)  {
+						echo 'Card :'.$b_value->card_amount.'<br>'; 
+					}
+					if($b_value->cheque_amount > 0)  {
+						echo 'Cheque :'.$b_value->cheque_amount.'<br>'; 
+					} 
+					if($b_value->net_banking_amount > 0)  {
+						echo 'Internet :'.$b_value->net_banking_amount.'<br>'; 
+					}
+					if($b_value->to_be_paid > 0)  {
+						echo 'Credit :'.$b_value->to_be_paid.'<br>'; 
+					} ?> 
+				</td>
+
 				<td>
 					<?php echo 'Sale Total : '.$b_value->sale_total; ?><br>
-					<?php echo 'Paid : '.$b_value->paid_total; ?><br>
-					<?php echo 'To Be Paid : '.$b_value->to_be_paid; ?><br>
+					<?php // echo 'Paid : '.$b_value->paid_total.'<br>'; ?>
+					<?php //echo 'To Be Paid : '.$b_value->to_be_paid.'<br>'; ?>
 
 				</td>
+
 				<td class="d-status" data-status-id="<?php echo $b_value->id; ?>"><?php echo $invoice_status; ?></td>
+				<td style="position:relative;"> <?php echo $payment_done; ?></td>
 				<td>
 					<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice'; ?>">Billing Detail
 					</a>
@@ -224,4 +263,5 @@ var_dump($bills);*/
 		?>
 		</tbody>
 	</table>
-	<?php echo $bills['pagination']; ?>
+	<?php echo $bills['pagination']; 
+	?>

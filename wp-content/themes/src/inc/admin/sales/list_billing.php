@@ -61,24 +61,24 @@
 		<option value="Retail" <?php echo ($customer_type === 'Retail') ? 'selected' : ''; ?>>Retail</option>
 		<option value="Wholesale" <?php echo ($customer_type === 'Wholesale') ? 'selected' : ''; ?>>Wholesale</option>		
 	</select>
-	<select name="shop" id="shop">
-		<option value="-" <?php echo ($shop === '-') ? 'selected' : ''; ?>>Shop</option>
-		<option value="rice_center" <?php echo ($shop === 'rice_center') ? 'selected' : ''; ?>>Saravana Rice Centre</option>
-		<option value="rice_mandy" <?php echo ($shop === 'rice_mandy') ? 'selected' : ''; ?>>Saravana Rice Mandy</option>
-		<option value="counter" <?php echo ($shop === 'counter') ? 'selected' : ''; ?>>Counter</option>
+	<!-- <select name="shop" id="shop">
+		<option value="-" <?php //echo ($shop === '-') ? 'selected' : ''; ?>>Shop</option>
+		<option value="rice_center" <?php //echo ($shop === 'rice_center') ? 'selected' : ''; ?>>Saravana Rice Centre</option>
+		<option value="rice_mandy" <?php //echo ($shop === 'rice_mandy') ? 'selected' : ''; ?>>Saravana Rice Mandy</option>
+		<option value="counter" <?php //echo ($shop === 'counter') ? 'selected' : ''; ?>>Counter</option>
 	</select>
 	<select name="delivery" id="delivery">
-		<option value="-" <?php echo ($delivery === '-') ? 'selected' : ''; ?>>Delivery Status</option>
-		<option value="delivered" <?php echo ($delivery === 'delivered') ? 'selected' : ''; ?>>Delivered</option>
-		<option value="pending" <?php echo ($delivery === 'pending') ? 'selected' : ''; ?>>Pending</option>
-		<option value="canceled" <?php echo ($delivery === 'canceled') ? 'selected' : ''; ?>>Canceled</option>
+		<option value="-" <?php //echo ($delivery === '-') ? 'selected' : ''; ?>>Delivery Status</option>
+		<option value="delivered" <?php //echo ($delivery === 'delivered') ? 'selected' : ''; ?>>Delivered</option>
+		<option value="pending" <?php //echo ($delivery === 'pending') ? 'selected' : ''; ?>>Pending</option>
+		<option value="canceled" <?php //echo ($delivery === 'canceled') ? 'selected' : ''; ?>>Canceled</option>
 	</select>
 
 	<select name="payment_done" id="payment_done">
-		<option value="-" <?php echo ($payment_done === '-') ? 'selected' : ''; ?>>Payment Status</option>
-		<option value="1" <?php echo ($payment_done === '1') ? 'selected' : ''; ?>>Completed</option>
-		<option value="0" <?php echo ($payment_done === '0') ? 'selected' : ''; ?>>Pending</option>
-	</select>
+		<option value="-" <?php //echo ($payment_done === '-') ? 'selected' : ''; ?>>Payment Status</option>
+		<option value="1" <?php //echo ($payment_done === '1') ? 'selected' : ''; ?>>Completed</option>
+		<option value="0" <?php //echo ($payment_done === '0') ? 'selected' : ''; ?>>Pending</option>
+	</select> -->
 
 </div>
 <div class="widget-content module table-simple list_customers">

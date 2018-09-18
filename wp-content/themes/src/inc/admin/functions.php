@@ -176,14 +176,7 @@ function src_admin_confirm_box() {
 
 	});
 
-	jQuery('.d-status span').live('click', function(e) {
-	    e.preventDefault();
-	    jQuery('#src_info_box_s').bPopup({
-	    	modalClose: false,
-	    	position: ['auto', 50] 
-	    });
-	});
-
+	
 	jQuery('#my-button1').bind('click', function(e) {
 	    e.preventDefault();
 	    jQuery('#src_info_box_alert').bPopup();
@@ -2564,93 +2557,6 @@ function getBillStatus($bill_id) {
 	return false;
 }
 
-function update_delivery_status_create_form_popup($stock_id = 0) {
-
-	global $wpdb;
-	$bill_id = $_POST['bill_id'];
-	$bill_status = getBillStatus($bill_id);
-
-	$pending_status = '';
-	$process_status = '';
-	$delivered_status = '';
-
-	if($bill_status == 'pending') {
-		$pending_status = 'selected';
-	}
-	if($bill_status == 'process') {
-		$process_status = 'selected';
-	}
-	if($bill_status == 'delivered') {
-		$delivered_status = 'selected';
-	}
-
-
-
-	echo "<div style='margin-top: 15px;'>";
-	echo "<input type='hidden' id='bill_id_hidden' value='".$bill_id."'>";
-	echo "<div style='float:left;width:50%;'>Status</div>";
-	echo "</div>";
-	echo "<div style='float:left;width:50%;'>";
-	echo "<select style='width:100%;' class='sale_status'>";
-	echo "<option ".$pending_status." value='pending'>Waiting</option>";
-	echo "<option ".$process_status." value='process'>Process</option>";
-	echo "<option ".$delivered_status." value='delivered'>Delivered</option>";
-	echo "</select>";
-	echo "</div>";
-	echo "<div style='clear:both;'></div>";
-	echo "<div class='button_sub' style='margin-top: 10px;width:inherit;'>";
-	echo "<button type='submit' id='update_sale_status' class='submit-button' style='margin-right: 0;float: right;'>Submit</button>";
-	echo "</div>";
-	echo "</div>";
-	die();
-
-}
-add_action( 'wp_ajax_update_delivery_status_create_form_popup', 'update_delivery_status_create_form_popup' );
-add_action( 'wp_ajax_nopriv_update_delivery_status_create_form_popup', 'update_delivery_status_create_form_popup' );
-
-
-
-function update_sale_status() {
-
-	global $wpdb;
-	$sale_status = $_POST['sale_status'];
-	$sale_id = $_POST['sale_id'];
-	$sale_table = $wpdb->prefix. 'sale';
-	$data['success'] = 0;
-
-	if($sale_status == 'pending' || $sale_status == 'process' || $sale_status == 'delivered') {
-
-		$wpdb->update( 
-			$sale_table, 
-			array( 
-				'invoice_status' => strtolower($sale_status),
-			), 
-			array( 'id' => $sale_id ), 
-			array( 
-				'%s'
-			), 
-			array( '%d' ) 
-		);
-
-
-		if($sale_status == 'pending') {
-			$data['invoice_status'] = '<span class="c-pending">Waiting</span>';
-		}
-		if($sale_status == 'process') {
-			$data['invoice_status'] = '<span class="c-process">Process</span>';
-		}
-		if($sale_status == 'delivered') {
-			$data['invoice_status'] = '<span class="c-delivered">Delivered</span>';
-		}
-
-		$data['success'] = 1;
-	}
-
-	echo json_encode($data, JSON_PRETTY_PRINT);
-	die();
-}
-add_action( 'wp_ajax_update_sale_status', 'update_sale_status' );
-add_action( 'wp_ajax_nopriv_update_sale_status', 'update_sale_status' );
 
 
 

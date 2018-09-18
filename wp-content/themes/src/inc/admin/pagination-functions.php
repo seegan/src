@@ -81,10 +81,7 @@ FROM ${table} s LEFT JOIN
     }
     $page_arg['cpage'] = '%#%';
     $page_arg['ppage'] = $args['items_per_page'];
-
     /*End Updated for filter 11/10/16*/
-
-
     if($totalPage > 1){
         $data['start_count'] = ($ppage * ($page-1));
 
@@ -583,40 +580,49 @@ function billing_list_pagination_updated( $args ) {
     global $wpdb;
     $sale_table =  $wpdb->prefix.'sale';
     $customers_table =  $wpdb->prefix.'customers';
-    $payment_history_table = $wpdb->prefix.'payment_history';
+    $payment = $wpdb->prefix.'payment';
     $customPagHTML      = "";
 
 
-$query = "SELECT s1.*, 
-
-(CASE
- WHEN s2.paid_total IS NULL 
- THEN 0.00
- ELSE s2.paid_total
-END ) as paid_total,
-
+$query = "SELECT bill.*, 
+(case when payment.cash_amount is null then '-' else payment.cash_amount-bill.pay_to_bal end) as cash_amount,
+(case when payment.card_amount is null then '-' else payment.card_amount end) as card_amount,
+(case when payment.cheque_amount is null then '-' else payment.cheque_amount end) as cheque_amount,
+(case when payment.net_banking_amount is null then '-' else payment.net_banking_amount end) as net_banking_amount
+from (SELECT s1.*, 
+((CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END) - s1.pay_to_bal) as paid_total, 
+( s1.sale_total - (CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END ) ) as to_be_paid 
+FROM 
+( 
+    SELECT s.*, c.name, c.type, c.mobile FROM ${sale_table} as s 
+    LEFT JOIN 
+    wp_customers as c 
+    ON s.customer_id = c.id 
+) as s1 
+LEFT JOIN 
 (
-
-s1.sale_total - (CASE
- WHEN s2.paid_total IS NULL 
- THEN 0.00
- ELSE s2.paid_total
-END ) 
-
-) as to_be_paid
-
-
- FROM ( SELECT s.*, c.name, c.type, c.mobile FROM ${sale_table} as s LEFT JOIN ${customers_table} as c ON s.customer_id = c.id ) as s1 LEFT JOIN  
-
+    SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM wp_sale as s 
+    JOIN ( 
+        SELECT p.sale_id, SUM(p.amount) as paid_total FROM ${payment} as p WHERE p.active = 1 GROUP BY p.sale_id 
+    ) as ph 
+    ON s.id = ph.sale_id WHERE s.active = 1 
+) as s2 
+ON s1.id = s2.sale_id 
+WHERE s1.active = 1 AND s1.locked = 1 )  as bill left join 
 (
-SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM ${sale_table} as s JOIN ( SELECT p.sale_id, SUM(p.payment_paid) as paid_total FROM ${payment_history_table} as p WHERE p.active = 1 GROUP BY p.sale_id ) as ph ON s.id = ph.sale_id WHERE s.active = 1     
-) as s2 ON s1.id = s2.sale_id
+SELECT sale_id,
+sum(case when payment_type = 'cash' then amount else '-' end) as cash_amount,
+sum(case when payment_type = 'card' then amount else '-' end) as card_amount,
+sum(case when payment_type = 'cheque' then amount else '-' end) as cheque_amount,
+sum(case when payment_type = 'net_banking' then amount else '-' end) as net_banking_amount
+FROM ${payment} WHERE active=1 GROUP by sale_id
+ ) as payment on bill.id = payment.sale_id where bill.active = 1 ${args['condition']}";
 
 
-WHERE s1.active = 1 ${args['condition']}";
+    $total_amount       = "SELECT sum(cash_amount) as cash_amount,sum(card_amount) as card_amount,sum(cheque_amount) as cheque_amount,sum(net_banking_amount) as net_banking_amount,sum(sale_value) as sale_value FROM (${query})  AS combined_table";
+    $data['s_result']   = $wpdb->get_row( $total_amount );
 
 
-    //$query = "SELECT s.*, c.name, c.type, c.mobile FROM ${sale_table} as s LEFT JOIN ${customers_table} as c ON s.customer_id = c.id WHERE s.active = 1 ${args['condition']}";
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
     $total              = $wpdb->get_var( $total_query );
@@ -637,9 +643,9 @@ WHERE s1.active = 1 ${args['condition']}";
         $bill_total = $_POST['bill_total'];
         
         $customer_type = $_POST['customer_type'];
-        $shop = $_POST['shop'];
-        $delivery = $_POST['delivery'];
-        $payment_done = $_POST['payment_done'];
+        //$shop = $_POST['shop'];
+        //$delivery = $_POST['delivery'];
+        //$payment_done = $_POST['payment_done'];
 
         $date_from = $_POST['date_from'];
         $date_to = $_POST['date_to'];
@@ -650,9 +656,9 @@ WHERE s1.active = 1 ${args['condition']}";
         $bill_total = isset( $_GET['bill_total'] ) ? $_GET['bill_total']  : '';
         
         $customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '-';
-        $shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
-        $delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
-        $payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
+        //$shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
+        //$delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
+        //$payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
 
         $date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
         $date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';

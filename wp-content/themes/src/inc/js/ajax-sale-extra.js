@@ -7,9 +7,9 @@ jQuery('.billing_list_filter #per_page, .billing_list_filter #invoice_no, .billi
     var customer_name = jQuery('#customer_name').val();
     var bill_total = jQuery('#bill_total').val();
     var customer_type = jQuery('#customer_type').val();
-    var shop = jQuery('#shop').val();
-    var delivery = jQuery('#delivery').val();
-    var payment_done = jQuery('#payment_done').val();
+    //var shop = jQuery('#shop').val();
+    //var delivery = jQuery('#delivery').val();
+    //var payment_done = jQuery('#payment_done').val();
     var date_from = jQuery('#date_from').val();
     var date_to = jQuery('#date_to').val();
 
@@ -23,9 +23,9 @@ jQuery('.billing_list_filter #per_page, .billing_list_filter #invoice_no, .billi
           customer_name : customer_name,
           bill_total : bill_total,
           customer_type : customer_type,
-          shop : shop,
-          delivery : delivery,
-          payment_done : payment_done,
+          //shop : shop,
+          //delivery : delivery,
+          //payment_done : payment_done,
           date_from : date_from,
           date_to : date_to,
           action : 'bill_list_filter'
@@ -54,65 +54,6 @@ jQuery(document).ready(function(){
     jQuery("#date_to" ).datepicker({dateFormat: "yy-mm-dd"});
 });
 /*End Updated for filter 11/10/16*/
-
-jQuery('.d-status span').live('click', function() {
-  status_change_popup('update_delivery_status_create_form_popup', 'Update Delivery Status', this);
-});
-
-
-jQuery('#update_sale_status').live('click', function(){
-  var sale_status = jQuery('.sale_status').val();
-  var sale_id = jQuery('#bill_id_hidden').val();
-
-
-  jQuery.ajax({
-    type: "POST",
-    url: frontendajax.ajaxurl,
-    data: {
-        sale_status : sale_status,
-        sale_id : sale_id,
-        action : 'update_sale_status'
-    },
-
-    success: function (data) { 
-
-        if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-            var obj = jQuery.parseJSON(data);
-            if(obj.success == 0) {
-                alert_popup('<span class="error_msg">Something Went Wrong! try again!</span>', 'Error');
-            } else {
-              jQuery('[data-status-id="'+sale_id+'"]').html(obj.invoice_status);
-              clear_main_popup();
-              jQuery('#src_info_box_s').bPopup().close();
-              alert_popup('<span class="success_msg">Status Changed!</span>', 'Success');
-            }
-        } else {
-            jQuery('.list_customers').html(data);
-        }
-    }
-  });
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 jQuery('.popup-add-petty-cash').live('click', function() {
     create_popup('get_petty_cash_create_form_popup', 'Add New Customer');

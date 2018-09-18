@@ -17,11 +17,12 @@ if($payment_detail){
 				'amount'			=> $value['payment_amount'],
 							);
 			$wpdb->insert($payment_table, $payment_data);
-	
 	   }
 
 	}
 }
+
+
 if($payment_detail){ 
 	foreach ($payment_credit as $view) {
 		if($view == 'credit_content'){
@@ -42,10 +43,8 @@ if($payment_detail){
 }
 
 if($duepaid){
-
 	foreach ($duepaid as $due) {
 		if($due['prev_bal_check']){
-
 			updateDueCheck($due['id']);
 		}
 	}
@@ -61,7 +60,6 @@ if($duepaid){
 	// 	'amount'			=> $paytobalance,
 	// 	);
 	// $wpdb->insert($payfromprevious_data, $payment_data);
-
 
 
 

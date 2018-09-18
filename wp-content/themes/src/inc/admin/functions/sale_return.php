@@ -64,16 +64,14 @@ function sale_return($value='')
 				} else {
 					$gst = array();
 				}
-			$wpdb->update($return_detail_table, $gst, array('id' => $details_id));
 
+				$wpdb->update($return_detail_table, $gst, array('id' => $details_id));
 				$query = "SELECT lot_parent_id, bill_type FROM wp_sale_detail WHERE id = '".$return['sale_detail']."' AND active = 1";
 				$exist_data = $wpdb->get_row($query);
 				if($exist_data->bill_type == 'original') {
-
 					addReturn($exist_data->lot_parent_id, $return['return_weight']);
 				}
 			}
-
 		}
 	}
 	echo json_encode($data);
@@ -83,38 +81,30 @@ add_action( 'wp_ajax_sale_return', 'sale_return' );
 add_action( 'wp_ajax_nopriv_sale_return', 'sale_return' );
 
 
-
 function sale_return_update($value='')
 {
 	global $wpdb;
 	$data['success'] = 0;
-	$return_table 			= $wpdb->prefix. 'return';
+	$return_table 				= $wpdb->prefix. 'return';
 	$return_detail_table 		= $wpdb->prefix. 'return_detail';
 	$params = array();
 	parse_str($_POST['return_data'], $params);
-
 	$sale_id = $params['sale_id'];
-	$return_date = man_to_machine_date($params['return_date']);
-	$return_id = $params['return_id'];
-
-
-
-	$pay_to_bal = ($params['return_to_check'])? $params['return_to_bal'] : 0;
-	$return_data = array(
-		'sale_id' => $sale_id, 
-		'customer_id' => $params['customer_id'],
-		'total_amount' => $params['total_return'],
-		'gst_from'   => $params['gst_from'],
-		'return_date' => $return_date,
+	$return_date 	= man_to_machine_date($params['return_date']);
+	$return_id 		= $params['return_id'];
+	$pay_to_bal 	= ($params['return_to_check'])? $params['return_to_bal'] : 0;
+	$return_data 	= array(
+		'sale_id' 		=> $sale_id, 
+		'customer_id' 	=> $params['customer_id'],
+		'total_amount' 	=> $params['total_return'],
+		'gst_from'   	=> $params['gst_from'],
+		'return_date' 	=> $return_date,
 		);
-
 	$wpdb->update($return_table, $return_data, array('id' => $return_id));
 	$sql_update = "UPDATE $return_table set key_amount = key_amount + $pay_to_bal WHERE id = $return_id";
-	$wpdb->query($sql_update);
-	
+	$wpdb->query($sql_update);	
 	if(isset($params['return_data']) && $params['return_data']) {
 		foreach ($params['return_data'] as $return) {
-
 			$query = "SELECT sd.lot_parent_id, sd.bill_type, rd.return_weight FROM wp_sale_detail as sd JOIN wp_return_detail as rd ON sd.id = rd.sale_detail_id WHERE sd.id = '".$return['sale_detail']."' AND rd.id = ".$return['return_detail_id']." AND sd.active = 1 AND rd.active = 1";
 			$exist_data = $wpdb->get_row($query);
 
