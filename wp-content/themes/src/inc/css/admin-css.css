@@ -1267,3 +1267,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
 .disabled-false {
     background: #fff;
 }
+.bill_tab{
+    width:150px;
+    margin-left: 175px;
+}
+
+@media (min-width: 1237px) and (max-width:1845px) {
+    .bill_tab{
+        width: 85px;
+        margin-left: 115px;
+    }
+}

@@ -581,10 +581,13 @@ function billing_list_pagination_updated( $args ) {
     $sale_table =  $wpdb->prefix.'sale';
     $customers_table =  $wpdb->prefix.'customers';
     $payment = $wpdb->prefix.'payment';
+    $return = $wpdb->prefix.'return';
     $customPagHTML      = "";
 
 
-$query = "SELECT bill.*, 
+$query = "SELECT full_table.*,
+(case when return_tab.return_amount is null then 0 else return_tab.return_amount end) as return_amount
+from ( SELECT bill.*, 
 (case when payment.cash_amount is null then '-' else payment.cash_amount-bill.pay_to_bal end) as cash_amount,
 (case when payment.card_amount is null then '-' else payment.card_amount end) as card_amount,
 (case when payment.cheque_amount is null then '-' else payment.cheque_amount end) as cheque_amount,
@@ -616,11 +619,26 @@ sum(case when payment_type = 'card' then amount else '-' end) as card_amount,
 sum(case when payment_type = 'cheque' then amount else '-' end) as cheque_amount,
 sum(case when payment_type = 'net_banking' then amount else '-' end) as net_banking_amount
 FROM ${payment} WHERE active=1 GROUP by sale_id
- ) as payment on bill.id = payment.sale_id where bill.active = 1 ${args['condition']}";
+ ) as payment on bill.id = payment.sale_id ) as full_table 
+ left join 
+ (
+ SELECT sum(key_amount) as return_amount,sale_id 
+from ${return} GROUP by sale_id
+) as 
+return_tab 
+on return_tab.sale_id = full_table.id where full_table.active = 1  ${args['condition']}";
 
-
+//Sale table
     $total_amount       = "SELECT sum(cash_amount) as cash_amount,sum(card_amount) as card_amount,sum(cheque_amount) as cheque_amount,sum(net_banking_amount) as net_banking_amount,sum(sale_value) as sale_value FROM (${query})  AS combined_table";
     $data['s_result']   = $wpdb->get_row( $total_amount );
+
+    //Return Table
+     $total_return      = "SELECT sum(return_amount) as return_amount FROM (${query})  AS combined_table";
+    $data['r_result']   = $wpdb->get_row( $total_return );
+
+    //Total Margin price 
+    $margin_query       = "SELECT sale_id,unit_price,margin_price,sum(case when unit_price = margin_price then 1 else 0 end ) as margin_rate FROM ${sale_table} GROUP by sale_id";
+    $data['m_result']   = $wpdb->get_row($margin_query);
 
 
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
@@ -677,15 +695,15 @@ FROM ${payment} WHERE active=1 GROUP by sale_id
     if($customer_type != '-') {
         $page_arg['customer_type'] = $customer_type;
     }
-    if($shop != '-') {
-        $page_arg['shop'] = $shop;
-    }
-    if($delivery != '-') {
-        $page_arg['delivery'] = $delivery;
-    }
-    if($payment_done != '-') {
-        $page_arg['payment_done'] = $payment_done;
-    }
+    // if($shop != '-') {
+    //     $page_arg['shop'] = $shop;
+    // }
+    // if($delivery != '-') {
+    //     $page_arg['delivery'] = $delivery;
+    // }
+    // if($payment_done != '-') {
+    //     $page_arg['payment_done'] = $payment_done;
+    // }
     if($date_from != '') {
         $page_arg['date_from'] = $date_from;
     }
@@ -725,7 +743,7 @@ FROM ${payment} WHERE active=1 GROUP by sale_id
             $customPagHTML .=  '</ul>';
         endif;
     }
-
+    
     $data['pagination'] = $customPagHTML;
     return $data;
 }

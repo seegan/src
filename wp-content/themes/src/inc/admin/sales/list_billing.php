@@ -79,7 +79,6 @@
 		<option value="1" <?php //echo ($payment_done === '1') ? 'selected' : ''; ?>>Completed</option>
 		<option value="0" <?php //echo ($payment_done === '0') ? 'selected' : ''; ?>>Pending</option>
 	</select> -->
-
 </div>
 <div class="widget-content module table-simple list_customers">
 <?php 

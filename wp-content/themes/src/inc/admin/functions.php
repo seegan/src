@@ -37,7 +37,6 @@ wp_localize_script( 'custom', 'home_page', array( 'url' => home_url( '/' ), 'new
 
 wp_enqueue_script( 'jquery-canvas-js', get_template_directory_uri() . '/inc/js/jquery.canvasjs.min.js', array('jquery'), false, false );
 
-
 // Admin footer modification
 function remove_footer_admin() 
 {
@@ -1657,8 +1656,7 @@ function update_bill_last(){
 			} else {
 				$bill_detail_id = getToken($lots_sale_detail_table);
 			}
-				
-				
+	
 			//Combain lot and dummy lot and skip duplicate
 			if($s_value['lot_parent']) {
 

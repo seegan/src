@@ -40,34 +40,34 @@
     $condition = '';
     if($invoice_no != '') {
     	if($con == false) {
-    		$condition .= " AND bill.invoice_id = '".$invoice_no."' ";
+    		$condition .= " AND full_table.invoice_id = '".$invoice_no."' ";
     	} else {
-    		$condition .= " AND bill.invoice_id = '".$invoice_no."' ";
+    		$condition .= " AND full_table.invoice_id = '".$invoice_no."' ";
     	}
     	$con = true;
     }
     if($customer_name != '') {
    		if($con == false) {
-    		$condition .= " AND ( bill.name LIKE '".$customer_name."%' OR bill.mobile LIKE '".$customer_name."%' ) ";
+    		$condition .= " AND ( full_table.name LIKE '".$customer_name."%' OR full_table.mobile LIKE '".$customer_name."%' ) ";
     	} else {
-    		$condition .= " AND ( bill.name LIKE '".$customer_name."%' OR bill.mobile LIKE '".$customer_name."%' ) ";
+    		$condition .= " AND ( full_table.name LIKE '".$customer_name."%' OR full_table.mobile LIKE '".$customer_name."%' ) ";
     	}
     	$con = true;
     }
     if($customer_type != '-') {
    		if($con == false) {
-    		$condition .= " AND bill.type = '".$customer_type."' ";
+    		$condition .= " AND full_table.type = '".$customer_type."' ";
     	} else {
-    		$condition .= " AND bill.type = '".$customer_type."' ";
+    		$condition .= " AND full_table.type = '".$customer_type."' ";
     	}
     	$con = true;
     }
 
     // if($shop != '-') {
    	// 	if($con == false) {
-    // 		$condition .= " AND bill.order_shop = '".$shop."' ";
+    // 		$condition .= " AND full_table.order_shop = '".$shop."' ";
     // 	} else {
-    // 		$condition .= " AND bill.order_shop = '".$shop."' ";
+    // 		$condition .= " AND full_table.order_shop = '".$shop."' ";
     // 	}
     // 	$con = true;
     // }
@@ -75,71 +75,71 @@
 
     // if($delivery != '-') {
    	// 	if($con == false) {
-    // 		$condition .= " AND bill.invoice_status = '".$delivery."' ";
+    // 		$condition .= " AND full_table.invoice_status = '".$delivery."' ";
     // 	} else {
-    // 		$condition .= " AND bill.invoice_status = '".$delivery."' ";
+    // 		$condition .= " AND full_table.invoice_status = '".$delivery."' ";
     // 	}
     // 	$con = true;
     // }
 
     // if($payment_done != '-') {
    	// 	if($con == false) {
-    // 		$condition .= " AND bill.payment_done = '".$payment_done."' ";
+    // 		$condition .= " AND full_table.payment_done = '".$payment_done."' ";
     // 	} else {
-    // 		$condition .= " AND bill.payment_done = '".$payment_done."' ";
+    // 		$condition .= " AND full_table.payment_done = '".$payment_done."' ";
     // 	}
     // 	$con = true;
     // }
 
     if($price != '' && $price_to == '') {
    		if($con == false) {
-    		$condition .= " AND bill.sale_total = ".$price." ";
+    		$condition .= " AND full_table.sale_total = ".$price." ";
     	} else {
-    		$condition .= " AND bill.sale_total = ".$price." ";
+    		$condition .= " AND full_table.sale_total = ".$price." ";
     	}
     	$con = true;
     }
 
     if($price != '' && $price_to != '') {
    		if($con == false) {
-    		$condition .= " AND ( bill.sale_total >= ".$price." AND bill.sale_total <= ".$price_to.") ";
+    		$condition .= " AND ( full_table.sale_total >= ".$price." AND full_table.sale_total <= ".$price_to.") ";
     	} else {
-    		$condition .= " AND ( bill.sale_total >= ".$price." AND bill.sale_total <= ".$price_to.") ";
+    		$condition .= " AND ( full_table.sale_total >= ".$price." AND full_table.sale_total <= ".$price_to.") ";
     	}
     	$con = true;
     }
 
     if($date_from != '' && $date_to == '') {
    		if($con == false) {
-    		$condition .= " AND DATE(bill.invoice_date) >= '".$date_to."' ";
+    		$condition .= " AND DATE(full_table.invoice_date) >= '".$date_to."' ";
     	} else {
-    		$condition .= " AND DATE(bill.invoice_date) >= '".$date_to."' ";
+    		$condition .= " AND DATE(full_table.invoice_date) >= '".$date_to."' ";
     	}
     	$con = true;
     }
     if($date_from == '' && $date_to != '') {
    		if($con == false) {
-    		$condition .= " AND DATE(bill.invoice_date) <= '".$date_from."' ";
+    		$condition .= " AND DATE(full_table.invoice_date) <= '".$date_from."' ";
     	} else {
-    		$condition .= " AND DATE(bill.invoice_date) <= '".$date_from."' ";
+    		$condition .= " AND DATE(full_table.invoice_date) <= '".$date_from."' ";
     	}
     	$con = true;
     }
     if($date_from != '' && $date_to != '') {
    		if($con == false) {
-    		$condition .= " AND ( DATE(bill.invoice_date) >= '".$date_from."' AND DATE(bill.invoice_date) <= '".$date_to."' ) ";
+    		$condition .= " AND ( DATE(full_table.invoice_date) >= '".$date_from."' AND DATE(full_table.invoice_date) <= '".$date_to."' ) ";
     	} else {
-    		$condition .= " AND ( DATE(bill.invoice_date) >= '".$date_from."' AND DATE(bill.invoice_date) <= '".$date_to."' ) ";
+    		$condition .= " AND ( DATE(full_table.invoice_date) >= '".$date_from."' AND DATE(full_table.invoice_date) <= '".$date_to."' ) ";
     	}
     	$con = true;
     }
 
-    $condition .= " AND bill.locked = 1 ";
+    $condition .= " AND full_table.locked = 1 ";
     /*End Updated for filter 11/10/16*/
 
 
 	$result_args = array(
-		'orderby_field'  	=> 'bill.id',
+		'orderby_field'  	=> 'full_table.id',
 		'page' 				=> $cpage ,
 		'order_by' 			=> 'DESC',
 		'items_per_page' 	=> $ppage ,
@@ -147,7 +147,24 @@
 	);
 	$bills = billing_list_pagination_updated($result_args);
 ?>
-		<div class="x_content" style="width:100%;">
+	<div>
+		<div class="x_content" style="width:20%;float:left">
+            <div class="table-responsive bill_tab">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th><br>Total <br> Return</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <tr>
+                            <td><?php echo $bills['r_result']->return_amount; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    	</div>
+    	<div class="x_content" style="float:left;">
             <div class="table-responsive" style="width:800px;margin: 0 auto;margin-bottom:20px;">
                 <table class="table table-striped jambo_table bulk_action">
                     <thead>
@@ -173,7 +190,9 @@
                     </tbody>
                 </table>
             </div>
-    </div>
+    	</div>
+	</div>
+    	
 	<table class="display">
 		<thead>
 			<tr>
@@ -187,6 +206,7 @@
 				<th>Total</th>
 				<th>Delivery</th>
 				<th>Payment</th>
+				<th>Wholesale Rate</th>
 				<th>Billing Details</th>
 				<th>Action</th>
 			</tr>
@@ -238,7 +258,7 @@
 				</td>
 
 				<td>
-					<?php echo 'Sale Total : '.$b_value->sale_total; ?><br>
+					<?php echo 'Sale Total : '.$b_value->sale_total; ?>
 					<?php // echo 'Paid : '.$b_value->paid_total.'<br>'; ?>
 					<?php //echo 'To Be Paid : '.$b_value->to_be_paid.'<br>'; ?>
 
@@ -254,7 +274,9 @@
 					<span>
 						<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete lot_delete" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a></span>
+					<span>
+						<a class="action-icons c-delete lot_delete" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a>
+					</span>
 				</td>
 			</tr>
 		<?php
