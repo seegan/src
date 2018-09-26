@@ -88,6 +88,8 @@ function src_global_var() {
 add_action( 'init', 'src_global_var' );
 
 
+
+
 //create role capabilities
 function custom_role_administrator() {
 	global $src_capabilities;

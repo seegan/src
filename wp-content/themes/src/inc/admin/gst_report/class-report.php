@@ -6,22 +6,22 @@
 		    if( isset($_POST['action'])) {
 		    	$params = array();
 				parse_str($_POST['data'], $params);
-
 		        $this->cpage  = 1;
 		        $this->ppage  = isset($params['ppage']) ? $params['ppage'] : 5;
 		        $this->bill_from = isset($params['bill_from']) ? $params['bill_from'] : date('Y-m-01');
 		        $this->bill_to = isset($params['bill_to']) ? $params['bill_to'] : date('Y-m-t');
-		        $this->slap    = isset($params['slap']) ? $params['slap'] :'' ;
-
+		        $this->slab    = isset($params['slab']) ? $params['slab'] :'-' ;
 		    }  
 		    else {
 		        $this->cpage 		= isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : 1;
 		        $this->ppage 		= isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 5;
 		        $this->bill_from 	= isset( $_GET['bill_from'] ) ? $_GET['bill_from']  : date('Y-m-d');
 		        $this->bill_to 		= isset( $_GET['bill_to'] ) ? $_GET['bill_to']  : date('Y-m-d');
-		        $this->slap   		= isset( $_GET['slap'] ) ? $_GET['slap']  : '';
+		        $this->slab   		= isset( $_GET['slab'] ) ? $_GET['slab']  : '-';
 		    }
 		}
+
+
 
 
 
@@ -31,7 +31,7 @@
 		    $sale_table = $wpdb->prefix.'sale';
 		    $sale_detail = $wpdb->prefix.'sale_detail';
 		    $customPagHTML      = "";
-		    
+
 			$query = "SELECT f.*, 
 l.weight as parent_bag_weight, 
 l.lot_number as parent_lot_number,
