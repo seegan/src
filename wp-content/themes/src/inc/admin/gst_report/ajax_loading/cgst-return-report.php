@@ -1,35 +1,19 @@
 <?php
-    if(isset($_POST['action']) && $_POST['action'] == 'stock_sale_filter_list') {
-        $cpage = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : 1;
-        $ppage = $_POST['per_page'];
-        $slab = isset($_GST['slab']) ? $_GET['slab'] : '-';
-
-        $date_from = ( isset( $_POST['date_from'] ) && $_POST['date_from'] != '' )  ? $_POST['date_from'] : date('Y-m-d');
-        $date_to = ( isset( $_POST['date_to'] ) && $_POST['date_to'] != '' )  ? $_POST['date_to'] : date('Y-m-d');
-    } else {
-        $cpage = 1;
-        $ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
-        $slab = isset($_POST['slab']) ? $_POST['slab'] : '-';
-
-        $date_from = ( isset( $_GET['date_from'] ) && $_GET['date_from'] != ''  ) ? $_GET['date_from']  : date('Y-m-d');
-        $date_to = ( isset( $_GET['date_to'] ) && $_GET['date_to'] != '' ) ? $_GET['date_to']  : date('Y-m-d');
-
-    }
     $con = false;
     $condition = '';
 
-    if($slab != '-') {
-        $condition .= " AND f.report_type  = '".$item_status."' ";
+    if($report->slab != '-') {
+        $condition .= " AND f.cgst  = '".$report->slab."' ";
         $con = true;
     }
-    $sale_condition = "( DATE(s.invoice_date) >= '".$date_from."' AND DATE(s.invoice_date) <= '".$date_to."') AND s.gst_to = 'cgst' ";
-    $return_condition = "( DATE(r.return_date) >= '".$date_from."' AND DATE(r.return_date) <= '".$date_to."') AND s.gst_to = 'cgst' ";
+    $sale_condition = "( DATE(s.invoice_date) >= '".$report->bill_from."' AND DATE(s.invoice_date) <= '".$report->bill_to."') AND s.gst_to = 'cgst' ";
+    $return_condition = "( DATE(r.return_date) >= '".$report->bill_from."' AND DATE(r.return_date) <= '".$report->bill_to."') AND s.gst_to = 'cgst' ";
 
     $result_args = array(
         'orderby_field' => 'f.cgst',
-        'page' => $cpage,
+        'page' => $report->cpage,
         'order_by' => 'ASC',
-        'items_per_page' => $ppage ,
+        'items_per_page' => $report->ppage ,
         'condition'     => $condition,
         'sale_condition' => $sale_condition,
         'return_condition' => $return_condition,
