@@ -579,6 +579,7 @@ function billing_list_pagination_updated( $args ) {
 
     global $wpdb;
     $sale_table =  $wpdb->prefix.'sale';
+    $sale_detail = $wpdb->prefix.'sale_detail';
     $customers_table =  $wpdb->prefix.'customers';
     $payment = $wpdb->prefix.'payment';
     $return = $wpdb->prefix.'return';
@@ -594,7 +595,8 @@ from ( SELECT bill.*,
 (case when payment.net_banking_amount is null then '-' else payment.net_banking_amount end) as net_banking_amount
 from (SELECT s1.*, 
 ((CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END) - s1.pay_to_bal) as paid_total, 
-( s1.sale_total - (CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END ) ) as to_be_paid 
+( s1.sale_total - (CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END ) ) as to_be_paid,
+      (case when s2.margin_rate is null then 0 else s2.margin_rate end) as margin_rate
 FROM 
 ( 
     SELECT s.*, c.name, c.type, c.mobile FROM ${sale_table} as s 
@@ -604,11 +606,14 @@ FROM
 ) as s1 
 LEFT JOIN 
 (
-    SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM wp_sale as s 
+    select sale_tab.*,(case when sale_details.margin_rate is null then 0 else sale_details.margin_rate end) as margin_rate from 
+(
+    SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM ${sale_table} as s 
     JOIN ( 
         SELECT p.sale_id, SUM(p.amount) as paid_total FROM ${payment} as p WHERE p.active = 1 GROUP BY p.sale_id 
     ) as ph 
-    ON s.id = ph.sale_id WHERE s.active = 1 
+    ON s.id = ph.sale_id WHERE s.active = 1 ) as sale_tab
+    left join ( SELECT sale_id,sum(case when unit_price = margin_price then 1 else 0 end) as margin_rate from  ${sale_detail} WHERE active = 1 GROUP by sale_id) as sale_details on sale_details.sale_id = sale_tab.sale_id 
 ) as s2 
 ON s1.id = s2.sale_id 
 WHERE s1.active = 1 AND s1.locked = 1 )  as bill left join 
@@ -627,7 +632,8 @@ from ${return} GROUP by sale_id
 ) as 
 return_tab 
 on return_tab.sale_id = full_table.id where full_table.active = 1  ${args['condition']}";
-
+// echo "<pre>";
+// var_dump($query);
 //Sale table
     $total_amount       = "SELECT sum(cash_amount) as cash_amount,sum(card_amount) as card_amount,sum(cheque_amount) as cheque_amount,sum(net_banking_amount) as net_banking_amount,sum(sale_value) as sale_value FROM (${query})  AS combined_table";
     $data['s_result']   = $wpdb->get_row( $total_amount );
@@ -1747,5 +1753,46 @@ function getStatusCount() {
 }
 
 
-
+// SELECT full_table.*,
+// (case when return_tab.return_amount is null then 0 else return_tab.return_amount end) as return_amount
+// from ( SELECT bill.*, 
+// (case when payment.cash_amount is null then '-' else payment.cash_amount-bill.pay_to_bal end) as cash_amount,
+// (case when payment.card_amount is null then '-' else payment.card_amount end) as card_amount,
+// (case when payment.cheque_amount is null then '-' else payment.cheque_amount end) as cheque_amount,
+// (case when payment.net_banking_amount is null then '-' else payment.net_banking_amount end) as net_banking_amount
+// from (SELECT s1.*, 
+// ((CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END) - s1.pay_to_bal) as paid_total, 
+// ( s1.sale_total - (CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END ) ) as to_be_paid 
+// FROM 
+// ( 
+//     SELECT s.*, c.name, c.type, c.mobile FROM wp_sale as s 
+//     LEFT JOIN 
+//     wp_customers as c 
+//     ON s.customer_id = c.id 
+// ) as s1 
+// LEFT JOIN 
+// (
+//     SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM wp_sale as s 
+//     JOIN ( 
+//         SELECT p.sale_id, SUM(p.amount) as paid_total FROM wp_payment as p WHERE p.active = 1 GROUP BY p.sale_id 
+//     ) as ph 
+//     ON s.id = ph.sale_id WHERE s.active = 1 
+// ) as s2 
+// ON s1.id = s2.sale_id 
+// WHERE s1.active = 1 AND s1.locked = 1 )  as bill left join 
+// (
+// SELECT sale_id,
+// sum(case when payment_type = 'cash' then amount else '-' end) as cash_amount,
+// sum(case when payment_type = 'card' then amount else '-' end) as card_amount,
+// sum(case when payment_type = 'cheque' then amount else '-' end) as cheque_amount,
+// sum(case when payment_type = 'net_banking' then amount else '-' end) as net_banking_amount
+// FROM wp_payment WHERE active=1 GROUP by sale_id
+//  ) as payment on bill.id = payment.sale_id ) as full_table 
+//  left join 
+//  (
+//  SELECT sum(key_amount) as return_amount,sale_id 
+// from wp_return GROUP by sale_id
+// ) as 
+// return_tab 
+// on return_tab.sale_id = full_table.id where full_table.active = 1   AND full_table.locked = 1
 ?>

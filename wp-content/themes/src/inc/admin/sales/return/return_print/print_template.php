@@ -184,57 +184,86 @@
       <thead>
         <tr>
           <th colspan="5" class="dotted_border_bottom"  align="center" >GST Details</th>
-        </tr>     
+        </tr>
+          
       <tr>
         <th valign='top' class="center-th" style="width:90px;padding:0;" rowspan="2">
         <div class="text-center">Taxable Value</div>
         </th>
+        <?php  if( $gst_from =='cgst' ) { ?>   
         <th class="center-th" style="padding: 0;" colspan="2">
         <div class="text-center">CGST</div>
         </th>
         <th class="center-th" style="padding: 0;" colspan="2">
         <div class="text-center">SGST</div>
         </th>
-      </tr>
+      <?php } ?>
+      
+     <?php  if( $gst_from =='igst' ) { ?>     
+        <th class="center-th" style="padding: 0;" colspan="2">
+        <div class="text-center">IGST</div>
+        </th>
+    <?php } ?>
+    </tr>
       <tr>
         <th style="padding: 0;width: 70px;"><div class="text-center">Rate</div></th>
         <th style="padding: 0;width: 70px;"><div class="text-right">Amount</div></th>
+         <?php  if( $gst_from =='cgst' ) { ?>   
         <th style="padding: 0;width: 70px;"><div class="text-center">Rate</div></th>
         <th style="padding: 0;width: 70px;"><div class="text-right">Amount</div></th>
+      <?php } ?>
       </tr>
       </thead>
       <tbody>
 
     <?php
-        if($bill_data && $bill_ldata && count($bill_ldata)>0) {
-          $i = 1;
-          $gst_tot= 0;
-          $total_tax = 0.00;
-          foreach ($bill_ldata as $d_value) {
+        if(isset($return_data['return_detail']) AND count($return_data['return_detail'])>0 ) {
+        $i=0;
+        $total_tax = 0.00;
+        $gst_tot = 0.00;
+              foreach ($return_data['return_detail'] as $i_value) {
+                $i++;
+                 if($gst_from == 'cgst') {
+                        $gst_percentage = ($i_value->cgst * 2);
+                    } else if($gst_from == 'igst') {
+                        $gst_percentage = $i_value->igst;
+                    } else {
+                        $gst_percentage = 0;
+                    }
       ?>
-         
+         <?php if($gst_from == 'cgst') { ?>
           <tr class="">
-            <td class=""><div class="text-center"><?php  echo $d_value->amt; ?></div></td>
-            <td class=""><div class="text-center"><?php echo $d_value->cgst + 0; echo ' %'; ?></div></td>
-            <td class=""><div class="text-center"><?php echo $d_value->cgst_value; ?></div></td>
-            <td class=""><div class="text-center"><?php echo $d_value->sgst + 0; echo ' %';  ?> </div></td>
-            <td class=""><div class="text-center"><?php echo $d_value->sgst_value; ?></div></td>
+            <td class=""><div class="text-center"><?php  echo $i_value->taxless_amount; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $i_value->cgst + 0; echo ' %'; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $i_value->cgst_value; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $i_value->sgst + 0; echo ' %';  ?> </div></td>
+            <td class=""><div class="text-center"><?php echo $i_value->sgst_value; ?></div></td>
           </tr>
+      <?php } ?>
+      <?php if($gst_from == 'igst') { ?>
+          <tr class="">
+            <td class=""><div class="text-center"><?php  echo $i_value->taxless_amount; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $i_value->igst + 0; echo ' %'; ?></div></td>
+            <td class=""><div class="text-center"><?php echo $i_value->igst_value; ?></div></td>
+          </tr>
+      <?php } ?>
            <?php 
-           $total_tax = ( 2 * $d_value->cgst_value) +$total_tax;
-           $gst_tot = $d_value->cgst_value + $gst_tot;
+           $total_tax = ( 2 * $i_value->cgst_value) +$total_tax;
+           $gst_tot = $i_value->cgst_value + $gst_tot;
 
         }
       } ?>
       <tr class="">
+         <?php  if( $gst_from =='cgst' ) { ?>   
         <td class=""><div class="text-center"></div></td>
         <td class=""><div class="text-center"></div></td>
+    <?php } ?>
         <td class=""><div class="text-center"><?php echo $gst_tot; ?></div></td>
         <td class=""><div class="text-center"></div></td>
         <td class=""><div class="text-center"><?php echo $gst_tot; ?></div></td>
       </tr>
       <tr>
-        <td  class="dotted_border_bottom" colspan="4">
+        <td  class="dotted_border_bottom" colspan=" <?php  echo ( $gst_from =='cgst' )?"4" : "2"; ?> >
         <div class="text-center">
           <b>Total Tax</b>
         </div>

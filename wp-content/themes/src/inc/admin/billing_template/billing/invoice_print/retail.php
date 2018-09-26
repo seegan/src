@@ -48,16 +48,11 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
       padding:0;
     }
     #wpcontent {
-      background: white;
-     
+      background: white; 
       margin: 1mm;
       display: block;
       padding: 0;
     }
-
-
-
-
     .A4_HALF .footer {
       position: fixed;
       bottom: 0px;
@@ -78,8 +73,6 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         margin: 0;
         font-size: 14px
       }
-
-
       .A4_HALF {
         width: 100mm;
       }
