@@ -1282,3 +1282,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
         margin-left: 115px;
     }
 }
+
+
+.paginate.pag3 li a:hover, .paginate.pag3 li a:focus {
+    background: #779f16;
+}

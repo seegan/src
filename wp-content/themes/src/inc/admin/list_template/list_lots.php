@@ -78,9 +78,9 @@
 				<td><?php echo $lot_value->product_name; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit lot_edit" title="Edit"  data-roll="<?php echo $start_count; ?>" data-id="<?php echo $lot_value->id; ?>">Edit</a>
+						<a class="action-icons c-edit lot_edit list_update" title="Edit"  href="#"  data-roll="<?php echo $start_count; ?>" data-id="<?php echo $lot_value->id; ?>">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete lot_delete" href="#" data-action="lots" title="delete" data-id="<?php echo $lot_value->id; ?>" data-roll="<?php echo $start_count; ?>">Delete</a></span>
+					<span><a class="action-icons c-delete lot_delete last_list_view" href="#" data-action="lots" title="delete" data-id="<?php echo $lot_value->id; ?>" data-roll="<?php echo $start_count; ?>">Delete</a></span>
 				</td>
 			</tr>
 		<?php

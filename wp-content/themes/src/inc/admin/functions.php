@@ -6,7 +6,6 @@ function hide_update_notice()
 }
 add_action( 'admin_head', 'hide_update_notice', 1 );
 
-
 function my_footer_shh() {
 	remove_filter( 'update_footer', 'core_update_footer' ); 
 	remove_submenu_page( 'index.php', 'update-core.php' );
@@ -22,8 +21,6 @@ function my_footer_shh() {
 	remove_menu_page( 'options-general.php' );        //Settings
 }
 add_action( 'admin_menu', 'my_footer_shh' );
-
-
 
 wp_enqueue_style( 'jquery-ui', get_template_directory_uri() . '/inc/css/jquery-ui.css' );
 wp_enqueue_style( 'admin-style', get_template_directory_uri() . '/inc/css/admin-css.css' );

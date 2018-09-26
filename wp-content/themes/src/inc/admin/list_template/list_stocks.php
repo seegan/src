@@ -110,9 +110,9 @@
 				<td><?php echo $stock_value->created_at; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit stock_edit" title="Edit" data-roll="12" data-id="<?php echo $stock_value->id; ?>">Edit</a>
+						<a class="action-icons c-edit stock_edit list_update" title="Edit" href="#" data-roll="12" data-id="<?php echo $stock_value->id; ?>">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete lot_delete" href="#" data-action="stock" title="delete" data-id="<?php echo $stock_value->id; ?>" data-roll="1">Delete</a></span>
+					<span><a class="action-icons c-delete lot_delete last_list_view" href="#" data-action="stock" title="delete" data-id="<?php echo $stock_value->id; ?>" data-roll="1">Delete</a></span>
 				</td>
 			</tr>
 		<?php

@@ -487,7 +487,6 @@
 
 <script type="text/javascript">
   
-
     jQuery('.retail-repeater').repeater({
         defaultValues: {
             'textarea-input': 'foo',
