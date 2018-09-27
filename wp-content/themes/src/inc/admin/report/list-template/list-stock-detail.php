@@ -147,9 +147,9 @@
 
 
 	$result_args = array(
-		'orderby_field' => 'lo.id',
+		'orderby_field' => array('lo.in_alert', 'lo.sale_tot'),
 		'page' => $cpage ,
-		'order_by' => 'ASC',
+		'order_by' => array('ASC', 'DESC'),
 		'items_per_page' => $ppage ,
 		'condition' => $condition,
 	);
@@ -164,9 +164,9 @@
 				<th>Lot No</th>
 				<th>Brand Name</th>
 				<th>Product Name</th>
-				<th>Stock Total (Kg)</th>
-				<th>Sale Total (Kg)</th>
-				<th>Stock Balance (Kg)</th>
+				<th>Sold Total (Kg)</th>
+                <th>Available Stock (Kg)</th>
+                <th>Stock Alert</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -176,16 +176,18 @@
 				$start_count = $stocks['start_count'];
 
 				foreach ($stocks['result'] as $s_value) {
+
+                    $color = ($s_value->in_alert == 0) ? 'r_red' : 'r_green';
 					$start_count++;
 		?>
-			<tr id="customer-data-<?php echo $s_value->id; ?>">
+			<tr id="customer-data-<?php echo $s_value->id; ?>" class="<?php echo $color ?>">
                 <td><?php echo $start_count; ?></td>
 				<td><?php echo $s_value->lot_number; ?></td>
 				<td><?php echo $s_value->brand_name; ?></td>
 				<td><?php echo $s_value->product_name; ?></td>
-				<td><?php echo $s_value->stock_tot.'Kg ('.bagKgSplitter($s_value->stock_tot, $s_value->bag_weight).')';; ?></td>
-				<td><?php echo $s_value->sale_tot.'Kg ('.bagKgSplitter($s_value->sale_tot, $s_value->bag_weight).')';; ?></td>
-				<td><?php echo $s_value->bal_stock.'Kg ('.bagKgSplitter($s_value->bal_stock, $s_value->bag_weight).')';; ?></td>
+				<td><?php echo $s_value->sale_tot.'Kg ('.bagKgSplitter($s_value->sale_tot, $s_value->bag_weight).')'; ?></td>
+                <td><?php echo $s_value->bal_stock.'Kg ('.bagKgSplitter($s_value->bal_stock, $s_value->bag_weight).')'; ?></td>
+				<td><?php echo $s_value->stock_alert.'Kg ('.bagKgSplitter($s_value->stock_alert, $s_value->bag_weight).')'; ?></td>
 			</tr>
 		<?php
 				}

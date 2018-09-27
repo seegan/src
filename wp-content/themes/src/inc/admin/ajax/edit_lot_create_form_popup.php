@@ -440,6 +440,19 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 					</span>
 				</div>
 				<div class="form_detail">
+					<label style="width: 115px;">Weight
+						<abbr class="require" title="Required Field">*</abbr>
+					</label>
+					<select name="dummy_weight" class="dummy_bag_weight_total">
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75kg</option>
+					</select>
+				</div>
+				<div class="form_detail">
 					<label>Slab System ?
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
