@@ -12,11 +12,7 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
 //echo "<pre>";
 //var_dump($lot_details);
 ?>
-<style type="text/css">
-.select2-container {
-  z-index: 9999;
-}
-</style>
+
 <div class="form-grid">
 	 <form method="post" name="add_stock" id="add_stock" class="popup_form" onsubmit="return false;">
 		<div class="form_detail">
@@ -32,23 +28,23 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
 		<div class="form_detail">
 			<label style="width: 115px;">Brand Name 
 			</label>
-			<input type="text" id="brand_name" autocomplete="off" value="" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
+			<input type="text" id="brand_name" autocomplete="off" value="" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
 		</div>
 		<div class="form_detail">
 			<label>Product Name
 			</label>
-			<input type="text" id="product_name" autocomplete="off" value="" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
+			<input type="text" id="product_name" autocomplete="off" value="" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Weight
 			</label>
-      <input type="text" id="weight" autocomplete="off" value="" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
+      <input type="text" id="weight" autocomplete="off" value="" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
 		</div>
     <div class="form_detail">
       <label style="width: 115px;">Bag
         <abbr class="require" title="Required Field">*</abbr>
       </label>
-      <input type="text" id="count" name="stock_count" required autocomplete="off" value="" style="color: #000;">
+      <input type="text" id="count" name="stock_count" class="count" required autocomplete="off" value="" style="color: #000;">
     </div>
 
 		<div class="form_detail">
@@ -75,10 +71,10 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
 
 
 <script type="text/javascript">
-
+ 
   jQuery(".lot_id").select2({
       allowClear: true,
-      width: '100%',
+      width: '100%',  
       multiple: false,
       minimumInputLength: 1,
       ajax: {
@@ -110,7 +106,7 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
       jQuery('#brand_name').val(e.params.data.brand_name);
       jQuery('#product_name').val(e.params.data.product_name);
       jQuery('#weight').val(e.params.data.weight+' kg');
-
+      jQuery('#count').focus();
     console.log(e.params); 
   });
 

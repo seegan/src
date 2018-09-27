@@ -10,12 +10,7 @@ jQuery('a.lot_edit').live('click', function() {
         debug: true,
         success: "valid"
   });
-
- jQuery(document).on('focus', '.select2', function (e) {
-  if (e.originalEvent) {
-    jQuery(this).siblings('select').select2('open');    
-  } 
-});   
+ 
 
 
 jQuery('a.lot_edit').live('click', function(e) {
@@ -596,31 +591,3 @@ jQuery(document).on('keyup','#dummy_slot_number', function() {
 
 
 
-//From Stock Submit button (tab and shif + tab action)
-jQuery(document).on("keydown", "#edit_stock .submit-button, #add_stock .submit-button", function(e) {
-  if(event.keyCode == 9) {
-    if(event.shiftKey && event.keyCode == 9) {  
-       e.preventDefault(); 
-      jQuery('#edit_stock #count, #add_stock #count').focus();
-    }
-    else { 
-      e.preventDefault(); 
-      jQuery('#edit_stock #lot_id, #add_stock #lot_id').focus();
-    }
-  }
-});
-
-//From Stock Number (tab and shif + tab action)
-jQuery(document).on("keydown", "#edit_stock #lot_id, #add_stock #lot_id", function(e) {
-  console.log("dsdsdsa");
-  var keyCode = e.keyCode || e.which; 
-
-  if(event.shiftKey && event.keyCode == 9) { 
-  console.log("yes");
-     e.preventDefault(); 
-    jQuery('#edit_stock .submit-button, #add_stock .submit-button').focus();
-  } else{
-      e.preventDefault(); 
-      jQuery('#edit_stock #count, #add_stock #count').focus();
-  }
-});

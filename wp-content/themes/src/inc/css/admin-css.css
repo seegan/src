@@ -1200,10 +1200,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
 .lot_search .select2-container {
     width: 123px;
 }
-
 .select2-container {
-    z-index: 9998;
+    z-index: 9999;
 }
+.group_retail .select2-container {
+    z-index: 9998 !important;
+}
+
+
 .payment-container, .payment-container-top {
     float: left;
     margin-right: 55px;

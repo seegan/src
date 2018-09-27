@@ -7,6 +7,12 @@ jQuery('a.stock_edit').live('click', function() {
 });
 
 
+//  jQuery(document).on('focus', '.select2', function (e) {
+//   if (e.originalEvent) {
+//     jQuery(this).siblings('select').select2('open');    
+//   } 
+// });  
+
 jQuery('a.stock_edit').live('click', function(e) {
     e.preventDefault();
     jQuery('#src_info_box').bPopup({
@@ -171,5 +177,44 @@ jQuery(document).ready(function(){
 });
 /*End Updated for filter 11/10/16*/
 
+//From Stock Submit button (tab and shif + tab action)
+jQuery(document).on("keydown", "#edit_stock .submit-button, #add_stock .submit-button", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('#edit_stock #count, #add_stock #count').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('#lot_id').select2('open');
+    }
+  }
+});
+
+//From Stock Number (tab and shif + tab action)
+// jQuery(document).on("keydown", "#edit_stock #lot_id, #add_stock #lot_id", function(e) {
+//   var keyCode = e.keyCode || e.which; 
+//   if(event.shiftKey && event.keyCode == 9) { 
+//      e.preventDefault(); 
+//     jQuery('#edit_stock .submit-button, #add_stock .submit-button').focus();
+//   } else{
+//       e.preventDefault(); 
+//       jQuery(".count").show();
+//       jQuery('#edit_stock .count, #add_stock .count').focus();
+//   }
+// });
+
+jQuery(document).on("keydown", ".src-container .select2-search__field", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('#edit_stock #submit-button, #add_stock #submit-button').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('#edit_stock #count, #add_stock #count').focus();
+    }
+  }
+});
 
 

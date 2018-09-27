@@ -2,11 +2,7 @@
 $stock_id = isset( $_POST['id'] ) ? $_POST['id'] : 0;
 $stock_details = get_stock_data_by_id($stock_id);
 ?>
-<style type="text/css">
-.select2-container {
-  z-index: 9998;
-}
-</style>
+
 <div class="form-grid">
 	 <form method="post" name="edit_stock" id="edit_stock" class="popup_form" onsubmit="return false;">
 		<div class="form_detail">
@@ -23,17 +19,17 @@ $stock_details = get_stock_data_by_id($stock_id);
 		<div class="form_detail">
 			<label style="width: 115px;">Brand Name 
 			</label>
-			<input type="text" id="brand_name" autocomplete="off" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['brand_name']; ?>">
+			<input type="text" id="brand_name" autocomplete="off" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['brand_name']; ?>">
 		</div>
 		<div class="form_detail">
 			<label>Product Name
 			</label>
-			<input type="text" id="product_name" autocomplete="off" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['product_name']; ?>">
+			<input type="text" id="product_name" autocomplete="off" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['product_name']; ?>">
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Stock Weight
 			</label>
-      <input type="text" id="weight" autocomplete="off" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['total_weight']; ?>">
+      <input type="text" id="weight" autocomplete="off" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['total_weight']; ?>">
 		</div>
     <div class="form_detail">
       <label style="width: 115px;">Bag
@@ -91,6 +87,7 @@ $stock_details = get_stock_data_by_id($stock_id);
       jQuery('#brand_name').val(e.params.data.brand_name);
       jQuery('#product_name').val(e.params.data.product_name);
       jQuery('#weight').val(e.params.data.weight+' kg');
+      jQuery('#count').focus();
 
     console.log(e.params); 
   });
