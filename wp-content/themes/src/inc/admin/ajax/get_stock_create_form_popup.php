@@ -16,7 +16,7 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
 <div class="form-grid">
 	 <form method="post" name="add_stock" id="add_stock" class="popup_form" onsubmit="return false;">
 		<div class="form_detail">
-			<label>Slect Lot Number
+			<label>Select Lot Number
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
       <div style="float:left;width: 138px;">
@@ -110,7 +110,7 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
     console.log(e.params); 
   });
 
-
+jQuery('#lot_id').select2('open');
     function formatStateStockCreate (state) {
       if (!state.id) {
         return state.id;
@@ -123,6 +123,31 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
       return $state;
     };
 
-
+//From Stock Submit button (tab and shif + tab action)
+jQuery(document).on("keydown", "#edit_stock .submit-button, #add_stock .submit-button", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('#edit_stock #count, #add_stock #count').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('#lot_id').select2('open');
+    }
+  }
+});
+jQuery(document).on("keydown", ".select2-search__field", function(e) {
+  if(event.keyCode == 9) {
+    console.log(jQuery(this));
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+       jQuery(this).parent().find('#edit_stock #submit-button, #add_stock #submit-button').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('#edit_stock #count, #add_stock #count').focus();
+    }
+  }
+});
 
 </script>
