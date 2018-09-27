@@ -28,13 +28,6 @@
 				<input type="text" id="brand_name" name="brand_name" autocomplete="off">
 			</span>
 		</div>
-		<!-- <div class="form_detail">
-			<label style="width: 115px;">Search Name
-			</label>
-			<span>
-				<input type="text" id="search_name" name="search_name" autocomplete="off">
-			</span>
-		</div> -->
 		<div class="form_detail">
 			<label>Product Type
 				<abbr class="require" title="Required Field">*</abbr>
@@ -305,6 +298,19 @@
 					<span>
 						<input type="text" id="search_name_dummy" name="search_name_dummy" autocomplete="off">
 					</span>
+				</div>
+				<div class="form_detail">
+					<label style="width: 115px;">Weight
+						<abbr class="require" title="Required Field">*</abbr>
+					</label>
+					<select name="dummy_weight" class="dummy_bag_weight_total">
+						<option value="5">5kg</option>
+						<option value="10">10kg</option>
+						<option value="20">20kg</option>
+						<option value="25">25kg</option>
+						<option value="50">50kg</option>
+						<option value="75">75kg</option>
+					</select>
 				</div>
 				<div class="form_detail">
 					<label>Slab System ?

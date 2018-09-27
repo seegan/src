@@ -1291,3 +1291,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dc13a', end
 .paginate.pag3 li a:hover, .paginate.pag3 li a:focus {
     background: #779f16;
 }
+
+.red {
+    color : red;
+}
+.green {
+
+}

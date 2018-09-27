@@ -614,6 +614,7 @@ function lot_create_submit_popup() {
 	
 	$product_name = ($params['product_name'] == 'Others') ? $params['product_name1'] : $params['product_name'];
 	$weight = $params['weight'];
+	$dummy_weight = $params['dummy_weight'];
 	
 	$slab_system_original = $params['slab_system'];
 	$slab_system_dummy = $params['dummy_slab_system'];
@@ -727,7 +728,7 @@ function lot_create_submit_popup() {
 					'search_name'   => $search_dummy_name,
 					'brand_name' 	=> $dummy_brand_name,
 					'product_name' 	=> $product_name,
-					'weight' 		=> $weight,
+					'weight' 		=> $dummy_weight,
 					'lot_type' 		=> 'dummy',
 					'slab_system' 	=> $slab_system_dummy,
 					'parent_id' 	=> $lot_id,
@@ -853,6 +854,7 @@ function lot_update_submit_popup() {
 	$dummy_brand_name = $params['dummy_brand_name'];
 	$product_name = ($params['product_name'] == 'Others') ? $params['product_name1'] : $params['product_name'];
 	$weight = $params['weight'];
+	$dummy_weight = $params['dummy_weight'];
 
 	$slab_system_original = $params['slab_system'];
 	$slab_system_dummy = $params['dummy_slab_system'];
@@ -961,7 +963,7 @@ function lot_update_submit_popup() {
 					'search_name'       => $search_dummy_name,
 					'brand_name' 		=> $dummy_brand_name,
 					'product_name' 		=> $product_name,
-					'weight' 			=> $weight,
+					'weight' 			=> $dummy_weight,
 					'lot_type' 			=> 'dummy',
 					'slab_system' 		=> $slab_system_dummy,
 					'parent_id' 		=> $lot_id,
@@ -3260,7 +3262,7 @@ function bagKgSplitter($weight = 0, $bag_weight = 0) {
   	$string = '';
   	$whole = ($whole) ? $whole : 0;
 	$string .= ($whole > 1) ? $whole.' Bags' : $whole.' Bag';
-  	$string .= ($num && $num > 0) ? ', '.($num*$bag_weight).' Kg' : '';
+  	$string .= ($num && $num > 0) ? ', '.(round(($num*$bag_weight), 2)).' Kg' : '';
 
   	return $string;
 }

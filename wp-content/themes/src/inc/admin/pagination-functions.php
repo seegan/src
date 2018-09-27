@@ -1362,12 +1362,17 @@ function stock_detail_list_pagination( $args ) {
     $sale_detail = $wpdb->prefix.'sale_detail';
     $stock_detail = $wpdb->prefix.'stock';
     $customPagHTML      = "";
-    $query              = "SELECT * FROM (SELECT lot.*, ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,     (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) return_tot,
+    $query              = "SELECT * FROM ( SELECT lot.*, ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  as sale_tot, (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) stock_tot,     (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) return_tot,
     
-        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  ) as bal_stock
+        ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  ) as bal_stock,
+        ( CASE WHEN (
+            ( (CASE WHEN stock.stock_total THEN stock.stock_total ELSE 0 END) - ( (CASE WHEN sale.sale_total THEN sale.sale_total ELSE 0 END) - (CASE WHEN return_data.return_weight THEN return_data.return_weight ELSE 0 END) )  ) < lot.stock_alert
+        ) THEN 0 ELSE 1 END ) as in_alert
+
+
     FROM 
     (
-        SELECT l.id, l.lot_number, l.brand_name, l.product_name, l.weight as bag_weight,  
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name, l.weight as bag_weight, l.stock_alert,  
         (CASE 
             WHEN l.parent_id = 0 
             THEN l.id
@@ -1392,7 +1397,15 @@ function stock_detail_list_pagination( $args ) {
     return_data ON lot.parent_id = return_data.lot_id
 
 
-    ) as lo  WHERE lo.id = lo.parent_id ${args['condition']}";
+    ) as lo  WHERE lo.id = lo.parent_id  ${args['condition']} 
+    ";
+
+    $input = array_combine($args['orderby_field'], $args['order_by']);
+    $output = implode(', ', array_map(
+        function ($v, $k) { return sprintf("%s %s", $k, $v); },
+        $input,
+        array_keys($input)
+    ));
 
 
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
@@ -1400,7 +1413,7 @@ function stock_detail_list_pagination( $args ) {
     $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
     $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
-    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+    $data['result']     = $wpdb->get_results( $query . "ORDER BY $output LIMIT ${offset}, ${args['items_per_page']}" );
 
     $totalPage         = ceil($total / $args['items_per_page']);
 
