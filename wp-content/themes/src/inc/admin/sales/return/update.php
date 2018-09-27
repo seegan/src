@@ -193,3 +193,40 @@
     <!-- SELECT rd.sale_id, rd.lot_id, sum(rd.return_weight) as return_weight FROM wp_return as r JOIN wp_return_detail as rd ON r.id = rd.return_id WHERE r.sale_id = 21 and r.active = 1 and rd.active= 1 group by rd.lot_id -->
     
     <!-- SELECT * FROM wp_sale_detail as sd WHERE sd.sale_id = 21 and sd.active = 1 -->
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery('.return_weight').focus();
+  });    
+
+
+//From Stock Submit button (tab and shif + tab action)
+jQuery(document).on("keydown", ".submit-button", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) { 
+       e.preventDefault(); 
+       jQuery('.return_to_check').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('.return_weight').focus();
+    }
+  }
+});
+
+
+
+
+jQuery(document).on("keydown", ".return_weight", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+       jQuery('.submit-button').focus();
+      
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('.return_delete').focus();
+    }
+  }
+});
+</script>

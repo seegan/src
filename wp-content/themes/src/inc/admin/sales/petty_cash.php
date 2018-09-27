@@ -47,3 +47,64 @@
 	include( get_template_directory().'/inc/admin/list_template/list_petty_cash.php' ); 
 ?>
 </div>
+
+<script type="text/javascript">
+    
+jQuery(document).ready(function () {
+    jQuery('#per_page').focus();
+    jQuery(document).live('keydown', function(e){
+        if(jQuery(document.activeElement).closest("#wpbody-content").length == 0 && jQuery('#src_info_box').css('display') != 'block') {
+            var keyCode = e.keyCode || e.which; 
+            if (keyCode == 9) { 
+                e.preventDefault(); 
+                jQuery('#per_page').focus()
+            }
+        }
+    });
+    jQuery("#per_page").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('.last_list_view').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('#entry_amount').focus();
+        } else {
+         jQuery('#per_page').focus();
+        }
+    });
+    jQuery('.lot_filter input[type="text"]:last').live('keydown', function(e){
+        if(jQuery('.display td a').length == 0 && jQuery(".next.page-numbers").length == 0 ) {
+            var keyCode = e.keyCode || e.which; 
+            if (keyCode == 9) { 
+                e.preventDefault(); 
+                jQuery('#per_page').focus()
+            }
+        }
+    });
+   	jQuery('.last_list_view').live('keydown', function(e) { 
+        if(jQuery(this).parent().parent().parent().next('tr').length == 0 && jQuery(".next.page-numbers").length == 0) {
+            var keyCode = e.keyCode || e.which; 
+            if (event.shiftKey && event.keyCode == 9) { 
+                e.preventDefault(); 
+                 jQuery(this).parent().parent().find('.list_update').focus();
+            } 
+            else if ( event.keyCode == 9){
+                e.preventDefault(); 
+                jQuery('#per_page').focus();
+            }
+            else {
+                jQuery(this).parent().parent().find('.last_list_view').focus();
+            } 
+        }
+    });
+    jQuery(".next.page-numbers").live('keydown', function(e) { 
+      var keyCode = e.keyCode || e.which; 
+      if (keyCode == 9) { 
+        e.preventDefault(); 
+        jQuery('#per_page').focus()
+      } 
+    });   
+})    
+
+</script>

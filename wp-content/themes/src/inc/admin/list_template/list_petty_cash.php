@@ -117,10 +117,10 @@
 				<td><?php echo $petty_cash_value->cash_amount; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit edit_petty_cash" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $petty_cash_value->id; ?>">Edit</a>
+						<a class="action-icons c-edit edit_petty_cash list_update" href="#" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $petty_cash_value->id; ?>">Edit</a>
 					</span>
 					<span>
-						<a class="action-icons c-delete lot_delete" href="#" data-action="petty_cash" title="delete" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $petty_cash_value->id; ?>" data-roll="1">Delete</a>
+						<a class="action-icons c-delete lot_delete last_list_view" href="#" data-action="petty_cash" title="delete" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $petty_cash_value->id; ?>" data-roll="1">Delete</a>
 					</span>
 				</td>
 			</tr>

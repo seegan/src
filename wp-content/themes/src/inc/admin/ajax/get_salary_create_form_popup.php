@@ -73,7 +73,7 @@
 
     <br>
     <div class="aditional_fld">
-      Working Days : <input type="text" id="total_working" style="width:50px;" value="0" name="total_working"> Leave Taken : <input type="text" id="leave_taken" style="width:50px;" value="0" name="leave_taken"> Advance in hand : <input type="text" id="adv_hand" style="width:50px;" readonly value="0" name="adv_hand"> Sal. From Advance <input type="checkbox" id="sal_from_adv" name="sal_from_adv">
+      Working Days : <input type="text" id="total_working" style="width:50px;" value="0" name="total_working"> Leave Taken : <input type="text" id="leave_taken" style="width:50px;" value="0" name="leave_taken"> Advance in hand : <input type="text" id="adv_hand" style="width:50px;" readonly value="0" name="adv_hand" tabindex="-1"> Sal. From Advance <input type="checkbox" id="sal_from_adv" name="sal_from_adv">
       <input type="hidden" value="0" id="sal_per_day"><input type="hidden" id="adv_hand_orig" value="0">
     </div>
 	</form>
@@ -304,7 +304,7 @@ jQuery('#add_salary #emp_name').select2('open');
       console.log(jQuery(this));
       if(event.shiftKey && event.keyCode == 9) {  
          e.preventDefault(); 
-         jQuery(this).parent().find('#add_salary #submit-button').focus();
+         jQuery(this).parent().find('#add_salary .submit-button').focus();
       }
       else { 
         e.preventDefault(); 
@@ -314,14 +314,38 @@ jQuery('#add_salary #emp_name').select2('open');
   });
   jQuery(document).on("keydown", "#add_salary #salary_pay", function(e) {
     if(event.keyCode == 9) {
+      if(event.shiftKey && event.keyCode == 9) {  
+         e.preventDefault(); 
+         jQuery('input[name="pay_in"]').focus();
+      }
+      else {
         e.preventDefault(); 
         jQuery('#add_salary #total_working').focus();
+      }
     }
   });
   jQuery(document).on("keydown", "#add_salary #sal_from_adv", function(e) {
     if(event.keyCode == 9) {
+      if(event.shiftKey && event.keyCode == 9) {  
+         e.preventDefault(); 
+         jQuery('#add_salary #leave_taken').focus();
+      }
+      else {
         e.preventDefault(); 
-        jQuery(this).parent().find('#add_salary #submit-button').focus();
+        jQuery('#add_salary .submit-button').focus();
+      }
+    }
+  });
+    jQuery(document).on("keydown", "#add_salary #total_working", function(e) {
+    if(event.keyCode == 9) {
+      if(event.shiftKey && event.keyCode == 9) {  
+         e.preventDefault(); 
+         jQuery('#add_salary #salary_pay').focus();
+      }
+      else {
+        e.preventDefault(); 
+        jQuery('#add_salary #leave_taken').focus();
+      }
     }
   });
 </script>

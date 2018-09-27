@@ -29,7 +29,7 @@
                         }
                     ?>
                 </select>
-                <input type="text" name="inv_no" value="<?php echo $invoice_id; ?>">
+                <input type="text" name="inv_no" class="inv_no" value="<?php echo $invoice_id; ?>">
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -101,3 +101,37 @@
         </div>
 
     </div>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery('.inv_no').focus();
+  });    
+
+
+//From Stock Submit button (tab and shif + tab action)
+jQuery(document).on("keydown", ".submit-button", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) { 
+       e.preventDefault(); 
+       jQuery('.delivery_delete').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('.inv_no').focus();
+    }
+  }
+});
+
+
+jQuery(document).on("keydown", ".inv_no", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('.submit-button').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('input[type="submit"]').focus();
+    }
+  }
+});
+</script>

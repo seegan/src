@@ -156,3 +156,36 @@
 	<?php echo $sales['pagination']; ?>
 	<div style="clear:both;"></div>
 </div>
+
+<script type="text/javascript">
+    
+jQuery(document).ready(function () {
+    jQuery('#per_page').focus();
+    
+    jQuery("#per_page").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('#lot_type').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('#lot_number').focus();
+        } else {
+         jQuery('#per_page').focus();
+        }
+    }); 
+    jQuery("#lot_type").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('#item_status').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('#per_page').focus();
+        } else {
+         jQuery('#lot_type').focus();
+        }
+    }); 
+})    
+
+</script>

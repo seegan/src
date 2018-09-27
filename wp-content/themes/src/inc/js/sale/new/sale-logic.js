@@ -1,7 +1,9 @@
 jQuery(document).ready(function(){
+
   jQuery('.repeterin').each(function(){
     populate_select2(this, 'old');
   });
+  jQuery('.lot_id').select2('open');
 });
 
 
@@ -45,7 +47,7 @@ function populate_select2(this_data = '', v) {
       templateResult: formatState,
       templateSelection: formatState
   }).on("select2:select", function (e) {
-
+      jQuery(this).parent().parent().find('.unit_count').focus();
       jQuery(this).parent().parent().find('.slab_system_yes input').val('');
       jQuery(this).parent().parent().find('.slab_system_no input').val('');
       jQuery(this).parent().parent().find('.sale_unit_price input').val(0);

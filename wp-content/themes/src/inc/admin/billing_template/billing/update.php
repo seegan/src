@@ -765,7 +765,7 @@
 <div class="conform-box" style="display:none;">Chose the action!</div>
 
 <script type="text/javascript">
-
+jQuery('.billing_date').focus();
     jQuery('.retail-repeater').repeater({
         defaultValues: {
 
@@ -867,5 +867,45 @@ function billTypeConversion(selector = '') {
 }
 
 
+jQuery(document).on("keydown", ".select2-search__field", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+       jQuery('input[name="customer_type"]').focus();
+    }
+    else { 
+      e.preventDefault();
+      jQuery('#new_billing .unit_count').focus();
+    }
+  }
+});
+
+//From Stock Submit button (tab and shif + tab action)
+jQuery(document).on("keydown", "#new_billing .submit-button", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('#new_billing .delivery_need').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('.billing_date').focus();
+    }
+  }
+});
+
+
+jQuery(document).on("keydown", "#new_billing .billing_date", function(e) {
+  if(event.keyCode == 9) {
+    if(event.shiftKey && event.keyCode == 9) {  
+       e.preventDefault(); 
+      jQuery('#new_billing .submit-button').focus();
+    }
+    else { 
+      e.preventDefault(); 
+      jQuery('input[name="shop_name"]').focus();
+    }
+  }
+});
 
 </script>

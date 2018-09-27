@@ -203,6 +203,38 @@
 
 
 
+<script type="text/javascript">
+    
+jQuery(document).ready(function () {
+    jQuery('#per_page').focus();
+    
+    jQuery("#per_page").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('#stock_bal').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('#lot_number').focus();
+        } else {
+         jQuery('#per_page').focus();
+        }
+    }); 
+    jQuery("#stock_bal").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('#sale_total').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('#per_page').focus();
+        } else {
+         jQuery('#stock_bal').focus();
+        }
+    }); 
+})    
+
+</script>
 
 
 

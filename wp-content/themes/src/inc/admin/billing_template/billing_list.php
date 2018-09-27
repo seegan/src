@@ -274,10 +274,10 @@
 				</td>
 				<td class="center">
 					<span>
-						<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
+						<a class="list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
 					</span>
 					<span>
-						<a class="action-icons c-delete lot_delete" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a>
+						<a class="action-icons c-delete lot_delete last_list_view" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a>
 					</span>
 				</td>
 			</tr>

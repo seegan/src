@@ -39,3 +39,35 @@
     <?php include( get_template_directory().'/inc/admin/gst_report/ajax_loading/igst-return-report.php' ); ?>
 </div>
 
+<script type="text/javascript">
+    
+jQuery(document).ready(function () {
+    jQuery('#per_page').focus();
+    
+    jQuery("#per_page").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('.bill_to').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('.slab').focus();
+        } else {
+         jQuery('#per_page').focus();
+        }
+    }); 
+    jQuery(".bill_to").live('keydown', function(e) { 
+        var keyCode = e.keyCode || e.which; 
+        if (event.shiftKey && event.keyCode == 9) { 
+            e.preventDefault(); 
+            jQuery('.bill_from').focus();
+        } else if(event.keyCode == 9){
+            e.preventDefault(); 
+            jQuery('#per_page').focus();
+        } else {
+         jQuery('.bill_to').focus();
+        }
+    }); 
+})    
+
+</script>

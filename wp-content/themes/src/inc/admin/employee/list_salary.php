@@ -108,7 +108,7 @@ jQuery(document).ready(function () {
             jQuery('.last_list_view').focus();
         } else if(event.keyCode == 9){
             e.preventDefault(); 
-            jQuery('#customer_name').focus();
+            jQuery('#emp_no').focus();
         } else {
          jQuery('#per_page').focus();
         }

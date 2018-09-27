@@ -33,9 +33,10 @@ jQuery(document).ready(function(){
   }).on("select2:select", function (e) {
     jQuery("#due_tab_cd").empty();
      duePaidCusCd(e.params.data.id);  
-    
+    jQuery('.description').focus();
 
   });
+    jQuery('#billing_customer_due').select2('open');
     jQuery(".credit_submit").on('keydown',  function(e) { 
       var keyCode = e.keyCode || e.which; 
        if(event.shiftKey && event.keyCode == 9) {  
@@ -44,13 +45,25 @@ jQuery(document).ready(function(){
       }
       else if (keyCode == 9) { 
         e.preventDefault(); 
-        jQuery('.customer_type').focus();
+        jQuery('.billing_customer_due').focus();
       } 
       else {
         jQuery('.credit_submit').focus();
       }
     });
 
+  jQuery(document).on("keydown", ".select2-search__field", function(e) {
+    if(event.keyCode == 9) {
+      if(event.shiftKey && event.keyCode == 9) {  
+         e.preventDefault(); 
+         jQuery('.credit_submit').focus();
+      }
+      else { 
+        e.preventDefault();
+        jQuery('.description').focus();
+      }
+    }
+  });
 
     jQuery.validator.setDefaults({
       debug: true,

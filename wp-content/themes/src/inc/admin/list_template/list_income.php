@@ -115,9 +115,9 @@
 				<td><?php echo $income_list_value->cash_amount; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit edit_income" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $income_list_value->id; ?>">Edit</a>
+						<a class="action-icons c-edit edit_income list_update" href="#" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $income_list_value->id; ?>">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete lot_delete" href="#" data-action="income_list" title="delete" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $income_list_value->id; ?>" data-roll="1">Delete</a></span>
+					<span><a class="action-icons c-delete lot_delete last_list_view" href="#" data-action="income_list" title="delete" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $income_list_value->id; ?>" data-roll="1">Delete</a></span>
 				</td>
 			</tr>
 		<?php
