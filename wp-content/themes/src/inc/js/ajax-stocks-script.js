@@ -7,11 +7,12 @@ jQuery('a.stock_edit').live('click', function() {
 });
 
 
-//  jQuery(document).on('focus', '.select2', function (e) {
-//   if (e.originalEvent) {
-//     jQuery(this).siblings('select').select2('open');    
-//   } 
-// });  
+ jQuery(document).on('focus', '.select2', function (e) {
+  if (e.originalEvent) {
+    console.log(jQuery(this));
+    jQuery(this).prev('select').select2('open');    
+  } 
+});  
 
 jQuery('a.stock_edit').live('click', function(e) {
     e.preventDefault();
