@@ -66,4 +66,31 @@
 	jQuery(document).ready(function(){
         jQuery("#employee_joining" ).datepicker({dateFormat: "yy-mm-dd"});
     })
+	jQuery('#add_employee #employee_name').focus();
+	jQuery(document).on("keydown", "#add_employee .submit-button", function(e) {
+	  if(event.keyCode == 9) {
+	    if(event.shiftKey && event.keyCode == 9) {  
+	       e.preventDefault(); 
+	      jQuery('#add_employee #employee_salary').focus();
+	    }
+	    else { 
+	      e.preventDefault(); 
+	      jQuery('#add_employee #employee_name').focus();
+	    }
+	  }
+	});
+	jQuery(document).on("keydown", "#add_employee #employee_name", function(e) {
+	  if(event.keyCode == 9) {
+	    console.log(jQuery(this));
+	    if(event.shiftKey && event.keyCode == 9) {  
+	       e.preventDefault(); 
+	       jQuery('#add_employee .submit-button').focus();
+	    }
+	    else { 
+	      e.preventDefault(); 
+	      jQuery('#add_employee #employee_id').focus();
+	    }
+	  }
+	});
+
 </script>

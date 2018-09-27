@@ -92,13 +92,13 @@
 				<td><?php echo $attendance_date; ?></td>
 				<td><div class="attendance_val"><?php echo $attendance_today; ?></div></td>
 				<td>
-					<select name="attendance_type" class="atten_type mark_attendance" data-attdate="<?php echo $attendance_date; ?>" data-empid="<?php echo $employees_value->id; ?>" >
+					<select name="attendance_type" class="atten_type mark_attendance list_update" data-attdate="<?php echo $attendance_date; ?>" data-empid="<?php echo $employees_value->id; ?>" >
 						<option value="-" <?php echo ($attendance_today === '-') ? 'selected' : '' ?> >Mark Attendance</option>
 						<option value="1" <?php echo ($attendance_today === 'Present') ? 'selected' : '' ?> >Present</option>
 						<option value="0" <?php echo ($attendance_today === 'Absent') ? 'selected' : '' ?> >Absent</option>
 					</select>
 				</td>
-				<td><a href="<?php echo admin_url('admin.php?page=attendance_list').'&action=attendance_detail&emp_id='.$employees_value->id; ?>">Attendance History</a></td>
+				<td><a class="last_list_view" href="<?php echo admin_url('admin.php?page=attendance_list').'&action=attendance_detail&emp_id='.$employees_value->id; ?>">Attendance History</a></td>
 			</tr>
 		<?php
 				}

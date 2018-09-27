@@ -89,9 +89,9 @@
 				<td><?php echo $customer_value->payment_due; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit customer_edit" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $customer_value->id; ?>">Edit</a>
+						<a class="action-icons c-edit customer_edit list_update" title="Edit" href="#" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $customer_value->id; ?>">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete user_delete" href="#" data-action="customers" title="delete" data-id="<?php echo $customer_value->id; ?>" data-roll="<?php echo $start_count; ?>">Delete</a></span>
+					<span><a class="action-icons c-delete user_delete last_list_view" href="#" data-action="customers" title="delete" data-id="<?php echo $customer_value->id; ?>" data-roll="<?php echo $start_count; ?>">Delete</a></span>
 				</td>
 			</tr>
 		<?php

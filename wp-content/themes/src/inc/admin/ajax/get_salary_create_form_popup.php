@@ -211,7 +211,7 @@
       getSaleryPayDetails(e.params.data.id, jQuery('#add_salary #salary_date').val())
   });
 
-
+jQuery('#add_salary #emp_name').select2('open');
 
   function getSaleryPayDetails(employee_id = 0, pay_date=0) {
     jQuery.ajax({
@@ -287,6 +287,41 @@
 	jQuery(document).ready(function(){
         jQuery("#salary_date" ).datepicker({dateFormat: "yy-mm-dd"});
     })
-
-
+  jQuery(document).on("keydown", "#add_salary .submit-button", function(e) {
+    if(event.keyCode == 9) {
+      if(event.shiftKey && event.keyCode == 9) {  
+         e.preventDefault(); 
+        jQuery('#add_salary #sal_from_adv').focus();
+      }
+      else { 
+        e.preventDefault(); 
+        jQuery('#add_salary #emp_name').select2('open');
+      }
+    }
+  });
+  jQuery(document).on("keydown", ".select2-search__field", function(e) {
+    if(event.keyCode == 9) {
+      console.log(jQuery(this));
+      if(event.shiftKey && event.keyCode == 9) {  
+         e.preventDefault(); 
+         jQuery(this).parent().find('#add_salary #submit-button').focus();
+      }
+      else { 
+        e.preventDefault(); 
+        jQuery('#add_salary #emp_id').focus();
+      }
+    }
+  });
+  jQuery(document).on("keydown", "#add_salary #salary_pay", function(e) {
+    if(event.keyCode == 9) {
+        e.preventDefault(); 
+        jQuery('#add_salary #total_working').focus();
+    }
+  });
+  jQuery(document).on("keydown", "#add_salary #sal_from_adv", function(e) {
+    if(event.keyCode == 9) {
+        e.preventDefault(); 
+        jQuery(this).parent().find('#add_salary #submit-button').focus();
+    }
+  });
 </script>

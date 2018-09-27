@@ -138,9 +138,9 @@
 				<td><?php echo ($employees_value->emp_current_status == 1) ? 'Working' : 'Releave'; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit employee_edit" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $employees_value->id; ?>">Edit</a>
+						<a class="action-icons c-edit employee_edit list_update"  href="#" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $employees_value->id; ?>">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete user_delete" href="#" title="delete" data-action="employees" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $employees_value->id; ?>" data-roll="1">Delete</a></span>
+					<span><a class="action-icons c-delete user_delete last_list_view" href="#" title="delete" data-action="employees" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $employees_value->id; ?>" data-roll="1">Delete</a></span>
 				</td>
 			</tr>
 		<?php

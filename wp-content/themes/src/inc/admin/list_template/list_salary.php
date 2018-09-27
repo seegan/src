@@ -99,13 +99,13 @@
 				<td><?php echo $salary_value->emp_mobile; ?></td>
 				<td><?php echo $current_status; ?></td>
 				<td>
-					<a href="<?php echo admin_url('admin.php?page=salary_list').'&action=salary_detail&emp_id='.$salary_value->emp_id; ?>">
+					<a class="list_update" href="<?php echo admin_url('admin.php?page=salary_list').'&action=salary_detail&emp_id='.$salary_value->emp_id; ?>">
 						Salary History
 					</a>
 				</td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit salary_edit" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $salary_value->emp_id; ?>">
+						<a class="action-icons c-edit salary_edit last_list_view" title="Edit" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $salary_value->emp_id; ?>">
 							Edit
 						</a>
 					</span>
