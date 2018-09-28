@@ -726,18 +726,15 @@
                             </div>
                             <div class="div-table-col total-block-extra">
                             </div>                            
-                            <div class="div-table-col sale-unit-price" style="">
-                                Total
+                            <div class="div-table-col" style="">
+                                Round Off
                             </div>
-
                             <div class="div-table-col sale-price">
-                                <div class="final_total_price">
-                                    <input  type="text" name="final_total" class="final_total text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>" readonly="">
-                                    <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>">
-                                    <input  type="hidden" name="current_due" class="current_due " value="<?php echo checkBillBalance($bill_data['bill_data']->id); ?>">
-                                </div>
+                                <div class="round_price">
+                                    <input  type="text" name="round_off_text" class="round_off_text text-right" value="<?php echo $bill_data['bill_data']->round_off_value;; ?>" readonly="">
+                                </div>                             
                             </div>
-                            <div class="div-table-col sale-option">
+                            <div class="div-table-col option-delete">
                             </div>
                         </div>
                         <div class="div-table-row">
@@ -754,17 +751,21 @@
                             </div>
                             <div class="div-table-col total-block-extra">
                             </div>                            
-                            <div class="div-table-col" style="">
-                                Round Off
+                            <div class="div-table-col sale-unit-price" style="">
+                                Total
                             </div>
+
                             <div class="div-table-col sale-price">
-                                <div class="round_price">
-                                    <input  type="text" name="round_off_text" class="round_off_text text-right" value="<?php echo $bill_data['bill_data']->round_off_value;; ?>" readonly="">
-                                </div>                             
+                                <div class="final_total_price">
+                                    <input  type="text" name="final_total" class="final_total text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>" readonly="">
+                                    <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="<?php echo $bill_data['bill_data']->sale_total; ?>">
+                                    <input  type="hidden" name="current_due" class="current_due " value="<?php echo checkBillBalance($bill_data['bill_data']->id); ?>">
+                                </div>
                             </div>
-                            <div class="div-table-col option-delete">
+                            <div class="div-table-col sale-option">
                             </div>
                         </div>
+                        
                     </div>
 
                     <ul class="icons-labeled">

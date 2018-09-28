@@ -221,15 +221,15 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
          <td class=" " colspan="6" valign='top' align='center'><b>AMOUNT</b></td>
          <td  class=" " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$bill_data['bill_data']->sale_value.'</b>'; ?></span></td>
       </tr>
-
-      <tr> 
-         <td class="dotted_border_top dotted_border_bottom" colspan="6" valign='top' align='center'><b>TOTAL AMOUNT</b></td>
-         <td  class="dotted_border_top dotted_border_bottom" valign='top' align='right'><span class="amount"><?php echo '<b>'.$bill_data['bill_data']->sale_total.'</b>'; ?></span></td>
-      </tr>
       <tr> 
          <td class=" dotted_border_bottom" colspan="6" valign='top' align='center'><b>Round Off</b></td>
          <td  class=" dotted_border_bottom" valign='top' align='right'><span class="amount"><?php echo '<b>'.$bill_data['bill_data']->round_off_value.'</b>'; ?></span></td>
       </tr>
+      <tr> 
+         <td class="dotted_border_top dotted_border_bottom" colspan="6" valign='top' align='center'><b>TOTAL AMOUNT</b></td>
+         <td  class="dotted_border_top dotted_border_bottom" valign='top' align='right'><span class="amount"><?php echo '<b>'.$bill_data['bill_data']->sale_total.'</b>'; ?></span></td>
+      </tr>
+     
      
     </table>
 

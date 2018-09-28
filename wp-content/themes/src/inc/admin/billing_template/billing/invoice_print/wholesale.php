@@ -266,7 +266,16 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 				<?php
 				}
 
-				?>   
+				?> 
+				<tr>
+				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Round Off (Rs)</div></td>
+				  <td>
+					<div class="text-center"> 
+					  <?php echo $bill_data['bill_data']->round_off_value; ?>
+					  
+					</div>
+				  </td>
+				</tr>   
 				<tr>
 				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Total  (Rs)</div></td>
 				  <td>
@@ -276,15 +285,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 					</div>
 				  </td>
 				</tr> 
-				<tr>
-				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Round Off (Rs)</div></td>
-				  <td>
-					<div class="text-center"> 
-					  <?php echo $bill_data['bill_data']->round_off_value; ?>
-					  
-					</div>
-				  </td>
-				</tr>                      
+				                     
 
 				<?php
 				 $final_total = $bill_data['bill_data']->sale_total;

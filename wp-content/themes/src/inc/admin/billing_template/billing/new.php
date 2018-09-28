@@ -449,12 +449,11 @@
                             <div class="div-table-col total-block-extra">
                             </div>                            
                             <div class="div-table-col" style="">
-                                Sub Total
+                                Round Off
                             </div>
                             <div class="div-table-col sale-price">
-                                <div class="final_total_price">
-                                    <input  type="text" name="final_total" class="final_total text-right" value="0.00" readonly="">
-                                    <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="0.00">
+                                <div class="round_price">
+                                    <input  type="text" name="round_off_text" class="round_off_text text-right" value="0.00" readonly="">
                                 </div>                             
                             </div>
                             <div class="div-table-col option-delete">
@@ -475,16 +474,18 @@
                             <div class="div-table-col total-block-extra">
                             </div>                            
                             <div class="div-table-col" style="">
-                                Round Off
+                                Sub Total
                             </div>
                             <div class="div-table-col sale-price">
-                                <div class="round_price">
-                                    <input  type="text" name="round_off_text" class="round_off_text text-right" value="0.00" readonly="">
+                                <div class="final_total_price">
+                                    <input  type="text" name="final_total" class="final_total text-right" value="0.00" readonly="">
+                                    <input  type="hidden" name="final_total_hidden" class="final_total_hidden text-right" value="0.00">
                                 </div>                             
                             </div>
                             <div class="div-table-col option-delete">
                             </div>
                         </div>
+                        
                     </div>
 
                     <ul class="icons-labeled">

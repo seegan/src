@@ -248,9 +248,11 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 							<td></td>
 							<td></td>
 							<td colspan="2">
-								<label>Card Swipping Fee &nbsp;(Rs)</label>
+								<label><strong>Round Off &nbsp;(Rs)</strong></label>
 							</td>
-							<td><?php echo $bill_data['bill_data']->sale_card_swip; ?></td>
+							<td>
+								<strong><?php echo $bill_data['bill_data']->round_off_value; ?></strong>
+							</td>
 						</tr>
 						<tr>
 							<td></td>
@@ -276,30 +278,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 								<strong><?php echo $bill_data['bill_data']->sale_total; ?></strong>
 							</td>
 						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-							<?php if($bill_data['bill_data']->gst_to == 'cgst'){ ?>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<?php  } 
-		                    if($bill_data['bill_data']->gst_to =='igst'){
-		                    ?>
-							<td></td>
-							<td></td>
-							<?php  } ?>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td colspan="2">
-								<label><strong>Round Off &nbsp;(Rs)</strong></label>
-							</td>
-							<td>
-								<strong><?php echo $bill_data['bill_data']->round_off_value; ?></strong>
-							</td>
-						</tr>
+						
 					</tbody>
 				</table>
 			</div>

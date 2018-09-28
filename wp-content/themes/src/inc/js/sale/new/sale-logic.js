@@ -387,10 +387,10 @@ function updateSaleTotal() {
   var decimal = String(final_total).slice(radixPos);
 
 //Minus plus decimal points
-if(decimal <= 0.49){
+if(decimal <= 0.49){ 
   var decimal_point = "- 0" + decimal; 
 } else {
-   var decimal_point = "+ 0" + decimal; 
+   var decimal_point = "+" + (1 - decimal).toFixed(2); 
 }
 
 //round off
