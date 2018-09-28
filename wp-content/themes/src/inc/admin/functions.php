@@ -1500,6 +1500,7 @@ function update_bill(){
 			    'sale_discount_price' => $discount,
 			    'sale_card_swip' => $cardswip,
 			    'sale_tax' => 0.00,
+			    'round_off_value' => $params['round_off_text'],
 			    'sale_total' => $final_total,
 			    'invoice_date' => $billing_date,
 			    'delivery_avail' => $home_delivery,
@@ -1713,6 +1714,7 @@ function update_bill_last(){
 			    'sale_discount_price' => $discount,
 			    'sale_card_swip' => $cardswip,
 			    'sale_tax' => 0.00,
+			    'round_off_value' => $params['round_off_text'],
 			    'sale_total' => $final_total,
 			    'invoice_date' => $billing_date,
 			    'delivery_avail' => $home_delivery,
@@ -2847,14 +2849,14 @@ function convert_number_to_words_full($number) {
     $rs_txt = '';
 
 
-    $rs_txt = convert_number_to_words($rs);
+    $rs_txt = ucwords(convert_number_to_words($rs));
 
     if($ps && $ps != '00' ) {
       $con = ' and ';
       if(strlen($ps) < 2) {
       	$ps = $ps.'0';
       }
-      $ps_txt = convert_number_to_words($ps).' Paisa';
+      $ps_txt = ucwords(convert_number_to_words($ps)).' Paisa';
     } 
 
     return $rs_txt . $con . $ps_txt .' Only';

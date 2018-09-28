@@ -183,14 +183,21 @@
                             <td><?php echo $bills['s_result']->card_amount; ?></td>
                             <td><?php echo $bills['s_result']->cheque_amount; ?></td>
                             <td><?php echo $bills['s_result']->net_banking_amount; ?></td>
-                            <td><?php echo $bills['s_result']->sale_value - ($bills['s_result']->cash_amount + $bills['s_result']->card_amount + $bills['s_result']->cheque_amount + $bills['s_result']->net_banking_amount); ?></td>
-                            <td><?php echo $bills['s_result']->sale_value; ?></td>
+                            <td><?php echo $bills['s_result']->sale_total - ($bills['s_result']->cash_amount + $bills['s_result']->card_amount + $bills['s_result']->cheque_amount + $bills['s_result']->net_banking_amount); ?></td>
+                            <td><?php echo $bills['s_result']->sale_total; ?></td>
                            
                         </tr>
                     </tbody>
                 </table>
             </div>
     	</div>
+        <div class="x_content" style="float:right;">
+            <div style="width:20%;float:left" >
+            <div style="width:70%;float:left">Payment Completed -</div> <div style="width:30%;float:right;"><div class="round-c payment-green"></div></div> 
+            <div style="width:70%;float:left">Payment Incomplete -</div> <div style="width:30%;float:right;"><div class="round-c payment-red"></div></div>
+            <div style="width:70%;float:left">Wholesale Rate -</div> <div style="width:30%;float:right;"><div class="round-c payment-blue"></div></div> 
+        </div>
+        </div>
 	</div>
     	
 	<table class="display">
@@ -226,7 +233,7 @@
 						$invoice_status = '<span class="c-delivered">Delivered</span>';
 					}	
 					$payment_done = ($b_value->to_be_paid > 0) ? '<div class="round-c payment-red"></div>' : '<div class="round-c payment-green"></div>';
-                    $margin_rate = ($b_value->margin_rate > 0) ? '<div class="round-c payment-blue"></div>' : '<div class="round-c payment-green"></div>';
+                    $margin_rate = ($b_value->margin_rate > 0) ? '<div class="round-c payment-blue"></div>' : '<div class="round-c payment-black"></div>';
 		?>
 			<tr id="customer-data-<?php echo $b_value->id; ?>">
 				<td><?php echo $start_count; ?></td>

@@ -239,36 +239,31 @@
             <td class=""><div class="text-center"><?php echo $i_value->sgst + 0; echo ' %';  ?> </div></td>
             <td class=""><div class="text-center"><?php echo $i_value->sgst_value; ?></div></td>
           </tr>
-      <?php } ?>
+          <?php 
+            $total_tax = ( 2 * $i_value->cgst_value) +$total_tax;
+            $gst_tot = $i_value->cgst_value + $gst_tot;
+       } ?>
       <?php if($gst_from == 'igst') { ?>
           <tr class="">
             <td class=""><div class="text-center"><?php  echo $i_value->taxless_amount; ?></div></td>
             <td class=""><div class="text-center"><?php echo $i_value->igst + 0; echo ' %'; ?></div></td>
             <td class=""><div class="text-center"><?php echo $i_value->igst_value; ?></div></td>
           </tr>
-      <?php } ?>
-           <?php 
-           $total_tax = ( 2 * $i_value->cgst_value) +$total_tax;
-           $gst_tot = $i_value->cgst_value + $gst_tot;
+      <?php } 
+
+            $total_tax = ( $i_value->igst_value) +$total_tax;
+            $gst_tot = $i_value->igst_value + $gst_tot;
 
         }
       } ?>
-      <tr class="">
-         <?php  if( $gst_from =='cgst' ) { ?>   
-        <td class=""><div class="text-center"></div></td>
-        <td class=""><div class="text-center"></div></td>
-    <?php } ?>
-        <td class=""><div class="text-center"><?php echo $gst_tot; ?></div></td>
-        <td class=""><div class="text-center"></div></td>
-        <td class=""><div class="text-center"><?php echo $gst_tot; ?></div></td>
-      </tr>
+      
       <tr>
-        <td  class="dotted_border_bottom" colspan=" <?php  echo ( $gst_from =='cgst' )?"4" : "2"; ?> >
+        <td  class="dotted_border_bottom dotted_border_top" colspan=" <?php  echo ( $gst_from =='cgst' )?"4" : "2"; ?> ">
         <div class="text-center">
           <b>Total Tax</b>
         </div>
         </td>
-        <td class="dotted_border_bottom" >
+        <td class="dotted_border_bottom dotted_border_top" >
         <div class="text-center">
          <b><?php echo $total_tax; ?></b>
         </div>

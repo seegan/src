@@ -1,3 +1,21 @@
+
+
+<?php
+  $gst_extemted = 0;
+if($bill_data['bill_data']->gst_to == 'cgst'){
+  foreach( $gst_data['gst_data'] as $g_data) {
+    $gst_extemted = $g_data->sale_sgst + $gst_extemted;
+  }
+
+} else if($bill_data['bill_data']->gst_to == 'igst'){
+  foreach( $gst_data['gst_data'] as $g_data) {
+    $gst_extemted = $g_data->sale_igst + $gst_extemted;
+  }
+} else {
+  $gst_extemted  = 0;
+}
+ ?>
+
 <style type="text/css">
   @media screen {
     .A4 {
@@ -249,38 +267,20 @@
 				}
 
 				?>   
-				<!-- <tr>
-				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Total (Hire Charges)</div></td>
-				  <td>
-					<div class="text-center"> 
-					  <?php echo $bill_data['bill_data']->sale_value; ?>
-					  
-					</div>
-				  </td>
-				</tr>  -->
-				<!-- <tr>
-				  <td colspan="<?php //if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Discount (Hire Charges)</div></td>
-				  <td>
-					<div class="text-center"> 
-					  <?php //echo $bill_data['bill_data']->sale_discount_price; ?>
-					  
-					</div>
-				  </td>
-				</tr> -->
-				<!-- <tr>
-				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Card Swipping Fee  (Rs)</div></td>
-				  <td>
-					<div class="text-center"> 
-					  <?php echo $bill_data['bill_data']->sale_card_swip; ?>
-					  
-					</div>
-				  </td>
-				</tr>  -->
 				<tr>
 				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Total  (Rs)</div></td>
 				  <td>
 					<div class="text-center"> 
 					  <?php echo $bill_data['bill_data']->sale_total; ?>
+					  
+					</div>
+				  </td>
+				</tr> 
+				<tr>
+				  <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '11'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '9'; } else { echo '6'; }?>" style=" text-align: right;" ><div  >Round Off (Rs)</div></td>
+				  <td>
+					<div class="text-center"> 
+					  <?php echo $bill_data['bill_data']->round_off_value; ?>
 					  
 					</div>
 				  </td>

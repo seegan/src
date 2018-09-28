@@ -276,6 +276,30 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 								<strong><?php echo $bill_data['bill_data']->sale_total; ?></strong>
 							</td>
 						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<?php if($bill_data['bill_data']->gst_to == 'cgst'){ ?>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<?php  } 
+		                    if($bill_data['bill_data']->gst_to =='igst'){
+		                    ?>
+							<td></td>
+							<td></td>
+							<?php  } ?>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td colspan="2">
+								<label><strong>Round Off &nbsp;(Rs)</strong></label>
+							</td>
+							<td>
+								<strong><?php echo $bill_data['bill_data']->round_off_value; ?></strong>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

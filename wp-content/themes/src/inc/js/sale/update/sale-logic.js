@@ -375,7 +375,24 @@ function updateSaleTotal() {
   final_total1 = total - discount;
   final_total = (cardswip + final_total1).toFixed(2);
 
+
+//Decimal points
+  var radixPos = String(final_total).indexOf('.');
+  var decimal = String(final_total).slice(radixPos);
+
+//Minus plus decimal points
+if(decimal <= 0.49){
+  var decimal_point = "- 0" + decimal; 
+} else {
+   var decimal_point = "+ 0" + decimal; 
+}
+
+//round off
+  final_total = Math.round(final_total); 
+
+
   jQuery('.final_total').val(final_total).change();
+  jQuery('.round_off_text').val(decimal_point).change();
   paymentOperations();
 }
 jQuery('.sale_as').live('change',function(){

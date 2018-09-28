@@ -740,6 +740,31 @@
                             <div class="div-table-col sale-option">
                             </div>
                         </div>
+                        <div class="div-table-row">
+                            <div class="div-table-col total-block-extra"></div>
+                            <div class="div-table-col total-block-extra">
+                            </div>
+                            <div class="div-table-col total-block-extra">
+                            </div>
+                            <div class="div-table-col total-block-extra">
+                            </div>
+                            <div class="div-table-col total-block-extra">
+                            </div>
+                            <div class="div-table-col total-block-extra">
+                            </div>
+                            <div class="div-table-col total-block-extra">
+                            </div>                            
+                            <div class="div-table-col" style="">
+                                Round Off
+                            </div>
+                            <div class="div-table-col sale-price">
+                                <div class="round_price">
+                                    <input  type="text" name="round_off_text" class="round_off_text text-right" value="<?php echo $bill_data['bill_data']->round_off_value;; ?>" readonly="">
+                                </div>                             
+                            </div>
+                            <div class="div-table-col option-delete">
+                            </div>
+                        </div>
                     </div>
 
                     <ul class="icons-labeled">
