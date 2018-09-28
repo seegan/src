@@ -35,7 +35,7 @@
         <div>
             <form action="" method="GET">
                 <input type="hidden" name="page" value="bill_delivery">
-                <select name="financial_year">
+                <select name="financial_year" class="financial_year">
                     <?php 
                         for ($i = 2010; $i < 2051; $i++) { 
                             if($financial_year == $i) {
@@ -46,7 +46,7 @@
                         }
                     ?>
                 </select>
-                <input type="text" name="inv_no" class="inv_no" value="<?php echo $invoice_id; ?>">
+                <input type="text" name="inv_no" class="inv_no" autocomplete="off" value="<?php echo $invoice_id; ?>">
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -95,7 +95,10 @@
                         <td><?php echo $s_value->sale_weight.'Kg ('.bagKgSplitter($s_value->sale_weight, $bag_weight).')'; ?></td>
                         <td><?php echo $s_value->tot_delivered.'Kg ('.bagKgSplitter($s_value->tot_delivered, $bag_weight).')'; ?></td>
                         <td><?php echo $s_value->tot_returned.'Kg ('.bagKgSplitter($s_value->tot_returned, $bag_weight).')'; ?></td>
-                        <td><?php echo $s_value->delivery_balance.'Kg ('.bagKgSplitter($s_value->delivery_balance, $bag_weight).')'; ?></td>
+                        <td>
+                            <?php echo $s_value->delivery_balance.'Kg ('.bagKgSplitter($s_value->delivery_balance, $bag_weight).')'; ?>
+                                
+                            </td>
                         <td>
                             <div>
                                 <div style="float:left;">
@@ -107,6 +110,7 @@
                                     </div>
                                 </div>
                                 <div style="float:left;width:100px;">
+                                    <input type="hidden" name="delivery_balance" class="delivery_balance" value="<?php echo $s_value->delivery_balance ?>">
                                     <input type="text" value="0" class="user_enrty_weight" name="delivery_data[<?php echo $row_count; ?>][user_unit]" <?php echo $delivery_disabled ?> >
                                     <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="delivery_data[<?php echo $row_count; ?>][bag_weight]">
                                     <span class="delivery_sale_as" style="font-weight:bold;">
@@ -142,29 +146,22 @@
 
 //From Stock Submit button (tab and shif + tab action)
 jQuery(document).on("keydown", ".submit-button", function(e) {
-  if(event.keyCode == 9) {
-    if(event.shiftKey && event.keyCode == 9) { 
-
-       e.preventDefault(); 
-      jQuery('.delivery_need').focus();
+    if(event.keyCode == 9 && !event.shiftKey) {
+        e.preventDefault(); 
+        jQuery('.financial_year').focus();
     }
-    else { 
-      e.preventDefault(); 
-      jQuery('.inv_no').focus();
-    }
-  }
 });
 
 
-jQuery(document).on("keydown", ".inv_no", function(e) {
+jQuery(document).on("keydown", ".financial_year", function(e) {
   if(event.keyCode == 9) {
     if(event.shiftKey && event.keyCode == 9) {  
-       e.preventDefault(); 
-      jQuery('.submit-button').focus();
+        e.preventDefault(); 
+        jQuery('.submit-button').focus();
     }
     else { 
-      e.preventDefault(); 
-      jQuery('input[type="submit"]').focus();
+        e.preventDefault(); 
+        jQuery('.inv_no').focus();
     }
   }
 });

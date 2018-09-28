@@ -56,15 +56,29 @@ jQuery(document).ready(function(){
 
 
   jQuery('.user_enrty_weight').on('keyup', function () {
+    returnCheckDelivery(jQuery(this).parent().parent().parent());
     deliveryWeightCal(jQuery(this).parent().parent().parent());
-  })
+    
+  });
   jQuery('.sale_as').on('change', function () {
+    returnCheckDelivery(jQuery(this).parent().parent().parent().parent().parent().parent());
     deliveryWeightCal(jQuery(this).parent().parent().parent().parent().parent().parent());
-  })
+  });
 
 
 });
-
+function returnCheckDelivery(selector = ''){
+    var return_qty = parseFloat(selector.find('.user_enrty_weight').val());
+    console.log(return_qty);
+    var return_qty_kg = (selector.find('.sale_as:checked').val() == 'kg') ? parseFloat(return_qty) : parseFloat(selector.find('.bag_weight').val() * return_qty);
+    console.log(return_qty_kg);
+    var return_avail = parseFloat(selector.find('.delivery_balance').val());
+    console.log(return_avail);
+    if(return_qty_kg > return_avail ){
+        alert('Available stock is '+ return_avail + 'Kg  !!! Enter Quantity as small as avalible stock!!!');
+        selector.find('.user_enrty_weight').val(0);
+    }
+}
 function deliveryWeightCal(selector = '') {
   var delivery_as = selector.find('.sale_as:checked').val();
   var delivery_weight = isNaN(parseFloat(selector.find('.user_enrty_weight').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight').val());

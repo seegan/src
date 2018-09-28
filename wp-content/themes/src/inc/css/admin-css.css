@@ -888,6 +888,15 @@ span.page-numbers {
     background: #ec0a0a;
     color: #FFF;
 }
+
+.w-wsrate {
+    background: #1613de;
+    color: #FFF;
+}
+.w-normal {
+    background: #000;
+    color: #FFF;
+}
 .c-delivered {
     background: #067e1a;
     color: #FFF;

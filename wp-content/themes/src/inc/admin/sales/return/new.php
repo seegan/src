@@ -37,7 +37,7 @@ input[type="checkbox"][readonly] {
         <div>
             <form action="" method="GET">
                 <input type="hidden" name="page" value="bill_return">
-                <select name="financial_year">
+                <select name="financial_year" class="financial_year">
                     <?php 
                         for ($i = 2010; $i < 2051; $i++) { 
                             if($financial_year == $i) {
@@ -48,7 +48,7 @@ input[type="checkbox"][readonly] {
                         }
                     ?>
                 </select>
-                <input type="text" name="inv_no" class="inv_no" value="<?php echo $invoice_id; ?>">
+                <input type="text" name="inv_no" class="inv_no" autocomplete="off" value="<?php echo $invoice_id; ?>">
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -151,6 +151,7 @@ input[type="checkbox"][readonly] {
                             <?php echo $s_value->tot_returned.'Kg ('.bagKgSplitter($s_value->tot_returned, $bag_weight).')'; ?>
                         </td>
                         <td>
+                            <input type="hidden" class="return_avail" value="<?php echo $s_value->return_avail; ?>">
                             <?php echo $s_value->return_avail.'Kg ('.bagKgSplitter($s_value->return_avail, $bag_weight).')'; ?>
                         </td>
                         <td>
@@ -182,7 +183,7 @@ input[type="checkbox"][readonly] {
 
                         </td>
                         <td>
-                            <input type="text" style="width:100px;" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?>>
+                            <input type="text" style="width:100px;" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?> readonly>
                         </td>
                         <td>
                             <div class="taxless_amt_txt">0.00</div>
@@ -272,30 +273,22 @@ input[type="checkbox"][readonly] {
 
 //From Stock Submit button (tab and shif + tab action)
 jQuery(document).on("keydown", ".submit-button", function(e) {
-  if(event.keyCode == 9) {
-    if(event.shiftKey && event.keyCode == 9) { 
-       e.preventDefault(); 
-       jQuery('.return_to_check').focus();
+    if(event.keyCode == 9 && !event.shiftKey) {
+        e.preventDefault(); 
+        jQuery('.financial_year').focus();
     }
-    else { 
-      e.preventDefault(); 
-      jQuery('.inv_no').focus();
-    }
-  }
 });
 
 
-
-
-jQuery(document).on("keydown", ".inv_no", function(e) {
+jQuery(document).on("keydown", ".financial_year", function(e) {
   if(event.keyCode == 9) {
     if(event.shiftKey && event.keyCode == 9) {  
-       e.preventDefault(); 
-      jQuery('.submit-button').focus();
+        e.preventDefault(); 
+        jQuery('.submit-button').focus();
     }
     else { 
-      e.preventDefault(); 
-      jQuery('input[type="submit"]').focus();
+        e.preventDefault(); 
+        jQuery('.inv_no').focus();
     }
   }
 });

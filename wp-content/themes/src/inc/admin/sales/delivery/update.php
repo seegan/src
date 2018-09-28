@@ -18,7 +18,7 @@
         <div>
             <form action="" method="GET">
                 <input type="hidden" name="page" value="bill_delivery">
-                <select name="financial_year">
+                <select name="financial_year" class="financial_year">
                     <?php 
                         for ($i = 2010; $i < 2051; $i++) { 
                             if($financial_year == $i) {
@@ -29,7 +29,7 @@
                         }
                     ?>
                 </select>
-                <input type="text" name="inv_no" class="inv_no" value="<?php echo $invoice_id; ?>">
+                <input type="text" name="inv_no" class="inv_no" autocomplete="off" value="<?php echo $invoice_id; ?>">
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -109,20 +109,14 @@
 
 //From Stock Submit button (tab and shif + tab action)
 jQuery(document).on("keydown", ".submit-button", function(e) {
-  if(event.keyCode == 9) {
-    if(event.shiftKey && event.keyCode == 9) { 
-       e.preventDefault(); 
-       jQuery('.delivery_delete').focus();
-    }
-    else { 
-      e.preventDefault(); 
-      jQuery('.inv_no').focus();
-    }
+  if(event.keyCode == 9 && !event.shiftKey) {
+        e.preventDefault(); 
+        jQuery('.financial_year').focus();
   }
 });
 
 
-jQuery(document).on("keydown", ".inv_no", function(e) {
+jQuery(document).on("keydown", ".financial_year", function(e) {
   if(event.keyCode == 9) {
     if(event.shiftKey && event.keyCode == 9) {  
        e.preventDefault(); 
@@ -130,7 +124,7 @@ jQuery(document).on("keydown", ".inv_no", function(e) {
     }
     else { 
       e.preventDefault(); 
-      jQuery('input[type="submit"]').focus();
+      jQuery('.inv_no').focus();
     }
   }
 });

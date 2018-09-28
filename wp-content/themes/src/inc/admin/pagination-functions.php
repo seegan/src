@@ -863,7 +863,7 @@ function delivery_list_pagination( $args ) {
         $data['start_count'] = ($ppage * ($page-1));
 
         $pagination = paginate_links( array(
-                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=sales_others')),
+                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=delivery_list')),
                 'format' => '',
                 'type' => 'array',
                 'prev_text' => __('prev'),

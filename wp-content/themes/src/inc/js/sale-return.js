@@ -52,23 +52,28 @@ jQuery(document).ready(function(){
 
     jQuery('.return_table .sale_as').on('change', function () {
       returnAmtWeightCal(jQuery(this).parent().parent().parent().parent().parent().parent().parent());
+      returnCheck(jQuery(this).parent().parent().parent().parent().parent().parent().parent())
     });
     jQuery('.return_table .user_enrty_weight').on('keyup', function(){
+         returnCheck(jQuery(this).parent().parent().parent().parent());
       returnAmtWeightCal(jQuery(this).parent().parent().parent().parent());
+     
+
     });
     jQuery('.return_table .amt_per_kg').on('keyup', function(){
       returnAmtWeightCal(jQuery(this).parent().parent());
     });
-
-
-
-
-
-
-
-
 });
 
+function returnCheck(selector = ''){
+    var return_qty = parseFloat(selector.find('.user_enrty_weight').val());
+    var return_qty_kg = (selector.find('.sale_as:checked').val() == 'kg') ? parseFloat(return_qty) : parseFloat(selector.find('.bag_weight').val() * return_qty);
+    var return_avail = parseFloat(selector.find('.return_avail').val());
+    if(return_qty_kg > return_avail ){
+        alert('Available stock is '+ return_avail + 'Kg  !!! Enter Quantity as small as avalible stock!!!');
+        selector.find('.user_enrty_weight').val(0);
+    }
+}
 
 function  returnAmtWeightCal(selector = '') {
 
@@ -131,12 +136,14 @@ function updateReturnTotal() {
 //Decimal points
   var radixPos = String(total).indexOf('.');
   var decimal = String(total).slice(radixPos);
-
+ decimal = parseFloat(decimal);
 //Minus plus decimal points
 if(decimal <= 0.49){ 
-  var decimal_point = "- 0" + decimal; 
-} else {
+  var decimal_point = "-" + decimal; 
+} else if( 1 > decimal  && decimal > 0.49 ){
    var decimal_point = "+" + (1 - decimal).toFixed(2); 
+} else {
+   var decimal_point = 0.00; 
 }
 
 //round off
