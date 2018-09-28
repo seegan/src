@@ -372,12 +372,12 @@
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="<?php echo $b_value->bag_weight; ?>" autocomplete="off" placeholder=""> 
                                         <div class="slab_system_no" style="text-align:left;width: 100px;display:<?php echo $slab_no_display ?>;">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" value="<?php echo $b_value->weight; ?>" readonly style="display: none;">
-                                            <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>">
+                                            <input type="text" name="unit_count" class="unit_count input_tab" autocomplete="off" placeholder="Count" style="width: 55px;" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo $b_value->sale_weight; ?>" readonly style="display: none;">
                                             <span class="bag_display">Bag</span>
                                         </div>
                                         <div class="slab_system_yes" style="text-align:left;width: 100px;display:<?php echo $slab_yes_display ?>;">
-                                            <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
+                                            <input type="text" name="slab_yes_total" class="total input_tab" autocomplete="off" placeholder="Weight" value="<?php echo ($b_value->sale_as == 'kg') ? $b_value->sale_weight : $b_value->bag_count; ?>" style="width: 55px;">
                                             <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Kg</span>
                                             <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Bag</span>
                                         </div>
@@ -530,12 +530,12 @@
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" value="" autocomplete="off" placeholder=""> 
                                         <div class="slab_system_no" style="width: 100px;text-align:left;">
                                             <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" style="display: none;width: 55px;">
-                                            <input type="text" name="unit_count" class="unit_count" autocomplete="off" placeholder="Count" style="width: 55px;">
+                                            <input type="text" name="unit_count" class="unit_count input_tab" autocomplete="off" placeholder="Count" style="width: 55px;">
                                             <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight" style="display: none;">
                                             <span class="bag_display">Bag</span>
                                         </div>
                                         <div class="slab_system_yes" style="display:none;width: 100px;text-align:left;">
-                                            <input type="text" name="slab_yes_total" class="total" autocomplete="off" placeholder="Weight" style="width: 55px;">
+                                            <input type="text" name="slab_yes_total" class="total input_tab" autocomplete="off" placeholder="Weight" style="width: 55px;">
                                             <span class="kg_display">Kg</span>
                                             <span class="bag_display">Bag</span>
                                         </div>
@@ -901,7 +901,7 @@ jQuery(document).on("keydown", ".select2-search__field", function(e) {
     }
     else { 
       e.preventDefault();
-      jQuery('#new_billing .unit_count').focus();
+      jQuery('#new_billing .input_tab').focus();
     }
   }
 });
