@@ -225,7 +225,7 @@
 					if($b_value->is_delivered == 1) {
 						$invoice_status = '<span class="c-delivered">Delivered</span>';
 					}	
-					$payment_done = ($b_value->to_be_paid > 0) ? '<div class="round-c payment-red"></div>' : '<div class="round-c payment-green"></div>';
+					$payment_done = ($b_value->to_be_paid > 0) ? '<span class="c-process">Incomplete</span>' : '<span class="c-delivered">Completed</span>';
                     $margin_rate = ($b_value->margin_rate > 0) ? '<div class="round-c payment-blue"></div>' : '<div class="round-c payment-black"></div>';
 		?>
 			<tr id="customer-data-<?php echo $b_value->id; ?>">
@@ -266,7 +266,7 @@
 				</td>
 
 				<td class="d-status" data-status-id="<?php echo $b_value->id; ?>"><?php echo $invoice_status; ?></td>
-				<td style="position:relative;"> <?php echo $payment_done; ?></td>
+				<td class="d-status" style="position:relative;"> <?php echo $payment_done; ?></td>
 				<td style="position:relative;"> <?php echo $margin_rate; ?></td>
 				<td>
 					<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice'; ?>">Billing Detail
