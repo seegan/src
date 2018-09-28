@@ -15,7 +15,7 @@
     </div>
     <div class="widget-top" style="">
         <h4>Update Return</h4>
-        <div style="font-size: 21px;"><?php echo 'Return ID : '.$return_id; ?></div>
+        <div style="font-size: 21px;"><?php echo 'Return ID : GR'.$return_id; ?></div>
         <div style="font-size: 21px;"><?php echo 'Invoice ID : '.$return_data['return_data']->sale_id; ?></div>
     </div>
 
@@ -59,16 +59,16 @@
                     <?php 
                         if( $gst_from =='cgst' ) {
                     ?>
-                    <th rowspan="2">Rate</th>
-                    <th rowspan="2">Amt.</th>
-                    <th rowspan="2">Rate</th>
-                    <th rowspan="2">Amt.</th>
+                    <th>Rate</th>
+                    <th>Amt.</th>
+                    <th>Rate</th>
+                    <th>Amt.</th>
                     <?php 
                         }
                         if( $gst_from =='igst' ) {
                     ?>
-                    <th rowspan="2">Rate</th>
-                    <th rowspan="2">Amt.</th>
+                    <th>Rate</th>
+                    <th>Amt.</th>
                     <?php
                         }
                     ?>
@@ -166,15 +166,22 @@
                         }
                     }
                 ?>
+                <tr>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '10'; } else if( $gst_from =='igst' ) { echo '8'; } else{ echo '6'; } ?>"><div class="text-right">Round Off</div></td>
+                    <td>
+                        <div class="return_round_off_txt"><?php echo $return_data['return_data']->round_off_value; ?></div>
+                        <input type="hidden" name="return_round_off" value="<?php echo $return_data['return_data']->round_off_value; ?>" class="return_round_off">
+                    </td>
+                </tr>
                  <tr>
-                    <td colspan="9"><div class="text-right">Total Return</div></td>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '10'; } else if( $gst_from =='igst' ) { echo '8'; } else{ echo '6'; } ?>"><div class="text-right">Total Return</div></td>
                     <td>
                         <div class="total_return_txt"><?php echo $return_data['return_data']->total_amount; ?></div>
                         <input type="hidden" name="total_return" value="<?php echo $return_data['return_data']->total_amount; ?>" class="total_return">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="9"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check"/></td></div>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '10'; } else if( $gst_from =='igst' ) { echo '8'; } else{ echo '6'; } ?>"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check"/></td></div>
                     <td>
                         <input type="hidden" class="previous_pay_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>">
                         <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) ?></div>

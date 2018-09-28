@@ -169,8 +169,8 @@
 		?>
 			<tr id="return-data-<?php echo $b_value->return_id; ?>">
                 <td><?php echo $b_value->invoice_id; ?></td>
-				<td><?php echo $b_value->return_id; ?></td>
 				<td><?php echo $b_value->financial_year; ?></td>
+                <td><?php echo 'GR'.$b_value->return_id; ?></td>
 				<td><?php echo $b_value->return_date; ?></td>
 				<td>
 					<?php

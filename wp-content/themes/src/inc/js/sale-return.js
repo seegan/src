@@ -127,8 +127,28 @@ function updateReturnTotal() {
   });
   total = parseFloat(total);
 
+
+//Decimal points
+  var radixPos = String(total).indexOf('.');
+  var decimal = String(total).slice(radixPos);
+
+//Minus plus decimal points
+if(decimal <= 0.49){ 
+  var decimal_point = "- 0" + decimal; 
+} else {
+   var decimal_point = "+" + (1 - decimal).toFixed(2); 
+}
+
+//round off
+  total = Math.round(total); 
+
+
+
   jQuery('.total_return_txt').text(total.toFixed(2));
   jQuery('.total_return').val(total.toFixed(2));
+
+  jQuery('.return_round_off_txt').text(decimal_point);
+  jQuery('.return_round_off').val(decimal_point);
 
   var previous_to_pay = parseFloat(jQuery('.previous_pay_to_bal').val());
   var current_to_pay = parseFloat(previous_to_pay + total);

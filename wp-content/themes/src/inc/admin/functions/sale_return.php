@@ -15,6 +15,7 @@ function sale_return($value='')
 		'sale_id' => $sale_id, 
 		'customer_id' => $params['customer_id'],
 		'total_amount' => $params['total_return'],
+		'round_off_value' => $params['return_round_off'],
 		'key_amount' => $pay_to_bal,
 		'gst_from'   => $params['gst_from'],
 		'return_date' => $return_date,
@@ -97,6 +98,7 @@ function sale_return_update($value='')
 		'sale_id' 		=> $sale_id, 
 		'customer_id' 	=> $params['customer_id'],
 		'total_amount' 	=> $params['total_return'],
+		'round_off_value' => $params['return_round_off'],
 		'gst_from'   	=> $params['gst_from'],
 		'return_date' 	=> $return_date,
 		);

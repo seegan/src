@@ -96,16 +96,16 @@ input[type="checkbox"][readonly] {
                     <?php 
                         if( $gst_from =='cgst' ) {
                     ?>
-                    <th rowspan="2">Rate</th>
-                    <th rowspan="2">Amt.</th>
-                    <th rowspan="2">Rate</th>
-                    <th rowspan="2">Amt.</th>
+                    <th>Rate</th>
+                    <th>Amt.</th>
+                    <th>Rate</th>
+                    <th>Amt.</th>
                     <?php 
                         }
                         if( $gst_from =='igst' ) {
                     ?>
-                    <th rowspan="2">Rate</th>
-                    <th rowspan="2">Amt.</th>
+                    <th>Rate</th>
+                    <th>Amt.</th>
                     <?php
                         }
                     ?>
@@ -235,14 +235,21 @@ input[type="checkbox"][readonly] {
                     }
                 ?>
                 <tr>
-                    <td colspan="13"><div class="text-right">Total Return</div></td>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Round Off</div></td>
+                    <td>
+                        <div class="return_round_off_txt">0.00</div>
+                        <input type="hidden" name="return_round_off" value="0.00" class="return_round_off">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Total Return</div></td>
                     <td>
                         <div class="total_return_txt">0.00</div>
                         <input type="hidden" name="total_return" value="0.00" class="total_return">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="13"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check"/></td></div>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check"/></td></div>
                     <td>
                         <input type="hidden" class="previous_pay_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>">
                         <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) ?></div>
