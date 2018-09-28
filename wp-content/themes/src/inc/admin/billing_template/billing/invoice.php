@@ -112,11 +112,15 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 					</ul>
 				</div>
 				<div class="bill_info_bar">
+					<?php
+						$delivery_boy = (isset($bill_data['bill_data']) && $bill_data['bill_data']->delivery_boy != '') ? $bill_data['bill_data']->delivery_boy : '';
+					?>
 					<ul>
 						<li><span>Bill No : </span> <?php echo $bill_data['bill_data']->invoice_id; ?></li>
 						<li><span>Bill Date : </span> <?php echo $bill_data['bill_data']->invoice_date; ?></li>
 						<li><span>Customer Type : </span> <?php echo $bill_data['bill_data']->customer_type; ?></li>
 						<li><span>Shop Name  : </span><?php echo ($bill_data['bill_data']->order_shop == 'rice_center')?'Saravana Rice Center':  'Saravana Rice Mandy'; ?></li>
+						<li><span>Delivery Boy : </span><input type="text" <?php echo $delivered; ?> name="delivery_boy"  class="delivery_boy" value="<?php echo $delivery_boy; ?>"></li>
 					</ul>
 				</div>
 			</div>

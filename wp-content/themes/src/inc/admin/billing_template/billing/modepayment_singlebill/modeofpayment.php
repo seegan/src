@@ -215,7 +215,8 @@
 					
 					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" value="<?php echo $bill_data['bill_data']->delivery_name; ?>" autocomplete="off"/><br/><br/>
 					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" value="<?php echo $bill_data['bill_data']->delivery_phone; ?>"  autocomplete="off"/><br/><br/>
-					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"><?php echo $bill_data['bill_data']->delivery_address; ?></textarea>	<br/>
+					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check" style="width:70%;height: 70px;"><?php echo $bill_data['bill_data']->delivery_address; ?></textarea>	<br/><br/>
+					<input type="text" name="delivery_boy" class="delivery_boy" placeholder="Delivery boy Name" value="<?php echo $bill_data['bill_data']->delivery_boy; ?>">
 				</div>
 			<?php } else { ?>
 				<input type="radio" name="delivery_need" value="0" class="delivery_need" checked /> No
@@ -223,7 +224,8 @@
 				<div class="delivery_display" style="display:none;">
 					<input type="text" name="delivery_name" class="delivery_name customer_check" placeholder="Name" /><br><br/>
 					<input type="text" name="delivery_phone" class="delivery_phone" placeholder="Phone" onkeypress="return isNumberKeyDelivery(event)"/><br><br/>
-					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check"></textarea><br><br/>
+					<textarea  placeholder="Address" name="delivery_address" class="delivery_address customer_check" style="width:70%;height: 70px;"></textarea><br><br/>
+					<input type="text" name="delivery_boy" class="delivery_boy" placeholder="Delivery boy Name">
 				</div>
 			<?php } ?>
 		</div>

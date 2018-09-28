@@ -88,6 +88,7 @@ jQuery(document).ready(function(){
           data: {
             action     : 'delveryall_aj',
             bill_no  : jQuery('.delivery_bill_no').val(),
+            delivery_boy : jQuery('.delivery_boy').val(),
           },
           success: function (data) {
 

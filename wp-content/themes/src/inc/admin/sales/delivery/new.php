@@ -52,15 +52,14 @@
         </div>
     </div>
 
-
     <div class="widget-content module table-simple"  id="new_delivery" style="margin-top:40px;">
 
         <div style="margin-top:10px;margin-bottom:10px;">
-            <div style="text-align:center;width: 320px;margin: 0 auto;">
-                <span style="font-weight:bold;">Delivery Date:</span> <input type="text" name="delivery_date" class="delivery_date" value="<?php echo date("d-m-Y ", time()); ?>" id="delivery_date">
+            <div style="text-align:center;width: 640px;margin: 0 auto;">
+                <span style="font-weight:bold;">Delivery Date:</span> <input type="text" name="delivery_date" class="delivery_date" value="<?php echo date("d-m-Y ", time()); ?>" id="delivery_date" style="width: 200px;">
+                <span style="font-weight:bold;">Delivery Boy:</span> <input type="text" name="delivery_boy" class="delivery_boy" value="<?php echo $sale_detail->delivery_boy; ?>" id="delivery_date" style="width: 200px;">
             </div>
         </div>
-
 
         <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>">
         <table class="display">

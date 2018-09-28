@@ -1,5 +1,5 @@
 <?php
-function sale_delivery_aj($value='') {
+function sale_delivery_aj($value='', $delivery_boy='') {
 	global $wpdb;
 	$data['success'] = 0;
 	$delivery_table 			= $wpdb->prefix. 'delivery';
@@ -8,9 +8,11 @@ function sale_delivery_aj($value='') {
 	parse_str($_POST['delivery_data'], $params);
 
 	$sale_id = $params['sale_id'];
+	$delivery_boy = $params['delivery_boy'];
+
 	$delivery_date = man_to_machine_date($params['delivery_date']);
 
-	$wpdb->insert($delivery_table, array('sale_id' => $sale_id, 'delivery_date' => $delivery_date));
+	$wpdb->insert($delivery_table, array('sale_id' => $sale_id, 'delivery_boy' => $delivery_boy,  'delivery_date' => $delivery_date));
 	
 	$delivery_id = 0;
 	if($delivery_id = $wpdb->insert_id) {
@@ -68,7 +70,7 @@ add_action( 'wp_ajax_sale_delivery_update', 'sale_delivery_update' );
 add_action( 'wp_ajax_nopriv_sale_delivery_update', 'sale_delivery_update' );
 
 
-function sale_delivery($delivery_data) {
+function sale_delivery($delivery_data, $delivery_boy = '') {
 	global $wpdb;
 	$data['success'] = 0;
 	$delivery_table 			= $wpdb->prefix. 'delivery';
@@ -77,7 +79,7 @@ function sale_delivery($delivery_data) {
 	$sale_id = $delivery_data['sale_id'];
 
 	$delivery_date = date('Y-m-d');
-	$wpdb->insert($delivery_table, array('sale_id' => $sale_id, 'delivery_date' => $delivery_date));
+	$wpdb->insert($delivery_table, array('sale_id' => $sale_id, 'delivery_boy' => $delivery_boy, 'delivery_date' => $delivery_date));
 
 	$delivery_id = 0;
 	if($delivery_id = $wpdb->insert_id) {
@@ -101,11 +103,12 @@ function sale_delivery($delivery_data) {
 function delveryall_aj() {
 	$ret_data['success'] = 0;
 	$sale_id   = $_POST['bill_no'];
+	$delivery_boy   = $_POST['delivery_boy'];
 	$sales = getSalesList($sale_id);
 	if($sales && is_array($sales) && count($sales)>0) {
 		$data['sale_id'] = $sale_id;
 		$data['delivery_data'] = $sales;
-		$ret_data = sale_delivery($data);
+		$ret_data = sale_delivery($data, $delivery_boy);
 	}
 	echo json_encode($ret_data);
 	die();
