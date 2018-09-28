@@ -191,13 +191,6 @@
                 </table>
             </div>
     	</div>
-        <div class="x_content" style="float:right;">
-            <div style="width:20%;float:left" >
-            <div style="width:70%;float:left">Payment Completed -</div> <div style="width:30%;float:right;"><div class="round-c payment-green"></div></div> 
-            <div style="width:70%;float:left">Payment Incomplete -</div> <div style="width:30%;float:right;"><div class="round-c payment-red"></div></div>
-            <div style="width:70%;float:left">Wholesale Rate -</div> <div style="width:30%;float:right;"><div class="round-c payment-blue"></div></div> 
-        </div>
-        </div>
 	</div>
     	
 	<table class="display">
