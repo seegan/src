@@ -329,7 +329,7 @@
 				</div>
 				<div class="form_detail">
 					<label>
-						Selling Price(Rs/Kg)
+						MRP
 					</label>
 					<div class="slab">
 						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off">

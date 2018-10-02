@@ -469,7 +469,7 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 				</div>
 				<div class="form_detail">
 					<label>
-						Selling Price (Rs)
+						MRP
 					</label>
 					<div class="slab">
 						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off" value="<?php echo $lot_details['dummy_lot_data']->basic_price; ?>">
