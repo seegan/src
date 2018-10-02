@@ -65,6 +65,7 @@
 				<option value="10">10kg</option>
 				<option value="20">20kg</option>
 				<option value="25">25kg</option>
+				<option value="30">30kg</option>
 				<option value="50">50kg</option>
 				<option value="75">75kg</option>
 			</select>
@@ -314,6 +315,7 @@
 						<option value="10">10kg</option>
 						<option value="20">20kg</option>
 						<option value="25">25kg</option>
+						<option value="30">30kg</option>
 						<option value="50">50kg</option>
 						<option value="75">75kg</option>
 					</select>

@@ -86,6 +86,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				<option <?php echo ($lot_details['lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10kg</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20kg</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25kg</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30kg</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50kg</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75kg</option>
 			</select>
@@ -454,6 +455,7 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10kg</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20kg</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30kg</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50kg</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75kg</option>
 					</select>
