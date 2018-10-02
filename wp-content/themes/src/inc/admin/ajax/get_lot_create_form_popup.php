@@ -58,6 +58,7 @@
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<select name="weight" class="bag_weight_total">
+				<option value="0.5">500 Gram</option>
 				<option value="1">1kg</option>
 				<option value="2">2kg</option>
 				<option value="5">5kg</option>
@@ -306,6 +307,7 @@
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
 					<select name="dummy_weight" class="dummy_bag_weight_total">
+						<option value="0.5">500 Gram</option>
 						<option value="1">1kg</option>
 						<option value="2">2kg</option>
 						<option value="5">5kg</option>

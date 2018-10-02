@@ -57,10 +57,10 @@ function admin_menu_register(){
 	    8
 	);
 	add_submenu_page('new_bill', 'New Billing', 'New Billing', $src_premissions['purchase_sales'], 'new_bill', 'new_bill' );
-	add_submenu_page('new_bill', 'Item Delivery', 'Item Delivery', $src_premissions['purchase_sales'], 'bill_delivery', 'bill_delivery' );	
-	add_submenu_page('new_bill', 'Item Return', 'Item Return', $src_premissions['purchase_sales'], 'bill_return', 'bill_return' );
 	add_submenu_page('new_bill', 'Billing List', 'Billing List', $src_premissions['purchase_sales'], 'sales_others', 'billing_list' );
+	add_submenu_page('new_bill', 'Item Delivery', 'Item Delivery', $src_premissions['purchase_sales'], 'bill_delivery', 'bill_delivery' );
 	add_submenu_page('new_bill', 'Delivery List', 'Delivery List', $src_premissions['purchase_sales'], 'delivery_list', 'delivery_list' );
+	add_submenu_page('new_bill', 'Item Return', 'Item Return', $src_premissions['purchase_sales'], 'bill_return', 'bill_return' );
 	add_submenu_page('new_bill', 'Return List', 'Return List', $src_premissions['purchase_sales'], 'return_list', 'return_list' );
 	add_submenu_page('new_bill', 'Petty Cash', 'Petty Cash', $src_premissions['petty_cash'], 'petty_cash', 'petty_cash' );
 	add_submenu_page('new_bill', 'Income List', 'Income List', $src_premissions['income_list'], 'income_list', 'income_list' );

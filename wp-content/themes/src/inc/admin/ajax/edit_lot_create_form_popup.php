@@ -79,6 +79,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<select name="weight" class="bag_weight_total">
+				<option <?php echo ($lot_details['lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">500 Gram</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1kg</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2kg</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5kg</option>
@@ -446,6 +447,7 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
 					<select name="dummy_weight" class="dummy_bag_weight_total">
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">500 Gram</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1kg</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2kg</option>
 						<option <?php echo ($lot_details['dummy_lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5kg</option>
