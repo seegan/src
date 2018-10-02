@@ -131,13 +131,13 @@ function admin_menu_register(){
 	    __( 'Bill Due', 'shc'),
 	    'Bill Due',
 	    $src_premissions['purchase_sales'],
-	    'credit_debit',
-	    'credit_debit',
+	    'add_credit_debit',
+	    'add_credit_debit',
 	    'dashicons-id',
 	    8
 	);
-	add_submenu_page('credit_debit', 'Paid Bill Due List', 'Paid Bill Due List', $src_premissions['purchase_sales'], 'credit_debit', 'credit_debit' );
-	add_submenu_page('credit_debit', 'Pay Bill Due', 'Pay Bill Due', $src_premissions['purchase_sales'], 'add_credit_debit', 'add_credit_debit' );	
+	add_submenu_page('add_credit_debit', 'Pay Bill Due', 'Pay Bill Due', $src_premissions['purchase_sales'], 'add_credit_debit', 'add_credit_debit' );	
+	add_submenu_page('add_credit_debit', 'Paid Bill Due List', 'Paid Bill Due List', $src_premissions['purchase_sales'], 'credit_debit', 'credit_debit' );
 
 }
 
