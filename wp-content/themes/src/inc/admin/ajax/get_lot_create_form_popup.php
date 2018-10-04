@@ -54,20 +54,26 @@
 			<input type="text" name="product_name1">
 		</div>
 		<div class="form_detail">
-			<label style="width: 115px;">Weight
+			<label style="width: 115px;">Bag Weight/Count
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<select name="weight" class="bag_weight_total">
-				<option value="0.5">500 Gram</option>
-				<option value="1">1kg</option>
-				<option value="2">2kg</option>
-				<option value="5">5kg</option>
-				<option value="10">10kg</option>
-				<option value="20">20kg</option>
-				<option value="25">25kg</option>
-				<option value="30">30kg</option>
-				<option value="50">50kg</option>
-				<option value="75">75kg</option>
+			<select name="weight" class="dummy_bag_weight_total" style="width:20%;">
+				<option value="0.25">1/4</option>
+				<option value="0.5">1/2</option>
+				<option value="0.75">3/4</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="25">25</option>
+				<option value="30">30</option>
+				<option value="50">50</option>
+				<option value="75">75</option>
+			</select>
+			<select style="width:30%;" name="bag_weight_type">
+				<option value="kg">Kg</option>
+				<option value="pc">Piece</option>
 			</select>
 		</div>
 		<div class="form_detail">
@@ -304,20 +310,26 @@
 					</span>
 				</div>
 				<div class="form_detail">
-					<label style="width: 115px;">Weight
+					<label style="width: 115px;">Bag Weight/Count
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
-					<select name="dummy_weight" class="dummy_bag_weight_total">
-						<option value="0.5">500 Gram</option>
-						<option value="1">1kg</option>
-						<option value="2">2kg</option>
-						<option value="5">5kg</option>
-						<option value="10">10kg</option>
-						<option value="20">20kg</option>
-						<option value="25">25kg</option>
-						<option value="30">30kg</option>
-						<option value="50">50kg</option>
-						<option value="75">75kg</option>
+					<select name="dummy_weight" class="dummy_bag_weight_total" style="width:20%;">
+						<option value="0.25">1/4</option>
+						<option value="0.5">1/2</option>
+						<option value="0.75">3/4</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="25">25</option>
+						<option value="30">30</option>
+						<option value="50">50</option>
+						<option value="75">75</option>
+					</select>
+					<select style="width:30%;" name="dummy_bag_weight_type">
+						<option value="kg">Kg</option>
+						<option value="pc">Piece</option>
 					</select>
 				</div>
 				<div class="form_detail">

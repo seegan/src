@@ -134,7 +134,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 							<th  class="first-col">Lot number</th>
 							<th>Product Name</th>
 							<th>Hsn Code</th>
-							<th>Weight(kg)</th>
+							<th>Units</th>
 							<th>Unit Price(MRP)</th>
 							<th>Discounted Price</th>
 							<th>Amount(Taxless)</th>
@@ -185,7 +185,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 							<td>
 								<strong>
 									<?php
-										echo $i_value->sale_weight.'Kg ('.bagKgSplitter($i_value->sale_weight, $i_value->bag_weight).')'; 
+										echo bagKgSplitter($i_value->sale_weight, $i_value->bag_weight, $i_value->unit_type); 
 									?>
 								</strong>
 							</td>
