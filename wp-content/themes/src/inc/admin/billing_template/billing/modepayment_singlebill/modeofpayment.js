@@ -5,17 +5,14 @@ jQuery(document).ready(function (argument) {
         jQuery('.payment_tab').css('display','block');
         if(jQuery(this).is(':checked')) {
             var type            = jQuery(this).attr('data-paytype');  
-            if(type == 'credit'){  
-                var readonly        = 'readonly';
-                var existing_count  = parseInt( jQuery('#bill_payment_tab_cheque tr').length );
-                var current_row     = existing_count + 1;
-                if(current_row == 1){
-                    var str1            = '<tr class="payment_cheque"><td style="">' + Capital(type) + '<input type="hidden" name="pay_cheque" value="'+type+'" style="" class="pay_cheque"/></td><td style=""><input type="text" name="pay_amount_cheque" class="pay_amount_cheque" '+ readonly +' value="'+ jQuery('.fsub_total').val() +'" style="width: 106px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /><input type="hidden" name="payment_detail['+current_row+'][unique_name]" value="'+ makeid() +'" /></td><td style="">'+today+'</td><td style=""><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';
-                    jQuery('#bill_payment_tab_cheque').append(str1);  
-                }
-               
-            } 
-             else {
+            if(type != 'credit'){  
+                // var readonly        = 'readonly';
+                // var existing_count  = parseInt( jQuery('#bill_payment_tab_cheque tr').length );
+                // var current_row     = existing_count + 1;
+                // if(current_row == 1){
+                //     var str1            = '<tr class="payment_cheque"><td style="">' + Capital(type) + '<input type="hidden" name="pay_cheque" value="'+type+'" style="" class="pay_cheque"/></td><td style=""><input type="text" name="pay_amount_cheque" class="pay_amount_cheque" '+ readonly +' value="'+ jQuery('.fsub_total').val() +'" style="width: 106px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /><input type="hidden" name="payment_detail['+current_row+'][unique_name]" value="'+ makeid() +'" /></td><td style="">'+today+'</td><td style=""><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';
+                //     jQuery('#bill_payment_tab_cheque').append(str1);  
+                // }
                 if(type == 'internet'){
                     var type_text   = 'Netbanking';
                 } else {
@@ -26,7 +23,8 @@ jQuery(document).ready(function (argument) {
                 var current_row     = existing_count + 1;
                 var str             = '<tr class="payment_table"><td style="padding:5px;">' + type_text + '<input type="hidden" name="payment_detail['+current_row+'][payment_type]" value="'+type+'" style="width:20px;" class="payment_type"/></td><td style="padding:5px;"><input type="text" name="payment_detail['+current_row+'][payment_amount]" class="payment_amount" data-paymenttype="'+type+'"  data-uniqueName="'+makeid()+'" value="" style="width: 74px;" onkeypress="return isNumberKey(event)"/><input type="hidden" name="payment_detail['+current_row+'][reference_screen]" value="billing_screen" /><input type="hidden" name="payment_detail['+current_row+'][unique_name]" value="'+ makeid() +'" /><input type="hidden" name="payment_detail['+current_row+'][reference_id]" value="'+ reference_id +'" /></td><td style="padding"5px;>'+today+'</td><td style="padding:5px;"><a  href="#" class="payment_sub_delete" style="">x</a></td></tr>';                
                 jQuery('#bill_payment_tab').append(str);
-            }
+               
+            } 
             paymentOperations();               
         }
      });
