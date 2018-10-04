@@ -1,41 +1,97 @@
 jQuery(document).ready(function(){
 
-  jQuery('#billing_customer').select2({
-      allowClear: true,
-      width: '100%',
-      multiple: false,
-      minimumInputLength: 1,
-      ajax: {
-          type: 'POST',
+  // jQuery('#billing_customer').select2({
+  //     allowClear: true,
+  //     width: '100%',
+  //     multiple: false,
+  //     minimumInputLength: 1,
+  //     ajax: {
+  //         type: 'POST',
+  //         url: frontendajax.ajaxurl,
+  //         delay: 250,
+  //         dataType: 'json',
+  //         data: function(params) {
+  //           return {
+  //             action: 'get_customer_name', // search term
+  //             page: 1,
+  //             search_key: params.term,
+  //           };
+  //         },
+  //         processResults: function(data) {
+  //           var results = [];
+  //           return {
+  //               results: jQuery.map(data.result, function(obj) {
+  //                   return { id: obj.id, customer_name: obj.name, mobile: obj.mobile, type: obj.type.toLowerCase() };
+  //               })
+  //           };
+  //         },
+  //         cache: true
+  //     },
+  //     templateResult: formatCustomerNameResult,
+  //     templateSelection: formatCustomerName
+  // }).on("select2:select", function (e) {
+  //   jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
+  //   checkPaymentDue(e.params.data.id, jQuery('#billing_no').val());
+  //   generateDeliveryAddress(e.params.data.id);
+
+  // });
+jQuery( "#billing_customer, #billing_mobile" ).autocomplete ({
+
+    source: function( request, response ) {
+        var billing_field = jQuery(this.element).attr('id');
+        jQuery.ajax({
           url: frontendajax.ajaxurl,
-          delay: 250,
-          dataType: 'json',
-          data: function(params) {
-            return {
-              action: 'get_customer_name', // search term
-              page: 1,
-              search_key: params.term,
-            };
+          type: 'POST',
+          dataType: "json",
+          data: {
+            action: 'get_customer_name',
+            search_key: request.term
           },
-          processResults: function(data) {
-            var results = [];
-            return {
-                results: jQuery.map(data.result, function(obj) {
-                    return { id: obj.id, customer_name: obj.name, mobile: obj.mobile, type: obj.type.toLowerCase() };
-                })
-            };
-          },
-          cache: true
-      },
-      templateResult: formatCustomerNameResult,
-      templateSelection: formatCustomerName
-  }).on("select2:select", function (e) {
-    jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
-    checkPaymentDue(e.params.data.id, jQuery('#billing_no').val());
-    generateDeliveryAddress(e.params.data.id);
+            success: function( data ) {
+                response(jQuery.map( data.result, function( item ) {
 
-  });
+                    if(billing_field == 'billing_customer') {
+                        var field_val = item.name;
+                        var identification = 'name';
+                    } 
+                    else {
+                        var field_val = item.mobile;
+                        var identification = 'mobile';
+                    }
 
+
+                    return {
+                        id: item.id,
+                        value: field_val,
+                        address : item.address,
+                        name : item.name,
+                        mobile : item.mobile,
+                        secondary_mobile : item.mobile1,
+                        identification : identification 
+
+                    }
+                }));
+            }
+        });
+    },
+    minLength: 2,
+    select: function( event, ui ) {
+      if(ui.item.identification == 'mobile' ) {
+            jQuery('#billing_mobile').val(ui.item.value);
+            jQuery('#billing_customer').val(ui.item.name);
+        } else {
+            jQuery('#billing_mobile').val(ui.item.mobile);
+            jQuery('#billing_customer').val(ui.item.value); 
+        }
+        jQuery("input[name=customer_type][value='"+ui.item.type+"']").attr('checked', 'checked');
+        checkPaymentDue(ui.item.id, jQuery('#billing_no').val());
+        generateDeliveryAddress(ui.item.id);
+        jQuery('.user_type').val("old");
+        // jQuery('.customer_id_new').val(ui.item.id);
+        jQuery('.customer_id').val(ui.item.id);
+        jQuery('#billing_address').val(ui.item.address);
+    }
+});
 
   jQuery('.bill_by').click(function(){
     var bill_by = jQuery('.bill_by:checked').val();
@@ -202,8 +258,10 @@ function customerBalance(customer_id = 0, bill_id = 0){
 }
 
 jQuery('.bill_submit').live('click', function(){
-    jQuery('.bill-loader').css('display', 'block');
-    jQuery.ajax({
+    
+    if(parseFloat(jQuery('.actual_price').val()) > 0){
+      jQuery('.bill-loader').css('display', 'block');
+      jQuery.ajax({
         type: "POST",
         url: frontendajax.ajaxurl,
         data: {
@@ -220,6 +278,10 @@ jQuery('.bill_submit').live('click', function(){
           }
         }
     });
+    } else {
+      alert('Please Add Atleast One Product!!! Empty Bill Can'+"'"+'t Submit');
+    }
+   
 });
 
 jQuery('#ck_stk_available').live('click', function(){

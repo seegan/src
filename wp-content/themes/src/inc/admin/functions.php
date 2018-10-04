@@ -1397,6 +1397,7 @@ function update_bill(){
 	$stock_table 		= $wpdb->prefix. 'stock';
 	$sales_table 		= $wpdb->prefix. 'sale';
 	$delivery_table 	= $wpdb->prefix. 'delivery_address';
+	$customer_table 	= $wpdb->prefix. 'customers';
 
 //	$payment_history = $wpdb->prefix. 'payment_history';
 	$installment_table = $wpdb->prefix. 'payment_installment';
@@ -1414,11 +1415,33 @@ function update_bill(){
 		$bill_from_to = 'counter';
 	} else {
 		$bill_from_to = 'customer';
-		if($params['user_type'] == 'old') {
-			$billing_customer = $params['billing_customer'];
-		} else {
-			$billing_customer = $params['customer_id_new'];
-		}
+	if($params['user_type'] != 'old')
+	{
+		$billing_customer = $params['customer_id'];
+		$customer_update = array(
+		'name' 						=> $params['name'], 
+		'mobile' 					=> $params['mobile'],
+		'address' 					=> $params['address']
+		);
+		$wpdb->update($customer_table, $customer_update,array('id' => $customer_id));
+	}
+	else {
+		if(  $params['mobile']!='' ){ 
+			$customer_update = array(
+			'name' 						=> $params['name'], 
+			'mobile' 					=> $params['mobile'],
+			'address' 					=> $params['address']
+			);
+				
+			$wpdb->insert($customer_table, $customer_update);
+			$billing_customer = $wpdb->insert_id;
+		}		
+	}
+		// if($params['user_type'] == 'old') {
+		// 	$billing_customer = $params['billing_customer'];
+		// } else {
+		// 	$billing_customer = $params['customer_id_new'];
+		// }
 	}
 	
 	$customer_type = $params['customer_type'];

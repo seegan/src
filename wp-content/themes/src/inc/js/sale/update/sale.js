@@ -41,6 +41,65 @@ jQuery(document).ready(function(){
   });
 
 
+  jQuery( "#billing_customer, #billing_mobile" ).autocomplete ({
+
+    source: function( request, response ) {
+        var billing_field = jQuery(this.element).attr('id');
+        jQuery.ajax({
+          url: frontendajax.ajaxurl,
+          type: 'POST',
+          dataType: "json",
+          data: {
+            action: 'get_customer_name',
+            search_key: request.term
+          },
+            success: function( data ) {
+                response(jQuery.map( data.result, function( item ) {
+
+                    if(billing_field == 'billing_customer') {
+                        var field_val = item.name;
+                        var identification = 'name';
+                    } 
+                    else {
+                        var field_val = item.mobile;
+                        var identification = 'mobile';
+                    }
+
+
+                    return {
+                        id: item.id,
+                        value: field_val,
+                        address : item.address,
+                        name : item.name,
+                        mobile : item.mobile,
+                        secondary_mobile : item.mobile1,
+                        identification : identification 
+
+                    }
+                }));
+            }
+        });
+    },
+    minLength: 2,
+    select: function( event, ui ) {
+      if(ui.item.identification == 'mobile' ) {
+            jQuery('#billing_mobile').val(ui.item.value);
+            jQuery('#billing_customer').val(ui.item.name);
+        } else {
+            jQuery('#billing_mobile').val(ui.item.mobile);
+            jQuery('#billing_customer').val(ui.item.value); 
+        }
+        jQuery("input[name=customer_type][value='"+ui.item.type+"']").attr('checked', 'checked');
+        checkPaymentDue(ui.item.id, jQuery('#billing_no').val());
+        generateDeliveryAddress(ui.item.id);
+        jQuery('.user_type').val("old");
+        jQuery('.customer_id_new').val(ui.item.id);
+        jQuery('.customer_id').val(ui.item.id);
+        jQuery('#billing_address').val(ui.item.address);
+    }
+});
+
+
   jQuery('.bill_by').click(function(){
     var bill_by = jQuery('.bill_by:checked').val();
     if(bill_by == 'yes') {
@@ -166,24 +225,29 @@ function customerBalance(customer_id = 0, bill_id = 0){
     });
 }
 jQuery('.bill_update').live('click', function(){
-  jQuery('.bill-loader').css('display', 'block');
-  jQuery.ajax({
-      type: "POST",
-      url: frontendajax.ajaxurl,
-      data: {
-        action : 'update_bill_last',
-        bill_data : jQuery('#new_billing :input').serialize(),
-      },
-      success: function (data) {
-          var obj = jQuery.parseJSON(data);
-          if(obj.success == 1) {
-            window.location.replace('admin.php?page=new_bill&bill_no='+obj.billing_no+'&action=invoice');
-          } else {
-            alert('Something went wrong!');
-            jQuery('.bill-loader').css('display', 'none');
+  
+   if(parseFloat(jQuery('.actual_price').val()) > 0){
+    jQuery('.bill-loader').css('display', 'block');
+      jQuery.ajax({
+          type: "POST",
+          url: frontendajax.ajaxurl,
+          data: {
+            action : 'update_bill_last',
+            bill_data : jQuery('#new_billing :input').serialize(),
+          },
+          success: function (data) {
+              var obj = jQuery.parseJSON(data);
+              if(obj.success == 1) {
+                window.location.replace('admin.php?page=new_bill&bill_no='+obj.billing_no+'&action=invoice');
+              } else {
+                alert('Something went wrong!');
+                jQuery('.bill-loader').css('display', 'none');
+              }
           }
-      }
-  });
+      });
+  } else {
+      alert('Please Add Atleast One Product!!! Empty Bill Can'+"'"+'t Submit');
+  }
 });
 
 jQuery('#ck_stk_available').live('click', function(){
