@@ -14,7 +14,11 @@
         pointer-events: none;
     }
 </style>
-
+<style>
+.ui-autocomplete-loading {
+    background: white url('./images/bx_loader.gif') right center no-repeat;
+}
+</style>
 <div class="form-grid">
     <form method="post" name="new_billing" id="new_billing" class="leftLabel" onsubmit="return false;">
         <ul>
@@ -85,11 +89,8 @@
                         <div class="align">
                             <div class="customer-cash">
                                 <div class="customer_old">
-                                    <input type="text" id="billing_customer" name="billing_customer" class="billing_customer"/>
+                                    <input type="text" id="billing_customer" name="name" class="billing_customer"/>
                                 </div>
-                              <!--   <div class="customer_new">
-                                    <input type="text" size="200" class="new_billing_customer" readonly/>
-                                </div> -->
                                 <div>
                                     <input type="hidden" name="user_type" value="new" class="user_type" id="user_type" /> 
                                     <input type="hidden" name="customer_id" class="customer_id"> 
@@ -101,22 +102,16 @@
                         <legend class="choiceFld">Phone Number</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
-                                <input type="text" name="billing_mobile" id="billing_mobile" class="billing_mobile">
+                                <input type="text" name="mobile" id="billing_mobile" class="billing_mobile">
                             </span>                                 
-                            <!--  <span>
-                                <input type="radio" name="gst_type" value="no_gst" class="gst_type"><label class="choice">No GST</label>
-                            </span> -->
                         </div>
                     </span>
                     <span class="left" style="width: 40%">
                         <legend class="choiceFld">Address</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
-                                <textarea name="billing_address" id="billing_address" class="billing_address"></textarea>
-                            </span>                                 
-                            <!--  <span>
-                                <input type="radio" name="gst_type" value="no_gst" class="gst_type"><label class="choice">No GST</label>
-                            </span> -->
+                                <textarea name="address" id="billing_address" class="billing_address"></textarea>
+                            </span>
                         </div>
                     </span>             
                 </div>

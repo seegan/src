@@ -115,25 +115,10 @@
                              <span>
                                 <input type="radio" name="gst_type" value="igst" class="gst_type" <?php echo $igst_checked ?>><label class="choice">IGST</label>
                             </span>
-                             <!-- <span>
-                                <input type="radio" name="gst_type" value="no_gst" class="gst_type" <?php echo $nogst_checked ?>><label class="choice">No GST</label>
-                            </span> -->
                         </div>
                     </span>
                 </div>
             </li>
-            <!-- <li>
-                <legend class="choiceFld">Home Delivery</legend>
-                <div class="fieldwrap input-uniform">
-                    <span>
-                        <input type="radio" name="home_delivery" value="no" <?php echo $delivery_no_checked; ?> ><label class="choice">No</label>
-                    </span>
-                    &nbsp;&nbsp;                                   
-                     <span>
-                        <input type="radio" name="home_delivery" value="yes" <?php echo $delivery_yes_checked; ?> ><label class="choice">Yes</label>
-                    </span>
-                </div>
-            </li> -->
             <li>
                 <legend class="choiceFld">Bill By Name</legend>
                 <div class="fieldwrap input-uniform">
@@ -150,7 +135,7 @@
                 <label id="customer" for="customer" class="fldTitle">Select the Customer
                     <abbr class="require" title="Required Field">*</abbr>
                 </label>
-                <div class="fieldwrap by-customer" style="<?php echo $by_customer; ?>">
+<!--                 <div class="fieldwrap by-customer" style="<?php echo $by_customer; ?>">
                     <span class="left">
                         <select id="billing_customer" name="billing_customer" data-dvalue="<?php echo $bill_data['customer_data']->id; ?>" data-dtext="<?php echo $bill_data['customer_data']->name; ?>">
                             <option selected value="<?php echo $bill_data['customer_data']->id; ?>"><?php echo $bill_data['customer_data']->name; ?></option>
@@ -158,6 +143,37 @@
                     </span>
                     <span class="left append_cus_last_bill">
                     </span>
+                </div> -->
+                <div class="fieldwrap by-customer" style="<?php echo $by_customer; ?>">
+                    <span class="left" style="width: 30%">
+                        <div class="align">
+                            <div class="customer-cash">
+                                <div class="customer_old">
+                                    <input type="text" id="billing_customer" name="name" class="billing_customer" value="<?php echo $bill_data['customer_data']->name; ?>" />
+                                </div>
+                                <div>
+                                    <input type="hidden" name="user_type" value="<?php echo (isset($bill_data['customer_data']->id)) ? 'old' : 'new'; ?>" class="user_type" id="user_type" /> 
+                                    <input type="hidden" name="customer_id" class="customer_id" value="<?php echo $bill_data['customer_data']->id; ?>"> 
+                                </div>
+                            </div>
+                        </div>           
+                    </span>  
+                     <span class="left" style="width: 30%">
+                        <legend class="choiceFld">Phone Number</legend>
+                        <div class="fieldwrap input-uniform">
+                            <span>
+                                <input type="text" name="mobile" id="billing_mobile" class="billing_mobile" value="<?php echo $bill_data['customer_data']->mobile; ?>">
+                            </span>                                 
+                        </div>
+                    </span>
+                    <span class="left" style="width: 40%">
+                        <legend class="choiceFld">Address</legend>
+                        <div class="fieldwrap input-uniform">
+                            <span>
+                                <textarea name="address" id="billing_address" class="billing_address"><?php echo $bill_data['customer_data']->address; ?></textarea>
+                            </span>
+                        </div>
+                    </span>             
                 </div>
                 <div class="fieldwrap by-counter" style="<?php echo $by_counter ?>">
                     <span class="left">

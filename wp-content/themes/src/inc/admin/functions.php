@@ -1426,7 +1426,7 @@ function update_bill(){
 		$bill_from_to = 'counter';
 	} else {
 		$bill_from_to = 'customer';
-	if($params['user_type'] != 'old')
+	if($params['user_type'] == 'old')
 	{
 		$billing_customer = $params['customer_id'];
 		$customer_update = array(
@@ -1434,7 +1434,7 @@ function update_bill(){
 		'mobile' 					=> $params['mobile'],
 		'address' 					=> $params['address']
 		);
-		$wpdb->update($customer_table, $customer_update,array('id' => $customer_id));
+		$wpdb->update($customer_table, $customer_update,array('id' => $billing_customer));
 	}
 	else {
 		if(  $params['mobile']!='' ){ 
@@ -1644,6 +1644,7 @@ function update_bill_last(){
 	$payment_history 		= $wpdb->prefix. 'payment_history';
 	$installment_table 		= $wpdb->prefix. 'payment_installment';
 	$delivery_table 		= $wpdb->prefix. 'delivery_address';
+	$customer_table 	    = $wpdb->prefix. 'customers';
 
 	$billing_date 			= $params['billing_date'];
 	$billing_no 			= $params['billing_no'];
@@ -1656,7 +1657,29 @@ function update_bill_last(){
 		$bill_from_to = 'counter';
 	} else {
 		$bill_from_to = 'customer';
-		$billing_customer = $params['billing_customer'];
+		if($params['user_type'] == 'old')
+		{
+			$billing_customer = $params['customer_id'];
+			$customer_update = array(
+			'name' 						=> $params['name'], 
+			'mobile' 					=> $params['mobile'],
+			'address' 					=> $params['address']
+			);
+			$wpdb->update($customer_table, $customer_update,array('id' => $billing_customer));
+
+		}
+		else {
+			if(  $params['mobile']!='' ){ 
+				$customer_update = array(
+				'name' 						=> $params['name'], 
+				'mobile' 					=> $params['mobile'],
+				'address' 					=> $params['address']
+				);
+					
+				$wpdb->insert($customer_table, $customer_update);
+				$billing_customer = $wpdb->insert_id;
+			}		
+		}
 	}
 	
 	$customer_type 	= $params['customer_type'];

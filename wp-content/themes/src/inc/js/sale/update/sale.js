@@ -1,44 +1,44 @@
 jQuery(document).ready(function(){
 
-  jQuery('#billing_customer').select2({
-      allowClear: true,
-      width: '100%',
-      multiple: false,
-      minimumInputLength: 1,
-      ajax: {
-          type: 'POST',
-          url: frontendajax.ajaxurl,
-          delay: 250,
-          dataType: 'json',
-          data: function(params) {
-            return {
-              action: 'get_customer_name', // search term
-              page: 1,
-              search_key: params.term,
-            };
-          },
-          processResults: function(data) {
-            var results = [];
-            return {
-                results: jQuery.map(data.result, function(obj) {
-                    return { id: obj.id, customer_name: obj.name, mobile: obj.mobile, type: obj.type.toLowerCase() };
-                })
-            };
-          },
-          cache: true
-      },
-      initSelection: function (element, callback) {
-          callback({ id: jQuery(element).attr('data-dvalue'), customer_name: jQuery(element).attr('data-dtext') });
-      },
-      templateResult: formatCustomerNameResult,
-      templateSelection: formatCustomerName
-  }).on("select2:select", function (e) {
-    jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
-    checkPaymentDue(e.params.data.id, jQuery('#billing_no').val());
-    generateDeliveryAddress(e.params.data.id);
+  // jQuery('#billing_customer').select2({
+  //     allowClear: true,
+  //     width: '100%',
+  //     multiple: false,
+  //     minimumInputLength: 1,
+  //     ajax: {
+  //         type: 'POST',
+  //         url: frontendajax.ajaxurl,
+  //         delay: 250,
+  //         dataType: 'json',
+  //         data: function(params) {
+  //           return {
+  //             action: 'get_customer_name', // search term
+  //             page: 1,
+  //             search_key: params.term,
+  //           };
+  //         },
+  //         processResults: function(data) {
+  //           var results = [];
+  //           return {
+  //               results: jQuery.map(data.result, function(obj) {
+  //                   return { id: obj.id, customer_name: obj.name, mobile: obj.mobile, type: obj.type.toLowerCase() };
+  //               })
+  //           };
+  //         },
+  //         cache: true
+  //     },
+  //     initSelection: function (element, callback) {
+  //         callback({ id: jQuery(element).attr('data-dvalue'), customer_name: jQuery(element).attr('data-dtext') });
+  //     },
+  //     templateResult: formatCustomerNameResult,
+  //     templateSelection: formatCustomerName
+  // }).on("select2:select", function (e) {
+  //   jQuery("input[name=customer_type][value='"+e.params.data.type+"']").attr('checked', 'checked');
+  //   checkPaymentDue(e.params.data.id, jQuery('#billing_no').val());
+  //   generateDeliveryAddress(e.params.data.id);
 
 
-  });
+  // });
 
 
   jQuery( "#billing_customer, #billing_mobile" ).autocomplete ({
@@ -93,7 +93,6 @@ jQuery(document).ready(function(){
         checkPaymentDue(ui.item.id, jQuery('#billing_no').val());
         generateDeliveryAddress(ui.item.id);
         jQuery('.user_type').val("old");
-        jQuery('.customer_id_new').val(ui.item.id);
         jQuery('.customer_id').val(ui.item.id);
         jQuery('#billing_address').val(ui.item.address);
     }
