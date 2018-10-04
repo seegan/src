@@ -122,7 +122,7 @@
                     </span>
                 </div>
             </li>
-            <li>
+            <!-- <li>
                 <legend class="choiceFld">Home Delivery</legend>
                 <div class="fieldwrap input-uniform">
                     <span>
@@ -133,7 +133,7 @@
                         <input type="radio" name="home_delivery" value="yes" <?php echo $delivery_yes_checked; ?> ><label class="choice">Yes</label>
                     </span>
                 </div>
-            </li>
+            </li> -->
             <li>
                 <legend class="choiceFld">Bill By Name</legend>
                 <div class="fieldwrap input-uniform">
