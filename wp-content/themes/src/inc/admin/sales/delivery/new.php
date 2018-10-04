@@ -92,11 +92,11 @@
                     <tr class="<?php echo $delivery_class; ?>">
                         <td><?php echo $s_value->lot_id; ?></td>
                         <td><?php echo $s_value->lot_number; ?></td>
-                        <td><?php echo $s_value->sale_weight.'Kg ('.bagKgSplitter($s_value->sale_weight, $bag_weight).')'; ?></td>
-                        <td><?php echo $s_value->tot_delivered.'Kg ('.bagKgSplitter($s_value->tot_delivered, $bag_weight).')'; ?></td>
-                        <td><?php echo $s_value->tot_returned.'Kg ('.bagKgSplitter($s_value->tot_returned, $bag_weight).')'; ?></td>
+                        <td><?php echo bagKgSplitter($s_value->sale_weight, $bag_weight, $s_value->unit_type); ?></td>
+                        <td><?php echo bagKgSplitter($s_value->tot_delivered, $bag_weight, $s_value->unit_type); ?></td>
+                        <td><?php echo bagKgSplitter($s_value->tot_returned, $bag_weight, $s_value->unit_type); ?></td>
                         <td>
-                            <?php echo $s_value->delivery_balance.'Kg ('.bagKgSplitter($s_value->delivery_balance, $bag_weight).')'; ?>
+                            <?php echo bagKgSplitter($s_value->delivery_balance, $bag_weight, $s_value->unit_type); ?>
                                 
                             </td>
                         <td>

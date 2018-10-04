@@ -10,7 +10,7 @@
 		global $wpdb;
 		$sale_detail 			= $wpdb->prefix. 'sale_detail';
 
-		$query = "SELECT sd.*, l.lot_number, l.brand_name, l.product_name,
+		$query = "SELECT sd.*, l.lot_number, l.brand_name, l.product_name, l.unit_type,
 
 (CASE WHEN return_table.return_weight is NULL
  THEN 0

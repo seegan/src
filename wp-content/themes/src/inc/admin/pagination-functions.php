@@ -1384,7 +1384,7 @@ function stock_detail_list_pagination( $args ) {
 
     FROM 
     (
-        SELECT l.id, l.lot_number, l.brand_name, l.product_name, l.weight as bag_weight, l.stock_alert,  
+        SELECT l.id, l.lot_number, l.brand_name, l.product_name, l.weight as bag_weight, l.stock_alert, l.unit_type, 
         (CASE 
             WHEN l.parent_id = 0 
             THEN l.id
@@ -1519,6 +1519,7 @@ function sale_detail_list_pagination($args) {
 $query = "SELECT f.*, 
 l.weight as parent_bag_weight, 
 l.lot_number as parent_lot_number,
+l.unit_type,
 sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_amt, sum(f.cgst_value) as tot_cgst, sum(f.sgst_value) as tot_sgst, sum(f.igst_value) as tot_igst FROM wp_lots as l JOIN 
 
 (

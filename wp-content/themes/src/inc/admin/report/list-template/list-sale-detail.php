@@ -135,7 +135,7 @@
 				<td><?php echo $s_value->parent_lot_number; ?></td>
 				<td><?php echo $s_value->product_name; ?></td>
                 <td><?php echo $bill_from; ?></td>
-                <td><?php echo $s_value->tot_weight.'Kg ('.bagKgSplitter($s_value->tot_weight, $s_value->parent_bag_weight).')'; ?></td>
+                <td><?php echo bagKgSplitter($s_value->tot_weight, $s_value->parent_bag_weight, $s_value->unit_type); ?></td>
                 <td><?php echo $s_value->tot_taxless; ?></td>
                 <td><?php echo $s_value->igst; ?></td>
                 <td><?php echo $s_value->cgst; ?></td>

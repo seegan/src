@@ -142,17 +142,17 @@ input[type="checkbox"][readonly] {
                             <?php echo $s_value->lot_number; ?>
                         </td>
                         <td>
-                            <?php echo $s_value->sale_weight.'Kg ('.bagKgSplitter($s_value->sale_weight, $bag_weight).')'; ?>
+                            <?php echo bagKgSplitter($s_value->sale_weight, $bag_weight, $s_value->unit_type); ?>
                         </td>
                         <td>
-                            <?php echo $s_value->tot_delivered.'Kg ('.bagKgSplitter($s_value->tot_delivered, $bag_weight).')'; ?>
+                            <?php echo bagKgSplitter($s_value->tot_delivered, $bag_weight, $s_value->unit_type); ?>
                         </td>
                         <td>
-                            <?php echo $s_value->tot_returned.'Kg ('.bagKgSplitter($s_value->tot_returned, $bag_weight).')'; ?>
+                            <?php echo bagKgSplitter($s_value->tot_returned, $bag_weight, $s_value->unit_type); ?>
                         </td>
                         <td>
                             <input type="hidden" class="return_avail" value="<?php echo $s_value->return_avail; ?>">
-                            <?php echo $s_value->return_avail.'Kg ('.bagKgSplitter($s_value->return_avail, $bag_weight).')'; ?>
+                            <?php echo bagKgSplitter($s_value->return_avail, $bag_weight, $s_value->unit_type); ?>
                         </td>
                         <td>
                             <div>

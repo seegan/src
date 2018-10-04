@@ -185,9 +185,9 @@
 				<td><?php echo $s_value->lot_number; ?></td>
 				<td><?php echo $s_value->brand_name; ?></td>
 				<td><?php echo $s_value->product_name; ?></td>
-				<td><?php echo $s_value->sale_tot.'Kg ('.bagKgSplitter($s_value->sale_tot, $s_value->bag_weight).')'; ?></td>
-                <td><?php echo $s_value->bal_stock.'Kg ('.bagKgSplitter($s_value->bal_stock, $s_value->bag_weight).')'; ?></td>
-				<td><?php echo $s_value->stock_alert.'Kg ('.bagKgSplitter($s_value->stock_alert, $s_value->bag_weight).')'; ?></td>
+				<td><?php echo bagKgSplitter($s_value->sale_tot, $s_value->bag_weight, $s_value->unit_type); ?></td>
+                <td><?php echo bagKgSplitter($s_value->bal_stock, $s_value->bag_weight, $s_value->unit_type); ?></td>
+				<td><?php echo bagKgSplitter($s_value->stock_alert, $s_value->bag_weight, $s_value->unit_type); ?></td>
 			</tr>
 		<?php
 				}
