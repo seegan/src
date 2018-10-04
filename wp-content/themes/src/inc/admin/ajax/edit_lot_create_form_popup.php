@@ -75,20 +75,26 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 		</div>
 
 		<div class="form_detail">
-			<label style="width: 115px;">Weight
+			<label style="width: 115px;">Bag Weight/Count
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<select name="weight" class="bag_weight_total">
-				<option <?php echo ($lot_details['lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">500 Gram</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50kg</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75kg</option>
+			<select name="weight" class="bag_weight_total" style="width:20%;">
+				<option <?php echo ($lot_details['lot_data']->weight == 0.25) ? 'selected' : ''; ?> value="0.25">1/4</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">1/2</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 0.75) ? 'selected' : ''; ?> value="0.75">3/4</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75</option>
+			</select>
+			<select style="width:30%;" name="bag_weight_type">
+				<option <?php echo ($lot_details['lot_data']->unit_type == 'kg') ? 'selected' : ''; ?> value="kg">Kg</option>
+				<option <?php echo ($lot_details['lot_data']->unit_type == 'pc') ? 'selected' : ''; ?> value="pc">Piece</option>
 			</select>
 		</div>
 		<div class="form_detail">
@@ -447,17 +453,23 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 					<label style="width: 115px;">Weight
 						<abbr class="require" title="Required Field">*</abbr>
 					</label>
-					<select name="dummy_weight" class="dummy_bag_weight_total">
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">500 Gram</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50kg</option>
-						<option <?php echo ($lot_details['dummy_lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75kg</option>
+					<select name="dummy_weight" class="dummy_bag_weight_total" style="width:20%;">
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 0.25) ? 'selected' : ''; ?> value="0.25">1/4</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">1/2</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 0.75) ? 'selected' : ''; ?> value="0.75">3/4</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 20) ? 'selected' : ''; ?> value="20">20</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75</option>
+					</select>
+					<select style="width:30%;" name="dummy_bag_weight_type">
+						<option <?php echo ($lot_details['dummy_lot_data']->unit_type == 'kg') ? 'selected' : ''; ?> value="kg">Kg</option>
+						<option <?php echo ($lot_details['dummy_lot_data']->unit_type == 'pc') ? 'selected' : ''; ?> value="pc">Piece</option>
 					</select>
 				</div>
 				<div class="form_detail">

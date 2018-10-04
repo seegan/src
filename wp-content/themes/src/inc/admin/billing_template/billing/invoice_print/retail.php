@@ -173,7 +173,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>SNO</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Products</th>
-        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Bags, Kg</th>
+        <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>Units</th>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>TOTAL</th>
       </tr>
       <tr>
@@ -183,8 +183,9 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
             if(isset($bill_data['bill_detail_data']) AND count($bill_data['bill_detail_data'])>0 ) {
               $i=0;
               foreach ($bill_data['bill_detail_data'] as $value) {
-                $slab_type = ($value->slab == 1) ? 'Kg' : 'Bag';
-                $bag_display = ($value->slab == 1) ? '' : '('.$value->bag_weight.'Kg)';
+                $unit_type_arr = getUnitType($value->unit_type);
+
+                $slab_type = ($value->slab == 1) ? $unit_type_arr['single'] : $unit_type_arr['batch'];
                 $sale_weight = ($value->slab == 1) ? $value->sale_weight : $value->bag_count;
                 $i++;
         ?>    
@@ -193,9 +194,9 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         <td valign='top' class="dotted_border_bottom" align='left'>
         <?php
           if($value->brand_display === '1') {
-            echo $value->brand_name.$bag_display;
+            echo $value->brand_name;
           } else {
-            echo $value->lot_number.$bag_display; 
+            echo $value->lot_number; 
           }
           echo '<span style="float:right;">'.$value->price_orig_hidden.'</span>';
           echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -203,7 +204,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         ?>
         </td>
         <td valign='top' class="dotted_border_bottom">
-          <span style="font-size: 12px;"><?php echo bagKgSplitter($value->sale_weight, $value->bag_weight); ?></span>
+          <span style="font-size: 12px;"><?php echo bagKgSplitter($value->sale_weight, $value->bag_weight, $value->unit_type); ?></span>
         </td>
         <td valign='top' class="dotted_border_bottom" align='right'><br><?php echo $value->sale_value; ?></td></tr>
       </tr>
@@ -226,10 +227,9 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
          <td  class=" dotted_border_bottom" valign='top' align='right'><span class="amount"><?php echo '<b>'.$bill_data['bill_data']->round_off_value.'</b>'; ?></span></td>
       </tr>
       <tr> 
-         <td class="dotted_border_top dotted_border_bottom" colspan="6" valign='top' align='center'><b>TOTAL AMOUNT</b></td>
-         <td  class="dotted_border_top dotted_border_bottom" valign='top' align='right'><span class="amount"><?php echo '<b>'.$bill_data['bill_data']->sale_total.'</b>'; ?></span></td>
+         <td class=" dotted_border_bottom" colspan="6" valign='top' align='center'><b>TOTAL AMOUNT</b></td>
+         <td  class=" dotted_border_bottom" valign='top' align='right'><span class="amount"><?php echo '<b>'.$bill_data['bill_data']->sale_total.'</b>'; ?></span></td>
       </tr>
-     
      
     </table>
 

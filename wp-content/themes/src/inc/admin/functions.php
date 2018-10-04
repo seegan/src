@@ -1,7 +1,8 @@
 <?php
+global $src_unit_type;
+$src_unit_type = array('kg' => array('single' => 'kg', 'batch' => 'bag' ), 'pc' => array('single' => 'pc', 'batch' => false));
 
-function hide_update_notice()
-{
+function hide_update_notice() {
     remove_action( 'admin_notices', 'update_nag', 3 );
 }
 add_action( 'admin_head', 'hide_update_notice', 1 );
@@ -597,6 +598,8 @@ function lot_create_submit_popup() {
 	$params = array();
 	parse_str($_POST['data'], $params);
 
+		var_dump($params); die();
+
 	$stock_alert = $params['stock_alert'];
 	$basic_price = $params['basic_price'];
 	$dummy_basic_price = $params['dummy_basic_price'];
@@ -614,8 +617,10 @@ function lot_create_submit_popup() {
 	
 	$product_name = ($params['product_name'] == 'Others') ? $params['product_name1'] : $params['product_name'];
 	$weight = $params['weight'];
+	$bag_weight_type = $params['bag_weight_type'];
 	$dummy_weight = $params['dummy_weight'];
-	
+	$dummy_bag_weight_type = $params['dummy_bag_weight_type'];	
+
 	$slab_system_original = $params['slab_system'];
 	$slab_system_dummy = $params['dummy_slab_system'];
 
@@ -637,6 +642,7 @@ function lot_create_submit_popup() {
 				'brand_name'   		=> $brand_name,
 				'product_name' 		=> $product_name,
 				'weight'       		=> $weight,
+				'unit_type'			=> $bag_weight_type,
 				'lot_type'     		=> 'original',
 				'slab_system'  		=> $slab_system_original,
 				'parent_id'    		=> 0,
@@ -729,6 +735,7 @@ function lot_create_submit_popup() {
 					'brand_name' 	=> $dummy_brand_name,
 					'product_name' 	=> $product_name,
 					'weight' 		=> $dummy_weight,
+					'unit_type'		=> $dummy_bag_weight_type,
 					'lot_type' 		=> 'dummy',
 					'slab_system' 	=> $slab_system_dummy,
 					'parent_id' 	=> $lot_id,
@@ -740,7 +747,6 @@ function lot_create_submit_popup() {
 				);
 				$wpdb->insert($lots_table, $lot_dummy);
 				$dummy_lot_id = $wpdb->insert_id;
-
 
 
 				//For Slab system yes (Retail Dummy lot)
@@ -853,8 +859,11 @@ function lot_update_submit_popup() {
 	$brand_name = $params['brand_name'];
 	$dummy_brand_name = $params['dummy_brand_name'];
 	$product_name = ($params['product_name'] == 'Others') ? $params['product_name1'] : $params['product_name'];
+
 	$weight = $params['weight'];
+	$bag_weight_type = $params['bag_weight_type'];
 	$dummy_weight = $params['dummy_weight'];
+	$dummy_bag_weight_type = $params['dummy_bag_weight_type'];
 
 	$slab_system_original = $params['slab_system'];
 	$slab_system_dummy = $params['dummy_slab_system'];
@@ -880,6 +889,7 @@ function lot_update_submit_popup() {
 				// 'search_name'  => $search_name,
 				'product_name' => $product_name,
 				'weight' => $weight,
+				'unit_type' => $bag_weight_type,
 				'lot_type' => 'original',
 				'slab_system' => $slab_system_original,
 				'parent_id' => 0,
@@ -955,7 +965,7 @@ function lot_update_submit_popup() {
 				);
 			$wpdb->insert($lots_detail_table, $lot_detail);
 		}
- 
+
 		if($dummy_lot_number != '' ) {
 
 			$lot_dummy = array(
@@ -964,6 +974,7 @@ function lot_update_submit_popup() {
 					'brand_name' 		=> $dummy_brand_name,
 					'product_name' 		=> $product_name,
 					'weight' 			=> $dummy_weight,
+					'unit_type' 		=> $dummy_bag_weight_type,
 					'lot_type' 			=> 'dummy',
 					'slab_system' 		=> $slab_system_dummy,
 					'parent_id' 		=> $lot_id,
@@ -1437,7 +1448,7 @@ function update_bill(){
 		if(isset($s_value['brand_checkbox_input'])) {
 			$brand_display = 1;
 		}
-		$saleAs 		= isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
+		$saleAs = isset($s_value['sale_as']) ? $s_value['sale_as'] : '' ;
 		if($s_value['lot_number'])
 		{
 			//Combain lot and dummy lot and skip duplicate
@@ -3257,7 +3268,23 @@ add_action( 'wp_ajax_nopriv_PhoneNumberDuplication', 'PhoneNumberDuplication');
 
 
 
-function bagKgSplitter($weight = 0, $bag_weight = 0) {
+function bagKgSplitter($weight = 0, $bag_weight = 0, $unit_type = false) {
+
+	global $src_unit_type;
+
+	$single = 'Kg';
+	$batch = 'Bag';
+
+	if($unit_type) {
+		$type_array = $src_unit_type[$unit_type];
+
+		$single = ucfirst($type_array['single']);
+		$batch = ucfirst($type_array['single']);
+		if( $type_array['batch']) {
+			$batch = ucfirst($type_array['batch']);
+		}
+	} 
+
   	$str = (string) ($weight/$bag_weight);
   	$splitted = explode(".",$str);
   	$whole = (float) (isset($splitted[0]) ? $splitted[0] : 0 );
@@ -3265,8 +3292,28 @@ function bagKgSplitter($weight = 0, $bag_weight = 0) {
   	$num = '0.'.$num;
   	$string = '';
   	$whole = ($whole) ? $whole : 0;
-	$string .= ($whole > 1) ? $whole.' Bags' : $whole.' Bag';
-  	$string .= ($num && $num > 0) ? ', '.(round(($num*$bag_weight), 2)).' Kg' : '';
+	$string .= ($whole > 1) ? $whole.' '.$batch.'s' : $whole.' '.$batch;
+  	$string .= ($num && $num > 0) ? ', '.(round(($num*$bag_weight), 2)).' '.$single : '';
 
   	return $string;
+}
+
+
+
+function getUnitType($unit_type = false) {
+
+	global $src_unit_type;
+	$data['single'] = 'kg';
+	$data['batch'] = 'bag';
+
+	if($unit_type) {
+		$type_array = $src_unit_type[$unit_type];
+		$data['single'] = $type_array['single'];
+		$data['batch'] = $type_array['single'];
+		if( $type_array['batch']) {
+			$data['batch'] = $type_array['batch'];
+		}
+	}
+
+	return $data;
 }
