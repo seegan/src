@@ -142,7 +142,8 @@ input[type="checkbox"][readonly] {
                             <?php echo $s_value->lot_number; ?>
                         </td>
                         <td>
-                            <?php echo bagKgSplitter($s_value->sale_weight, $bag_weight, $s_value->unit_type); ?>
+                            <?php 
+                            echo bagKgSplitter($s_value->sale_weight, $bag_weight, $s_value->unit_type); ?>
                         </td>
                         <td>
                             <?php echo bagKgSplitter($s_value->tot_delivered, $bag_weight, $s_value->unit_type); ?>

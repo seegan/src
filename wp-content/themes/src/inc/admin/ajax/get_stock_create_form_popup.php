@@ -44,7 +44,7 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
       <label style="width: 115px;">Bag
         <abbr class="require" title="Required Field">*</abbr>
       </label>
-      <input type="text" id="count" name="stock_count" onkeypress="return isNumberKeyWithDot(event)" class="count" required autocomplete="off" value="" style="color: #000;">
+      <input type="text" id="count" name="stock_count" onkeypress="return isNumberKey(event)" class="count" required autocomplete="off" value="" style="color: #000;">
     </div>
 
 		<div class="form_detail">

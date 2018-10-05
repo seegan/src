@@ -83,7 +83,7 @@
 					</span>
 					<span class="add_stock_display" style="display: none">
 						<input type="hidden" name="lot_id" class="lot_id" value="<?php echo $lot_value->id; ?>">
-					    <input type="text" name="add_stock_input" onkeypress="return isNumberKeyWithDot(event)" class="add_stock_input" id="add_stock_input" style="width: 10%;">
+					    <input type="text" name="add_stock_input" onkeypress="return isNumberKey(event)" class="add_stock_input" id="add_stock_input" style="width: 10%;">
 					    <input type="button" name="Add" value="Add" class="add_stock_button" id="add_stock_button">
 					</span>
 				</td>

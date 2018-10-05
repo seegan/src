@@ -35,7 +35,7 @@ $stock_details = get_stock_data_by_id($stock_id);
       <label style="width: 115px;">Bag
         <abbr class="require" title="Required Field">*</abbr>
       </label>
-      <input type="text" id="count" name="stock_count" required onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $stock_details['bags_count']; ?>" style="color: #000;">
+      <input type="text" id="count" name="stock_count" required onkeypress="return isNumberKey(event)" autocomplete="off" value="<?php echo $stock_details['bags_count']; ?>" style="color: #000;">
 
       <input type="hidden" name="stock_id" value="<?php echo $stock_details['id']; ?>" id="stock_id">
     </div>

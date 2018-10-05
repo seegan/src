@@ -203,10 +203,10 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 					 ?>
 			   
 				<tr class="text_bold text_center">
-				  <td rowspan="2">Brand name/Lot No</td>
-				  <td rowspan="2">HSN CODE</td>
-				  <td rowspan="2" style="width: 200px;">PRODUCTS</td>
-				  <td rowspan="2">QTY</td>
+				  <td rowspan="2">S.No</td>
+				  <td rowspan="2">HSN Code</td>
+				  <td rowspan="2">Brand/<br>Type</td>
+				  <td rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Quantity&nbsp;&nbsp;&nbsp;&nbsp;</td>
 				  <td rowspan="2">MRP Per (bag/kg)</td>
 				  <td rowspan="2">Discounted Price</td>
 				  <td rowspan="2" class="yes_gst">AMOUNT</td>
@@ -238,20 +238,23 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 				<tr class=" text_center">
 					<td>
 					    <?php
-					       	if($value->brand_display === '1') {
-					          echo $value->brand_name;
-					        } else {
-					          echo $value->lot_number; 
-					        }
+					    echo $i;
+					       	// if($value->brand_display === '1') {
+					        //   echo $value->brand_name;
+					        // } else {
+					        //   echo $value->lot_number; 
+					        // }
 					    ?>
 					</td>
 					<td><?php echo $value->hsn_code; ?></td>
 					<td>
 						<?php 
-							echo $value->product_name;
+							echo $value->brand_name.'<br/>('.$value->product_name.')';
 					 	?>
 					</td>
-					<td><?php echo (float) $value->sale_weight; ?></td>                
+					<td><?php 
+					echo bagKgSplitter($value->sale_weight, $value->bag_weight,$value->unit_type);
+					echo '<br><b>Total ='. (float) $value->sale_weight.'Kg </b>'; ?></td>                
 					<td><?php echo $value->basic_price; ?></td>
 					<td><?php echo $value->unit_price; ?></td>
 					<td><?php echo $value->taxless_amt; ?></td>
