@@ -33,7 +33,7 @@
 			<label>Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="emp_mobile" name="emp_mobile" autocomplete="off" readonly>
+			<input type="text" id="emp_mobile" onkeypress="return isNumberKey(event)" name="emp_mobile" autocomplete="off" readonly>
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Salary Paid Date
@@ -51,7 +51,7 @@
 		<div class="form_detail sal_pay">
 			<label>Salary Pay
 			</label>
-			<input type="text" id="salary_pay" name="salary_pay" autocomplete="off">
+			<input type="text" id="salary_pay" onkeypress="return isNumberKeyWithDot(event)" name="salary_pay" autocomplete="off">
 		</div>
     <div class="form_detail sal_pay">
       <label>You have to Pay :
@@ -65,7 +65,7 @@
 		<div class="form_detail sal_adv">
 			<label style="width: 115px;">Sal. in Advance
 			</label>
-			<input type="text" id="salary_advance" name="salary_advance" autocomplete="off">
+			<input type="text" id="salary_advance" onkeypress="return isNumberKeyWithDot(event)" name="salary_advance" autocomplete="off">
 		</div>
 		<div class="button_sub">
 			<button type="submit" name="new_customer_list" id="btn_submit" class="submit-button">Submit</button>
@@ -73,7 +73,7 @@
 
     <br>
     <div class="aditional_fld">
-      Working Days : <input type="text" id="total_working" style="width:50px;" value="0" name="total_working"> Leave Taken : <input type="text" id="leave_taken" style="width:50px;" value="0" name="leave_taken"> Advance in hand : <input type="text" id="adv_hand" style="width:50px;" readonly value="0" name="adv_hand" tabindex="-1"> Sal. From Advance <input type="checkbox" id="sal_from_adv" name="sal_from_adv">
+      Working Days : <input type="text" id="total_working" style="width:50px;" value="0" name="total_working"> Leave Taken : <input type="text" onkeypress="return isNumberKeyWithDot(event)" id="leave_taken" style="width:50px;" value="0" name="leave_taken"> Advance in hand : <input type="text" id="adv_hand" style="width:50px;" readonly value="0" name="adv_hand" tabindex="-1"> Sal. From Advance <input type="checkbox" id="sal_from_adv" name="sal_from_adv">
       <input type="hidden" value="0" id="sal_per_day"><input type="hidden" id="adv_hand_orig" value="0">
     </div>
 	</form>

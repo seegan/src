@@ -92,7 +92,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					<div class="fieldwrap">
 						<span class="left">
 							<span class="total_due_text"></span>
-							<input type="hidden" id="total_due" name="total_due"  class="form-control col-md-7 col-xs-12 total_due" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->due_amount : 0; ?>"/>
+							<input type="hidden" id="total_due" name="total_due"   class="form-control col-md-7 col-xs-12 total_due" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->due_amount : 0; ?>"/>
 						</span>
 					</div>
 				</li>

@@ -29,13 +29,13 @@ $stock_details = get_stock_data_by_id($stock_id);
 		<div class="form_detail">
 			<label style="width: 115px;">Stock Weight
 			</label>
-      <input type="text" id="weight" autocomplete="off" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['total_weight']; ?>">
+      <input type="text" id="weight" autocomplete="off" tabIndex="-1" onkeypress="return isNumberKeyWithDot(event)" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly value="<?php echo $stock_details['total_weight']; ?>">
 		</div>
     <div class="form_detail">
       <label style="width: 115px;">Bag
         <abbr class="require" title="Required Field">*</abbr>
       </label>
-      <input type="text" id="count" name="stock_count" required autocomplete="off" value="<?php echo $stock_details['bags_count']; ?>" style="color: #000;">
+      <input type="text" id="count" name="stock_count" required onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $stock_details['bags_count']; ?>" style="color: #000;">
 
       <input type="hidden" name="stock_id" value="<?php echo $stock_details['id']; ?>" id="stock_id">
     </div>

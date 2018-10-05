@@ -18,7 +18,7 @@
 			<label style="width: 115px;">Employee Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="employee_mobile" name="employee_mobile" pattern="[0-9]*" autocomplete="off">
+			<input type="text" id="employee_mobile" onkeypress="return isNumberKey(event)" name="employee_mobile" pattern="[0-9]*" autocomplete="off">
 		</div>
 		<div class="form_detail" style="width: 95%;">
 			<label>Employee Address</label>
@@ -35,7 +35,7 @@
 			<label>Employee Salary
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="employee_salary" name="employee_salary" autocomplete="off">
+			<input type="text" id="employee_salary" name="employee_salary" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 		</div>		
 		<div class="button_sub">
 			<button type="submit" name="new_employee_list" id="btn_submit" class="submit-button">Submit</button>

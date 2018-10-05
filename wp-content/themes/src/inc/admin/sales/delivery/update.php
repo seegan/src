@@ -29,7 +29,7 @@
                         }
                     ?>
                 </select>
-                <input type="text" name="inv_no" class="inv_no" autocomplete="off" value="<?php echo $invoice_id; ?>">
+                <input type="text" name="inv_no" class="inv_no" autocomplete="off" onkeypress="return isNumberKey(event)" value="<?php echo $invoice_id; ?>">
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -75,7 +75,7 @@
                                     ?>
                                 </div>
                                 <div style="float:left;width:150px;">
-                                    <input type="text" value="<?php echo $s_value->delivery_weight; ?>" name="delivery_data[<?php echo $row_count; ?>][delivery_weight]">
+                                    <input type="text" value="<?php echo $s_value->delivery_weight; ?>" onkeypress="return isNumberKeyWithDot(event)" name="delivery_data[<?php echo $row_count; ?>][delivery_weight]">
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="delivery_data[<?php echo $row_count; ?>][delivery_lot]">
                                     <input type="hidden" name="delivery_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->sale_detail_id; ?>">
                                     <input type="hidden" name="delivery_data[<?php echo $row_count; ?>][delivery_detail_id]" value="<?php echo $s_value->id ?>">

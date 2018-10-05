@@ -102,7 +102,7 @@
                                     ?>
                                 </div>
                                 <div style="float:left;width:150px;">
-                                    <input type="text" value="<?php echo $s_value->return_weight; ?>"  class="return_weight" name="return_data[<?php echo $row_count; ?>][return_weight]">
+                                    <input type="text" value="<?php echo $s_value->return_weight; ?>" onkeypress="return isNumberKeyWithDot(event)"  class="return_weight" name="return_data[<?php echo $row_count; ?>][return_weight]">
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->sale_detail_id; ?>">
                                      <input type="hidden" name="return_data[<?php echo $row_count; ?>][gst_percentage]" value="<?php echo $gst_percentage; ?>" class="gst_percentage">

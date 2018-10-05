@@ -16,7 +16,7 @@
 			<label style="width: 115px;">Customer Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="customer_mobile" name="customer_mobile" class="customer_mobile" pattern="[0-9]*" autocomplete="off">
+			<input type="text" id="customer_mobile" name="customer_mobile" onkeypress="return isNumberKey(event)" class="customer_mobile" pattern="[0-9]*" autocomplete="off">
 		</div>
 		<div class="form_detail" style="width: 95%;">
 			<label>Customer Address</label>
@@ -25,7 +25,7 @@
 		<div class="form_detail">
 			<label style="width: 115px;">Alternative Mobile Number
 			</label>
-			<input type="text" id="customer_mobile1" name="customer_mobile1" pattern="[0-9]*" autocomplete="off">
+			<input type="text" id="customer_mobile1" name="customer_mobile1" onkeypress="return isNumberKey(event)" pattern="[0-9]*" autocomplete="off">
 		</div>
 		<div class="form_detail">
 			<label>Type</label>

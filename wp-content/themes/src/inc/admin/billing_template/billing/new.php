@@ -102,7 +102,7 @@
                         <legend class="choiceFld">Phone Number</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
-                                <input type="text" name="mobile" id="billing_mobile" class="billing_mobile">
+                                <input type="text" name="mobile" id="billing_mobile" class="billing_mobile" onkeypress="return isNumberKey(event)">
                             </span>                                 
                         </div>
                     </span>
@@ -257,13 +257,13 @@
                                          <input type="hidden" name="hsn_code" class="hsn_code">
                                         <input type="hidden" name="bagWeightInKg" class="bagWeightInKg" autocomplete="off" placeholder=""> 
                                       <div class="slab_system_no" style="width: 100px;text-align:left;">
-                                        <input type="text" name="weight" class="weight" autocomplete="off" placeholder="" readonly style="display: none;">
-                                        <input type="text" name="unit_count" class="unit_count input_tab" autocomplete="off" placeholder="Count" style="width: 55px;">
-                                        <input type="text" name="slab_no_total" class="total" autocomplete="off" placeholder="Weight KG" readonly style="display: none;"> 
+                                        <input type="text" name="weight" class="weight" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" placeholder="" readonly style="display: none;">
+                                        <input type="text" name="unit_count" class="unit_count input_tab" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" placeholder="Count" style="width: 55px;">
+                                        <input type="text" name="slab_no_total" class="total" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" placeholder="Weight KG" readonly style="display: none;"> 
                                         <span class="bag_display">Bag</span>
                                       </div>
                                       <div class="slab_system_yes" style="display:none;width: 100px;text-align:left;">
-                                        <input type="text" name="slab_yes_total" class="total input_tab" autocomplete="off" placeholder="Weight" style="width: 55px;">
+                                        <input type="text" name="slab_yes_total" class="total input_tab" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" placeholder="Weight" style="width: 55px;">
                                         <span class="kg_display">Kg</span>
                                         <span class="bag_display">Bag</span>
                                       </div>
@@ -309,7 +309,7 @@
                                 </div>
                                 <div class="div-table-col sale-unit-price">
                                   <div class="sale_unit_price">
-                                    <input type="text" name="unit_price_original" class="unit_price" value="0">
+                                    <input type="text" name="unit_price_original" class="unit_price" onkeypress="return isNumberKeyWithDot(event)" value="0">
                                     <input type="hidden" name="unit_price_for_calc" class="unit_price_for_calc" value="0">
                                   </div>
                                 </div>

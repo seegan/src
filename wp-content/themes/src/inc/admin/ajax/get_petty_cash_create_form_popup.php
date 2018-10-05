@@ -27,7 +27,7 @@
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<div style="float:left;width: 138px;">
-		        <input type="text" id="cash_amount" name="cash_amount" autocomplete="off" style="width:100%;">
+		        <input type="text" id="cash_amount" onkeypress="return isNumberKeyWithDot(event)" name="cash_amount" autocomplete="off" style="width:100%;">
 		    </div>
 
 			

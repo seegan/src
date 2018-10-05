@@ -38,13 +38,13 @@ $dummy_slab_system = $lot_details['dummy_lot_data']->slab_system;
 		<div class="form_detail">
 			<label style="width: 115px;">Weight
 			</label>
-      <input type="text" id="weight" autocomplete="off" value="" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
+      <input type="text" id="weight" autocomplete="off" onkeypress="return isNumberKeyWithDot(event)" value="" tabIndex="-1" disabled style="color: #000;background: rgba(0, 0, 0, 0.17);" readonly>
 		</div>
     <div class="form_detail">
       <label style="width: 115px;">Bag
         <abbr class="require" title="Required Field">*</abbr>
       </label>
-      <input type="text" id="count" name="stock_count" class="count" required autocomplete="off" value="" style="color: #000;">
+      <input type="text" id="count" name="stock_count" onkeypress="return isNumberKeyWithDot(event)" class="count" required autocomplete="off" value="" style="color: #000;">
     </div>
 
 		<div class="form_detail">

@@ -26,7 +26,7 @@
 			<label style="width: 115px;">Employee Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="employee_mobile" name="employee_mobile" pattern="[0-9]*" autocomplete="off" value="<?php echo ($employee) ? $employee->emp_mobile : ''; ?>">
+			<input type="text" id="employee_mobile" onkeypress="return isNumberKey(event)" name="employee_mobile" pattern="[0-9]*" autocomplete="off" value="<?php echo ($employee) ? $employee->emp_mobile : ''; ?>">
 		</div>
 
 		<div class="form_detail">
@@ -53,7 +53,7 @@
 			<label>Employee Salary
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="employee_salary" name="employee_salary" autocomplete="off" value="<?php echo ($employee) ? $employee->emp_salary : ''; ?>">
+			<input type="text" id="employee_salary" name="employee_salary" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo ($employee) ? $employee->emp_salary : ''; ?>">
 		</div>		
 
 		<div class="button_sub">

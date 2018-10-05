@@ -48,7 +48,7 @@ input[type="checkbox"][readonly] {
                         }
                     ?>
                 </select>
-                <input type="text" name="inv_no" class="inv_no" autocomplete="off" value="<?php echo $invoice_id; ?>">
+                <input type="text" name="inv_no" class="inv_no" autocomplete="off" onkeypress="return isNumberKey(event)" value="<?php echo $invoice_id; ?>">
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -172,7 +172,7 @@ input[type="checkbox"][readonly] {
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][bill_type]" value="<?php echo $s_value->bill_type; ?>" class="bill_type">
 
 
-                                    <input type="text" value="0" class="user_enrty_weight" name="return_data[<?php echo $row_count; ?>][user_unit]" <?php echo $return_disabled; ?>>
+                                    <input type="text" value="0" onkeypress="return isNumberKeyWithDot(event)" class="user_enrty_weight" name="return_data[<?php echo $row_count; ?>][user_unit]" <?php echo $return_disabled; ?>>
                                     <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="return_data[<?php echo $row_count; ?>][bag_weight]">
                                     <span class="delivery_sale_as" style="font-weight:bold;">
                                         <?php echo ucfirst($bag_kg); ?>
@@ -183,7 +183,7 @@ input[type="checkbox"][readonly] {
 
                         </td>
                         <td>
-                            <input type="text" style="width:100px;" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?> readonly>
+                            <input type="text" style="width:100px;" onkeypress="return isNumberKeyWithDot(event)" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?> readonly>
                         </td>
                         <td>
                             <div class="taxless_amt_txt">0.00</div>

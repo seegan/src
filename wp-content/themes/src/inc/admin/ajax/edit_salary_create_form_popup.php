@@ -35,13 +35,13 @@
 			<label style="width: 115px;">Employee Id
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="emp_id" name="emp_id" autocomplete="off" readonly="" value="<?php echo isset($employee_detail['id']) ? 'EMP'.$employee_detail['id'] : ''; ?>">
+			<input type="text" id="emp_id"  name="emp_id" autocomplete="off" readonly="" value="<?php echo isset($employee_detail['id']) ? 'EMP'.$employee_detail['id'] : ''; ?>">
 		</div>
 		<div class="form_detail">
 			<label>Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="emp_mobile" name="emp_mobile" autocomplete="off" readonly value="<?php echo isset($employee_detail['emp_mobile']) ? $employee_detail['emp_mobile'] : ''; ?>">
+			<input type="text" id="emp_mobile" onkeypress="return isNumberKey(event)" name="emp_mobile" autocomplete="off" readonly value="<?php echo isset($employee_detail['emp_mobile']) ? $employee_detail['emp_mobile'] : ''; ?>">
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Salary Paid Date
@@ -59,7 +59,7 @@
 		<div class="form_detail">
 			<label>Salary Pay
 			</label>
-			<input type="text" id="salary_pay" name="salary_pay" autocomplete="off" value="<?php echo $sal_detail['working_salary'] ?>">
+			<input type="text" id="salary_pay" name="salary_pay" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $sal_detail['working_salary'] ?>">
 		</div>
     <div class="form_detail sal_pay">
       <label>You have to Pay :
@@ -74,7 +74,7 @@
     <div class="form_detail sal_adv">
       <label style="width: 115px;">Sal. in Advance
       </label>
-      <input type="text" id="salary_advance" name="salary_advance" autocomplete="off">
+      <input type="text" id="salary_advance" name="salary_advance" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
     </div>
 		<div class="button_sub">
 			<button type="submit" name="new_customer_list" id="btn_submit" class="submit-button">Submit</button>
@@ -82,7 +82,7 @@
 
     <br>
     <div class="aditional_fld">
-      Working Days : <input type="text" id="total_working" style="width:50px;" value="<?php echo $sal_detail['workingDaysFromLastPaid']; ?>" name="total_working"> Leave Taken : <input type="text" id="leave_taken" style="width:50px;" value="0" name="leave_taken"> Advance in hand : <input type="text" id="adv_hand" style="width:50px;" readonly value="<?php echo $sal_detail['adv_last_paid_amount']; ?>" name="adv_hand"> Sal. From Advance <input type="checkbox" id="sal_from_adv" name="sal_from_adv">
+      Working Days : <input type="text" id="total_working" onkeypress="return isNumberKeyWithDot(event)" style="width:50px;" value="<?php echo $sal_detail['workingDaysFromLastPaid']; ?>" name="total_working"> Leave Taken : <input type="text" id="leave_taken" style="width:50px;" value="0" name="leave_taken"> Advance in hand : <input type="text" id="adv_hand" onkeypress="return isNumberKeyWithDot(event)" style="width:50px;" readonly value="<?php echo $sal_detail['adv_last_paid_amount']; ?>" name="adv_hand"> Sal. From Advance <input type="checkbox" id="sal_from_adv" name="sal_from_adv">
       <input type="hidden" value="<?php echo $sal_detail['salary_per_day']; ?>" id="sal_per_day"><input type="hidden" id="adv_hand_orig" value="<?php echo $sal_detail['adv_last_paid_amount']; ?>">
     </div>
 
