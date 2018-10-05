@@ -29,7 +29,23 @@ function populate_select2(this_data = '', v) {
             var results = [];
             return {
                 results: jQuery.map(data.items, function(obj) {
-                    return { id: obj.id, lot_number:obj.lot_number, brand_name: obj.brand_name, product_name:obj.product_name, weight:obj.weight, slab_system: obj.slab_system, lot_type: obj.lot_type, parent_id: obj.parent_id, par_id:obj.par_id, stock_bal:obj.stock_bal, basic_price:obj.basic_price, stock_alert:obj.stock_alert, hsn_code:obj.hsn_code, gst_percentage:obj.gst_percentage, search_name:obj.search_name   };
+                    return { 
+                      id: obj.id, 
+                      lot_number:obj.lot_number, 
+                      brand_name: obj.brand_name, 
+                      product_name:obj.product_name, 
+                      weight:obj.weight, 
+                      slab_system: obj.slab_system, 
+                      lot_type: obj.lot_type, 
+                      parent_id: obj.parent_id, 
+                      par_id:obj.par_id, 
+                      stock_bal:obj.stock_balance, 
+                      basic_price:obj.basic_price, 
+                      stock_alert:obj.stock_alert, 
+                      hsn_code:obj.hsn_code, 
+                      gst_percentage:obj.gst_percentage, 
+                      search_name:obj.search_name   
+                    };
                 })
             };
           },
@@ -79,7 +95,7 @@ function populate_select2(this_data = '', v) {
         jQuery(this).parent().parent().find('.slab_system_yes').css('display', 'block');
         jQuery(this).parent().parent().find('.input_lot_slab').val(1);
 
-        var input_unit = (e.params.data.stock_bal <= 0)  ? 0 : 1;
+        var input_unit = (e.params.data.stock_bal <= 0)  ? '' : '';
         var input_diabled_txt = (e.params.data.stock_bal <= 0)  ? true : false;
         var input_diabled = (jQuery(this).parent().parent().find('.type_bill_s').val() == 'out_stock') ? false : input_diabled_txt;
         jQuery(this).parent().parent().find('.total').val(input_unit).attr('disabled',input_diabled);
@@ -89,7 +105,7 @@ function populate_select2(this_data = '', v) {
         jQuery(this).parent().parent().find('.input_lot_slab').val(0);
         jQuery(this).parent().parent().find('.weight').val(e.params.data.weight);
 
-        var input_unit = (e.params.data.stock_bal <= 0)  ? 0 : 1;
+        var input_unit = (e.params.data.stock_bal <= 0)  ? '' : '';
         var input_diabled_txt = (e.params.data.stock_bal <= 0)  ? true : false;
         var input_diabled = (jQuery(this).parent().parent().find('.type_bill_s').val() == 'out_stock') ? false : input_diabled_txt;
 
@@ -292,13 +308,26 @@ function calculateGST(selector) {
 function updateBalanceStock(par_id, total_stock, stock_alert) {
 
   var used_stock = 0;
+
+  var bag_wight = 0;
+  var tot_weight = 0;
+
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
+
+    bag_wight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
+
     if(jQuery(this).attr('lot-slabsys') == 1) {
-      used_stock = parseFloat(used_stock) + parseFloat(jQuery(this).find('.slab_system_yes .total').val(), 10) ;
+      tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_yes .total').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_yes .total').val());
+      tot_weight = (jQuery(this).find('.weight-original-block .sale_as:checked').val() == 'bag') ? tot_weight*bag_wight : tot_weight;
+      used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
     } else {
-      used_stock = parseFloat(used_stock) + parseFloat(jQuery(this).find('.slab_system_no .total').val(), 10) ;
+      tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_no .unit_count').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_no .unit_count').val());
+      tot_weight = tot_weight * bag_wight;
+      used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
     }
   });
+
+  used_stock = isNaN(used_stock) ? 0 : used_stock;
 
   var avail_stock = parseFloat(total_stock) - parseFloat(used_stock);
   var tootip_stock_avail_class = '';
@@ -323,18 +352,19 @@ function triggerTotalCalculate(selector) {
   var sale_type = jQuery(selector).find('.sale_type:checked').val();
   if(jQuery(selector).attr('lot-slabsys') == 1) {
     if(jQuery(selector).find('.sale_as[value="kg"]').attr("checked")) {
-      var total_weight = jQuery(selector).find('.slab_system_yes .total').val();
+      var total_weight = parseFloat(jQuery(selector).find('.slab_system_yes .total').val());
       total_weight = isNaN(total_weight) ? 0 : total_weight;
     }
     else{
-      var total_weight = jQuery(selector).find('.slab_system_yes .total').val() * jQuery(selector).find('.bagWeightInKg').val();
+      var total_weight = parseFloat(jQuery(selector).find('.slab_system_yes .total').val() * jQuery(selector).find('.bagWeightInKg').val());
       total_weight = isNaN(total_weight) ? 0 : total_weight ;
     }
   } else {
-    var total_weight = jQuery(selector).find('.slab_system_no .total').val();
+    var total_weight = parseFloat(jQuery(selector).find('.slab_system_no .total').val());
     total_weight = isNaN(total_weight) ? 0 : total_weight;
   }
-  
+
+
   jQuery.ajax({
       type: "POST",
       url: frontendajax.ajaxurl,
@@ -403,6 +433,11 @@ jQuery('.sale_as').live('change',function(){
       jQuery(this).parent().parent().parent().parent().parent().find('.kg_display').css('display', 'none');
       jQuery(this).parent().parent().parent().parent().parent().find('.bag_display').css('display', 'inline-block');
     }
+
+    var par_id = jQuery(this).parent().parent().parent().parent().parent().parent().attr('lot-parent');
+    var stock_bal = jQuery(this).parent().parent().parent().parent().parent().parent().attr('stock-avail');
+    var stock_alert = jQuery(this).parent().parent().parent().parent().parent().parent().find('.tooltip').attr('data-stockalert');
+    updateBalanceStock(par_id, stock_bal, stock_alert);
     triggerTotalCalculate(jQuery(this).parent().parent().parent().parent().parent().parent());
 });
 

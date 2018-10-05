@@ -64,6 +64,8 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 		        <option>Zeragasamba (Loose)</option>
 		        <option>R.H</option>
 		        <option>25 KG B.R</option>
+		        <option>Atta</option>
+		        <option>Oil</option>
 		        <option>Others</option>
 		    </select>  
 		</div>
