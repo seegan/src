@@ -137,7 +137,7 @@ function populate_select2(this_data = '', v) {
       var slab_sys_txt = (e.params.data.slab_system == 1) ? 'yes' : 'no';
       jQuery(this).parent().parent().find('.slab_sys_txt').text(slab_sys_txt);
       jQuery(this).parent().parent().find('.stock_weight_txt').text(e.params.data.stock_bal);
-
+      jQuery(this).parent().parent().find('.stock_weight_txt_hidden').val(e.params.data.stock_bal);
 
       updateBalanceStock(e.params.data.par_id, e.params.data.stock_bal, e.params.data.stock_alert);
       triggerTotalCalculate(jQuery(this).parent().parent());
@@ -200,7 +200,7 @@ jQuery('.type-bill-slider .bill-slide-in').live('click', function(){
   jQuery(this).parent().parent().find('.type_bill_h').val(jQuery(this).attr('data-stype'));
   jQuery(this).parent().parent().find('.type_bill_s').val(jQuery(this).attr('data-sstype'));
 
-  var input_diabled_txt = (jQuery(this).parent().parent().parent().parent().find('.stock_weight_txt').text() <= 0)  ? true : false;
+  var input_diabled_txt = (jQuery(this).parent().parent().parent().parent().find('.stock_weight_txt_hidden').val() <= 0)  ? true : false;
   var input_diabled = (jQuery(this).attr('data-sstype') == 'out_stock') ? false : input_diabled_txt;
   jQuery(this).parent().parent().parent().parent().find('.unit_count').attr('disabled',input_diabled);
   jQuery(this).parent().parent().parent().parent().find('.total').attr('disabled',input_diabled);
@@ -341,7 +341,7 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
 
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
     jQuery(this).find('.weight_cal_tooltip .tooltip').removeClass('tootip-black tootip-yellow tootip-red').addClass(tootip_stock_avail_class);
-    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(avail_stock)
+    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(bagKgSplitter(avail_stock, bag_wight, 'kg'))
   });
 
 }

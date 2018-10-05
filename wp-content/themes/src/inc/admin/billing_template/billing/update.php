@@ -416,7 +416,8 @@
                                         <span class="tooltiptext">
                                             Slab System : <span class="slab_sys_txt"><?php echo ( $b_value->slab == 0 ) ? 'No' : 'Yes';  ; ?></span>
                                             <hr class="tooltip-hr">
-                                            Stock Avail : <span class="stock_weight_txt"><?php echo $b_value->stock_bal; ?></span> kg
+                                            Stock Avail : <span class="stock_weight_txt"><?php echo $b_value->stock_bal; ?></span>
+                                            <input type="hidden" class="stock_weight_txt_hidden" value="<?php echo $b_value->stock_bal; ?>">
                                         </span>
                                       </div>
                                     </div>

@@ -32,6 +32,7 @@ wp_enqueue_script( 'custom', get_template_directory_uri() . '/inc/js/script.js',
 wp_enqueue_script( 'jquery-ui-js', get_template_directory_uri() . '/inc/js/jquery-ui.js', array('jquery'), false, false );
 
 wp_localize_script( 'custom', 'home_page', array( 'url' => home_url( '/' ), 'new_billing' => admin_url('admin.php?page=new_bill'), 'billing_list' => admin_url('admin.php?page=sales_others') ));
+wp_localize_script( 'custom', 'local_data', array( 'src_unit_type' => $src_unit_type ));
 
 wp_enqueue_script( 'jquery-canvas-js', get_template_directory_uri() . '/inc/js/jquery.canvasjs.min.js', array('jquery'), false, false );
 

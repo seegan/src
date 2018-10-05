@@ -139,6 +139,7 @@ function populate_select2(this_data = '', v) {
       var slab_sys_txt = (e.params.data.slab_system == 1) ? 'yes' : 'no';
       jQuery(this).parent().parent().find('.slab_sys_txt').text(slab_sys_txt);
       jQuery(this).parent().parent().find('.stock_weight_txt').text(e.params.data.stock_bal);
+      jQuery(this).parent().parent().find('.stock_weight_txt_hidden').val(e.params.data.stock_bal);
 
       updateBalanceStock(e.params.data.par_id, e.params.data.stock_bal, e.params.data.stock_alert);
       triggerTotalCalculate(jQuery(this).parent().parent());
@@ -174,7 +175,6 @@ jQuery('.total').live('change', function(){
 });
 
 jQuery('.sale_type').live('change', function() {
-  /*total calculate on type change*/
   triggerTotalCalculate(jQuery(this).parent().parent().parent().parent());
 });
 
@@ -198,7 +198,7 @@ jQuery('.type-bill-slider .bill-slide-in').live('click', function(){
   jQuery(this).parent().parent().find('.type_bill_h').val(jQuery(this).attr('data-stype'));
   jQuery(this).parent().parent().find('.type_bill_s').val(jQuery(this).attr('data-sstype'));
 
-  var input_diabled_txt = (jQuery(this).parent().parent().parent().parent().find('.stock_weight_txt').text() <= 0)  ? true : false;
+  var input_diabled_txt = (jQuery(this).parent().parent().parent().parent().find('.stock_weight_txt_hidden').val() <= 0)  ? true : false;
   var input_diabled = (jQuery(this).attr('data-sstype') == 'out_stock') ? false : input_diabled_txt;
   jQuery(this).parent().parent().parent().parent().find('.unit_count').attr('disabled',input_diabled);
   jQuery(this).parent().parent().parent().parent().find('.total').attr('disabled',input_diabled);
@@ -307,8 +307,6 @@ function calculateGST(selector) {
 function updateBalanceStock(par_id, total_stock, stock_alert) {
 
   var used_stock = 0;
-//
-
   var bag_wight = 0;
   var tot_weight = 0;
 
@@ -342,7 +340,7 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
 
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
     jQuery(this).find('.weight_cal_tooltip .tooltip').removeClass('tootip-black tootip-yellow tootip-red').addClass(tootip_stock_avail_class);
-    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(avail_stock)
+    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(bagKgSplitter(avail_stock, bag_wight, 'kg'))
   });
 
 }
@@ -419,11 +417,10 @@ if(decimal <= 0.49){
 }
 
 //round off
-  final_total = Math.round(final_total); 
+    final_total = Math.round(final_total); 
 
-   jQuery('.final_total').val(final_total).change();
-   jQuery('.round_off_text').val(decimal_point).change();
-
+    jQuery('.final_total').val(final_total).change();
+    jQuery('.round_off_text').val(decimal_point).change();
     paymentOperations();
 }
 
@@ -448,3 +445,39 @@ jQuery('.sale_as').live('change',function(){
 jQuery('.discount, .cardswip').live('change', function(){
   updateSaleTotal();
 });
+
+
+
+function bagKgSplitter(weight = 0, bag_weight = 0, unit_type = false) {
+  var src_unit_type = local_data.src_unit_type
+  var single = 'Kg';
+  var batch = 'Bag';
+
+  if(unit_type) {
+    var type_array = src_unit_type[unit_type];
+    single = ucfirst(type_array['single']);
+    batch = ucfirst(type_array['single']);
+    if( type_array['batch']) {
+      batch = ucfirst(type_array['batch']);
+    }
+
+    str = (weight/bag_weight).toString();
+    var splitted = str.split('.');
+    var whole = (splitted[0]) ? splitted[0] : 0 ;
+    var num = (splitted[1]) ? splitted[1] : 0 ;
+    num = '0.'+num;
+    var string = '';
+    whole = (whole) ? whole : 0;
+    string += (whole > 1) ? whole+' '+batch+'s' : whole+' '+batch;
+    string += (num && num > 0) ? ', '+Math.round(num*bag_weight)+' '+single : '';
+    return string;
+  }
+
+}
+function ucfirst(myString ='') {
+  firstChar = myString.substring( 0, 1 ); // == "c"
+  firstChar.toUpperCase();
+  tail = myString.substring( 1 ); // == "heeseburger"
+  myString = firstChar + tail; // myString == "Cheeseburger"
+  return myString;
+}
