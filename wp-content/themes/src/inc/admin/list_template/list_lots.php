@@ -61,6 +61,7 @@
 				<th>Lot Number</th>
 				<th>Display Name</th>
 				<th>Product Name</th>
+				<th>Add Stock</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -76,6 +77,16 @@
 				<td><?php echo $lot_value->lot_number; ?></td>
 				<td><?php echo $lot_value->brand_name; ?></td>
 				<td><?php echo $lot_value->product_name; ?></td>
+				<td>
+					<span>
+						<a class="add_stock_list" title="Add"  href="#"  data-roll="<?php echo $start_count; ?>" data-id="<?php echo $lot_value->id; ?>">Add Stock</a>
+					</span>
+					<span class="add_stock_display" style="display: none">
+						<input type="hidden" name="lot_id" class="lot_id" value="<?php echo $lot_value->id; ?>">
+					    <input type="text" name="add_stock_input" onkeypress="return isNumberKeyWithDot(event)" class="add_stock_input" id="add_stock_input" style="width: 10%;">
+					    <input type="button" name="Add" value="Add" class="add_stock_button" id="add_stock_button">
+					</span>
+				</td>
 				<td class="center">
 					<span>
 						<a class="action-icons c-edit lot_edit list_update" title="Edit"  href="#"  data-roll="<?php echo $start_count; ?>" data-id="<?php echo $lot_value->id; ?>">Edit</a>

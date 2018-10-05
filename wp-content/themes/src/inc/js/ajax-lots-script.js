@@ -1,3 +1,24 @@
+
+jQuery(document).on('click','.add_stock_list',function(){
+  jQuery(this).parent().parent().parent().find('.add_stock_display').css('display','block');
+  jQuery(this).parent().parent().parent().find('.add_stock_list').css('display','none');
+});
+jQuery(document).on('click','.add_stock_button',function(){
+  var lot_id      = jQuery(this).parent().parent().parent().find('.lot_id').val();
+  var stock_count = jQuery(this).parent().parent().parent().find('.add_stock_input').val();
+  if(lot_id != '' && stock_count != '' && stock_count > 0) {
+
+        stock_create_submit_popup('stock_create_submit_popup',lot_id,stock_count);
+        jQuery(this).parent().parent().parent().find('.add_stock_display').css('display','none');
+        jQuery(this).parent().parent().parent().find('.add_stock_list').css('display','block');
+    } else {
+         alert_popup('<span class="error_msg">Enter the Stock Count!!</span>', 'Alert!');
+    }
+
+
+ 
+});
+
 jQuery('.popup-add-lot').live('click', function() { 
   create_popup('get_lot_create_form_popup', 'Add New Lot');
 });
