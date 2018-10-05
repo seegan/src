@@ -102,7 +102,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				Buying Price (Rs/Bag)
 			</label>
 			<div class="slab">
-				<input type="text" name="buying_price" class="buying_price" id="buying_price" autocomplete="off" value="<?php echo $lot_details['lot_data']->buying_price; ?>">
+				<input type="text" name="buying_price" class="buying_price" id="buying_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $lot_details['lot_data']->buying_price; ?>">
 			</div>
 		</div>
 
@@ -111,7 +111,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				Stock Alert (Kg)
 			</label>
 			<div class="slab">
-				<input type="text" name="stock_alert" class="stock_alert" autocomplete="off" value="<?php echo $lot_details['lot_data']->stock_alert; ?>">
+				<input type="text" name="stock_alert" class="stock_alert" onkeypress="return isNumberKey(event)" autocomplete="off" value="<?php echo $lot_details['lot_data']->stock_alert; ?>">
 				<input type="hidden" name="slab_system" id="slab_system" value="<?php echo $original_bag_weight; ?>">
 			</div>
 		</div>
@@ -120,7 +120,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				HSN
 			</label>
 			<div class="slab">
-				<input type="text" name="hsn_code" class="hsn_code" autocomplete="off" value="<?php echo $lot_details['lot_data']->hsn_code; ?>">
+				<input type="text" name="hsn_code" class="hsn_code" onkeypress="return isNumberKey(event)" autocomplete="off" value="<?php echo $lot_details['lot_data']->hsn_code; ?>">
 			</div>
 		</div>
 
@@ -151,7 +151,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				MRP
 			</label>
 			<div class="slab">
-				<input type="text" name="basic_price" class="basic_price" autocomplete="off" value="<?php echo $lot_details['lot_data']->basic_price; ?>">
+				<input type="text" name="basic_price" class="basic_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $lot_details['lot_data']->basic_price; ?>">
 			</div>
 		</div>
 
@@ -179,16 +179,16 @@ if( $lot_details['original_retail'] && $original_slab_system == '1' && count($lo
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="<?php echo $or_value->weight_from; ?>">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $or_value->weight_from; ?>">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="<?php echo $or_value->weight_to; ?>">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $or_value->weight_to; ?>">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off" value="<?php echo $or_value->price; ?>">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $or_value->price; ?>">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="<?php echo $or_value->margin_price; ?>">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $or_value->margin_price; ?>">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -202,16 +202,16 @@ if( $lot_details['original_retail'] && $original_slab_system == '1' && count($lo
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -249,19 +249,19 @@ if( $lot_details['original_retail'] && $original_slab_system != '1' && count($lo
 ?>
 				    	<div data-repeater-item class="repeterin div-table-row">
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_from_retail_no_slab" class="weight_from" autocomplete="off" value="<?php echo $orns_value->weight_from; ?>">
+						    	<input type="text" name="weight_from_retail_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $orns_value->weight_from; ?>">
 						    </div>
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_to_retail_no_slab" class="weight_to" autocomplete="off" value="<?php echo $orns_value->weight_to; ?>">
+						    	<input type="text" name="weight_to_retail_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $orns_value->weight_to; ?>">
 						    </div>
 						    <div class="div-table-col">
 						    	<div>1</div>
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price_retail_no_slab" class="price" autocomplete="off" value="<?php echo $orns_value->price; ?>" value="0.00">
+						    	<input type="text" name="price_retail_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $orns_value->price; ?>" value="0.00">
 						    </div>
 						     <div class="div-table-col">
-						    	<input type="text" name="margin_price_retail_no_slab" class="margin_price" autocomplete="off" value="<?php echo $orns_value->margin_price; ?>" value="0.00">
+						    	<input type="text" name="margin_price_retail_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $orns_value->margin_price; ?>" value="0.00">
 						    </div>
 				        </div>
 <?php
@@ -270,19 +270,19 @@ if( $lot_details['original_retail'] && $original_slab_system != '1' && count($lo
 ?>
 				    	<div data-repeater-item class="repeterin div-table-row">
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_from_retail_no_slab" class="weight_from" autocomplete="off" value="1">
+						    	<input type="text" name="weight_from_retail_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="1">
 						    </div>
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_to_retail_no_slab" class="weight_to" autocomplete="off" value="5">
+						    	<input type="text" name="weight_to_retail_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="5">
 						    </div>
 						    <div class="div-table-col">
 						    	<div>1</div>
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price_retail_no_slab" class="price" autocomplete="off" value="0.00">
+						    	<input type="text" name="price_retail_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price_retail_no_slab" class="margin_price" autocomplete="off" value="0.00">
+						    	<input type="text" name="margin_price_retail_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 				        </div>
 <?php
@@ -313,16 +313,16 @@ if( $lot_details['original_wholesale'] && $original_slab_system == '1' && count(
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="<?php echo $ow_value->weight_from; ?>">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $ow_value->weight_from; ?>">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="<?php echo $ow_value->weight_to; ?>">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $ow_value->weight_to; ?>">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off" value="<?php echo $ow_value->price; ?>">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $ow_value->price; ?>">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="<?php echo $ow_value->margin_price; ?>">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $ow_value->margin_price; ?>">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -336,16 +336,16 @@ if( $lot_details['original_wholesale'] && $original_slab_system == '1' && count(
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						     <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -380,19 +380,19 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 ?>
 				    	<div data-repeater-item class="repeterin div-table-row">
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_from_wholesale_no_slab" class="weight_from" autocomplete="off" value="<?php echo $owns_value->weight_from; ?>">
+						    	<input type="text" name="weight_from_wholesale_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $owns_value->weight_from; ?>">
 						    </div>
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_to_wholesale_no_slab" class="weight_to" autocomplete="off" value="<?php echo $owns_value->weight_to; ?>">
+						    	<input type="text" name="weight_to_wholesale_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $owns_value->weight_to; ?>">
 						    </div>
 						    <div class="div-table-col">
 						    	<div>1</div>
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price_wholesale_no_slab" class="price" autocomplete="off" value="<?php echo $owns_value->price; ?>">
+						    	<input type="text" name="price_wholesale_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $owns_value->price; ?>">
 						    </div>
 						     <div class="div-table-col">
-						    	<input type="text" name="margin_price_wholesale_no_slab" class="margin_price" autocomplete="off" value="<?php echo $owns_value->margin_price; ?>">
+						    	<input type="text" name="margin_price_wholesale_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $owns_value->margin_price; ?>">
 						    </div>
 				        </div>
 <?php
@@ -401,19 +401,19 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 ?>
 				    	<div data-repeater-item class="repeterin div-table-row">
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_from_wholesale_no_slab" class="weight_from" autocomplete="off" value="1">
+						    	<input type="text" name="weight_from_wholesale_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="1">
 						    </div>
 						    <div class="div-table-col" style="display:none;">
-						    	<input type="text" name="weight_to_wholesale_no_slab" class="weight_to" autocomplete="off" value="5">
+						    	<input type="text" name="weight_to_wholesale_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="5">
 						    </div>
 						    <div class="div-table-col">
 						    	<div>1</div>
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price_wholesale_no_slab" class="price" autocomplete="off" value="0.00">
+						    	<input type="text" name="price_wholesale_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price_wholesale_no_slab" class="margin_price" autocomplete="off" value="0.00">
+						    	<input type="text" name="margin_price_wholesale_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 				        </div>
 <?php
@@ -486,7 +486,7 @@ if( $lot_details['original_wholesale'] && $original_slab_system != '1' && count(
 						MRP
 					</label>
 					<div class="slab">
-						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off" value="<?php echo $lot_details['dummy_lot_data']->basic_price; ?>">
+						<input type="text" name="dummy_basic_price" class="dummy_basic_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $lot_details['dummy_lot_data']->basic_price; ?>">
 					</div>
 				</div>
 				<div style="clear:both;"></div>
@@ -512,16 +512,16 @@ if( $lot_details['dummy_retail'] && $dummy_slab_system == '1' && count($lot_deta
 					    	<div data-repeater-item class="repeterin div-table-row">
 								<div class="div-table-col rowno">1</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="<?php echo $dr_value->weight_from; ?>">
+							    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dr_value->weight_from; ?>">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="<?php echo $dr_value->weight_to; ?>">
+							    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dr_value->weight_to; ?>">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="price" class="price" autocomplete="off" value="<?php echo $dr_value->price; ?>">
+							    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dr_value->price; ?>">
 							    </div>
 							     <div class="div-table-col">
-							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="<?php echo $dr_value->margin_price; ?>">
+							    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dr_value->margin_price; ?>">
 							    </div>
 							    <div class="div-table-col">
 							    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -535,16 +535,16 @@ if( $lot_details['dummy_retail'] && $dummy_slab_system == '1' && count($lot_deta
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						     <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -579,19 +579,19 @@ if( $lot_details['dummy_retail'] && $dummy_slab_system != '1' && count($lot_deta
 ?>
 					    	<div data-repeater-item class="repeterin div-table-row">
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_from_retail_no_slab" class="weight_from" autocomplete="off"  value="<?php echo $drns_value->weight_from; ?>">
+							    	<input type="text" name="bag_weight_from_retail_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off"  value="<?php echo $drns_value->weight_from; ?>">
 							    </div>
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_to_retail_no_slab" class="weight_to" autocomplete="off"  value="<?php echo $drns_value->weight_to; ?>">
+							    	<input type="text" name="bag_weight_to_retail_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off"  value="<?php echo $drns_value->weight_to; ?>">
 							    </div>
 							    <div class="div-table-col">
 						    		<div>1</div>
 						    	</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_price_retail_no_slab" class="price" autocomplete="off"  value="<?php echo $drns_value->price; ?>">
+							    	<input type="text" name="bag_weight_price_retail_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off"  value="<?php echo $drns_value->price; ?>">
 							    </div>
 							     <div class="div-table-col">
-							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" autocomplete="off"  value="<?php echo $drns_value->margin_price; ?>">
+							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off"  value="<?php echo $drns_value->margin_price; ?>">
 							    </div>
 					        </div>
 <?php
@@ -600,19 +600,19 @@ if( $lot_details['dummy_retail'] && $dummy_slab_system != '1' && count($lot_deta
 ?>
 					    	<div data-repeater-item class="repeterin div-table-row">
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_from_retail_no_slab" class="weight_from" autocomplete="off">
+							    	<input type="text" name="bag_weight_from_retail_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 							    </div>
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_to_retail_no_slab" class="weight_to" autocomplete="off">
+							    	<input type="text" name="bag_weight_to_retail_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 							    </div>
 							    <div class="div-table-col">
 						    		<div>1</div>
 						    	</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_price_retail_no_slab" class="price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_price_retail_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							     <div class="div-table-col">
-							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 					        </div>
 <?php	
@@ -642,16 +642,16 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system == '1' && count($lot_d
 					    	<div data-repeater-item class="repeterin div-table-row">
 								<div class="div-table-col rowno">1</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="<?php echo $dw_value->weight_from; ?>">
+							    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dw_value->weight_from; ?>">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="<?php echo $dw_value->weight_to; ?>">
+							    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dw_value->weight_to; ?>">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="price" class="price" autocomplete="off" value="<?php echo $dw_value->price; ?>">
+							    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dw_value->price; ?>">
 							    </div>
 							     <div class="div-table-col">
-							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="<?php echo $dw_value->margin_price; ?>">
+							    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dw_value->margin_price; ?>">
 							    </div>
 							    <div class="div-table-col">
 							    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -665,16 +665,16 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system == '1' && count($lot_d
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						     <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -709,19 +709,19 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_d
 ?>
 					    	<div data-repeater-item class="repeterin div-table-row">
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_from_wholesale_no_slab" class="weight_from" autocomplete="off" value="<?php echo $dwns_value->weight_from; ?>">
+							    	<input type="text" name="bag_weight_from_wholesale_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dwns_value->weight_from; ?>">
 							    </div>
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_to_wholesale_no_slab" class="weight_to" autocomplete="off" value="<?php echo $dwns_value->weight_to; ?>">
+							    	<input type="text" name="bag_weight_to_wholesale_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dwns_value->weight_to; ?>">
 							    </div>
 							    <div class="div-table-col">
 						    		<div>1</div>
 						    	</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_price_wholesale_no_slab" class="price" autocomplete="off" value="<?php echo $dwns_value->price; ?>">
+							    	<input type="text" name="bag_weight_price_wholesale_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dwns_value->price; ?>">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_margin_price_wholesale_no_slab" class="margin_price" autocomplete="off" value="<?php echo $dwns_value->margin_price; ?>">
+							    	<input type="text" name="bag_weight_margin_price_wholesale_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $dwns_value->margin_price; ?>">
 							    </div>
 					        </div>
 <?php
@@ -731,19 +731,19 @@ if( $lot_details['dummy_wholesale'] && $dummy_slab_system != '1' && count($lot_d
 
 					    	<div data-repeater-item class="repeterin div-table-row">
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_from_wholesale_no_slab" class="weight_from" autocomplete="off">
+							    	<input type="text" name="bag_weight_from_wholesale_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 							    </div>
 							    <div class="div-table-col" style="display:none;">
-							    	<input type="text" name="bag_weight_to_wholesale_no_slab" class="weight_to" autocomplete="off">
+							    	<input type="text" name="bag_weight_to_wholesale_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 							    </div>
 							    <div class="div-table-col">
 						    		<div>1</div>
 						    	</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_price_wholesale_no_slab" class="price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_price_wholesale_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_margin_price_wholesale_no_slab" class="margin_price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_margin_price_wholesale_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 					        </div>
 <?php	

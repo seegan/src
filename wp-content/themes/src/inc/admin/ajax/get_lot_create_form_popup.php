@@ -81,7 +81,7 @@
 				Buying Price (Rs/Bag)
 			</label>
 			<div class="slab">
-				<input type="text" name="buying_price" class="buying_price" id="buying_price" autocomplete="off" value="<?php echo $lot_details['lot_data']->buying_price; ?>">
+				<input type="text" name="buying_price" class="buying_price" id="buying_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $lot_details['lot_data']->buying_price; ?>">
 			</div>
 		</div>
 		<div class="form_detail">
@@ -89,7 +89,7 @@
 				Stock Alert (Kg)
 			</label>
 			<div class="slab">
-				<input type="text" name="stock_alert" class="stock_alert" autocomplete="off" value="1">
+				<input type="text" name="stock_alert" class="stock_alert" onkeypress="return isNumberKey(event)" autocomplete="off" value="1">
 				<input type="hidden" name="slab_system" id="slab_system" value="0">
 			</div>
 		</div>
@@ -111,7 +111,7 @@
 				HSN
 			</label>
 			<div class="slab">
-				<input type="text" name="hsn_code" class="hsn_code" autocomplete="off" value="">
+				<input type="text" name="hsn_code" class="hsn_code" autocomplete="off" onkeypress="return isNumberKey(event)" value="">
 			</div>
 		</div>
 		<div class="form_detail">
@@ -128,7 +128,7 @@
 				MRP
 			</label>
 			<div class="slab">
-				<input type="text" name="basic_price" class="basic_price" autocomplete="off" value="0.00">
+				<input type="text" name="basic_price" class="basic_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 			</div>
 		</div>
 
@@ -152,16 +152,16 @@
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.1">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="4.99">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off">
+						    	<input type="text" name="margin_price" onkeypress="return isNumberKeyWithDot(event)" class="margin_price" autocomplete="off">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -189,19 +189,19 @@
 
 				    	<div data-repeater-item class="repeterin div-table-row">
 						    <div class="div-table-col" style="display: none;">
-						    	<input type="text" name="weight_from_retail_no_slab" class="weight_from" autocomplete="off" value="1">
+						    	<input type="text" name="weight_from_retail_no_slab" onkeypress="return isNumberKeyWithDot(event)" class="weight_from" autocomplete="off" value="1">
 						    </div>
 						    <div class="div-table-col" style="display: none;">
-						    	<input type="text" name="weight_to_retail_no_slab" class="weight_to" autocomplete="off" value="5">
+						    	<input type="text" name="weight_to_retail_no_slab" onkeypress="return isNumberKeyWithDot(event)" class="weight_to" autocomplete="off" value="5">
 						    </div>
 						    <div class="div-table-col">
 						    	<div>1</div>
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price_retail_no_slab" class="price" autocomplete="off" value="0.00">
+						    	<input type="text" name="price_retail_no_slab" onkeypress="return isNumberKeyWithDot(event)" class="price" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price_retail_no_slab" class="margin_price" autocomplete="off" value="0.00">
+						    	<input type="text" name="margin_price_retail_no_slab" onkeypress="return isNumberKeyWithDot(event)" class="margin_price" autocomplete="off" value="0.00">
 						    </div>
 				        </div>
 
@@ -226,16 +226,16 @@
 				    	<div data-repeater-item class="repeterin div-table-row">
 							<div class="div-table-col rowno">1</div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
+						    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.1">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
+						    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="4.99">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
+						    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="0.00">
+						    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
 						    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -263,19 +263,19 @@
 
 				    	<div data-repeater-item class="repeterin div-table-row">
 						    <div class="div-table-col" style="display: none;">
-						    	<input type="text" name="weight_from_wholesale_no_slab" class="weight_from" autocomplete="off" value="1">
+						    	<input type="text" name="weight_from_wholesale_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="1">
 						    </div>
 						    <div class="div-table-col" style="display: none;">
-						    	<input type="text" name="weight_to_wholesale_no_slab" class="weight_to" autocomplete="off" value="5">
+						    	<input type="text" name="weight_to_wholesale_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="5">
 						    </div>
 						    <div class="div-table-col">
 						    	<div>1</div>
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="price_wholesale_no_slab" class="price" autocomplete="off" value="0.00">
+						    	<input type="text" name="price_wholesale_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 						    <div class="div-table-col">
-						    	<input type="text" name="margin_price_wholesale_no_slab" class="margin_price" autocomplete="off" value="0.00">
+						    	<input type="text" name="margin_price_wholesale_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 						    </div>
 				        </div>
 				    </div>
@@ -346,7 +346,7 @@
 						MRP
 					</label>
 					<div class="slab">
-						<input type="text" name="dummy_basic_price" class="dummy_basic_price" autocomplete="off">
+						<input type="text" name="dummy_basic_price" class="dummy_basic_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off">
 					</div>
 				</div>
 				<div style="clear:both;"></div>
@@ -369,16 +369,16 @@
 					    	<div data-repeater-item class="repeterin div-table-row">
 								<div class="div-table-col rowno">1</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
+							    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.1">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
+							    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="4.99">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
+							    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off"  value="0.00">
+							    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off"  value="0.00">
 							    </div>
 							    <div class="div-table-col">
 							    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -404,19 +404,19 @@
 
 					    	<div data-repeater-item class="repeterin div-table-row">
 							    <div class="div-table-col" style="display: none;">
-							    	<input type="text" name="bag_weight_from_retail_no_slab" class="weight_from" autocomplete="off" value="1">
+							    	<input type="text" name="bag_weight_from_retail_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="1">
 							    </div>
 							    <div class="div-table-col" style="display: none;">
-							    	<input type="text" name="bag_weight_to_retail_no_slab" class="weight_to" autocomplete="off" value="5">
+							    	<input type="text" name="bag_weight_to_retail_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="5">
 							    </div>
 							    <div class="div-table-col">
 							    	<div>1</div>
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_price_retail_no_slab" class="price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_price_retail_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_margin_price_retail_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 					        </div>
 					    </div>
@@ -438,16 +438,16 @@
 					    	<div data-repeater-item class="repeterin div-table-row">
 								<div class="div-table-col rowno">1</div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_from" class="weight_from" autocomplete="off" value="0.1">
+							    	<input type="text" name="weight_from" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.1">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="weight_to" class="weight_to" autocomplete="off" value="4.99">
+							    	<input type="text" name="weight_to" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="4.99">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="price" class="price" autocomplete="off" value="0.00">
+							    	<input type="text" name="price" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="margin_price" class="margin_price" autocomplete="off" value="0.00">
+							    	<input type="text" name="margin_price" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
 							    	<a href="#" data-repeater-delete style="font-size: 16px; font-weight: bold; color: #ff0000;" class="remove_price_range" data-id="2">x</a>
@@ -475,19 +475,19 @@
 
 					    	<div data-repeater-item class="repeterin div-table-row">
 							    <div class="div-table-col" style="display: none;">
-							    	<input type="text" name="bag_weight_from_wholesale_no_slab" class="weight_from" autocomplete="off" value="1">
+							    	<input type="text" name="bag_weight_from_wholesale_no_slab" class="weight_from" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="1">
 							    </div>
 							    <div class="div-table-col" style="display: none;">
-							    	<input type="text" name="bag_weight_to_wholesale_no_slab" class="weight_to" autocomplete="off" value="5">
+							    	<input type="text" name="bag_weight_to_wholesale_no_slab" class="weight_to" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="5">
 							    </div>
 							    <div class="div-table-col">
 							    	<div>1</div>
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_price_wholesale_no_slab" class="price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_price_wholesale_no_slab" class="price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 							    <div class="div-table-col">
-							    	<input type="text" name="bag_weight_margin_price_wholesale_no_slab" class="margin_price" autocomplete="off" value="0.00">
+							    	<input type="text" name="bag_weight_margin_price_wholesale_no_slab" class="margin_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">
 							    </div>
 					        </div>
 
