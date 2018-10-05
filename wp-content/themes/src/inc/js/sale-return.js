@@ -55,7 +55,7 @@ jQuery(document).ready(function(){
       returnCheck(jQuery(this).parent().parent().parent().parent().parent().parent().parent())
     });
     jQuery('.return_table .user_enrty_weight').on('keyup', function(){
-         returnCheck(jQuery(this).parent().parent().parent().parent());
+      returnCheck(jQuery(this).parent().parent().parent().parent());
       returnAmtWeightCal(jQuery(this).parent().parent().parent().parent());
      
 
@@ -84,7 +84,7 @@ function  returnAmtWeightCal(selector = '') {
   if(return_as == 'bag') {
     return_weight = return_weight * bag_weight;
   }
-
+  selector.find('.delivery_sale_as').text(toCapitalize(return_as));
   selector.find('.return_weight').val(return_weight);
 
   var gst_from = jQuery(document).find('.gst_from').val();

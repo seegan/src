@@ -38,20 +38,20 @@ jQuery('#add_stock').live('submit', function(){
 
     if(lot_id != '' && stock_count != '' && stock_count > 0) {
 
-         stock_create_submit_popup('stock_create_submit_popup');
+         stock_create_submit_popup('stock_create_submit_popup',lot_id,stock_count);
     } else {
          alert_popup('<span class="error_msg">Enter the mandatory fields!!</span>', 'Alert!');
     }
 });
 
 
-function stock_create_submit_popup(action = '', data = '') {
+function stock_create_submit_popup(action = '', lot_id = '',stock_count='') {
     jQuery.ajax({
         type: "POST",
         url: frontendajax.ajaxurl,
         data: {
-            lot_id : jQuery("#lot_id").val(),
-            stock_count : jQuery("#count").val(),
+            lot_id : lot_id,
+            stock_count : stock_count,
             action : action
         },
 

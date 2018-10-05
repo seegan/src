@@ -2,7 +2,7 @@ jQuery(document).ready(function(){
   jQuery('.repeterin').each(function(){
     populate_select2(this, 'old');
   });
-   jQuery('.lot_id').select2('open');
+   jQuery(jQuery('.lot_id')[0]).select2('open')
 });
 
 
