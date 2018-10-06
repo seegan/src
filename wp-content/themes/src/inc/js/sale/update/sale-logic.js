@@ -169,9 +169,9 @@ jQuery('.total').live('change', function(){
   var par_id = jQuery(this).parent().parent().parent().parent().parent().attr('lot-parent');
   var stock_bal = jQuery(this).parent().parent().parent().parent().parent().attr('stock-avail');
   var stock_alert = jQuery(this).parent().parent().parent().parent().parent().find('.tooltip').attr('data-stockalert');
-  updateBalanceStock(par_id, stock_bal, stock_alert);
 
-  var selector = jQuery(this).parent().parent().parent().parent().parent();
+  disableExcessQty(jQuery(this).parent().parent().parent().parent().parent());
+  updateBalanceStock(par_id, stock_bal, stock_alert);
   triggerTotalCalculate(jQuery(this).parent().parent().parent().parent().parent());
 });
 
@@ -445,6 +445,8 @@ jQuery('.sale_as').live('change',function(){
     var par_id = jQuery(this).parent().parent().parent().parent().parent().parent().attr('lot-parent');
     var stock_bal = jQuery(this).parent().parent().parent().parent().parent().parent().attr('stock-avail');
     var stock_alert = jQuery(this).parent().parent().parent().parent().parent().parent().find('.tooltip').attr('data-stockalert');
+    
+    disableExcessQty(jQuery(this).parent().parent().parent().parent().parent().parent());
     updateBalanceStock(par_id, stock_bal, stock_alert);
     triggerTotalCalculate(jQuery(this).parent().parent().parent().parent().parent().parent());
 });
@@ -486,4 +488,47 @@ function ucfirst(myString ='') {
   tail = myString.substring( 1 ); // == "heeseburger"
   myString = firstChar + tail; // myString == "Cheeseburger"
   return myString;
+}
+
+
+function disableExcessQty(selector = '') {
+  var stock_from = jQuery(selector).find('.type_bill_h').val();
+  if(stock_from != 'duplicate') {
+
+
+    var used_stock = 0;
+    var bag_weight = 0;
+    var tot_weight = 0;
+    var sale_prev = 0;
+
+
+    var par_id = jQuery(selector).attr('lot-parent');
+    var avail_stock = 0;
+
+    jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
+
+      bag_weight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
+      sale_prev = sale_prev + parseFloat(jQuery(this).find('.sale_prev').val());
+
+      if(jQuery(this).attr('lot-slabsys') == 1) {
+        tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_yes .total').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_yes .total').val());
+        tot_weight = (jQuery(this).find('.weight-original-block .sale_as:checked').val() == 'bag') ? tot_weight*bag_weight : tot_weight;
+        used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
+      } else {
+        tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_no .unit_count').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_no .unit_count').val());
+        tot_weight = tot_weight * bag_weight;
+        used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
+      }
+
+      avail_stock = jQuery(this).find('.stock_weight_txt_hidden').val();
+    });
+
+    avail_stock = parseFloat(avail_stock) + sale_prev;
+
+    if(used_stock > avail_stock) {
+      alert('Stock Not Avail !');
+      jQuery(selector).find('.input_tab').val('').focus()
+    }
+
+  }
 }
