@@ -309,27 +309,34 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
 
   var used_stock = 0;
 
-  var bag_wight = 0;
+  var bag_weight = 0;
   var tot_weight = 0;
+  var sale_prev = 0;
 
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
 
-    bag_wight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
+    bag_weight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
+    sale_prev = sale_prev + parseFloat(jQuery(this).find('.sale_prev').val());
 
     if(jQuery(this).attr('lot-slabsys') == 1) {
       tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_yes .total').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_yes .total').val());
-      tot_weight = (jQuery(this).find('.weight-original-block .sale_as:checked').val() == 'bag') ? tot_weight*bag_wight : tot_weight;
+      tot_weight = (jQuery(this).find('.weight-original-block .sale_as:checked').val() == 'bag') ? tot_weight*bag_weight : tot_weight;
       used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
     } else {
       tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_no .unit_count').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_no .unit_count').val());
-      tot_weight = tot_weight * bag_wight;
+      tot_weight = tot_weight * bag_weight;
       used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
     }
   });
 
+
   used_stock = isNaN(used_stock) ? 0 : used_stock;
 
+
   var avail_stock = parseFloat(total_stock) - parseFloat(used_stock);
+  avail_stock = avail_stock+sale_prev;
+
+
   var tootip_stock_avail_class = '';
   if(avail_stock > stock_alert) {
     tootip_stock_avail_class = 'tootip-black';
@@ -340,8 +347,9 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
   }
 
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
+    bag_weight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
     jQuery(this).find('.weight_cal_tooltip .tooltip').removeClass('tootip-black tootip-yellow tootip-red').addClass(tootip_stock_avail_class);
-    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(bagKgSplitter(avail_stock, bag_wight, 'kg'))
+    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(bagKgSplitter(avail_stock, bag_weight, 'kg'))
   });
 
 }
@@ -444,3 +452,38 @@ jQuery('.sale_as').live('change',function(){
 jQuery('.discount, .cardswip').live('change', function(){
   updateSaleTotal();
 });
+
+
+function bagKgSplitter(weight = 0, bag_weight = 0, unit_type = false) {
+  var src_unit_type = local_data.src_unit_type
+  var single = 'Kg';
+  var batch = 'Bag';
+
+  if(unit_type) {
+    var type_array = src_unit_type[unit_type];
+    single = ucfirst(type_array['single']);
+    batch = ucfirst(type_array['single']);
+    if( type_array['batch']) {
+      batch = ucfirst(type_array['batch']);
+    }
+
+    str = (weight/bag_weight).toString();
+    var splitted = str.split('.');
+    var whole = (splitted[0]) ? splitted[0] : 0 ;
+    var num = (splitted[1]) ? splitted[1] : 0 ;
+    num = '0.'+num;
+    var string = '';
+    whole = (whole) ? whole : 0;
+    string += (whole > 1) ? whole+' '+batch+'s' : whole+' '+batch;
+    string += (num && num > 0) ? ', '+Math.round(num*bag_weight)+' '+single : '';
+    return string;
+  }
+
+}
+function ucfirst(myString ='') {
+  firstChar = myString.substring( 0, 1 ); // == "c"
+  firstChar.toUpperCase();
+  tail = myString.substring( 1 ); // == "heeseburger"
+  myString = firstChar + tail; // myString == "Cheeseburger"
+  return myString;
+}

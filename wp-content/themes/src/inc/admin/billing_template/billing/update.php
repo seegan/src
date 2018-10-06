@@ -397,6 +397,7 @@
                                             <span class="kg_display" <?php if($b_value->sale_as == 'kg'){  echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Kg</span>
                                             <span class="bag_display" <?php if($b_value->sale_as == 'bag'){ echo 'style=display:inline-block'; } else{ echo 'style=display:none'; } ?>>Bag</span>
                                         </div>
+                                        <input type="hidden" class="sale_prev" name="sale_prev" value="<?php echo $b_value->sale_weight; ?>">
                                     </div>
                                     <div style="padding-top:6px;">
                                         <span class="">
@@ -416,7 +417,7 @@
                                         <span class="tooltiptext">
                                             Slab System : <span class="slab_sys_txt"><?php echo ( $b_value->slab == 0 ) ? 'No' : 'Yes';  ; ?></span>
                                             <hr class="tooltip-hr">
-                                            Stock Avail : <span class="stock_weight_txt"><?php echo $b_value->stock_bal; ?></span>
+                                            Stock Avail : <span class="stock_weight_txt"><?php echo bagKgSplitter($b_value->stock_bal, $b_value->bag_weight, $b_value->unit_type); ?></span>
                                             <input type="hidden" class="stock_weight_txt_hidden" value="<?php echo $b_value->stock_bal; ?>">
                                         </span>
                                       </div>
@@ -821,7 +822,7 @@ jQuery('.billing_date').focus();
           lot_duplicate_total : 0,
           unit_price_duplicate : 0,
           unit_price_original : 0,
-
+          sale_prev : 0,
           slab_no_total : 0,
           slab_yes_total : 0,
 

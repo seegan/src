@@ -1846,7 +1846,7 @@ function getBillDetail($bill_no = 0){
 		
 
 		$bill_id = $data['bill_data']->id;
-		$bill_detail_query = "SELECT *, sdo.id as sale_detail_id FROM wp_sale_detail sdo
+/*		$bill_detail_query = "SELECT *, sdo.id as sale_detail_id FROM wp_sale_detail sdo
 JOIN (
 	SELECT 
 		tt1.*, 
@@ -1867,7 +1867,9 @@ WHERE sdo.sale_id = ${bill_id}
 AND 
 sdo.lot_id = lt.id 
 AND 
-sdo.active=1";
+sdo.active=1";*/
+
+	$bill_detail_query = "SELECT sd_full.*, ol.lot_number, ol.search_name, ol.brand_name, ol.product_name, ol.weight, ol.unit_type, ol.lot_type, ol.slab_system, sd_full.lot_parent_id as par_id, ol.stock_alert, ol.buying_price, ol.basic_price, ol.hsn_code, ol.gst_percentage, nl.stock_balance, nl.sale_balance, nl.return_balance, (nl.stock_balance - nl.sale_balance + nl.return_balance) as stock_bal  FROM ( SELECT sd.* FROM wp_sale_detail as sd WHERE sd.sale_id = ${bill_id}  AND sd.active = 1 ) as sd_full JOIN wp_lots as ol ON sd_full.lot_id = ol.id JOIN wp_lots as nl ON sd_full.lot_parent_id = nl.id ";
 
 
 	$data['bill_detail_data'] = $wpdb->get_results($bill_detail_query);
