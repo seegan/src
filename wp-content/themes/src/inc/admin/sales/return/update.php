@@ -3,6 +3,23 @@
     $return_data = (isset($_GET['return_id'])) ? get_return_data($_GET['return_id']) : false;
 
 ?>
+<style type="text/css">
+    input[type="checkbox"][readonly] {
+      pointer-events: none;
+    }
+    .return_alert{
+        position: absolute;
+        width: 100%;
+        margin-top: 10px; 
+    }
+    .return_alert_text{
+        position: relative;
+        font-size:20px;
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
     <div style="width: 100%;">
         <ul class="icons-labeled">
             <li>
@@ -190,7 +207,12 @@
                 </tr>
             </tbody>
         </table>
-
+        <?php $display = (checkBillBalance($sale_id)*-1) > 0 ? '' : 'style="display:block"'; ?>
+        <div class="return_alert" <?php echo $display; ?>>
+            <div class="return_alert_text">
+                 Product purchase on Credit.Do not Pay back!!!
+            </div>
+        </div>
         <div style="margin-top:10px;">
             <input type="button" value="Update Return" class="submit-button return_item_update">
         </div>
