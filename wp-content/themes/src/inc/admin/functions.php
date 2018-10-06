@@ -319,6 +319,7 @@ function post_customer_create_popup(){
 	    'address' => esc_attr($params['customer_address']),
 	    'type' => esc_attr($params['customer_type']),
 	    'gst_number' => esc_attr($params['gst_number']),
+	    'bill_title' => esc_attr($params['bill_title']),
 	    'payment_type' => esc_attr($params['payment_type']),
 	    'created_at' => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) )
 	));
@@ -358,6 +359,7 @@ function post_customer_edit_popup(){
 	    'address' => esc_attr($params['customer_address']),
 	    'type' => esc_attr($params['customer_type']),
 	    'gst_number' => esc_attr($params['gst_number']),
+	    'bill_title' => esc_attr($params['bill_title']),
 	    'payment_type' => esc_attr($params['payment_type'])
 	), array( 'id' => $params['customer_id'] ) ) ) {
 		$data['roll_id'] = ( isset($params['roll_id']) && $params['roll_id'] != '') ? $params['roll_id'] : '';
@@ -3341,3 +3343,23 @@ function getUnitType($unit_type = false) {
 
 	return $data;
 }
+
+
+
+function uniqueCustomer() {
+	global $wpdb;
+	$lot_number 		= $_POST['lot_number'];
+	$dummy_lot_number 	= $_POST['dummy_lot_number'];
+	$lots_table 		= $wpdb->prefix. 'lots';
+	$query 				= "SELECT * FROM {$lots_table} WHERE ( lot_number = '".$lot_number."' OR lot_number = '".$dummy_lot_number."' ) AND active = 1";
+	$result_exist 		= $wpdb->get_row( $query );
+	if($result_exist) {
+    	$data = 1;
+    } else {
+    	$data = 0;
+    }
+	echo json_encode($data);
+	die();
+}
+add_action( 'wp_ajax_uniqueCustomer', 'uniqueCustomer' );
+add_action( 'wp_ajax_nopriv_uniqueCustomer', 'uniqueCustomer' );

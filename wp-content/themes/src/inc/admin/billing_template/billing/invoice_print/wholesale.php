@@ -132,12 +132,11 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 <div class="A4 page-break">
 <div class=" print-table">
     <div class="sheet padding-10mm">
-
     <div class="inner-container" >
       <table class="customer-detail" style="margin-top: 20px;margin-bottom:2px;  border-collapse: collapse; " >
         <tbody>
-            <tr>
-                <td colspan="12" style="text-align: center; font-weight: bold; font-size: 22px;"  ><b>TAX INVOICE</b></td>
+            <tr> 
+                <td colspan="12" style="text-align: center; font-weight: bold; font-size: 22px;"  ><b><?php echo isset($bill_data['customer_data']) ? strtoupper($bill_data['customer_data']->bill_title) : 'TAX INVOICE' ?></b></td>
             </tr>
             <tr style="text-align: left;" >
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
