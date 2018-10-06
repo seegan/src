@@ -160,7 +160,7 @@ if(decimal <= 0.49){
   var previous_to_pay = parseFloat(jQuery('.previous_pay_to_bal').val());
   var current_to_pay = parseFloat(previous_to_pay + total);
 
-  if(current_to_pay >= 0){
+  if(current_to_pay > 0){
     jQuery('.return_to_bal_text').text(current_to_pay.toFixed(2));
     jQuery('.return_to_bal').val(current_to_pay.toFixed(2));
     jQuery('.return_to_check').attr('readonly',false);
