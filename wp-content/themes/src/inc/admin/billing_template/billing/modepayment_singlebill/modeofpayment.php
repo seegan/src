@@ -113,6 +113,7 @@
 		?>
 	</tbody>
 </table>
+<br>
 <input type="hidden" class="previous_paid_total" value="<?php echo getBillPaymentTotal($bill_id); ?>">
 <table class="payment_tab div-table-row">
 	<thead>

@@ -601,7 +601,6 @@ function lot_create_submit_popup() {
 	$params = array();
 	parse_str($_POST['data'], $params);
 
-		var_dump($params); die();
 
 	$stock_alert = $params['stock_alert'];
 	$basic_price = $params['basic_price'];
@@ -875,7 +874,7 @@ function lot_update_submit_popup() {
 	$lots_table = $wpdb->prefix. 'lots';
 	$lots_detail_table = $wpdb->prefix. 'lots_detail';
 
-	$query = "SELECT * FROM {$lots_table} WHERE id = ".$lot_id." AND lot_number = '".$lot_number."' AND active = 1";
+	$query = "SELECT * FROM {$lots_table} WHERE id = ".$lot_id." AND active = 1";
 	$result_exist = $wpdb->get_row( $query );
 	$dummy_query = "SELECT * FROM {$lots_table} WHERE parent_id = '".$lot_id."' AND lot_type = 'dummy' AND active = 1";
 
@@ -888,6 +887,7 @@ function lot_update_submit_popup() {
 		$wpdb->update($lots_detail_table, array( 'active' => 0 ), array( 'lot_id' => $lot_id) );
 
 		$lot_original = array(
+				'lot_number'  => $lot_number,
 				'brand_name' => $brand_name,
 				// 'search_name'  => $search_name,
 				'product_name' => $product_name,
@@ -1815,7 +1815,10 @@ function update_bill_last(){
 		}
 
 		//Delivery check
-		checkDeliveryAndUpdate($billing_no);		
+		// if($home_delivery == '0'){
+		// 	mainDeliveryAdd($billing_no,$billing_date);
+		// }
+		checkDeliveryAndUpdate($billing_no);
 
 	}
 
@@ -3343,23 +3346,3 @@ function getUnitType($unit_type = false) {
 
 	return $data;
 }
-
-
-
-function uniqueCustomer() {
-	global $wpdb;
-	$lot_number 		= $_POST['lot_number'];
-	$dummy_lot_number 	= $_POST['dummy_lot_number'];
-	$lots_table 		= $wpdb->prefix. 'lots';
-	$query 				= "SELECT * FROM {$lots_table} WHERE ( lot_number = '".$lot_number."' OR lot_number = '".$dummy_lot_number."' ) AND active = 1";
-	$result_exist 		= $wpdb->get_row( $query );
-	if($result_exist) {
-    	$data = 1;
-    } else {
-    	$data = 0;
-    }
-	echo json_encode($data);
-	die();
-}
-add_action( 'wp_ajax_uniqueCustomer', 'uniqueCustomer' );
-add_action( 'wp_ajax_nopriv_uniqueCustomer', 'uniqueCustomer' );

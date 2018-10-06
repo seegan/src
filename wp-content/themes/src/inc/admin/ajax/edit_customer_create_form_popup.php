@@ -26,7 +26,7 @@
 			<label style="width: 115px;">Customer Mobile
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
-			<input type="text" id="customer_mobile" name="customer_mobile" pattern="[0-9]*" onkeypress="return isNumberKey(event)" autocomplete="off" value="<?php echo ($customer) ? $customer->mobile : ''; ?>">
+			<input type="text" id="customer_mobile" name="customer_mobile" class="customer_mobile" pattern="[0-9]*" onkeypress="return isNumberKey(event)" autocomplete="off" value="<?php echo ($customer) ? $customer->mobile : ''; ?>">
 		</div>
 		<div class="form_detail">
 			<label style="width: 115px;">Alternative Mobile Number
