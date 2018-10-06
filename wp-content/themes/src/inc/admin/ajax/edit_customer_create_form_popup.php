@@ -59,6 +59,12 @@
 				<input type="radio" name="payment_type" value="credit" <?php echo $credit_payment; ?>>Credit 
 			</div>
 		</div>
+		<div class="form_detail">
+			<label>Bill Title</label>
+			<div style="">
+				<input type="text" id="bill_title" name="bill_title" autocomplete="off" value="<?php echo $customer->bill_title;?>">
+			</div>
+		</div>
 		<div class="button_sub">
 			<input type="hidden" name="customer_id" id="customer_id" value="<?php echo $_POST['id']; ?>">
 			<input type="hidden" name="roll_id" id="roll_id" value="<?php echo $_POST['roll_id']; ?>">

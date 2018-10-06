@@ -42,9 +42,15 @@
 		</div>
 		<div class="form_detail">
 			<label>Payment Method</label>
-			<div style="margin-top:10px;">
+			<div style="margin-top: 10px;">
 				<input type="radio" name="payment_type" value="immediate" checked>Immediate 
 				<input type="radio" name="payment_type" value="credit">Credit 
+			</div>
+		</div>
+		<div class="form_detail">
+			<label>Bill Title</label>
+			<div style="">
+				<input type="text" id="bill_title" name="bill_title" autocomplete="off" value="Tax Invoice">
 			</div>
 		</div>
 		<div class="button_sub">

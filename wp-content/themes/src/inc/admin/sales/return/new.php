@@ -250,11 +250,11 @@ input[type="checkbox"][readonly] {
                         <input type="hidden" name="total_return" value="0.00" class="total_return">
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check"/></td></div>
+                <tr> <?php $readonly = (checkBillBalance($sale_id)*-1) > 0 ? '' : 'readonly'; ?>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check" <?php echo $readonly; ?>/></td></div>
                     <td>
                         <input type="hidden" class="previous_pay_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>">
-                        <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) ?></div>
+                        <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) > 0 ? (checkBillBalance($sale_id)*-1) : 0;  ?></div>
                         <input type="hidden" name="return_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>" class="return_to_bal">
                     </td>
                 </tr>

@@ -145,7 +145,7 @@
                     </span>
                 </div> -->
                 <div class="fieldwrap by-customer" style="<?php echo $by_customer; ?>">
-                    <span class="left" style="width: 30%">
+                    <span class="left" style="width: 20%">
                         <div class="align">
                             <div class="customer-cash">
                                 <div class="customer_old">
@@ -158,7 +158,7 @@
                             </div>
                         </div>           
                     </span>  
-                     <span class="left" style="width: 30%">
+                     <span class="left" style="width: 40%">
                         <legend class="choiceFld">Phone Number</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
@@ -173,7 +173,7 @@
                                 <textarea name="address" id="billing_address" class="billing_address"><?php echo $bill_data['customer_data']->address; ?></textarea>
                             </span>
                         </div>
-                    </span>             
+                    </span>           
                 </div>
                 <div class="fieldwrap by-counter" style="<?php echo $by_counter ?>">
                     <span class="left">

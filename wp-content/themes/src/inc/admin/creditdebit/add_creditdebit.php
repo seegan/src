@@ -17,7 +17,9 @@
     cursor: pointer; 
     cursor: hand;
 }
-
+.total_due_text{
+	font-weight: bold;
+}
 </style>
 
 
