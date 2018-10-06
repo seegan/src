@@ -1,5 +1,4 @@
 jQuery(document).ready(function(){
-
   jQuery('.repeterin').each(function(){
     populate_select2(this, 'old');
   });
@@ -204,7 +203,6 @@ jQuery('.type-bill-slider .bill-slide-in').live('click', function(){
   jQuery(this).parent().parent().parent().parent().find('.total').attr('disabled',input_diabled);
 
   var disabled_calss =  'disabled-'+input_diabled;
-  console.log(disabled_calss);
   jQuery(this).parent().parent().parent().parent().removeClass('disabled-true, disabled-false').addClass(disabled_calss);
 });
 
@@ -307,21 +305,23 @@ function calculateGST(selector) {
 function updateBalanceStock(par_id, total_stock, stock_alert) {
 
   var used_stock = 0;
-  var bag_wight = 0;
+  var bag_weight = 0;
   var tot_weight = 0;
+  var sale_prev = 0;
 
   jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
 
-    bag_wight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
+    bag_weight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
+    sale_prev = sale_prev + parseFloat(jQuery(this).find('.sale_prev').val());
 
     if(jQuery(this).attr('lot-slabsys') == 1) {
 
       tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_yes .total').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_yes .total').val());
-      tot_weight = (jQuery(this).find('.weight-original-block .sale_as:checked').val() == 'bag') ? tot_weight*bag_wight : tot_weight;
+      tot_weight = (jQuery(this).find('.weight-original-block .sale_as:checked').val() == 'bag') ? tot_weight*bag_weight : tot_weight;
       used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
     } else {
       tot_weight = isNaN(parseFloat(jQuery(this).find('.slab_system_no .unit_count').val())) ? 0 : parseFloat(jQuery(this).find('.slab_system_no .unit_count').val());
-      tot_weight = tot_weight * bag_wight;
+      tot_weight = tot_weight * bag_weight;
       used_stock = parseFloat(used_stock) + parseFloat(tot_weight, 10);
     }
   });
@@ -329,6 +329,8 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
   used_stock = isNaN(used_stock) ? 0 : used_stock;
 
   var avail_stock = parseFloat(total_stock) - parseFloat(used_stock);
+  avail_stock = avail_stock+sale_prev;
+
   var tootip_stock_avail_class = '';
   if(avail_stock > stock_alert) {
     tootip_stock_avail_class = 'tootip-black';
@@ -338,9 +340,10 @@ function updateBalanceStock(par_id, total_stock, stock_alert) {
     tootip_stock_avail_class = 'tootip-red';
   }
 
-  jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){
+  jQuery('[lot-parent="'+par_id+'"].repeterin').each(function(){ 
+    bag_weight = parseFloat(jQuery(this).find('.bagWeightInKg').val());
     jQuery(this).find('.weight_cal_tooltip .tooltip').removeClass('tootip-black tootip-yellow tootip-red').addClass(tootip_stock_avail_class);
-    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(bagKgSplitter(avail_stock, bag_wight, 'kg'))
+    jQuery(this).find('.weight_cal_tooltip .tooltip').find('.stock_weight_txt').text(bagKgSplitter(avail_stock, bag_weight, 'kg'))
   });
 
 }

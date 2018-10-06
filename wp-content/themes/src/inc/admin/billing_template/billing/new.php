@@ -267,8 +267,8 @@
                                         <span class="kg_display">Kg</span>
                                         <span class="bag_display">Bag</span>
                                       </div>
+                                      <input type="hidden" class="sale_prev" name="sale_prev" value="0.00">
                                     </div>
-
                                     <div style="padding-top:6px;">
                                         <span class="">
                                             <span class="sale_as_name_kg"><input type="radio" name="sale_as" class="sale_as" value="kg" checked> - Kg</span> | 
@@ -540,9 +540,9 @@
           lot_duplicate_total : 0,
           unit_price_duplicate : 0,
           unit_price_original : 0,
-
           slab_no_total : 0,
           slab_yes_total : 0,
+          sale_prev : 0,
 
         },
         show: function () {
