@@ -11,6 +11,7 @@
         $sale_detail = getSaleDataByYearInvoice($financial_year, $invoice_id);
         $sale_id = ($sale_detail && isset($sale_detail->id)) ? $sale_detail->id : 0;
         $sales = getSalesList($sale_id);
+        $customer = getcustomerDetail($sale_detail->customer_id);
     }
 
     $gst_from = $sale_detail->gst_to;
@@ -74,6 +75,29 @@ input[type="checkbox"][readonly] {
             </div>
         </div>
 
+        <div class="info_bar">
+            <div class="customer_info_bar">
+
+            <?php
+                if($customer) {
+            ?>
+                <h4>Customer Information</h4>
+                <ul>
+                    <li><span>Name : </span><?php echo $customer->name; ?> </li>
+                    <li><span>Mobile : </span><?php echo $customer->mobile; ?></li>
+                    <li><span>Billing Address : </span><?php echo $customer->Address; ?></li>
+                </ul>
+            <?php
+                }
+            ?>
+            </div>
+            <div class="bill_info_bar">
+                <ul>
+                    <li><span>Bill No : </span> <?php echo $sale_detail->invoice_id; ?></li>
+                    <li><span>Bill Date : </span> <?php echo $sale_detail->invoice_date;  ?></li>
+                </ul>
+            </div>
+        </div>
 
         <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>">
         <input type="hidden" name="gst_from" value="<?php echo $gst_from; ?>" class="gst_from">

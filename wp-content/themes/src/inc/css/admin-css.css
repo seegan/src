@@ -1377,3 +1377,43 @@ margin: -1px;
         background: white url('./images/ajax-loader.gif') right center no-repeat;
   }
 
+
+
+
+
+
+
+
+
+
+.info_bar {
+    width: 100%;
+    float: left;
+    font-size: 13px;
+}
+.customer_info_bar {
+    width: 50%;
+    float: left;
+    padding: 0px 15px;
+}
+.bill_info_bar {
+    width: 23%;
+    float: right;
+    padding: 0px 15px;
+}
+.customer_info_bar h4 {
+    margin: 5px 0px;
+}
+.customer_info_bar ul, .bill_info_bar ul {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+.customer_info_bar ul li, .bill_info_bar ul li {
+    list-style: none;
+    margin-bottom: 5px;
+}
+.customer_info_bar span, .bill_info_bar span {
+    font-size: 14px;
+    font-weight: bold;
+}
