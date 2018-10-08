@@ -13,7 +13,6 @@ function sale_delivery_aj($value='', $delivery_boy='') {
 	$delivery_date = man_to_machine_date($params['delivery_date']);
 
 	$wpdb->insert($delivery_table, array('sale_id' => $sale_id, 'delivery_boy' => $delivery_boy,  'delivery_date' => $delivery_date));
-	
 	$delivery_id = 0;
 	if($delivery_id = $wpdb->insert_id) {
 		$data['success'] = 1;

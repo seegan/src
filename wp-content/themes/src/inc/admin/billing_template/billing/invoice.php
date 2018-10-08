@@ -295,6 +295,7 @@ $bill_healthcenter = '<div class="type-f type-health"></div>';
 		</div>
 
 <?php 
+
 if($bill_data['bill_data']->customer_type == 'retail'){
 
 	include( get_template_directory().'/inc/admin/billing_template/billing/invoice_print/retail.php' ); 

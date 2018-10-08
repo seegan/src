@@ -117,6 +117,16 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     .text-right {
       text-align: right;
     }
+     .dotted_border_top  {
+        border-top: 1px dashed #000;        
+
+      }
+      .dotted_border_bottom  {        
+        border-bottom: 1px dashed #000;
+      }
+      .td_class{
+        font-weight: 700;
+      }
 </style>   
  <div class="A4_HALF">
   <div class="sheet padding-10mm">
@@ -157,16 +167,6 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
         <td valign='top' WIDTH='30%'> </td>
       </tr>
     </table>
-    <style>
-      .dotted_border_top  {
-        border-top: 1px dashed #000;        
-
-      }
-      .dotted_border_bottom  {        
-        border-bottom: 1px dashed #000;
-      }
-    </style>
-
     <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" >
       <tr>
         <th class="dotted_border_top dotted_border_bottom text-center"  valign='top'>NO</th>
@@ -190,14 +190,15 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
       <tr>
         <td valign='top' class="dotted_border_bottom" align='center'><?php echo $i; ?></td>
         <td valign='top' class="dotted_border_bottom" align='left'>
+          <span class="td_class">
         <?php
           if($value->brand_display === '1') {
-            echo '<b>'.$value->brand_name.'</b>';
+            echo $value->brand_name;
           } else {
-            echo '<b>'.$value->lot_number.'</b>'; 
+            echo $value->lot_number; 
           }
-          echo '<b><span style="float:right;">'.$value->price_orig_hidden.'</span></b>';
-          echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+          echo '<span style="float:right;">'.$value->price_orig_hidden.'</span></span>';
+          echo "<br>(".$value->product_name.")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
           echo  $value->unit_price.' x '.(float) $sale_weight.$slab_type ;
         ?>
         </td>

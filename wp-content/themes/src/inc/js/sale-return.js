@@ -5,6 +5,11 @@ jQuery(document).ready(function(){
 
 
     jQuery('.return_item').live('click', function(){
+      var sum = 0;
+      jQuery('.user_enrty_weight').each(function(){
+        sum += parseFloat(jQuery(this).val());
+      });
+      if(sum > 0){
         jQuery('.bill-loader').css('display', 'block');
         jQuery.ajax({
             type: "POST",
@@ -23,11 +28,19 @@ jQuery(document).ready(function(){
               }
             }
         });
+      } else{
+         alert('Please Add Atleast One Item!!! Empty Bill Can'+"'"+'t Submit');
+      }
 
     });
 
 
     jQuery('.return_item_update').live('click', function(){
+        var sum = 0;
+        jQuery('.user_enrty_weight').each(function(){
+          sum += parseFloat(jQuery(this).val());
+        });
+      if(sum > 0){
         jQuery('.bill-loader').css('display', 'block');
         jQuery.ajax({
             type: "POST",
@@ -46,6 +59,9 @@ jQuery(document).ready(function(){
               }
             }
         });
+      } else{
+         alert('Please Add Atleast One Item!!! Empty Bill Can'+"'"+'t Submit');
+      }
 
     });
 

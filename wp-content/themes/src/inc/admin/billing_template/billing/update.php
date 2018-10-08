@@ -82,7 +82,7 @@
                 </label>
                 <div class="fieldwrap">
                     <span class="left">
-                        <input type="text" name="billing_date" class="billing_date" value="<?php echo date("Y-m-d", strtotime($bill_data['bill_data']->invoice_date)); ?>" id="billing_date">
+                        <input type="text" name="billing_date" class="billing_date" value="<?php echo date("d-m-Y", strtotime($bill_data['bill_data']->invoice_date)); ?>" id="billing_date">
                     </span>
                     <span class="left">
                     <label class="fldTitle">Bill No</label>
@@ -885,7 +885,7 @@ jQuery('.billing_date').focus();
     jQuery(document).ready(function(){ 
     //        populateBill();
 
-        jQuery("#billing_date" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#billing_date" ).datepicker({dateFormat: "dd-mm-yy"});
     });
 
 

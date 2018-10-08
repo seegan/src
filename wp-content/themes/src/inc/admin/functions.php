@@ -1393,7 +1393,7 @@ function update_bill(){
 	$lots_sale_detail_table = $wpdb->prefix. 'sale_detail';
 
 
-	$billing_date 	= $params['billing_date'];
+	$billing_date 	= man_to_machine_date($params['billing_date']);
 	$billing_no 	= $params['billing_no'];
 	$shop_name 		= $params['shop_name'];
 	$gst_type 		= $params['gst_type'];
@@ -1624,7 +1624,7 @@ function update_bill_last(){
 	$delivery_table 		= $wpdb->prefix. 'delivery_address';
 	$customer_table 	    = $wpdb->prefix. 'customers';
 
-	$billing_date 			= $params['billing_date'];
+	$billing_date 			= man_to_machine_date($params['billing_date']);
 	$billing_no 			= $params['billing_no'];
 	$shop_name 				= $params['shop_name'];
 	$gst_type 				= $params['gst_type'];
@@ -2782,7 +2782,7 @@ function get_delivery_data($delivery_id = 0) {
 
 	if($delivery_data) {
 		$data['delivery_data'] = $delivery_data;
-		$detail_query = "SELECT dd.id, dd.delivery_weight, dd.sale_detail_id, dd.lot_id, l.lot_number, sd.slab FROM ${delivery_detail_table} as dd JOIN ${lot_table} as l ON dd.lot_id = l.id JOIN ${sale_detail_table} as sd ON dd.sale_detail_id = sd.id WHERE dd.delivery_id = {$delivery_id} AND dd.active = 1 AND sd.active=1";
+		$detail_query = "SELECT dd.id, dd.delivery_weight,sd.bag_weight, dd.sale_detail_id, dd.lot_id, l.lot_number, sd.slab FROM ${delivery_detail_table} as dd JOIN ${lot_table} as l ON dd.lot_id = l.id JOIN ${sale_detail_table} as sd ON dd.sale_detail_id = sd.id WHERE dd.delivery_id = {$delivery_id} AND dd.active = 1 AND sd.active=1";
 		$data['delivery_detail'] = $wpdb->get_results($detail_query);
 	}
 	return $data;

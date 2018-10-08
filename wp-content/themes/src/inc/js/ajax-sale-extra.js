@@ -343,6 +343,9 @@ jQuery(document).ready(function(){
     jQuery("#entry_date_from" ).datepicker({dateFormat: "yy-mm-dd"});
     jQuery("#entry_date_to" ).datepicker({dateFormat: "yy-mm-dd"});
 });
-
+function man_to_machine_date_js(date = '') {
+  var newdate = date.split("-").reverse().join("-");
+  return newdate;
+}
 /*End Updated for filter 11/10/16*/
 

@@ -272,7 +272,8 @@ input[type="checkbox"][readonly] {
                 </tr>
             </tbody>
         </table>
-        <?php $display = (checkBillBalance($sale_id)*-1) > 0 ? '' : 'style="display:block"'; ?>
+        <?php $display  = 'style="display:none"';
+         //$display = (checkBillBalance($sale_id)*-1) > 0 ? '' : 'style="display:block"'; ?>
         <div class="return_alert" <?php echo $display; ?>>
             <div class="return_alert_text">
                  Product purchase on Credit.Do not Pay back!!!

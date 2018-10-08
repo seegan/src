@@ -28,7 +28,7 @@
                 </label>
                 <div class="fieldwrap">
                     <span class="left">
-                        <input type="text" name="billing_date" class="billing_date" value="<?php echo date("Y-m-d", time()); ?>" id="billing_date">
+                        <input type="text" name="billing_date" class="billing_date" value="<?php echo date("d-m-Y", time()); ?>" id="billing_date">
                     </span>
                     <span class="left">
                     <label class="fldTitle">Bill No</label>
@@ -578,7 +578,7 @@
 
 
     jQuery(document).ready(function(){
-        jQuery("#billing_date" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#billing_date" ).datepicker({dateFormat: "dd-mm-yy"});
     });
 
 

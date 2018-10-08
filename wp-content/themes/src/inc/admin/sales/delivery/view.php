@@ -140,7 +140,7 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 							<td class="row">
 								<?php echo $i_value->lot_number; ?>
 							</td>
-							<td><?php echo $i_value->delivery_weight; ?></td>
+							<td><?php echo bagKgSplitter($i_value->delivery_weight,$i_value->bag_weight); ?></td>
 						</tr>
 					<?php
 							}
@@ -151,7 +151,8 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 							<td colspan="2">
 								<label>Bill Amount &nbsp;(Rs)</label>
 							</td>
-							<td><?php echo $bill_data['bill_data']->sale_total; ?></td>
+							<td><?php $total = checkBillBalance($bill_data['bill_data']->id);
+							echo  sprintf('%0.2f',  $total);  ?></td>
 						</tr>
 					</tbody>
 				</table>

@@ -160,7 +160,7 @@
       <tr>
         <td valign='top' align='center'><?php echo $i; ?></td>
         <td valign='top' align='center'><?php echo $value->lot_number; ?></td>
-        <td valign='top' align='right'><?php echo $value->delivery_weight; ?>&nbsp;&nbsp;&nbsp;</td>
+        <td valign='top' align='right'><?php echo bagKgSplitter($value->delivery_weight,$value->bag_weight); ?>&nbsp;&nbsp;&nbsp;</td>
       </tr>
       <?php
           }
@@ -168,11 +168,11 @@
         ?>
     </table>
 
-
       <table cellspacing='3' cellpadding='3' WIDTH='100%' class="table table-striped" style="border-bottom: 1px dashed #000;">
        <tr> 
          <td class="dotted_border_top " colspan="6" valign='top' align='center'><b>BILL AMOUNT</b></td>
-         <td  class="dotted_border_top " valign='top' align='right'><span class="amount"> <?php echo '<b>'.$bill_data['bill_data']->sale_total.'</b>'; ?>&nbsp;&nbsp;&nbsp;</span></td>
+         <td  class="dotted_border_top " valign='top' align='right'><span class="amount"> <?php $total = checkBillBalance($bill_data['bill_data']->id);
+          echo '<b>'.sprintf('%0.2f',  $total).'</b>'; ?>&nbsp;&nbsp;&nbsp;</span></td>
       </tr>
     </table>
 
