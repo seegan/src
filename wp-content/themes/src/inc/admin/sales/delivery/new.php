@@ -3,6 +3,8 @@
     $sale_id = 0;
     $financial_year = date('Y');
     $sales = false;
+    $customer = false;
+
 
     if(isset($_GET['page']) && isset($_GET['financial_year']) && isset($_GET['inv_no'])  ) {
         $invoice_id = $_GET['inv_no'];
@@ -11,6 +13,7 @@
         $sale_detail = getSaleDataByYearInvoice($financial_year, $invoice_id);
         $sale_id = ($sale_detail && isset($sale_detail->id)) ? $sale_detail->id : 0;
         $sales = getSalesList($sale_id);
+        $customer = getcustomerDetail($sale_detail->customer_id);
     }
 ?>
     <div style="width: 100%;">
@@ -60,7 +63,32 @@
                 <span style="font-weight:bold;">Delivery Boy:</span> <input type="text" name="delivery_boy" class="delivery_boy" value="<?php echo $sale_detail->delivery_boy; ?>" id="delivery_date" style="width: 200px;">
             </div>
         </div>
+        <div class="info_bar">
+            <div class="customer_info_bar">
 
+            <?php
+                if($customer) {
+            ?>
+                <h4>Customer Information</h4>
+                <ul>
+                    <li><span>Name : </span><?php echo $customer->name; ?> </li>
+                    <li><span>Mobile : </span><?php echo $customer->mobile; ?></li>
+                    <li><span>Billing Address : </span><?php echo $customer->Address; ?></li>
+                </ul>
+            <?php
+                }
+            ?>
+            </div>
+            <div class="bill_info_bar">
+                <ul>
+                    <li><span>Bill No : </span> <?php echo $sale_detail->invoice_id; ?></li>
+                    <li><span>Bill Date : </span> <?php echo $sale_detail->invoice_date;  ?></li>
+                    <li><span>Delivery Name : </span> <?php echo $sale_detail->delivery_name;  ?></li>
+                    <li><span>Delivery Phone : </span> <?php echo $sale_detail->delivery_phone;  ?></li>
+                    <li><span>Delivery Address : </span> <?php echo $sale_detail->delivery_address;  ?></li>
+                </ul>
+            </div>
+        </div>
         <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>">
         <table class="display">
             <thead>

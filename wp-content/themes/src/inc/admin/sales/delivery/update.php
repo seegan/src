@@ -1,7 +1,6 @@
 <?php
     $delivery_id = (isset($_GET['delivery_id'])) ? $_GET['delivery_id'] : 0;
     $delivery_data = (isset($_GET['delivery_id'])) ? get_delivery_data($_GET['delivery_id']) : false;
-
 ?>
     <div style="width: 100%;">
         <ul class="icons-labeled">
