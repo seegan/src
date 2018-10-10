@@ -8,8 +8,8 @@
         $item_status = $_POST['item_status'];
         $lot_type = $_POST['lot_type'];
 
-        $date_from = ( isset( $_POST['date_from'] ) && $_POST['date_from'] != '' )  ? $_POST['date_from'] : date('Y-m-d');
-        $date_to = ( isset( $_POST['date_to'] ) && $_POST['date_to'] != '' )  ? $_POST['date_to'] : date('Y-m-d');
+        $date_from = ( isset( $_POST['date_from'] ) && $_POST['date_from'] != '' )  ? man_to_machine_date($_POST['date_from']) : date('Y-m-d');
+        $date_to = ( isset( $_POST['date_to'] ) && $_POST['date_to'] != '' )  ? man_to_machine_date($_POST['date_to']) : date('Y-m-d');
 
 
         $search_brand = $_POST['search_brand'];
@@ -24,8 +24,8 @@
         $item_status = isset( $_GET['item_status'] ) ? $_GET['item_status']  : '-';
         $lot_type = isset( $_GET['lot_type'] ) ? $_GET['lot_type']  : '-';
 
-        $date_from = ( isset( $_GET['date_from'] ) && $_GET['date_from'] != ''  ) ? $_GET['date_from']  : date('Y-m-d');
-        $date_to = ( isset( $_GET['date_to'] ) && $_GET['date_to'] != '' ) ? $_GET['date_to']  : date('Y-m-d');
+        $date_from = ( isset( $_GET['date_from'] ) && $_GET['date_from'] != ''  ) ? man_to_machine_date($_GET['date_from'])  : date('Y-m-d');
+        $date_to = ( isset( $_GET['date_to'] ) && $_GET['date_to'] != '' ) ? man_to_machine_date($_GET['date_to'])  : date('Y-m-d');
 
 
         $search_brand = isset( $_GET['search_brand'] ) ? $_GET['search_brand']  : '';

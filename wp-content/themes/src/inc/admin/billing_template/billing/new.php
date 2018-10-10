@@ -44,10 +44,10 @@
                         <span>
                             <input type="radio" name="shop_name" value="rice_center" checked><label class="choice">Saravana Rice Centre</label>
                         </span>
-                        &nbsp;&nbsp;
+                       <!--  &nbsp;&nbsp;
                         <span>
                             <input type="radio" name="shop_name" value="rice_mandy"><label class="choice">Saravana Rice Mandy</label>
-                        </span>
+                        </span> -->
                                                
                     </span>
                     <span class="left">
@@ -68,7 +68,7 @@
                 </div>
             </li>
             
-            <li>
+            <!-- <li>
                 <legend class="choiceFld">Bill By Name</legend>
                 <div class="fieldwrap input-uniform">
                     <span>
@@ -79,17 +79,24 @@
                         <input type="radio" name="bill_by_name" value="yes" class="bill_by"><label class="choice">Customer Name</label>
                     </span>
                 </div>
-            </li>
+            </li> -->
             <li>
                 <label id="customer" for="customer" class="fldTitle">Select the Customer
-                    <abbr class="require" title="Required Field">*</abbr>
                 </label>
-                <div class="fieldwrap by-customer" style="display:none;">
-                    <span class="left" style="width: 20%">
+                <div class="fieldwrap by-customer" >
+                     <span class="left" style="width: 30%">
+                       
+                        <div class="fieldwrap input-uniform">
+                            <span>
+                                <input type="text" name="mobile" id="billing_mobile" class="billing_mobile" placeholder="* Enter Mobile..." onkeypress="return isNumberKey(event)">
+                            </span>                                 
+                        </div>
+                    </span>
+                    <span class="left" style="width: 30%">
                         <div class="align">
                             <div class="customer-cash">
                                 <div class="customer_old">
-                                    <input type="text" id="billing_customer" name="name" class="billing_customer"/>
+                                    <input type="text" id="billing_customer" name="name" class="billing_customer" placeholder="Enter Name..."/>
                                 </div>
                                 <div>
                                     <input type="hidden" name="user_type" value="new" class="user_type" id="user_type" /> 
@@ -98,24 +105,16 @@
                             </div>
                         </div>           
                     </span>  
-                     <span class="left" style="width: 40%">
-                        <legend class="choiceFld">Phone Number</legend>
-                        <div class="fieldwrap input-uniform">
-                            <span>
-                                <input type="text" name="mobile" id="billing_mobile" class="billing_mobile" onkeypress="return isNumberKey(event)">
-                            </span>                                 
-                        </div>
-                    </span>
+                    
                     <span class="left" style="width: 40%">
-                        <legend class="choiceFld">Address</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
-                                <textarea name="address" id="billing_address" class="billing_address"></textarea>
+                                <textarea name="address" id="billing_address" class="billing_address"  placeholder="Enter Address..."></textarea>
                             </span>
                         </div>
                     </span>          
                 </div>
-                <div class="fieldwrap by-counter">
+               <!--  <div class="fieldwrap by-counter">
                     <span class="left">
                         <div class="align">
                             <div class="counter-cash">
@@ -123,7 +122,7 @@
                             </div>
                         </div>           
                     </span>              
-                </div>
+                </div> -->
 
             </li>
             <li>
@@ -516,7 +515,7 @@
           <?php include( get_template_directory().'/inc/admin/billing_template/billing/modepayment_singlebill/modeofpayment.php' );    ?>   
             </li>
             <li class="buttons bottom-round noboder">
-                <div class="fieldwrap">
+                <div class="" style="float: right;margin-right: 37%;">
                     <input name="bill_submit" type="button" value="Create Invoice" class="submit-button bill_submit">
                 </div>
             </li>

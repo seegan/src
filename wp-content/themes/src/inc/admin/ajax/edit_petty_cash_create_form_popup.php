@@ -22,7 +22,7 @@
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<div style="float:left;width: 138px;">
-		        <input type="text" id="cash_date" name="cash_date" style="width:100%;" value="<?php echo date("Y-m-d",strtotime($prity_cash->cash_date));  ?>">
+		        <input type="text" id="cash_date" name="cash_date" style="width:100%;" value="<?php echo date("d-m-Y",strtotime($prity_cash->cash_date));  ?>">
 		    </div>
 		</div>
 
@@ -64,7 +64,7 @@
 
 
 	jQuery(document).ready(function(){
-        jQuery("#cash_date" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#cash_date" ).datepicker({dateFormat: "dd-mm-yy"});
     })
 
 

@@ -66,7 +66,7 @@
 			</div>
 		</div>
 		<div class="button_sub">
-			<input type="hidden" name="customer_id" id="customer_id" value="<?php echo $_POST['id']; ?>">
+			<input type="hidden" name="customer_id" id="customer_id" class="customer_id" value="<?php echo $_POST['id']; ?>">
 			<input type="hidden" name="roll_id" id="roll_id" value="<?php echo $_POST['roll_id']; ?>">
 			<button type="submit" name="edit_customer_list" id="btn_submit" class="submit-button">Submit</button>
 		</div>

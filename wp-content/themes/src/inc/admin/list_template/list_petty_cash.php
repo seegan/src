@@ -112,7 +112,7 @@
 		?>
 			<tr id="employee-data-<?php echo $petty_cash_value->id; ?>">
 				<td><?php echo $start_count; ?></td>
-				<td><?php echo date('Y-m-d', strtotime($petty_cash_value->cash_date)); ?></td>
+				<td><?php echo machine_to_man_date($petty_cash_value->cash_date); ?></td>
 				<td><?php echo $petty_cash_value->cash_description; ?></td>
 				<td><?php echo $petty_cash_value->cash_amount; ?></td>
 				<td class="center">

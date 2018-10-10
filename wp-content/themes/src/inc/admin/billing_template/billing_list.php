@@ -9,7 +9,7 @@
 		$bill_total = $_POST['bill_total'];
 		
 		$customer_type = $_POST['customer_type'];
-		$shop = $_POST['shop'];
+		//$shop = $_POST['shop'];
 		$delivery = $_POST['delivery'];
 		$payment_done = $_POST['payment_done'];
 
@@ -23,7 +23,7 @@
 		$bill_total = isset( $_GET['bill_total'] ) ? $_GET['bill_total']  : '';
 		
 		$customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '-';
-		$shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
+		//$shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
 		$delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
 		$payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
 
@@ -73,29 +73,38 @@
     // }
 
 
-    // if($delivery != '-') {
-   	// 	if($con == false) {
-    // 		$condition .= " AND full_table.invoice_status = '".$delivery."' ";
-    // 	} else {
-    // 		$condition .= " AND full_table.invoice_status = '".$delivery."' ";
-    // 	}
-    // 	$con = true;
-    // }
+    if($delivery != '-') {
+   		if($con == false) {
+    		$condition .= " AND full_table.is_delivered = '".$delivery."' ";
+    	} else {
+    		$condition .= " AND full_table.is_delivered = '".$delivery."' ";
+    	}
+    	$con = true;
+    }
 
-    // if($payment_done != '-') {
-   	// 	if($con == false) {
-    // 		$condition .= " AND full_table.payment_done = '".$payment_done."' ";
-    // 	} else {
-    // 		$condition .= " AND full_table.payment_done = '".$payment_done."' ";
-    // 	}
-    // 	$con = true;
-    // }
+    if($payment_done != '-') {
+   		if($con == false) {
+            if($payment_done == '0'){
+                $condition .= " AND full_table.to_be_paid > 0 ";  
+            } else {
+                 $condition .= " AND full_table.to_be_paid <= 0 ";  
+            }
+    		
+    	} else {
+    		if($payment_done == '0'){
+                $condition .= " AND full_table.to_be_paid > 0 ";  
+            } else {
+                 $condition .= " AND full_table.to_be_paid <= 0 ";  
+            }
+    	}
+    	$con = true;
+    }
 
     if($price != '' && $price_to == '') {
    		if($con == false) {
-    		$condition .= " AND full_table.sale_total = ".$price." ";
+    		$condition .= " AND full_table.sale_total > ".$price." ";
     	} else {
-    		$condition .= " AND full_table.sale_total = ".$price." ";
+    		$condition .= " AND full_table.sale_total > ".$price." ";
     	}
     	$con = true;
     }
@@ -237,7 +246,7 @@
 				<td>
 					<?php echo $b_value->invoice_id; ?>
 				</td>
-				<td><?php echo $b_value->invoice_date; ?></td>
+				<td><?php echo machine_to_man_date($b_value->invoice_date); ?></td>
 				<td><?php echo $b_value->order_shop; ?></td>
 				<td><?php echo $b_value->name.' ('.$b_value->mobile.')<br>('.$b_value->type .')'; ?></td>
 				<td><?php 
@@ -274,7 +283,7 @@
 				</td>
 				<td class="center">
 					<span>
-						<a class="list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
+						<a class="list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update&update_from=billing_list'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
 					</span>
 					<span>
 						<a class="action-icons c-delete lot_delete last_list_view" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a>

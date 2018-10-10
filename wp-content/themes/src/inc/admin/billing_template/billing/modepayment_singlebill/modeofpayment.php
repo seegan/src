@@ -130,15 +130,15 @@
 		</tr> -->
 		<tr  class="" >
 			<td style="padding:5px;">COD <input type="checkbox" name="cod_check" class="cod_check" value="cod" /> </td>
-			<td style="padding:5px;"><div class="cod_amount_div"></div><input type="text" name="cod_amount" style="width:60px;"  class="cod_amount" value="<?php echo $cod; ?>" readonly/></td>
+			<td style="padding:5px;"><div class="cod_amount_div"></div><input type="text" name="cod_amount" tabindex="-1" style="width:60px;"  class="cod_amount" value="<?php echo $cod; ?>" readonly/></td>
 		</tr>
 		<tr style="font-weight:bold;">
 			<td>To Pay:
-				<div style="display:none;"><input type="checkbox" name="to_pay_checkbox" checked  class="to_pay_checkbox"  style="width: 20px;height: 18px;" ></div>
+				<div style="display:none;"><input type="checkbox" name="to_pay_checkbox" tabindex="-1" checked  class="to_pay_checkbox"  style="width: 20px;height: 18px;" ></div>
 
 			</td>
 			<td>	
-				<input type ="text" name="to_pay" class="to_pay" readonly value="<?php echo $pay_to; ?>" style="width: 76px;"/>
+				<input type ="text" name="to_pay" class="to_pay" tabindex="-1" readonly value="<?php echo $pay_to; ?>" style="width: 76px;"/>
 			</td>		
 		</tr>
 		<tr style="color:red;font-weight:bold;">
@@ -146,7 +146,7 @@
 				Balance:
 			</td>
 			<td>
-				<input type="text" name="balance" class="balance" value="<?php echo $cod;  ?>" readonly style="width: 76px;"> 
+				<input type="text" name="balance" tabindex="-1" class="balance" value="<?php echo $cod;  ?>" readonly style="width: 76px;"> 
 			</td>
 		</tr>
 	</tbody>

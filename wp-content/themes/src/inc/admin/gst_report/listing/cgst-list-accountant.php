@@ -11,7 +11,7 @@
     <h4>Gst List</h4>
 </div>
 
-<div class="search_bar igst_report_filter">
+<div class="search_bar cgst_report_filter">
     <label>Page :</label>
     <select name="per_page" id="per_page">
         <option value="5" <?php echo ($report->ppage == 5) ? 'selected' : ''; ?>>5</option>
@@ -30,8 +30,8 @@
         <option value="9.00" <?php echo ($report->slab == '9.00') ? 'selected' : '' ?>>18 %</option>
         <option value="14.00" <?php echo ($report->slab == '14.00') ? 'selected' : '' ?>>28 %</option>
     </select>
-    <input type="text" id="date_from" name="bill_from" class="bill_from form-control" value="<?php echo date('Y-m-d'); ?>" placeholder="Bill From">
-    <input type="text" id="date_to" name="bill_to" class="bill_to form-control" value="<?php echo date('Y-m-d'); ?>" placeholder="Bill To">
+    <input type="text" id="date_from" name="bill_from" class="bill_from form-control" value="<?php echo date('d-m-Y'); ?>" placeholder="Bill From">
+    <input type="text" id="date_to" name="bill_to" class="bill_to form-control" value="<?php echo date('d-m-Y'); ?>" placeholder="Bill To">
 </div>
 
 

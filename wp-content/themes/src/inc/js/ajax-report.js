@@ -56,8 +56,8 @@ jQuery('.stock_sale_filter #per_page, .stock_sale_filter #lot_number, .stock_sal
     var item_status = jQuery('#item_status').val();
     var bill_type = jQuery('#bill_type').val();
 
-    var date_from = jQuery('#date_from').val();
-    var date_to = jQuery('#date_to').val();
+    var date_from = man_to_machine_date_js(jQuery('#date_from').val());
+    var date_to = man_to_machine_date_js(jQuery('#date_to').val());
 
     jQuery.ajax({
       type: "POST",

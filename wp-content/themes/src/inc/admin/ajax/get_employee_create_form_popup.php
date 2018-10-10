@@ -29,7 +29,7 @@
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 
-			<input type="text" id="employee_joining" name="employee_joining" autocomplete="off" value="<?php echo date("Y-m-d", time()); ?>">
+			<input type="text" id="employee_joining" name="employee_joining" autocomplete="off" value="<?php echo date("d-m-Y", time()); ?>">
 		</div>
 		<div class="form_detail" style="width: 95%;">
 			<label>Employee Salary
@@ -64,7 +64,7 @@
 	});
 
 	jQuery(document).ready(function(){
-        jQuery("#employee_joining" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#employee_joining" ).datepicker({dateFormat: "dd-mm-yy"});
     })
 	jQuery('#add_employee #employee_name').focus();
 	jQuery(document).on("keydown", "#add_employee .submit-button", function(e) {

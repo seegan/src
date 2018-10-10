@@ -2,8 +2,8 @@ jQuery(document).ready(function (argument) {
 
  	jQuery('.return_report_print').on('click',function(){
      	var slap = jQuery('.slap').val();
-     	 var bill_form = jQuery('.bill_from').val();
-        var bill_to = jQuery('.bill_to').val();
+     	 var bill_form = man_to_machine_date_js(jQuery('.bill_from').val());
+        var bill_to = man_to_machine_date_js(jQuery('.bill_to').val());
         var datapass =   home_page.url+'return-report-print/?bill_form='+bill_form+'&bill_to='+bill_to + '&slap='+slap;
 
         // billing_list_single
@@ -14,8 +14,8 @@ jQuery(document).ready(function (argument) {
 
 	jQuery('.accountant_download').on('click',function() {
         console.log("fdsfdf");
-        var bill_form = jQuery('.bill_from').val();
-        var bill_to = jQuery('.bill_to').val();
+        var bill_form = man_to_machine_date_js(jQuery('.bill_from').val());
+        var bill_to = man_to_machine_date_js(jQuery('.bill_to').val());
         var slap = jQuery('.slap').val();
         var datapass =   home_page.url+'acc-download/?bill_form='+bill_form+'&bill_to='+bill_to + '&slap='+slap;
 

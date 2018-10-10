@@ -158,7 +158,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     <table cellspacing='3' cellpadding='3' WIDTH='100%'>
       <tr>
         <td valign='top' WIDTH='65%'>Inv No : <b><?php echo $bill_data['bill_data']->invoice_id; ?></b></td>
-        <td valign='top' WIDTH='100%'>Date : <?php $timestamp = $bill_data['bill_data']->invoice_date; 
+        <td valign='top' WIDTH='100%'>Date : <?php $timestamp = machine_to_man_date($bill_data['bill_data']->invoice_date); 
         $splitTimeStamp = explode(" ",$timestamp);
         echo $date = $splitTimeStamp[0];?></td>    
       </tr>

@@ -67,13 +67,13 @@ function stock_create_submit_popup(action = '', lot_id = '',stock_count='') {
                 } else {
                     clear_main_popup();
                     jQuery('#src_info_box').bPopup().close();
-                    alert_popup('<span class="success_msg">CLot Created!</span>', 'Success');   
+                    alert_popup('<span class="success_msg">Stock Created!</span>', 'Success');   
                 }
             } else {
                 jQuery('.list_customers').html(data);
                 clear_main_popup();
                 jQuery('#src_info_box').bPopup().close();
-                alert_popup('<span class="success_msg">Lot Created!</span>', 'Success'); 
+                alert_popup('<span class="success_msg">Stock Created!</span>', 'Success'); 
             }
         }
 
@@ -132,8 +132,8 @@ jQuery('.stock_filter #per_page, .stock_filter #lot_number, .stock_filter #searc
     var lot_number = jQuery('#lot_number').val();
     var search_brand = jQuery('#search_brand').val();
     var search_product = jQuery('#search_product').val();
-    var search_from = jQuery('#search_from').val();
-    var search_to = jQuery('#search_to').val();
+    var search_from = man_to_machine_date_js(jQuery('#search_from').val());
+    var search_to = man_to_machine_date_js(jQuery('#search_to').val());
 
 
     jQuery.ajax({
@@ -172,8 +172,8 @@ jQuery('.stock_filter #per_page, .stock_filter #lot_number, .stock_filter #searc
 
 
 jQuery(document).ready(function(){
-    jQuery("#search_from" ).datepicker({dateFormat: "yy-mm-dd"});
-    jQuery("#search_to" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#search_from" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery("#search_to" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 /*End Updated for filter 11/10/16*/
 

@@ -107,7 +107,7 @@
 				<td><?php echo $stock_value->product_name; ?></td>
 				<td><?php echo $stock_value->total_weight; ?> Kg</td>
 				<td><?php echo $stock_value->bags_count; ?></td>
-				<td><?php echo $stock_value->created_at; ?></td>
+				<td><?php echo machine_to_man_date($stock_value->created_at); ?></td>
 				<td class="center">
 					<span>
 						<a class="action-icons c-edit stock_edit list_update" title="Edit" href="#" data-roll="12" data-id="<?php echo $stock_value->id; ?>">Edit</a>

@@ -170,7 +170,7 @@
 			<tr id="delivery-data-<?php echo $b_value->delivery_id; ?>">
 				<td><?php echo $b_value->invoice_id; ?></td>
 				<td><?php echo $b_value->financial_year; ?></td>
-				<td><?php echo $b_value->delivery_date; ?></td>
+				<td><?php echo machine_to_man_date($b_value->delivery_date); ?></td>
 				<td>
 					<?php
 						$customer_name = ($b_value->customer_id != 0) ? $b_value->customer_name : 'Counter Sale';

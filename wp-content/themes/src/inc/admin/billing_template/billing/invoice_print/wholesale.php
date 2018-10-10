@@ -148,7 +148,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
                 </td>
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
                   <b>INVOICE NO - <?php echo $bill_data['bill_data']->invoice_id; ?><br> 
-                  DATE - <?php echo $bill_data['bill_data']->invoice_date; ?></b>
+                  DATE - <?php echo machine_to_man_date($bill_data['bill_data']->invoice_date); ?></b>
                   <hr>
                   <b>STATE             : TAMILNADU <br> 
                   STATE CODE : 33 </b></td>

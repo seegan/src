@@ -237,27 +237,30 @@ jQuery('.customer_filter #per_page, .customer_filter #customer_name, .customer_f
     }); 
 });
 
-jQuery(document).on('change','#customer_mobile',function(){
+jQuery(document).on('change','#customer_mobile,.billing_mobile',function(){
+    var customer_id = (typeof(jQuery('.customer_id').val()) != "undefined" && jQuery('.customer_id').val() !== null )? jQuery('.customer_id').val() : 0 ;
     jQuery.ajax({
         type:"POST",
         url : frontendajax.ajaxurl,
         dataType : "json",
         data : {
-            action : 'PhoneNumberDuplication',
-            phone  : jQuery('.customer_mobile').val(),
+            action          : 'PhoneNumberDuplication_ajax',
+            phone           : jQuery(this).val(),
+            customer_id     : customer_id,
         },
         success : function(data){
             if(data){
                 alert('Phone number Already Exists!');
                 jQuery('.customer_mobile').val('');
+                jQuery('.billing_mobile').val('');
             }
         }
     });
 });
 
 jQuery(document).ready(function(){
-    jQuery("#search_from" ).datepicker({dateFormat: "yy-mm-dd"});
-    jQuery("#search_to" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#search_from" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery("#search_to" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 /*End Updated for filter 11/10/16*/
 

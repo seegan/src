@@ -10,7 +10,7 @@
 		        $this->ppage = isset($params['ppage']) ? $params['ppage'] : 20;
 		        $this->type = isset($params['type']) ? $params['type'] : '';
 		        $this->amount = isset($params['amount']) ? $params['amount'] : '';
-		        $this->date = isset($params['date']) ? $params['date'] : '';
+		        $this->date = isset($params['date']) ? machine_to_man_date($params['date']) : '';
 
 
 		    } else {
@@ -18,7 +18,7 @@
 		        $this->ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
 		        $this->type = isset( $_GET['type'] ) ? $_GET['type']  : '';
 		        $this->amount = isset( $_GET['amount'] ) ? $_GET['amount']  : '';
-		        $this->date = isset( $_GET['date'] ) ? $_GET['date']  : '';
+		        $this->date = isset( $_GET['date'] ) ? machine_to_man_date($_GET['date'])  : '';
 		    }
 		}
 		function creditdebit_list_pagination( $args ) {

@@ -56,7 +56,7 @@
 
 
 	jQuery(document).ready(function(){
-        jQuery("#cash_date" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#cash_date" ).datepicker({dateFormat: "dd-mm-yy"});
     })
 
 

@@ -84,7 +84,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</label>
 					<div class="fieldwrap">
 						<span class="left">
-							<input type="text" id="creditdebit_date" name="creditdebit_date"  class="form-control col-md-7 col-xs-12 creditdebit_date" autocomplete="off" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->date : date("Y-m-d"); ?>">
+							<input type="text" id="creditdebit_date" name="creditdebit_date"  class="form-control col-md-7 col-xs-12 creditdebit_date" autocomplete="off" value="<?php echo ($credit_debit) ? machine_to_man_date($credit_debit['main_tab']->date) : date("d-m-Y"); ?>">
 						</span>
 					</div>
 				</li>

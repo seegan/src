@@ -8,10 +8,10 @@ jQuery('.billing_list_filter #per_page, .billing_list_filter #invoice_no, .billi
     var bill_total = jQuery('#bill_total').val();
     var customer_type = jQuery('#customer_type').val();
     //var shop = jQuery('#shop').val();
-    //var delivery = jQuery('#delivery').val();
-    //var payment_done = jQuery('#payment_done').val();
-    var date_from = jQuery('#date_from').val();
-    var date_to = jQuery('#date_to').val();
+   var delivery = jQuery('#delivery').val();
+    var payment_done = jQuery('#payment_done').val();
+    var date_from = man_to_machine_date_js(jQuery('#date_from').val());
+    var date_to = man_to_machine_date_js(jQuery('#date_to').val());
 
 
     jQuery.ajax({
@@ -24,8 +24,8 @@ jQuery('.billing_list_filter #per_page, .billing_list_filter #invoice_no, .billi
           bill_total : bill_total,
           customer_type : customer_type,
           //shop : shop,
-          //delivery : delivery,
-          //payment_done : payment_done,
+          delivery : delivery,
+          payment_done : payment_done,
           date_from : date_from,
           date_to : date_to,
           action : 'bill_list_filter'
@@ -50,8 +50,8 @@ jQuery('.billing_list_filter #per_page, .billing_list_filter #invoice_no, .billi
 
 
 jQuery(document).ready(function(){
-    jQuery("#date_from" ).datepicker({dateFormat: "yy-mm-dd"});
-    jQuery("#date_to" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#date_from" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery("#date_to" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 /*End Updated for filter 11/10/16*/
 
@@ -292,8 +292,8 @@ jQuery('.petty_cash_filter #per_page, .petty_cash_filter #entry_amount, .petty_c
 
 
 jQuery(document).ready(function(){
-    jQuery("#entry_date_from" ).datepicker({dateFormat: "yy-mm-dd"});
-    jQuery("#entry_date_to" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#entry_date_from" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery("#entry_date_to" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 
 
@@ -305,8 +305,8 @@ jQuery('.income_filter #per_page, .income_filter #entry_amount, .income_filter #
     var per_page = jQuery('#per_page').val();
     var entry_amount = jQuery('#entry_amount').val();
     var entry_description = jQuery('#entry_description').val();
-    var entry_date_from = jQuery('#entry_date_from').val();
-    var entry_date_to = jQuery('#entry_date_to').val();
+    var entry_date_from = man_to_machine_date_js(jQuery('#entry_date_from').val());
+    var entry_date_to = man_to_machine_date_js(jQuery('#entry_date_to').val());
 
 
     jQuery.ajax({
@@ -340,8 +340,8 @@ jQuery('.income_filter #per_page, .income_filter #entry_amount, .income_filter #
 
 
 jQuery(document).ready(function(){
-    jQuery("#entry_date_from" ).datepicker({dateFormat: "yy-mm-dd"});
-    jQuery("#entry_date_to" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#entry_date_from" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery("#entry_date_to" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 function man_to_machine_date_js(date = '') {
   var newdate = date.split("-").reverse().join("-");

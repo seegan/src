@@ -89,7 +89,7 @@
 				<td><?php echo $start_count; ?></td>
 				<td><?php echo 'EMP'.$employees_value->id; ?></td>
 				<td><?php echo $employees_value->emp_name; ?></td>
-				<td><?php echo $attendance_date; ?></td>
+				<td><?php echo machine_to_man_date($attendance_date); ?></td>
 				<td><div class="attendance_val"><?php echo $attendance_today; ?></div></td>
 				<td>
 					<select name="attendance_type" class="atten_type mark_attendance list_update" data-attdate="<?php echo $attendance_date; ?>" data-empid="<?php echo $employees_value->id; ?>" >

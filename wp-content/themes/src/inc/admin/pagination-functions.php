@@ -680,8 +680,8 @@ on return_tab.sale_id = full_table.id where full_table.active = 1  ${args['condi
         
         $customer_type = $_POST['customer_type'];
         //$shop = $_POST['shop'];
-        //$delivery = $_POST['delivery'];
-        //$payment_done = $_POST['payment_done'];
+        $delivery = $_POST['delivery'];
+        $payment_done = $_POST['payment_done'];
 
         $date_from = $_POST['date_from'];
         $date_to = $_POST['date_to'];
@@ -693,8 +693,8 @@ on return_tab.sale_id = full_table.id where full_table.active = 1  ${args['condi
         
         $customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '-';
         //$shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
-        //$delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
-        //$payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
+        $delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
+        $payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
 
         $date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
         $date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
@@ -716,12 +716,12 @@ on return_tab.sale_id = full_table.id where full_table.active = 1  ${args['condi
     // if($shop != '-') {
     //     $page_arg['shop'] = $shop;
     // }
-    // if($delivery != '-') {
-    //     $page_arg['delivery'] = $delivery;
-    // }
-    // if($payment_done != '-') {
-    //     $page_arg['payment_done'] = $payment_done;
-    // }
+    if($delivery != '-') {
+        $page_arg['delivery'] = $delivery;
+    }
+    if($payment_done != '-') {
+        $page_arg['payment_done'] = $payment_done;
+    }
     if($date_from != '') {
         $page_arg['date_from'] = $date_from;
     }

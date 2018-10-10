@@ -38,7 +38,7 @@
 		<div class="form_detail">
 			<label style="width: 115px;">Salary Paid Date
 			</label>
-			<input type="text" id="salary_date" name="salary_date" autocomplete="off" value="<?php echo date("Y-m-d", time()); ?>">
+			<input type="text" id="salary_date" name="salary_date" autocomplete="off" value="<?php echo date("d-m-Y", time()); ?>">
 		</div>
     <div class="form_detail">
       <label>Pay
@@ -285,7 +285,7 @@ jQuery('#add_salary #emp_name').select2('open');
 
 
 	jQuery(document).ready(function(){
-        jQuery("#salary_date" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#salary_date" ).datepicker({dateFormat: "dd-mm-yy"});
     })
   jQuery(document).on("keydown", "#add_salary .submit-button", function(e) {
     if(event.keyCode == 9) {

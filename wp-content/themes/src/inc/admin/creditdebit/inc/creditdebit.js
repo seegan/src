@@ -36,6 +36,32 @@ jQuery(document).ready(function(){
     jQuery('.description').focus();
 
   });
+
+  jQuery('.filter-section :input').on('change', function(){
+        var filter_action   = jQuery('.filter_action').val();
+        var container_class = '.'+filter_action;
+
+        jQuery.ajax({
+            type: "POST",
+            url: frontendajax.ajaxurl,
+            data: {
+                action : filter_action,
+                data : jQuery('.filter-section :input').serialize()
+            },
+            success: function (data) { 
+                if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+                replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+                replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                    var obj = jQuery.parseJSON(data);
+                    if(obj.success == 0) {
+                        alert_popup('<span class="error_msg">Something Went Wrong! try again!</span>', 'Error');
+                    }
+                } else { 
+                    jQuery(container_class).html(data);
+                }
+            }
+        });
+    });
     jQuery('#billing_customer_due').select2('open');
     jQuery(".credit_submit").on('keydown',  function(e) { 
       var keyCode = e.keyCode || e.which; 
@@ -387,5 +413,6 @@ function clearPopup() {
 }
 
 jQuery(document).ready(function(){
-    jQuery(".creditdebit_date" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery(".creditdebit_date" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery(".date").datepicker({dateFormat: "dd-mm-yy"});
 });

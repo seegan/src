@@ -326,9 +326,9 @@ abbr.require {
     border-bottom-width: 0;
 }
 .leftLabel div.fieldwrap {
-    float: left;
-    width: 67%;
-    clear: right;
+    float: right;
+  /*  width: 67%;
+    clear: right;*/
 }
 .form-grid form li:after {
     content: ".";

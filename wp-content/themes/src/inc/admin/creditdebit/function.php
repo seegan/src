@@ -29,7 +29,7 @@ function create_creditdebit(){
 	parse_str($_POST['data'], $params);
 
 	$credit_data = array(
-		'date' 			=> $params['creditdebit_date'],
+		'date' 			=> man_to_machine_date($params['creditdebit_date']),
 		'customer_id' 	=> $params['billing_customer_due'],
 		// 'customer_name' => $params['creditdebit_customer'],
 		'description' 	=> $params['description'],
@@ -115,7 +115,7 @@ function update_creditdebit(){
 	
 	if($creditdebit_id != '') {
 		$credit_data = array(
-			'date' 			=> $params['creditdebit_date'],
+			'date' 			=> man_to_machine_date($params['creditdebit_date']),
 			'customer_id' 	=> $params['creditdebit_cus_id'],
 			'due_amount' 	=> $params['total_due'],
 			'description' 	=> $params['description'],

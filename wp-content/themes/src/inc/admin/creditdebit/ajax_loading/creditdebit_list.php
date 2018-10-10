@@ -54,7 +54,7 @@
                                 <td class="a-center ">
                                     <?php echo $i; ?>
                                 </td>
-                                <td class=""><?php echo $l_value->date; ?></td>
+                                <td class=""><?php echo machine_to_man_date($l_value->date); ?></td>
                                 <td class=""><?php echo $l_value->name; ?></td>
                                 <td class=""><?php echo $l_value->type; ?></td>
                                 <td class=""><?php echo $l_value->description; ?></td>

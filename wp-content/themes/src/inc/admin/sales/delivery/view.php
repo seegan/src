@@ -104,7 +104,7 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 						<li><span>Name : </span><?php echo $customer_name; ?> </li>
 						<li><span>Mobile : </span><?php echo $bill_data['customer_data']->mobile; ?></li>
 						<li><span>Address : </span><?php echo $bill_data['customer_data']->address; ?> </li>
-						<li><span>Delivery Date  : </span> <?php echo $delivery_data['delivery_data']->delivery_date; ?></li>
+						<li><span>Delivery Date  : </span> <?php echo machine_to_man_date($delivery_data['delivery_data']->delivery_date); ?></li>
 					</ul>
 				</div>
 				<div class="bill_info_bar">

@@ -171,7 +171,7 @@
                 <td><?php echo $b_value->invoice_id; ?></td>
 				<td><?php echo $b_value->financial_year; ?></td>
                 <td><?php echo 'GR'.$b_value->return_id; ?></td>
-				<td><?php echo $b_value->return_date; ?></td>
+				<td><?php echo machine_to_man_date($b_value->return_date); ?></td>
 				<td>
 					<?php
 						$customer_name = ($b_value->customer_id != 0) ? $b_value->customer_name : 'Counter Sale';

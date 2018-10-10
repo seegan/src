@@ -15,8 +15,8 @@ jQuery(document).ready(function(){
       var shop = jQuery('#shop').val();
       var delivery = jQuery('#delivery').val();
       var payment_done = jQuery('#payment_done').val();
-      var date_from = jQuery('#date_from').val();
-      var date_to = jQuery('#date_to').val();
+      var date_from = man_to_machine_date_js(jQuery('#date_from').val());
+      var date_to = man_to_machine_date_js(jQuery('#date_to').val());
 
 
       jQuery.ajax({

@@ -134,7 +134,7 @@
 				<td><?php echo $employees_value->emp_mobile; ?></td>
 				<td><?php echo $employees_value->emp_salary; ?></td>
 				<td><?php echo $employees_value->emp_address; ?></td>
-				<td><?php echo $employees_value->emp_joining; ?></td>
+				<td><?php echo machine_to_man_date($employees_value->emp_joining); ?></td>
 				<td><?php echo ($employees_value->emp_current_status == 1) ? 'Working' : 'Releave'; ?></td>
 				<td class="center">
 					<span>

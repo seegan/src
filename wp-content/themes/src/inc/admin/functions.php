@@ -427,7 +427,7 @@ function post_employee_create_popup(){
 	    'emp_mobile' 		=> esc_attr($params['employee_mobile']),
 	    'emp_address' 		=> esc_attr($params['employee_address']),
 	    'emp_salary' 		=> esc_attr($params['employee_salary']),
-	   	'emp_joining' 		=> esc_attr($params['employee_joining']),
+	   	'emp_joining' 		=> esc_attr(man_to_machine_date($params['employee_joining'])),
 	    'emp_created_at' 	=> date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 	));
 	if($wpdb->insert_id) {
@@ -465,7 +465,7 @@ function post_employee_edit_popup(){
 	    'emp_mobile' => esc_attr($params['employee_mobile']),
 	    'emp_address' => esc_attr($params['employee_address']),
 	    'emp_salary' => esc_attr($params['employee_salary']),
-	   	'emp_joining' => esc_attr($params['employee_joining']),
+	   	'emp_joining' => esc_attr(man_to_machine_date($params['employee_joining'])),
 	    'emp_created_at' => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 	   	'emp_current_status' => $params['employee_status'],
 	), array( 'id' => $params['employee_id'] ) ) ) {
@@ -1399,40 +1399,50 @@ function update_bill(){
 	$gst_type 		= $params['gst_type'];
 	$home_delivery 	= $params['delivery_need'];
 
-	if($params['bill_by_name'] == 'no') {
+
+//<-------- Customer Insert ------->
+	if($params['mobile'] == '') {
 		$billing_customer = 0;
 		$bill_from_to = 'counter';
 	} else {
-		$bill_from_to = 'customer';
-	if($params['user_type'] == 'old')
-	{
-		$billing_customer = $params['customer_id'];
-		$customer_update = array(
-		'name' 						=> $params['name'], 
-		'mobile' 					=> $params['mobile'],
-		'address' 					=> $params['address']
-		);
-		$wpdb->update($customer_table, $customer_update,array('id' => $billing_customer));
-	}
-	else {
-		if(  $params['mobile']!='' ){ 
-			$customer_update = array(
-			'name' 						=> $params['name'], 
-			'mobile' 					=> $params['mobile'],
-			'address' 					=> $params['address']
-			);
+		$already_exists 	= PhoneNumberDuplication($params['mobile']);
+		$bill_from_to 		= 'customer';
+		if($params['user_type'] == 'old')
+		{	
+			if($already_exists == 1){
+				$customer_update = array(
+				'name' 						=> $params['name'],
+				'address' 					=> $params['address']
+				);
+				$billing_customer 	= $params['customer_id'];	
+				$wpdb->update($customer_table, $customer_update,array('id' =>$billing_customer ));
 				
-			$wpdb->insert($customer_table, $customer_update);
-			$billing_customer = $wpdb->insert_id;
-		}		
+			} else {
+				$customer_update = array(
+				'name' 						=> $params['name'], 
+				'mobile' 					=> $params['mobile'],
+				'address' 					=> $params['address']
+				);
+					
+				$wpdb->insert($customer_table, $customer_update);
+				$billing_customer = $wpdb->insert_id;
+			}
+			
+		}
+		else {
+			if($already_exists == 0){
+				$customer_update = array(
+				'name' 						=> $params['name'], 
+				'mobile' 					=> $params['mobile'],
+				'address' 					=> $params['address']
+				);
+					
+				$wpdb->insert($customer_table, $customer_update);
+				$billing_customer = $wpdb->insert_id;
+			}
+		}	
 	}
-		// if($params['user_type'] == 'old') {
-		// 	$billing_customer = $params['billing_customer'];
-		// } else {
-		// 	$billing_customer = $params['customer_id_new'];
-		// }
-	}
-	
+//<-------- Customer Insert ------->	
 	$customer_type = $params['customer_type'];
 
 	$actual_total = $params['actual_price'];
@@ -1523,6 +1533,7 @@ function update_bill(){
 			    'gst_to' => $gst_type,
 			    'payment_done' => $payment_done,
 			    'last_update_by' => get_current_user_id(),
+			    'made_by' => get_current_user_id(),
 
 			), array( 
 				'id' => $billing_no 
@@ -1630,24 +1641,24 @@ function update_bill_last(){
 	$gst_type 				= $params['gst_type'];
 	$home_delivery 			= $params['delivery_need'];
 
-	if($params['bill_by_name'] == 'no') {
+	//<-------- Customer Insert ------->
+	if($params['mobile'] == '') {
 		$billing_customer = 0;
 		$bill_from_to = 'counter';
 	} else {
-		$bill_from_to = 'customer';
+		$already_exists 	= PhoneNumberDuplication($params['mobile']);
+		$bill_from_to 		= 'customer';
 		if($params['user_type'] == 'old')
-		{
-			$billing_customer = $params['customer_id'];
-			$customer_update = array(
-			'name' 						=> $params['name'], 
-			'mobile' 					=> $params['mobile'],
-			'address' 					=> $params['address']
-			);
-			$wpdb->update($customer_table, $customer_update,array('id' => $billing_customer));
-
-		}
-		else {
-			if(  $params['mobile']!='' ){ 
+		{	
+			if($already_exists == 1){
+				$customer_update = array(
+				'name' 						=> $params['name'],
+				'address' 					=> $params['address']
+				);
+				$billing_customer 	= $params['customer_id'];	
+				$wpdb->update($customer_table, $customer_update,array('id' =>$billing_customer ));
+				
+			} else {
 				$customer_update = array(
 				'name' 						=> $params['name'], 
 				'mobile' 					=> $params['mobile'],
@@ -1656,10 +1667,25 @@ function update_bill_last(){
 					
 				$wpdb->insert($customer_table, $customer_update);
 				$billing_customer = $wpdb->insert_id;
-			}		
+			}
+			
 		}
+		else {
+			if($already_exists == 0){
+				$customer_update = array(
+				'name' 						=> $params['name'], 
+				'mobile' 					=> $params['mobile'],
+				'address' 					=> $params['address']
+				);
+					
+				$wpdb->insert($customer_table, $customer_update);
+				$billing_customer = $wpdb->insert_id;
+			}
+		}	
 	}
+//<-------- Customer Insert ------->	
 	
+
 	$customer_type 	= $params['customer_type'];
 	$actual_total   = $params['actual_price'];
 	$discount 		= $params['discount'];
@@ -2042,7 +2068,7 @@ function post_salary_create_popup(){
 
 		$sal_data['emp_id'] = esc_attr($params['emp_name']);
 		$sal_data['sal_status'] = esc_attr($params['pay_in']);	
-		$sal_data['sal_update_date'] = esc_attr($params['salary_date']);
+		$sal_data['sal_update_date'] = esc_attr(man_to_machine_date($params['salary_date']));
 		$sal_data['amount'] = esc_attr($params['salary_pay']);
 		$sal_data['remark'] = 'sal';
 
@@ -2066,7 +2092,7 @@ function post_salary_create_popup(){
 
 		$adv_data['emp_id'] = esc_attr($params['emp_name']);
 		$adv_data['sal_status'] = esc_attr($params['pay_in']);	
-		$adv_data['sal_update_date'] = esc_attr($params['salary_date']);
+		$adv_data['sal_update_date'] = esc_attr(man_to_machine_date($params['salary_date']));
 		$adv_data['amount'] = esc_attr($params['salary_advance']);	
 		$adv_data['remark'] = 'adv';
 		
@@ -3278,19 +3304,30 @@ function addReturn($lot_id = 0, $return_count = 0) {
 	$wpdb->query($sql_update);
 }
 
-function PhoneNumberDuplication(){
+function PhoneNumberDuplication_ajax(){
+	global $wpdb;
+	$customer_table = $wpdb->prefix.'customers';
+	$phone_number   = $_POST['phone'];
+	$customer_id   = ($_POST['customer_id'] == '')? 0 : $_POST['customer_id'];
+	$query 			= "SELECT mobile from  $customer_table where mobile = '$phone_number' and active = 1 and id !='$customer_id'";
+	$exists 		= $wpdb->get_row($query);
+	$data = ($exists)? 1 : 0 ;
+ 	echo json_encode($data);
+ 	die();
+}
+add_action( 'wp_ajax_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
+add_action( 'wp_ajax_nopriv_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
+
+
+function PhoneNumberDuplication($number=0){
 	global $wpdb;
 	$customer_table = $wpdb->prefix.'customers';
 	$phone_number   = $_POST['phone'];
 	$query 			= "SELECT mobile from  $customer_table where mobile = '$phone_number' and active = 1";
 	$exists 		= $wpdb->get_row($query);
 	$data = ($exists)? 1 : 0 ;
-
- 	echo json_encode($data);
- 	die();
+ 	return $data;
 }
-add_action( 'wp_ajax_PhoneNumberDuplication', 'PhoneNumberDuplication');
-add_action( 'wp_ajax_nopriv_PhoneNumberDuplication', 'PhoneNumberDuplication');
 
 
 

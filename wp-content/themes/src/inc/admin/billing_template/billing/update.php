@@ -56,7 +56,28 @@
         $by_counter = 'display:block;';
         $bill_by_counter = 'checked';
     }
+    $update_from = $_GET['update_from'];
 ?>
+
+<?php if($update_from == 'billing_list') { 
+echo "<script>
+    jQuery(document).ready(function(){
+        jQuery('.payment_cash').focus();
+        jQuery('.fieldwrap :input').attr('readonly', 'readonly');
+        jQuery('.group_retail :input').attr('readonly', 'readonly');
+        jQuery('select').prop('disabled', true);
+        jQuery('#add_new_price_range').attr('readonly', 'readonly');
+        jQuery('.remove_price_range').css('display', 'none');
+        jQuery('.billing_date');
+
+    });
+</script>";
+} else{ echo "<script>
+    jQuery(document).ready(function(){
+       jQuery(jQuery('.lot_id')[0]).select2('open')
+    });
+</script>";
+}?>
 
 <style>
     .kg_display {
@@ -120,36 +141,23 @@
                 </div>
             </li>
             <li>
-                <legend class="choiceFld">Bill By Name</legend>
-                <div class="fieldwrap input-uniform">
-                    <span>
-                        <input type="radio" name="bill_by_name" value="no" <?php echo $bill_by_counter; ?> class="bill_by"><label class="choice">Counter</label>
-                    </span>
-                    &nbsp;&nbsp;
-                     <span>
-                        <input type="radio" name="bill_by_name" value="yes" <?php echo $bill_by_customer; ?> class="bill_by"><label class="choice">Customer Name</label>
-                    </span>
-                </div>
-            </li>
-            <li>
                 <label id="customer" for="customer" class="fldTitle">Select the Customer
-                    <abbr class="require" title="Required Field">*</abbr>
                 </label>
-<!--                 <div class="fieldwrap by-customer" style="<?php echo $by_customer; ?>">
-                    <span class="left">
-                        <select id="billing_customer" name="billing_customer" data-dvalue="<?php echo $bill_data['customer_data']->id; ?>" data-dtext="<?php echo $bill_data['customer_data']->name; ?>">
-                            <option selected value="<?php echo $bill_data['customer_data']->id; ?>"><?php echo $bill_data['customer_data']->name; ?></option>
-                        </select>
+
+                <div class="fieldwrap by-customer">
+                     
+                     <span class="left" style="width: 30%">
+                        <div class="fieldwrap input-uniform">
+                            <span>
+                                <input type="text" name="mobile" id="billing_mobile"  class="billing_mobile" placeholder="* Enter Mobile... " onkeypress="return isNumberKeyWithDot(event)" value="<?php echo $bill_data['customer_data']->mobile; ?>">
+                            </span>                                 
+                        </div>
                     </span>
-                    <span class="left append_cus_last_bill">
-                    </span>
-                </div> -->
-                <div class="fieldwrap by-customer" style="<?php echo $by_customer; ?>">
-                    <span class="left" style="width: 20%">
+                    <span class="left" style="width: 30%">
                         <div class="align">
                             <div class="customer-cash">
                                 <div class="customer_old">
-                                    <input type="text" id="billing_customer" name="name" class="billing_customer" value="<?php echo $bill_data['customer_data']->name; ?>" />
+                                    <input type="text" id="billing_customer" name="name" class="billing_customer" placeholder="Enter Name..." value="<?php echo $bill_data['customer_data']->name; ?>" />
                                 </div>
                                 <div>
                                     <input type="hidden" name="user_type" value="<?php echo (isset($bill_data['customer_data']->id)) ? 'old' : 'new'; ?>" class="user_type" id="user_type" /> 
@@ -157,33 +165,15 @@
                                 </div>
                             </div>
                         </div>           
-                    </span>  
-                     <span class="left" style="width: 40%">
-                        <legend class="choiceFld">Phone Number</legend>
-                        <div class="fieldwrap input-uniform">
-                            <span>
-                                <input type="text" name="mobile" id="billing_mobile"  class="billing_mobile" onkeypress="return isNumberKeyWithDot(event)" value="<?php echo $bill_data['customer_data']->mobile; ?>">
-                            </span>                                 
-                        </div>
-                    </span>
+                    </span> 
                     <span class="left" style="width: 40%">
-                        <legend class="choiceFld">Address</legend>
                         <div class="fieldwrap input-uniform">
                             <span>
-                                <textarea name="address" id="billing_address" class="billing_address"><?php echo $bill_data['customer_data']->address; ?></textarea>
+                                <textarea name="address" id="billing_address" placeholder="Enter Address... " class="billing_address"><?php echo $bill_data['customer_data']->address; ?></textarea>
                             </span>
                         </div>
                     </span>           
                 </div>
-                <div class="fieldwrap by-counter" style="<?php echo $by_counter ?>">
-                    <span class="left">
-                        <div class="align">
-                            <div class="counter-cash">
-                                Counter Sale
-                            </div>
-                        </div>           
-                    </span>              
-                </div> 
             </li>
             <li>
                 <label id="customer_type" for="customer_type" class="fldTitle">Set the Customer Type</label>
@@ -797,7 +787,7 @@
 
 
             <li class="buttons bottom-round noboder">
-                <div class="fieldwrap">
+                <div class="" style="float: right;margin-right: 37%;">
                     <input name="bill_update" type="button" value="Update Bill" class="submit-button bill_update">
                 </div>
             </li>

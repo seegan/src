@@ -72,7 +72,7 @@ jQuery('#edit_employee .submit-button').live('click',function () {
     var employee_name = jQuery('#employee_name').val();
     var employee_mobile = jQuery('#employee_mobile').val();
     var employee_address = jQuery('#employee_address').val();
-    var employee_joining = jQuery('#employee_joining').val();
+    var employee_joining = man_to_machine_date_js(jQuery('#employee_joining').val());
     var employee_salary = jQuery('#employee_salary').val();
 
     if(employee_name != '' && employee_mobile != '' && validatePhone(employee_mobile) && employee_joining!='' && employee_salary!='' )
@@ -123,8 +123,8 @@ jQuery('.employee_filter #per_page, .employee_filter #emp_no, .employee_filter #
     var emp_salary = jQuery('#emp_salary').val();
     var emp_status = jQuery('#emp_status').val();
 
-    var join_from = jQuery('#join_from').val();
-    var join_to = jQuery('#join_to').val();
+    var join_from = man_to_machine_date_js(jQuery('#join_from').val());
+    var join_to = man_to_machine_date_js(jQuery('#join_to').val());
 
 
     jQuery.ajax({
@@ -162,8 +162,8 @@ jQuery('.employee_filter #per_page, .employee_filter #emp_no, .employee_filter #
 
 
 jQuery(document).ready(function(){
-    jQuery("#join_from" ).datepicker({dateFormat: "yy-mm-dd"});
-    jQuery("#join_to" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#join_from" ).datepicker({dateFormat: "dd-mm-yy"});
+    jQuery("#join_to" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 /*End Updated for filter 11/10/16*/
 
@@ -243,7 +243,7 @@ jQuery('.attendance_filter #per_page, .attendance_filter #emp_no, .attendance_fi
 });
 
 jQuery(document).ready(function(){
-    jQuery("#attendance_date" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#attendance_date" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 /*End Updated for filter 11/10/16*/
 
@@ -364,6 +364,6 @@ jQuery('.salary_filter #per_page, .salary_filter #emp_no, .salary_filter #emp_na
 });
 
 jQuery(document).ready(function(){
-    jQuery("#attendance_date" ).datepicker({dateFormat: "yy-mm-dd"});
+    jQuery("#attendance_date" ).datepicker({dateFormat: "dd-mm-yy"});
 });
 /*End Updated for filter 11/10/16*/

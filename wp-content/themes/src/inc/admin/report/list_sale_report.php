@@ -19,8 +19,8 @@
         $item_status = isset( $_GET['item_status'] ) ? $_GET['item_status']  : '-';
         $lot_type = isset( $_GET['lot_type'] ) ? $_GET['lot_type']  : '-';
 
-        $date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : date('Y-m-d');
-        $date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : date('Y-m-d');
+        $date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : date('d-m-Y');
+        $date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : date('d-m-Y');
     }
     /*End Updated for filter 11/10/16*/
 ?>

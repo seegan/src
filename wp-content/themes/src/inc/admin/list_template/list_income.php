@@ -110,7 +110,7 @@
 		?>
 			<tr id="employee-data-<?php echo $income_list_value->id; ?>">
 				<td><?php echo $start_count; ?></td>
-				<td><?php echo date('Y-m-d', strtotime($income_list_value->cash_date)); ?></td>
+				<td><?php echo machine_to_man_date($income_list_value->cash_date); ?></td>
 				<td><?php echo $income_list_value->cash_description; ?></td>
 				<td><?php echo $income_list_value->cash_amount; ?></td>
 				<td class="center">

@@ -47,7 +47,7 @@
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 
-			<input type="text" id="employee_joining" name="employee_joining" autocomplete="off" value="<?php echo ($employee) ? $employee->emp_joining : ''; ?>">
+			<input type="text" id="employee_joining" name="employee_joining" autocomplete="off" value="<?php echo ($employee) ? machine_to_man_date($employee->emp_joining) : ''; ?>">
 		</div>
 		<div class="form_detail" style="width: 95%;">
 			<label>Employee Salary
@@ -73,7 +73,7 @@
 		var employee_name = jQuery('#employee_name').val();
 		var employee_mobile = jQuery('#employee_mobile').val();
 		var employee_address = jQuery('#employee_address').val();
-		var employee_joining = jQuery('#employee_joining').val();
+		var employee_joining = man_to_machine_date_js(jQuery('#employee_joining').val());
 		var employee_salary = jQuery('#employee_salary').val();
 
 		if(employee_name != '' && employee_mobile != '' && validatePhone(employee_mobile) && employee_joining!='' && employee_salary!='' )
@@ -85,7 +85,7 @@
 	});
 
 	jQuery(document).ready(function(){
-        jQuery("#employee_joining" ).datepicker({dateFormat: "yy-mm-dd"});
+        jQuery("#employee_joining" ).datepicker({dateFormat: "dd-mm-yy"});
     })
 	jQuery('#edit_employee #employee_name').focus();
 	jQuery(document).on("keydown", "#edit_employee .submit-button", function(e) {
