@@ -11,38 +11,67 @@ function customer_list_pagination($args ) {
 
 $query              =  "SELECT s.*,
 ( CASE
- WHEN s1.sale_total IS NULL 
+ WHEN (s1.actual_sale) IS NULL 
  THEN 0.00
- ELSE s1.sale_total
+ ELSE (s1.actual_sale)
 END ) as sale_total,
 
 ( CASE
- WHEN s1.paid_total IS NULL 
+ WHEN (s1.actual_paid) IS NULL 
  THEN 0.00
- ELSE s1.paid_total
+ ELSE (s1.actual_paid)
 END ) as paid_total,
 
 (
-    ( CASE
-     WHEN s1.sale_total IS NULL 
-     THEN 0.00
-     ELSE s1.sale_total
-    END )
-    -
-    ( CASE
-     WHEN s1.paid_total IS NULL 
-     THEN 0.00
-     ELSE s1.paid_total
-    END )
+ CASE
+ WHEN (s1.customer_pending) IS NULL 
+ THEN 0.00
+ ELSE (s1.customer_pending)
+END 
 ) as payment_due
 
 
-FROM ${table} s LEFT JOIN 
+FROM wp_customers s LEFT JOIN 
 (
 
-    SELECT s2.customer_id, SUM(s2.sale_total) as sale_total, SUM(s2.paid_total) as paid_total FROM ( SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM ${sale_table} as s JOIN ( SELECT p.sale_id, SUM(p.payment_paid) as paid_total FROM ${payment_history_table} as p WHERE p.active = 1 GROUP BY p.sale_id ) as ph ON s.id = ph.sale_id WHERE s.active = 1 ) as s2 GROUP BY s2.customer_id
+   SELECT 
+        s.id,
+        s.customer_id,
+        ( CASE WHEN sum(s.sale_total) IS NULL THEN 0.00 ELSE sum(s.sale_total) END ) as sale_total,
+        ( CASE WHEN (payment.total_paid) IS NULL THEN 0.00 ELSE payment.total_paid END ) as total_paid,
+        ( CASE WHEN (ret.return_total) IS NULL THEN 0.00 ELSE ret.return_total END ) as return_total,
+        ( CASE WHEN sum(s.pay_to_bal) IS NULL THEN 0.00 ELSE SUM(s.pay_to_bal) END ) as sale_to_pay,
+        ( CASE WHEN (ret.return_to_pay) IS NULL THEN 0.00 ELSE ret.return_to_pay END ) as return_to_pay,
+        ( ( CASE WHEN sum(s.sale_total) IS NULL THEN 0.00 ELSE sum(s.sale_total) END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) ) as actual_sale,
+        ( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN sum(s.pay_to_bal) IS NULL THEN 0.00 ELSE sum(s.pay_to_bal) END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) ) as actual_paid,
+        (
+            ( ( CASE WHEN sum(s.sale_total) IS NULL THEN 0.00 ELSE sum(s.sale_total) END ) - ( CASE WHEN ret.return_total IS NULL THEN 0.00 ELSE ret.return_total END ) )
+            -
+            ( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN sum(s.pay_to_bal) IS NULL THEN 0.00 ELSE sum(s.pay_to_bal) END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) )
+        ) as customer_pending 
+        
+        FROM
+        wp_sale as s 
+        
+        LEFT JOIN 
+        ( 
+            SELECT  
+            ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
+            p.sale_id as payment_sale_id,p.customer_id
+            FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1 GROUP BY p.customer_id
+        ) as payment
+        ON s.customer_id = payment.customer_id
+        LEFT JOIN 
+        (
+            SELECT 
+            ( CASE WHEN SUM(r.total_amount) IS NULL THEN 0.00 ELSE SUM(r.total_amount) END ) as return_total, 
+            ( CASE WHEN SUM(r.key_amount) IS NULL THEN 0.00 ELSE SUM(r.key_amount) END ) as return_to_pay,
+            r.sale_id as return_sale_id,r.customer_id
+            FROM wp_return as r WHERE r.active = 1 GROUP BY r.customer_id
+        ) as ret
+        ON s.customer_id = ret.customer_id  GROUP BY s.customer_id
 
-) as s1 ON s.id = s1.customer_id WHERE active = 1 ${args['condition']}";
+) as s1 ON s.id = s1.customer_id WHERE active = 1  ${args['condition']}";
 
     //$query              = "SELECT * FROM ${table} WHERE active = 1 ${args['condition']}";
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
@@ -50,23 +79,25 @@ FROM ${table} s LEFT JOIN
     $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
     $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
-    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
-
+    $data['result']     = $wpdb->get_results( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+// echo "<pre>";
+// var_dump( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']} ");
     $totalPage          = ceil($total / $args['items_per_page']);
-
-
+    
     /*Updated for filter 11/10/16*/
 
     if(isset($_POST['action']) && $_POST['action'] == 'customer_list_filter') {
         $ppage = $_POST['per_page'];
         $customer_name = $_POST['customer_name'];
-        $customer_mobile = $_POST['customer_mobile'];
+        $customer_mobile_list = $_POST['customer_mobile_list'];
         $customer_type = $_POST['customer_type'];
+        $payment_status = $_POST['payment_status'];
     } else {
         $ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
         $customer_name = isset( $_GET['customer_name'] ) ? $_GET['customer_name']  : '';
-        $customer_mobile = isset( $_GET['customer_mobile'] ) ? $_GET['customer_mobile']  : '';
+        $customer_mobile_list = isset( $_GET['customer_mobile_list'] ) ? $_GET['customer_mobile_list']  : '';
         $customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '';
+        $payment_status = isset( $_GET['payment_status'] ) ? $_GET['payment_status']  : '';
     }
 
     $page_arg = [];
@@ -74,10 +105,13 @@ FROM ${table} s LEFT JOIN
         $page_arg['customer_name'] = $customer_name;
     }
     if($customer_mobile != '') {
-        $page_arg['customer_mobile'] = $customer_mobile;
+        $page_arg['customer_mobile_list'] = $customer_mobile_list;
     }
     if($customer_type != '-') {
         $page_arg['customer_type'] = $customer_type;
+    }
+    if($payment_status != '-') {
+        $page_arg['payment_status'] = $payment_status;
     }
     $page_arg['cpage'] = '%#%';
     $page_arg['ppage'] = $args['items_per_page'];

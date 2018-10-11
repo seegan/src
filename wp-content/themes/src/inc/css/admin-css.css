@@ -901,6 +901,11 @@ span.page-numbers {
     background: #067e1a;
     color: #FFF;
 }
+
+.c-notpurchase {
+    background: #5f0fc7;
+    color: #FFF;
+}
 .d-status span{
     border-radius: 4px;
     padding: 1px 5px;

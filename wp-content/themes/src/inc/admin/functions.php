@@ -1668,7 +1668,6 @@ function update_bill_last(){
 				$wpdb->insert($customer_table, $customer_update);
 				$billing_customer = $wpdb->insert_id;
 			}
-			
 		}
 		else {
 			if($already_exists == 0){
@@ -3160,7 +3159,6 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 		$row_query = "SELECT f.customer_id, sum(f.customer_pending) as customer_pending, sum(f.current_screen_paid) as current_screen_paid, (sum(f.customer_pending) - sum(f.current_screen_paid) ) as actual_pending FROM ($query) as f GROUP BY f.customer_id";
 		$data = $wpdb->get_row($row_query);
 	}
-
 	return $data;
 }
 
@@ -3319,14 +3317,14 @@ add_action( 'wp_ajax_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax'
 add_action( 'wp_ajax_nopriv_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
 
 
-function PhoneNumberDuplication($number=0){
+function PhoneNumberDuplication($phone_number = 0){
 	global $wpdb;
 	$customer_table = $wpdb->prefix.'customers';
-	$phone_number   = $_POST['phone'];
-	$query 			= "SELECT mobile from  $customer_table where mobile = '$phone_number' and active = 1";
+	$query 			= "SELECT mobile from  $customer_table where mobile = $phone_number and active = 1";
 	$exists 		= $wpdb->get_row($query);
 	$data = ($exists)? 1 : 0 ;
  	return $data;
+
 }
 
 

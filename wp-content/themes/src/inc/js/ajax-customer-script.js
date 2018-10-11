@@ -201,12 +201,13 @@ function alert_popup(msg = '', title = '') {
 
 
 /*Updated for filter 11/10/16*/
-jQuery('.customer_filter #per_page, .customer_filter #customer_name, .customer_filter #customer_mobile, .customer_filter #customer_type').live('change', function(){
+jQuery('.customer_filter #per_page, .customer_filter #customer_name, .customer_filter #customer_mobile_list,.customer_filter #payment_status, .customer_filter #customer_type').live('change', function(){
 
     var per_page = jQuery('#per_page').val();
     var customer_name = jQuery('#customer_name').val();
-    var customer_mobile = jQuery('#customer_mobile').val();
+    var customer_mobile_list = jQuery('#customer_mobile_list').val();
     var customer_type = jQuery('#customer_type').val();
+    var payment_status = jQuery('#payment_status').val();
 
 
     jQuery.ajax({
@@ -215,8 +216,9 @@ jQuery('.customer_filter #per_page, .customer_filter #customer_name, .customer_f
       data: {
           per_page : per_page,
           customer_name : customer_name,
-          customer_mobile : customer_mobile,
+          customer_mobile_list : customer_mobile_list,
           customer_type : customer_type,
+          payment_status : payment_status,
           action : 'customer_list_filter'
       },
 

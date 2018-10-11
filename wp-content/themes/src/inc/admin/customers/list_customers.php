@@ -3,12 +3,12 @@
 	if(isset($_POST['action']) && $_POST['action'] == 'customer_list_filter') {
 		$ppage = $_POST['per_page'];
 		$customer_name = $_POST['customer_name'];
-		$customer_mobile = $_POST['customer_mobile'];
+		$customer_mobile_list = $_POST['customer_mobile_list'];
 		$customer_type = $_POST['customer_type'];
 	} else {
 		$ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
 		$customer_name = isset( $_GET['customer_name'] ) ? $_GET['customer_name']  : '';
-		$customer_mobile = isset( $_GET['customer_mobile'] ) ? $_GET['customer_mobile']  : '';
+		$customer_mobile_list = isset( $_GET['customer_mobile_list'] ) ? $_GET['customer_mobile_list']  : '';
 		$customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '';
 	}
 	/*End Updated for filter 11/10/16*/
@@ -34,13 +34,18 @@
 		<option value="100" <?php echo ($ppage == 100) ? 'selected' : ''; ?>>100</option>
 	</select>
 	<input type="text" name="customer_name" id="customer_name" autocomplete="off" placeholder="Customer Name" value="<?php echo $customer_name; ?>">
-	<input type="text" name="customer_mobile" id="customer_mobile" autocomplete="off" placeholder="Mobile Number" value="<?php echo $customer_mobile; ?>">
+	<input type="text" name="customer_mobile_list" id="customer_mobile_list" autocomplete="off" placeholder="Mobile Number" value="<?php echo $customer_mobile_list; ?>">
 
 	<select name="customer_type" id="customer_type" style="height: 30px;">
 		<option value="-">Customer Type</option>
 		<option value="Retail" <?php echo ($customer_type == 'Retail') ? 'selected' : ''; ?>>Retail</option>
 		<option value="Wholesale" <?php echo ($customer_type == 'Wholesale') ? 'selected' : ''; ?>>Wholesale</option>
 	</select>
+    <select name="payment_status" id="payment_status" style="height: 30px;">
+        <option value="-">Payment Status</option>
+        <option value="1" <?php echo ($customer_type == '1') ? 'selected' : ''; ?>>Paid</option>
+        <option value="0" <?php echo ($customer_type == '0') ? 'selected' : ''; ?>>Due</option>
+    </select>
 </div>
 
 
