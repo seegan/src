@@ -1,6 +1,46 @@
 jQuery(document).ready(function(){ 
     jQuery("#return_date" ).datepicker({dateFormat: "dd-mm-yy"});
 
+/*Updated for filter 11/10/16*/
+jQuery('.return_list_filter #per_page, .return_list_filter #invoice_no, .return_list_filter #customer_name, .return_list_filter #customer_type, .return_list_filter #return_from, .return_list_filter #return_to').live('change', function(){
+    var per_page = jQuery('#per_page').val();
+    var invoice_no = jQuery('#invoice_no').val();
+    var customer_name = jQuery('#customer_name').val();
+    var customer_type = jQuery('#customer_type').val();
+  
+    var return_from = man_to_machine_date_js(jQuery('#return_from').val());
+    var return_to = man_to_machine_date_js(jQuery('#return_to').val());
+
+
+    jQuery.ajax({
+      type: "POST",
+      url: frontendajax.ajaxurl,
+      data: {
+          per_page : per_page,
+          invoice_no : invoice_no,
+          customer_name : customer_name,
+          customer_type : customer_type,
+          return_from : return_from,
+          return_to : return_to,
+          action : 'return_list_filter'
+      },
+
+      success: function (data) {
+
+          if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+          replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+          replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+              var obj = jQuery.parseJSON(data);
+              if(obj.success == 0) {
+                  alert_popup('<span class="error_msg">Something Went Wrong! try again!</span>', 'Error');
+              }
+          } else {
+              jQuery('.list_customers').html(data);
+          }
+      }
+    });
+});
 
 
 

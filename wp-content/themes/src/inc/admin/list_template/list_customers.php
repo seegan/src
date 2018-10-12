@@ -94,7 +94,7 @@
 			if( count($customers['result'])>0 ) {
 				$start_count = $customers['start_count'];
 				foreach ($customers['result'] as $customer_value) {
-					$sale  = ($customer_value->payment_due == 0 && $customer_value->sale_total == 0 ) ? '<span class="c-notpurchase">Not Purchase</span>' : '<span class="c-delivered">PAID</span>';
+					$sale  = ($customer_value->payment_due == 0 && $customer_value->sale_total == 0 ) ? '<span class="c-notpurchase">Not Buy</span>' : '<span class="c-delivered">PAID</span>';
 					$payment_done = ($customer_value->payment_due > 0 && $customer_value->sale_total > 0  ) ? '<span class="c-process">DUE</span>' : $sale ;
 					$start_count++;
 		?>

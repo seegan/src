@@ -257,9 +257,9 @@ function src_admin_confirm_box() {
 		if( isset($_GET['page']) && $_GET['page'] == 'bill_delivery' ) {
 			wp_enqueue_script( 'sale_delivery',  get_template_directory_uri() . '/inc/js/sale-delivery.js', array('jquery'), false, false );
 		}
-		if( isset($_GET['page']) && $_GET['page'] == 'bill_return' ) {
+		// if( isset($_GET['page']) && $_GET['page'] == 'bill_return' ) {
 			wp_enqueue_script( 'sale_return',  get_template_directory_uri() . '/inc/js/sale-return.js', array('jquery'), false, false );
-		}
+		//}
 		wp_enqueue_script( 'ajax_sale_extra_script',  get_template_directory_uri() . '/inc/js/ajax-sale-extra.js', array('jquery'), false, false );
 		wp_enqueue_script( 'ajax_employee_script',  get_template_directory_uri() . '/inc/js/ajax-employee-script.js', array('jquery'), false, false );
 		wp_enqueue_script( 'ajax_report_script',  get_template_directory_uri() . '/inc/js/ajax-report.js', array('jquery'), false, false );
@@ -2494,6 +2494,10 @@ function src_delete_data() {
 		array( '%d' )
 	);
 
+	if($table_post == 'return'){
+
+	}
+
 	if($table_post == 'stock') {
 		$sql = "SELECT * FROM $table WHERE id = $data_id";
 		$existing_data = $wpdb->get_row( $sql );
@@ -2502,7 +2506,8 @@ function src_delete_data() {
 		lessStock($lot_id ,$old_weight);
 	}
 
-	if($table_post == 'return_detail') {
+	if($table_post == 'return') {
+		$wpdb->update($return_table,array('active'=>0),array('return_id'=>$data_id));
 		$sql = "SELECT rd.return_weight,  sd.lot_parent_id  FROM $table as rd JOIN wp_sale_detail as sd ON rd.sale_detail_id = sd.id WHERE rd.id = $data_id AND sd.active = 1";
 		$existing_data = $wpdb->get_row( $sql );
 		$lot_id = $existing_data->lot_parent_id;
@@ -2570,6 +2575,13 @@ function bill_list_filter() {
 }
 add_action( 'wp_ajax_bill_list_filter', 'bill_list_filter' );
 add_action( 'wp_ajax_nopriv_bill_list_filter', 'bill_list_filter' );
+
+function return_list_filter() {
+	include( get_template_directory().'/inc/admin/list_template/list_return.php' );
+	die();
+}
+add_action( 'wp_ajax_return_list_filter', 'return_list_filter' );
+add_action( 'wp_ajax_nopriv_return_list_filter', 'return_list_filter' );
 
 function delivery_list_filter() {
 	include( get_template_directory().'/inc/admin/list_template/list_delivery.php' );

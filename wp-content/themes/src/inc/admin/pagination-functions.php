@@ -935,7 +935,7 @@ function return_list_pagination( $args ) {
     $customPagHTML      = "";
 
 
-    $query = "SELECT r.id as return_id, r.return_date, s.id as sale_id, s.invoice_id, s.financial_year, s.customer_id, c.name as customer_name, s.order_shop, s.bill_from_to, s.customer_type FROM ${return_table} as r JOIN ${sale_table} as s ON r.sale_id = s.id LEFT JOIN ${customers_table} as c ON s.customer_id = c.id ${args['condition']}";
+    $query = "SELECT r.id as return_id, r.return_date, s.id as sale_id, s.invoice_id, s.financial_year, s.customer_id, c.name as customer_name,c.mobile as mobile, s.order_shop, s.bill_from_to, s.customer_type FROM ${return_table} as r JOIN ${sale_table} as s ON r.sale_id = s.id LEFT JOIN ${customers_table} as c ON s.customer_id = c.id WHERE 1=1 ${args['condition']}";
 
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
@@ -945,38 +945,25 @@ function return_list_pagination( $args ) {
     $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
     $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
-
     $totalPage         = ceil($total / $args['items_per_page']);
 
 
     /*Updated for filter 11/10/16*/
 
-    if(isset($_POST['action']) && $_POST['action'] == 'bill_list_filter') {
+    if(isset($_POST['action']) && $_POST['action'] == 'return_list_filter') {
         $ppage = $_POST['per_page'];
         $invoice_no = $_POST['invoice_no'];
         $customer_name = $_POST['customer_name'];
-        $bill_total = $_POST['bill_total'];
-        
         $customer_type = $_POST['customer_type'];
-        $shop = $_POST['shop'];
-        $return = $_POST['return'];
-        $payment_done = $_POST['payment_done'];
-
-        $date_from = $_POST['date_from'];
-        $date_to = $_POST['date_to'];
+        $return_from = $_POST['return_from'];
+        $return_to = $_POST['return_to'];
     } else {
         $ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
         $invoice_no = isset( $_GET['invoice_no'] ) ? $_GET['invoice_no']  : '';
         $customer_name = isset( $_GET['customer_name'] ) ? $_GET['customer_name']  : '';
-        $bill_total = isset( $_GET['bill_total'] ) ? $_GET['bill_total']  : '';
-        
         $customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '-';
-        $shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
-        $return = isset( $_GET['return'] ) ? $_GET['return']  : '-';
-        $payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
-
-        $date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
-        $date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
+        $return_from = isset( $_GET['return_from'] ) ? $_GET['return_from']  : '';
+        $return_to = isset( $_GET['return_to'] ) ? $_GET['return_to']  : '';
     }
 
     $page_arg = [];
@@ -986,26 +973,14 @@ function return_list_pagination( $args ) {
     if($customer_name != '') {
         $page_arg['customer_name'] = $customer_name;
     }
-    if($bill_total != '') {
-        $page_arg['bill_total'] = $bill_total;
-    }
     if($customer_type != '-') {
         $page_arg['customer_type'] = $customer_type;
     }
-    if($shop != '-') {
-        $page_arg['shop'] = $shop;
+    if($return_from != '') {
+        $page_arg['return_from'] = $date_from;
     }
-    if($return != '-') {
-        $page_arg['return'] = $return;
-    }
-    if($payment_done != '-') {
-        $page_arg['payment_done'] = $payment_done;
-    }
-    if($date_from != '') {
-        $page_arg['date_from'] = $date_from;
-    }
-    if($date_to != '') {
-        $page_arg['date_to'] = $date_to;
+    if($return_to != '') {
+        $page_arg['return_to'] = $date_to;
     }    
     $page_arg['cpage'] = '%#%';
     $page_arg['ppage'] = $args['items_per_page'];
@@ -1019,7 +994,7 @@ function return_list_pagination( $args ) {
         $data['start_count'] = ($ppage * ($page-1));
 
         $pagination = paginate_links( array(
-                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=sales_others')),
+                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=return_list')),
                 'format' => '',
                 'type' => 'array',
                 'prev_text' => __('prev'),
