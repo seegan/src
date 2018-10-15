@@ -278,15 +278,15 @@
 				<td class="d-status" style="position:relative;"> <?php echo $payment_done; ?></td>
 				<td class="d-status" style="position:relative;"> <?php echo $margin_rate; ?></td>
 				<td>
-					<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice'; ?>">Billing Detail
+					<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice&view_form=billing_list'; ?>">Billing Detail
 					</a>
 				</td>
 				<td class="center">
 					<span>
-						<a class="list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update&update_from=billing_list'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
+						<a class="action-icons c-edit list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update&update_from=billing_list'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
 					</span>
 					<span>
-						<a class="action-icons c-delete lot_delete last_list_view" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a>
+						<a class="action-icons c-delete lot_delete last_list_view" href="#" data-action="sale" title="delete" data-id="<?php echo $b_value->id; ?>" data-roll="1">Delete</a>
 					</span>
 				</td>
 			</tr>

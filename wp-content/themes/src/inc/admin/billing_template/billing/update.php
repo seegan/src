@@ -62,7 +62,7 @@
 <?php if($update_from == 'billing_list') { 
 echo "<script>
     jQuery(document).ready(function(){
-        jQuery('.payment_cash').focus();
+        jQuery('.payment_amount').select();
         jQuery('.fieldwrap :input').attr('readonly', 'readonly');
         jQuery('.group_retail :input').attr('readonly', 'readonly');
         jQuery('select').prop('disabled', true);

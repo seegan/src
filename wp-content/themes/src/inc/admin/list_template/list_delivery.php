@@ -1,34 +1,22 @@
 
 <?php
  	/*Updated for filter 11/10/16*/
-	if(isset($_POST['action']) && $_POST['action'] == 'bill_list_filter') {
+	if(isset($_POST['action']) && $_POST['action'] == 'delivery_list_filter') {
 		$cpage = 1;
 		$ppage = $_POST['per_page'];
 		$invoice_no = $_POST['invoice_no'];
 		$customer_name = $_POST['customer_name'];
-		$bill_total = $_POST['bill_total'];
-		
 		$customer_type = $_POST['customer_type'];
-		$shop = $_POST['shop'];
-		$delivery = $_POST['delivery'];
-		$payment_done = $_POST['payment_done'];
-
-		$date_from = $_POST['date_from'];
-		$date_to = $_POST['date_to'];
+		$delivery_from = $_POST['delivery_from'];
+		$delivery_to = $_POST['delivery_to'];
 	} else {
 		$cpage = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : 1;
 		$ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
 		$invoice_no = isset( $_GET['invoice_no'] ) ? $_GET['invoice_no']  : '';
 		$customer_name = isset( $_GET['customer_name'] ) ? $_GET['customer_name']  : '';
-		$bill_total = isset( $_GET['bill_total'] ) ? $_GET['bill_total']  : '';
-		
 		$customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '-';
-		$shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
-		$delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
-		$payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
-
-		$date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
-		$date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
+		$delivery_from = isset( $_GET['delivery_from'] ) ? $_GET['delivery_from']  : '';
+		$delivery_to = isset( $_GET['delivery_to'] ) ? $_GET['delivery_to']  : '';
 	}
 
 	$bill_data = explode("-",$bill_total);
@@ -40,96 +28,51 @@
     $condition = '';
     if($invoice_no != '') {
     	if($con == false) {
-    		$condition .= " AND s1.invoice_id = '".$invoice_no."' ";
+    		$condition .= " AND s.invoice_id = '".$invoice_no."' ";
     	} else {
-    		$condition .= " AND s1.invoice_id = '".$invoice_no."' ";
+    		$condition .= " AND s.invoice_id = '".$invoice_no."' ";
     	}
     	$con = true;
     }
     if($customer_name != '') {
    		if($con == false) {
-    		$condition .= " AND ( s1.name LIKE '".$customer_name."%' OR s1.mobile LIKE '".$customer_name."%' ) ";
+    		$condition .= " AND ( c.customer_name LIKE '".$customer_name."%' OR c.mobile LIKE '".$customer_name."%' ) ";
     	} else {
-    		$condition .= " AND ( s1.name LIKE '".$customer_name."%' OR s1.mobile LIKE '".$customer_name."%' ) ";
+    		$condition .= " AND ( c.customer_name LIKE '".$customer_name."%' OR c.mobile LIKE '".$customer_name."%' ) ";
     	}
     	$con = true;
     }
     if($customer_type != '-') {
    		if($con == false) {
-    		$condition .= " AND s1.type = '".$customer_type."' ";
+    		$condition .= " AND s.customer_type = '".$customer_type."' ";
     	} else {
-    		$condition .= " AND s1.type = '".$customer_type."' ";
+    		$condition .= " AND s.customer_type = '".$customer_type."' ";
     	}
     	$con = true;
     }
 
-    if($shop != '-') {
+  
+    if($delivery_from != '' && $delivery_to == '') {
    		if($con == false) {
-    		$condition .= " AND s1.order_shop = '".$shop."' ";
+    		$condition .= " AND DATE(s.delivery_date) >= '".$delivery_to."' ";
     	} else {
-    		$condition .= " AND s1.order_shop = '".$shop."' ";
+    		$condition .= " AND DATE(s.delivery_date) >= '".$delivery_to."' ";
     	}
     	$con = true;
     }
-
-
-    if($delivery != '-') {
+    if($delivery_from == '' && $delivery_to != '') {
    		if($con == false) {
-    		$condition .= " AND s1.invoice_status = '".$delivery."' ";
+    		$condition .= " AND DATE(s.delivery_date) <= '".$delivery_from."' ";
     	} else {
-    		$condition .= " AND s1.invoice_status = '".$delivery."' ";
+    		$condition .= " AND DATE(s.delivery_date) <= '".$delivery_from."' ";
     	}
     	$con = true;
     }
-
-    if($payment_done != '-') {
+    if($delivery_from != '' && $delivery_to != '') {
    		if($con == false) {
-    		$condition .= " AND s1.payment_done = '".$payment_done."' ";
+    		$condition .= " AND ( DATE(s.delivery_date) >= '".$delivery_from."' AND DATE(s.delivery_date) <= '".$delivery_to."' ) ";
     	} else {
-    		$condition .= " AND s1.payment_done = '".$payment_done."' ";
-    	}
-    	$con = true;
-    }
-
-    if($price != '' && $price_to == '') {
-   		if($con == false) {
-    		$condition .= " AND s1.sale_total = ".$price." ";
-    	} else {
-    		$condition .= " AND s1.sale_total = ".$price." ";
-    	}
-    	$con = true;
-    }
-
-    if($price != '' && $price_to != '') {
-   		if($con == false) {
-    		$condition .= " AND ( s1.sale_total >= ".$price." AND s1.sale_total <= ".$price_to.") ";
-    	} else {
-    		$condition .= " AND ( s1.sale_total >= ".$price." AND s1.sale_total <= ".$price_to.") ";
-    	}
-    	$con = true;
-    }
-
-    if($date_from != '' && $date_to == '') {
-   		if($con == false) {
-    		$condition .= " AND DATE(s1.invoice_date) >= '".$date_to."' ";
-    	} else {
-    		$condition .= " AND DATE(s1.invoice_date) >= '".$date_to."' ";
-    	}
-    	$con = true;
-    }
-    if($date_from == '' && $date_to != '') {
-   		if($con == false) {
-    		$condition .= " AND DATE(s1.invoice_date) <= '".$date_from."' ";
-    	} else {
-    		$condition .= " AND DATE(s1.invoice_date) <= '".$date_from."' ";
-    	}
-    	$con = true;
-    }
-    if($date_from != '' && $date_to != '') {
-   		if($con == false) {
-    		$condition .= " AND ( DATE(s1.invoice_date) >= '".$date_from."' AND DATE(s1.invoice_date) <= '".$date_to."' ) ";
-    	} else {
-    		$condition .= " AND ( DATE(s1.invoice_date) >= '".$date_from."' AND DATE(s1.invoice_date) <= '".$date_to."' ) ";
+    		$condition .= " AND ( DATE(s.delivery_date) >= '".$delivery_from."' AND DATE(s.delivery_date) <= '".$delivery_to."' ) ";
     	}
     	$con = true;
     }
@@ -186,9 +129,9 @@
 				</td>
 				<td class="center">
 					<span>
-						<a class="list_update" href="<?php echo admin_url('admin.php?page=bill_delivery').'&delivery_id='.$b_value->delivery_id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
+						<a class="action-icons c-edit list_update" href="<?php echo admin_url('admin.php?page=bill_delivery').'&delivery_id='.$b_value->delivery_id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
 					</span>
-					<span><a class="action-icons c-delete delivery_delete last_list_view" href="#" title="delete" data-id="<?php //echo $stock_value->id; ?>" data-roll="1">Delete</a></span>
+					<span><a class="action-icons c-delete delivery_delete last_list_view" href="#" data-action="delivery" title="delete" data-id="<?php echo $b_value->delivery_id; ?>" data-roll="1">Delete</a></span>
 				</td>
 			</tr>
 		<?php

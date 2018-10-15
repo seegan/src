@@ -5,18 +5,16 @@ jQuery(document).ready(function(){
 
 
 
-  jQuery('.delivery_list_filter #per_page, .delivery_list_filter #invoice_no, .delivery_list_filter #customer_name, .delivery_list_filter #bill_total, .delivery_list_filter #customer_type, .delivery_list_filter #shop, .delivery_list_filter #delivery, .delivery_list_filter #payment_done, .delivery_list_filter #date_from, .delivery_list_filter #date_to').live('change', function(){
+  jQuery('.delivery_list_filter #per_page, .delivery_list_filter #invoice_no, .delivery_list_filter #customer_name, .delivery_list_filter #customer_type, .delivery_list_filter #delivery_from, .delivery_list_filter #delivery_to').live('change', function(){
 
       var per_page = jQuery('#per_page').val();
       var invoice_no = jQuery('#invoice_no').val();
       var customer_name = jQuery('#customer_name').val();
-      var bill_total = jQuery('#bill_total').val();
+
       var customer_type = jQuery('#customer_type').val();
-      var shop = jQuery('#shop').val();
-      var delivery = jQuery('#delivery').val();
-      var payment_done = jQuery('#payment_done').val();
-      var date_from = man_to_machine_date_js(jQuery('#date_from').val());
-      var date_to = man_to_machine_date_js(jQuery('#date_to').val());
+     
+      var delivery_from = man_to_machine_date_js(jQuery('#delivery_from').val());
+      var delivery_to = man_to_machine_date_js(jQuery('#delivery_to').val());
 
 
       jQuery.ajax({
@@ -26,13 +24,9 @@ jQuery(document).ready(function(){
             per_page : per_page,
             invoice_no : invoice_no,
             customer_name : customer_name,
-            bill_total : bill_total,
             customer_type : customer_type,
-            shop : shop,
-            delivery : delivery,
-            payment_done : payment_done,
-            date_from : date_from,
-            date_to : date_to,
+            delivery_from : delivery_from,
+            delivery_to : delivery_to,
             action : 'delivery_list_filter'
         },
 

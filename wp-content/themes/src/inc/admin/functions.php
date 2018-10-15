@@ -254,9 +254,9 @@ function src_admin_confirm_box() {
 
 
 
-		if( isset($_GET['page']) && $_GET['page'] == 'bill_delivery' ) {
+		//if( isset($_GET['page']) && $_GET['page'] == 'bill_delivery' ) {
 			wp_enqueue_script( 'sale_delivery',  get_template_directory_uri() . '/inc/js/sale-delivery.js', array('jquery'), false, false );
-		}
+		//}
 		// if( isset($_GET['page']) && $_GET['page'] == 'bill_return' ) {
 			wp_enqueue_script( 'sale_return',  get_template_directory_uri() . '/inc/js/sale-return.js', array('jquery'), false, false );
 		//}
@@ -2482,6 +2482,70 @@ function src_delete_data() {
 	$data['success'] = 1;
 	$table = $wpdb->prefix.$table_post;
 
+	if($table_post == 'stock') {
+		$sql = "SELECT * FROM $table WHERE id = $data_id";
+		$existing_data = $wpdb->get_row( $sql );
+		$lot_id = $existing_data->lot_id;
+		$old_weight = $existing_data->total_weight;
+		lessStock($lot_id ,$old_weight);    
+	}
+
+	if($table_post == 'sale') {
+		$sql = "SELECT sum(sd.sale_weight) as sale_weight,sd.lot_parent_id FROM wp_sale_detail as sd left join wp_sale as sale on sale.id = sd.sale_id WHERE sd.active = 1 and sale.active = 1 GROUP by sd.lot_parent_id where sd.sale_id = $data_id";
+		$existing_data_get = $wpdb->get_results( $sql );
+		foreach ($existing_data_get as $existing_data) {
+			$lot_id = $existing_data->lot_parent_id;
+			$old_weight = $existing_data->sale_weight;
+			lessStock($lot_id ,$old_weight);
+		}
+		
+
+
+		//Return Update
+
+		$sql = "SELECT sum(rd.return_weight) as return_weight,  sd.lot_parent_id  FROM (SELECT r.id,rr.return_weight,rr.sale_detail_id from wp_return_detail as rr left join wp_return as r on rr.return_id = r.id) as rd JOIN wp_sale_detail as sd ON rd.sale_detail_id = sd.id WHERE rd.id = $data_id AND sd.active = 1 group by sd.lot_parent_id ";
+		$existing_data_get = $wpdb->get_results( $sql );
+
+		foreach ($existing_data_get as $existing_data) {
+			$lot_id = $existing_data->lot_parent_id;
+			$old_weight = $existing_data->return_weight;
+			lessReturn($lot_id ,$old_weight);
+		}
+		$return_table = $wpdb->prefix.'return';
+		$return_detail_table = $wpdb->prefix.'return_detail';
+		
+		$wpdb->update($return_table,array('active'=>0),array('return_id'=>$data_id));
+		$wpdb->update($return_detail_table,array('active'=>0),array('return_id'=>$data_id));
+
+		//Delivery Table
+
+		$delivery_table = $wpdb->prefix.'delivery';
+		$delivery_detail_table = $wpdb->prefix.'delivery_detail';
+		$wpdb->update($delivery_table,array('active'=>0),array('delivery_id'=>$data_id));
+		$wpdb->update($delivery_detail_table,array('active'=>0),array('delivery_id'=>$data_id));
+
+
+	}
+
+
+
+	if($table_post == 'return') {
+		$sql = "SELECT rd.return_weight,  sd.lot_parent_id  FROM (SELECT r.id,rr.return_weight,rr.sale_detail_id from wp_return_detail as rr left join wp_return as r on rr.return_id = r.id) as rd JOIN wp_sale_detail as sd ON rd.sale_detail_id = sd.id WHERE rd.id = $data_id AND sd.active = 1";
+		$existing_data = $wpdb->get_row( $sql );
+		$lot_id = $existing_data->lot_parent_id;
+		$old_weight = $existing_data->return_weight;
+		lessReturn($lot_id ,$old_weight);
+		$return_table = $wpdb->prefix.'return_detail';
+		$wpdb->update($return_table,array('active'=>0),array('return_id'=>$data_id));
+	}
+
+	if($table_post == 'delivery') {
+		$delivery_table = $wpdb->prefix.'delivery_detail';
+		$wpdb->update($delivery_table,array('active'=>0),array('delivery_id'=>$data_id));
+	}
+
+
+
 	$wpdb->update(
 		$table,
 		array(
@@ -2494,28 +2558,7 @@ function src_delete_data() {
 		array( '%d' )
 	);
 
-	if($table_post == 'return'){
-
-	}
-
-	if($table_post == 'stock') {
-		$sql = "SELECT * FROM $table WHERE id = $data_id";
-		$existing_data = $wpdb->get_row( $sql );
-		$lot_id = $existing_data->lot_id;
-		$old_weight = $existing_data->total_weight;
-		lessStock($lot_id ,$old_weight);
-	}
-
-	if($table_post == 'return') {
-		$wpdb->update($return_table,array('active'=>0),array('return_id'=>$data_id));
-		$sql = "SELECT rd.return_weight,  sd.lot_parent_id  FROM $table as rd JOIN wp_sale_detail as sd ON rd.sale_detail_id = sd.id WHERE rd.id = $data_id AND sd.active = 1";
-		$existing_data = $wpdb->get_row( $sql );
-		$lot_id = $existing_data->lot_parent_id;
-		$old_weight = $existing_data->return_weight;
-		lessReturn($lot_id ,$old_weight);
-	}
-
-
+	
 	echo json_encode($data, JSON_PRETTY_PRINT);
 	die();
 

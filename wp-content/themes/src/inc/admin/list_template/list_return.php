@@ -71,7 +71,7 @@
     	$con = true;
     }
 
-    $condition .= " AND s.locked = 1 ";
+    $condition .= "AND s.locked = 1 ";
     /*End Updated for filter 11/10/16*/
 
 

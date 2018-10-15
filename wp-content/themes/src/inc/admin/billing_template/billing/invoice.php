@@ -14,6 +14,8 @@ $bill_original = '<div class="type-f type-original"></div>';
 $bill_duplicate = '<div class="type-f type-duplicate"></div>';
 $bill_healthcenter = '<div class="type-f type-health"></div>';
 
+$view_from = isset($_GET['view_from'])?$_GET['view_from']:'';
+
 ?>
 		<style type="text/css">
 			body{-webkit-print-color-adjust:exact}
