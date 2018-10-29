@@ -194,26 +194,32 @@ input[type="checkbox"][readonly] {
                         <td>
                             <div>
                                 <div style="float:left;">
-                                    <div style="padding-top:6px;">
+                                    <div style="">
                                         <span class="">
-                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="return_data[<?php echo $row_count; ?>][return_as]" <?php echo $return_disabled ?> > - Kg</span> | 
-                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="return_data[<?php echo $row_count; ?>][return_as]" <?php echo $return_disabled ?> ></span>
+                                             <input type="text" onkeypress="return isNumberKeyWithDot(event)" class="user_enrty_weight_bag" name="return_data[<?php echo $row_count; ?>][user_unit_bag]" placeholder="Bag" <?php echo $return_disabled; ?>/> <b>Bag</b>
+                                            <!-- <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="return_data[<?php echo $row_count; ?>][return_as]" <?php echo $return_disabled ?> > - Kg</span> | 
+                                            <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="return_data[<?php echo $row_count; ?>][return_as]" <?php echo $return_disabled ?> ></span> -->
                                         </span>
                                     </div>
                                 </div>
-                                <div style="float:left;width:100px;">
+                                <div style="float:left;">
                                     <input type="hidden" value="0" name="return_data[<?php echo $row_count; ?>][return_weight]" class="return_weight">
                                     <input type="hidden" value="<?php echo $s_value->lot_id; ?>" name="return_data[<?php echo $row_count; ?>][return_lot]">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][sale_detail]" value="<?php echo $s_value->id; ?>">
                                     <input type="hidden" name="return_data[<?php echo $row_count; ?>][gst_percentage]" value="<?php echo $gst_percentage ?>" class="gst_percentage">
-                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][bill_type]" value="<?php echo $s_value->bill_type; ?>" class="bill_type">
+                                    <input type="hidden" name="return_data[<?php echo $row_count; ?>][bill_type]" value="<?php echo $s_value->bill_type; ?>" class="bill_type"> 
+
+                                    <input type="text"  onkeypress="return isNumberKeyWithDot(event)" class="user_enrty_weight_kg" name="return_data[<?php echo $row_count; ?>][user_unit_kg]" placeholder="Kg" <?php echo $return_disabled; ?>/> <b>Kg</b>
+                                    
+                                   
 
 
-                                    <input type="text" value="0" onkeypress="return isNumberKeyWithDot(event)" class="user_enrty_weight" name="return_data[<?php echo $row_count; ?>][user_unit]" <?php echo $return_disabled; ?>>
+                                    <input type="hidden"  class="user_enrty_weight" name="return_data[<?php echo $row_count; ?>][user_unit]" value="0" >
                                     <input type="hidden" class="bag_weight" value="<?php echo $s_value->bag_weight; ?>" name="return_data[<?php echo $row_count; ?>][bag_weight]">
-                                    <span class="delivery_sale_as" style="font-weight:bold;">
+                                   
+                                    <!-- <span class="delivery_sale_as" style="font-weight:bold;">
                                         <?php echo ucfirst($bag_kg); ?>
-                                    </span>
+                                    </span> -->
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>

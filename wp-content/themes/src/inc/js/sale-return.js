@@ -104,43 +104,52 @@ jQuery('.return_list_filter #per_page, .return_list_filter #invoice_no, .return_
       }
 
     });
-
-
-    jQuery('.return_table .sale_as').on('change', function () {
-      returnAmtWeightCal(jQuery(this).parent().parent().parent().parent().parent().parent().parent());
-      returnCheck(jQuery(this).parent().parent().parent().parent().parent().parent().parent())
-    });
-    jQuery('.return_table .user_enrty_weight').on('keyup', function(){
-      returnCheck(jQuery(this).parent().parent().parent().parent());
-      returnAmtWeightCal(jQuery(this).parent().parent().parent().parent());
-     
-
-    });
-    jQuery('.return_table .amt_per_kg').on('keyup', function(){
-      returnAmtWeightCal(jQuery(this).parent().parent());
-    });
+    
+});
+jQuery(document).on('change','.user_enrty_weight_bag',function(){
+    user_entry_function(jQuery(this).parent().parent().parent().parent().parent().parent());
+    returnCheck(jQuery(this).parent().parent().parent().parent().parent().parent());
 });
 
+jQuery(document).on('change','.user_enrty_weight_kg',function(){
+    user_entry_function(jQuery(this).parent().parent().parent().parent());
+    returnCheck(jQuery(this).parent().parent().parent().parent());
+});
 function returnCheck(selector = ''){
-    var return_qty = parseFloat(selector.find('.user_enrty_weight').val());
-    var return_qty_kg = (selector.find('.sale_as:checked').val() == 'kg') ? parseFloat(return_qty) : parseFloat(selector.find('.bag_weight').val() * return_qty);
+    var return_qty_kg = isNaN(parseFloat(selector.find('.user_enrty_weight_kg').val()))? 0.00 : parseFloat(selector.find('.user_enrty_weight_kg').val()) ;
+    var return_qty_bag = isNaN(parseFloat(selector.find('.user_enrty_weight_bag').val()))? 0.00 : parseFloat(selector.find('.user_enrty_weight_bag').val());
+    var return_qty_kg = return_qty_kg +  parseFloat(selector.find('.bag_weight').val() * return_qty_bag);
+    console.log(return_qty_kg);
     var return_avail = parseFloat(selector.find('.return_avail').val());
     if(return_qty_kg > return_avail ){
         alert('Available stock is '+ return_avail + 'Kg  !!! Enter Quantity as small as avalible stock!!!');
         selector.find('.user_enrty_weight').val(0);
+        selector.find('.user_enrty_weight_kg').val(0);
+        selector.find('.user_enrty_weight_bag').val(0);
     }
+    returnAmtWeightCal(selector);
 }
+function user_entry_function(selector = ''){
+  var return_weight = 0.00;
+  var kg      = isNaN(parseFloat(selector.find('.user_enrty_weight_kg').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight_kg').val()) ;  
+  var bag     = isNaN(parseFloat(selector.find('.user_enrty_weight_bag').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight_bag').val()) ;
+  return_weight = kg + bag;
+  selector.find('.user_enrty_weight').val(return_weight);
+}
+
+
 
 function  returnAmtWeightCal(selector = '') {
 
-  var return_as = selector.find('.sale_as:checked').val();
-  var return_weight = isNaN(parseFloat(selector.find('.user_enrty_weight').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight').val());
+  //var return_as = selector.find('.sale_as:checked').val();
+  var return_weight_kg = isNaN(parseFloat(selector.find('.user_enrty_weight_kg').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight_kg').val());
+  var return_weight_bag = isNaN(parseFloat(selector.find('.user_enrty_weight_bag').val())) ? 0.00 : parseFloat(selector.find('.user_enrty_weight_bag').val());
   var bag_weight = isNaN(parseFloat(selector.find('.bag_weight').val())) ? 0.00 : parseFloat(selector.find('.bag_weight').val());
 
-  if(return_as == 'bag') {
-    return_weight = return_weight * bag_weight;
-  }
-  selector.find('.delivery_sale_as').text(toCapitalize(return_as));
+    
+    return_weight = return_weight_kg + return_weight_bag * bag_weight;
+
+  //selector.find('.delivery_sale_as').text(toCapitalize(return_as));
   selector.find('.return_weight').val(return_weight);
 
   var gst_from = jQuery(document).find('.gst_from').val();

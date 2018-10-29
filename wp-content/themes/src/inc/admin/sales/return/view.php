@@ -121,7 +121,7 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 			<div class="table-simple">
 				<table class="display" style="width: 600px;">
 					<thead>
-						<<tr>
+						<tr>
 		                    <th rowspan="2">S.No</th>
 		                    <th rowspan="2">Product Name</th>
 		                    <th rowspan="2">Return Qty</th>

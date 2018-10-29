@@ -192,7 +192,7 @@
           
       <tr>
         <th valign='top' class="center-th" style="width:90px;padding:0;" rowspan="2">
-        <div class="text-center">Taxable Value</div>
+        <div class="text-center">Taxless Value</div>
         </th>
         <?php  if( $gst_from =='cgst' ) { ?>   
         <th class="center-th" style="padding: 0;" colspan="2">

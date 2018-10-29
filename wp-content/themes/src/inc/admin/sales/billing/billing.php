@@ -26,6 +26,10 @@
 	<?php
     } else if( isset($_GET['action']) && $_GET['action'] == 'invoice' && ( isset($_GET['inv_id']) || isset($_GET['bill_no']) ) ) {
     	$bill_no = isset($_GET['bill_no']) ? $_GET['bill_no'] : $_GET['inv_id'];
+    	$update_button = '';
+		if($_GET['view_from'] == 'cancel_billing_list' ||  $_GET['view_from'] == 'billing_list'){
+			$update_button = 'style=display:none';
+		} 
     ?>
 		<div style="width: 100%;">
 			<ul class="icons-labeled" style="width:280px;float:left;">
@@ -40,7 +44,7 @@
 				<li>
 					<a class="print_bill" onclick="window.print();"><span class="icon-block-black print-c"></span>Print</a>
 				</li>
-				<li>
+				<li <?php echo $update_button; ?>>
 					<a href="<?php echo menu_page_url( 'new_bill', 0 ).'&bill_no='.$bill_no.'&action=update'; ?>" ><span class="icon-block-color updatebill-c"></span>Update Bill</a>
 				</li>
 			</ul>

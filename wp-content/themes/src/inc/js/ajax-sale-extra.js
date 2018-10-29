@@ -49,6 +49,54 @@ jQuery('.billing_list_filter #per_page, .billing_list_filter #invoice_no, .billi
 });
 
 
+/*Updated for filter 11/10/16*/
+jQuery('.cancel_billing_list_filter #per_page, .cancel_billing_list_filter #invoice_no, .cancel_billing_list_filter #customer_name, .cancel_billing_list_filter #bill_total, .cancel_billing_list_filter #customer_type, .cancel_billing_list_filter #shop, .cancel_billing_list_filter #delivery, .cancel_billing_list_filter #payment_done, .cancel_billing_list_filter #date_from, .cancel_billing_list_filter #date_to').live('change', function(){
+
+    var per_page          = jQuery('#per_page').val();
+    var invoice_no        = jQuery('#invoice_no').val();
+    var customer_name     = jQuery('#customer_name').val();
+    var bill_total        = jQuery('#bill_total').val();
+    var customer_type     = jQuery('#customer_type').val();
+    //var shop = jQuery('#shop').val();
+    var delivery          = jQuery('#delivery').val();
+    var payment_done      = jQuery('#payment_done').val();
+    var date_from         = man_to_machine_date_js(jQuery('#date_from').val());
+    var date_to           = man_to_machine_date_js(jQuery('#date_to').val());
+
+
+    jQuery.ajax({
+      type: "POST",
+      url: frontendajax.ajaxurl,
+      data: {
+          per_page        : per_page,
+          invoice_no      : invoice_no,
+          customer_name   : customer_name,
+          bill_total      : bill_total,
+          customer_type   : customer_type,
+          delivery        : delivery,
+          payment_done    : payment_done,
+          date_from       : date_from,
+          date_to         : date_to,
+          action          : 'cancel_bill_list_filter'
+      },
+
+      success: function (data) {
+          if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+          replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+          replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+              var obj = jQuery.parseJSON(data);
+              if(obj.success == 0) {
+                  alert_popup('<span class="error_msg">Something Went Wrong! try again!</span>', 'Error');
+              }
+          } else {
+              jQuery('.list_customers').html(data);
+          }
+      }
+    });
+});
+
+
 jQuery(document).ready(function(){
     jQuery("#date_from" ).datepicker({dateFormat: "dd-mm-yy"});
     jQuery("#date_to" ).datepicker({dateFormat: "dd-mm-yy"});

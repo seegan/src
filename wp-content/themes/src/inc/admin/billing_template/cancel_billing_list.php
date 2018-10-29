@@ -1,7 +1,7 @@
 
 <?php
  	/*Updated for filter 11/10/16*/
-	if(isset($_POST['action']) && $_POST['action'] == 'bill_list_filter') {
+	if(isset($_POST['action']) && $_POST['action'] == 'cancel_bill_list_filter') {
 		$cpage = 1;
 		$ppage = $_POST['per_page'];
 		$invoice_no = $_POST['invoice_no'];
@@ -154,7 +154,7 @@
 		'items_per_page' 	=> $ppage ,
 		'condition' 		=> $condition,
 	);
-	$bills = billing_list_pagination_updated($result_args);
+	$bills_cancel = billing_list_pagination_updated_cancel($result_args);
 ?>
 	<div>
 		<div class="x_content" style="width:20%;float:left">
@@ -167,7 +167,7 @@
                     </thead>
                     <tbody style="text-align: center;">
                         <tr>
-                            <td><?php echo $bills['r_result']->return_amount; ?></td>
+                            <td><?php echo $bills_cancel['r_result']->return_amount; ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -188,12 +188,12 @@
                     </thead>
                     <tbody style="text-align: center;">
                         <tr>
-                            <td><?php echo $bills['s_result']->cash_amount; ?></td>
-                            <td><?php echo $bills['s_result']->card_amount; ?></td>
-                            <td><?php echo $bills['s_result']->cheque_amount; ?></td>
-                            <td><?php echo $bills['s_result']->net_banking_amount; ?></td>
-                            <td><?php echo $bills['s_result']->sale_total - ($bills['s_result']->cash_amount + $bills['s_result']->card_amount + $bills['s_result']->cheque_amount + $bills['s_result']->net_banking_amount); ?></td>
-                            <td><?php echo $bills['s_result']->sale_total; ?></td>
+                            <td><?php echo $bills_cancel['s_result']->cash_amount; ?></td>
+                            <td><?php echo $bills_cancel['s_result']->card_amount; ?></td>
+                            <td><?php echo $bills_cancel['s_result']->cheque_amount; ?></td>
+                            <td><?php echo $bills_cancel['s_result']->net_banking_amount; ?></td>
+                            <td><?php echo $bills_cancel['s_result']->sale_total - ($bills_cancel['s_result']->cash_amount + $bills_cancel['s_result']->card_amount + $bills_cancel['s_result']->cheque_amount + $bills_cancel['s_result']->net_banking_amount); ?></td>
+                            <td><?php echo $bills_cancel['s_result']->sale_total; ?></td>
                            
                         </tr>
                     </tbody>
@@ -217,15 +217,14 @@
 				<th>Payment</th>
 				<th>Wholesale Rate</th>
 				<th>Billing Details</th>
-				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php
-			if(isset($bills['result']) AND $bills){
-				$start_count = $bills['start_count'];
+			if(isset($bills_cancel['result']) AND $bills_cancel){
+				$start_count = $bills_cancel['start_count'];
 
-				foreach ($bills['result'] as $b_value) {
+				foreach ($bills_cancel['result'] as $b_value) {
 					$start_count++;
 				
 					if($b_value->is_delivered == 0) {
@@ -278,16 +277,8 @@
 				<td class="d-status" style="position:relative;"> <?php echo $payment_done; ?></td>
 				<td class="d-status" style="position:relative;"> <?php echo $margin_rate; ?></td>
 				<td>
-					<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice&view_from=billing_list'; ?>">Billing Detail
+					<a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice&view_from=cancel_billing_list'; ?>">Billing Detail
 					</a>
-				</td>
-				<td class="center">
-					<span>
-						<a class="action-icons c-edit list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update&update_from=billing_list'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
-					</span>
-					<span>
-						<a class="action-icons c-delete lot_delete last_list_view" href="#" data-action="sale" title="delete" data-id="<?php echo $b_value->id; ?>" data-roll="1">Delete</a>
-					</span>
 				</td>
 			</tr>
 		<?php

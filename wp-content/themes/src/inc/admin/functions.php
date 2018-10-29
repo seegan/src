@@ -2619,6 +2619,14 @@ function bill_list_filter() {
 add_action( 'wp_ajax_bill_list_filter', 'bill_list_filter' );
 add_action( 'wp_ajax_nopriv_bill_list_filter', 'bill_list_filter' );
 
+
+function cancel_bill_list_filter() {
+	include( get_template_directory().'/inc/admin/billing_template/cancel_billing_list.php' );
+	die();
+}
+add_action( 'wp_ajax_cancel_bill_list_filter', 'cancel_bill_list_filter' );
+add_action( 'wp_ajax_nopriv_cancel_bill_list_filter', 'cancel_bill_list_filter' );
+
 function return_list_filter() {
 	include( get_template_directory().'/inc/admin/list_template/list_return.php' );
 	die();

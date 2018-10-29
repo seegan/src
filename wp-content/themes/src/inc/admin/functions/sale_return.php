@@ -12,13 +12,13 @@ function sale_return($value='')
 	$return_date = man_to_machine_date($params['return_date']);	
 	$pay_to_bal = ($params['return_to_check'])? $params['return_to_bal'] : 0;
 	$return_data = array(
-		'sale_id' => $sale_id, 
-		'customer_id' => $params['customer_id'],
-		'total_amount' => $params['total_return'],
-		'round_off_value' => $params['return_round_off'],
-		'key_amount' => $pay_to_bal,
-		'gst_from'   => $params['gst_from'],
-		'return_date' => $return_date,
+		'sale_id' 			=> $sale_id, 
+		'customer_id' 		=> $params['customer_id'],
+		'total_amount' 		=> $params['total_return'],
+		'round_off_value' 	=> $params['return_round_off'],
+		'key_amount' 		=> $pay_to_bal,
+		'gst_from'   		=> $params['gst_from'],
+		'return_date' 		=> $return_date,
 		);
 	$wpdb->insert($return_table,$return_data);
 
@@ -31,14 +31,19 @@ function sale_return($value='')
 	if(isset($params['return_data']) && $params['return_data']) {
 
 		foreach ($params['return_data'] as $return) {
-			if($return['return_weight'] > 0) {
+			if($return['user_unit'] > 0) {
+				if($return['user_unit_bag'] > 0){
+					$return_as = 'bag';
+				} else{
+					$return_as = 'kg';
+				}
 				$return_details = array( 
 					'return_id' => $return_id, 
 					'sale_id'  => $sale_id, 
 					'sale_detail_id' => $return['sale_detail'],
 					'lot_id' => $return['return_lot'], 
 					'bill_type' =>$return['bill_type'],
-					'return_as' => $return['return_as'],
+					'return_as' => $return_as,
 					'user_weight' => $return['user_unit'],
 					'bag_weight' => $return['bag_weight'],
 					'return_weight' => $return['return_weight'],
@@ -121,10 +126,10 @@ function sale_return_update($value='')
 
 			if($params['gst_from'] == 'cgst'){
 					$gst = array(
-					'cgst'   =>  $return['cgst_percentage'],
-					'cgst_value'   =>  $return['cgst_amt'],
-					'sgst'   =>  $return['sgst_percentage'],
-					'sgst_value'   =>  $return['sgst_amt'],
+					'cgst'   		=>  $return['cgst_percentage'],
+					'cgst_value'   	=>  $return['cgst_amt'],
+					'sgst'   		=>  $return['sgst_percentage'],
+					'sgst_value'   	=>  $return['sgst_amt'],
 					
 						);
 				} elseif ($params['gst_from'] == 'igst') {

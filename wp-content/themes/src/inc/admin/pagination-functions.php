@@ -801,6 +801,199 @@ on return_tab.sale_id = full_table.id where full_table.active = 1  ${args['condi
 }
 
 
+function billing_list_pagination_updated_cancel( $args ) {
+
+    global $wpdb;
+    $sale_table =  $wpdb->prefix.'sale';
+    $sale_detail = $wpdb->prefix.'sale_detail';
+    $customers_table =  $wpdb->prefix.'customers';
+    $payment = $wpdb->prefix.'payment';
+    $return = $wpdb->prefix.'return';
+    $customPagHTML      = "";
+
+
+$query = "SELECT full_table.*,
+(case when return_tab.return_amount is null then 0 else return_tab.return_amount end) as return_amount
+from ( SELECT bill.*, 
+(case when payment.cash_amount is null then '-' else payment.cash_amount-bill.pay_to_bal end) as cash_amount,
+(case when payment.card_amount is null then '-' else payment.card_amount end) as card_amount,
+(case when payment.cheque_amount is null then '-' else payment.cheque_amount end) as cheque_amount,
+(case when payment.net_banking_amount is null then '-' else payment.net_banking_amount end) as net_banking_amount
+from (SELECT s1.*, 
+((CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END) - s1.pay_to_bal) as paid_total, 
+( s1.sale_total - (CASE WHEN s2.paid_total IS NULL THEN 0.00 ELSE s2.paid_total END ) ) as to_be_paid
+FROM 
+( 
+    SELECT s.*, c.name, c.type, c.mobile FROM (
+        SELECT s_in.*,
+        (case when sale_details.margin_rate is null then 0 else sale_details.margin_rate end) as margin_rate 
+        from 
+        {$sale_table} as s_in 
+        left join 
+        (
+            SELECT sale_id,
+            sum(case when unit_price = margin_price then 1 else 0 end) as margin_rate
+            from 
+            {$sale_detail} 
+            WHERE active = 0 GROUP by sale_id
+        ) as 
+        sale_details 
+        on s_in.id = sale_details.sale_id 
+    )  as s   
+    LEFT JOIN 
+    wp_customers as c 
+    ON s.customer_id = c.id 
+) as s1 
+LEFT JOIN 
+(
+    
+    SELECT s.id as sale_id, s.customer_id, s.sale_total, ph.paid_total FROM {$sale_table} as s 
+    JOIN ( 
+        SELECT p.sale_id, SUM(p.amount) as paid_total FROM {$payment} as p WHERE p.active = 0 GROUP BY p.sale_id 
+    ) as ph 
+    ON s.id = ph.sale_id WHERE s.active = 0
+) as s2 
+ON s1.id = s2.sale_id 
+WHERE s1.active = 0 )  as bill left join 
+(
+SELECT sale_id,
+sum(case when payment_type = 'cash' then amount else '-' end) as cash_amount,
+sum(case when payment_type = 'card' then amount else '-' end) as card_amount,
+sum(case when payment_type = 'cheque' then amount else '-' end) as cheque_amount,
+sum(case when payment_type = 'net_banking' then amount else '-' end) as net_banking_amount
+FROM ${payment} WHERE active=0 GROUP by sale_id
+ ) as payment on bill.id = payment.sale_id ) as full_table 
+ left join 
+ (
+ SELECT sum(key_amount) as return_amount,sale_id 
+from ${return} GROUP by sale_id
+) as 
+return_tab 
+on return_tab.sale_id = full_table.id where full_table.active = 0  ${args['condition']}";
+// echo "<pre>";
+// var_dump($query);
+//Sale table
+    $total_amount       = "SELECT sum(cash_amount) as cash_amount,sum(card_amount) as card_amount,sum(cheque_amount) as cheque_amount,sum(net_banking_amount) as net_banking_amount,sum(sale_total) as sale_total FROM (${query})  AS combined_table";
+    $data['s_result']   = $wpdb->get_row( $total_amount );
+
+    //Return Table
+     $total_return      = "SELECT sum(return_amount) as return_amount FROM (${query})  AS combined_table";
+    $data['r_result']   = $wpdb->get_row( $total_return );
+
+    //Total Margin price 
+    $margin_query       = "SELECT sale_id,unit_price,margin_price,sum(case when unit_price = margin_price then 1 else 0 end ) as margin_rate FROM ${sale_table} GROUP by sale_id";
+    $data['m_result']   = $wpdb->get_row($margin_query);
+
+
+    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
+
+    $total              = $wpdb->get_var( $total_query );
+    $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
+    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
+
+    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+
+    $totalPage         = ceil($total / $args['items_per_page']);
+
+
+    /*Updated for filter 11/10/16*/
+
+    if(isset($_POST['action']) && $_POST['action'] == 'cancel_bill_list_filter') {
+        $ppage = $_POST['per_page'];
+        $invoice_no = $_POST['invoice_no'];
+        $customer_name = $_POST['customer_name'];
+        $bill_total = $_POST['bill_total'];
+        
+        $customer_type = $_POST['customer_type'];
+        //$shop = $_POST['shop'];
+        $delivery = $_POST['delivery'];
+        $payment_done = $_POST['payment_done'];
+
+        $date_from = $_POST['date_from'];
+        $date_to = $_POST['date_to'];
+    } else {
+        $ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
+        $invoice_no = isset( $_GET['invoice_no'] ) ? $_GET['invoice_no']  : '';
+        $customer_name = isset( $_GET['customer_name'] ) ? $_GET['customer_name']  : '';
+        $bill_total = isset( $_GET['bill_total'] ) ? $_GET['bill_total']  : '';
+        
+        $customer_type = isset( $_GET['customer_type'] ) ? $_GET['customer_type']  : '-';
+        //$shop = isset( $_GET['shop'] ) ? $_GET['shop']  : '-';
+        $delivery = isset( $_GET['delivery'] ) ? $_GET['delivery']  : '-';
+        $payment_done = isset( $_GET['payment_done'] ) ? $_GET['payment_done']  : '-';
+
+        $date_from = isset( $_GET['date_from'] ) ? $_GET['date_from']  : '';
+        $date_to = isset( $_GET['date_to'] ) ? $_GET['date_to']  : '';
+    }
+
+    $page_arg = [];
+    if($invoice_no != '') {
+        $page_arg['invoice_no'] = $invoice_no;
+    }
+    if($customer_name != '') {
+        $page_arg['customer_name'] = $customer_name;
+    }
+    if($bill_total != '') {
+        $page_arg['bill_total'] = $bill_total;
+    }
+    if($customer_type != '-') {
+        $page_arg['customer_type'] = $customer_type;
+    }
+    // if($shop != '-') {
+    //     $page_arg['shop'] = $shop;
+    // }
+    if($delivery != '-') {
+        $page_arg['delivery'] = $delivery;
+    }
+    if($payment_done != '-') {
+        $page_arg['payment_done'] = $payment_done;
+    }
+    if($date_from != '') {
+        $page_arg['date_from'] = $date_from;
+    }
+    if($date_to != '') {
+        $page_arg['date_to'] = $date_to;
+    }    
+    $page_arg['cpage'] = '%#%';
+    $page_arg['ppage'] = $args['items_per_page'];
+
+
+
+    /*End Updated for filter 11/10/16*/
+
+
+    if($totalPage > 1){
+        $data['start_count'] = ($ppage * ($page-1));
+
+        $pagination = paginate_links( array(
+                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=cancel_billing_list')),
+                'format' => '',
+                'type' => 'array',
+                'prev_text' => __('prev'),
+                'next_text' => __('next'),
+                'total' => $totalPage,
+                'current' => $page
+                )
+            );
+        if ( ! empty( $pagination ) ) : 
+            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
+            foreach ($pagination as $key => $page_link ) {
+                if( strpos( $page_link, 'current' ) !== false ) {
+                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
+                } else {
+                    $customPagHTML .=  '<li>'.$page_link.'</li>';
+                }
+            }
+            $customPagHTML .=  '</ul>';
+        endif;
+    }
+    
+    $data['pagination'] = $customPagHTML;
+    return $data;
+}
+
+
+
 
 function delivery_list_pagination( $args ) {
 

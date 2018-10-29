@@ -64,6 +64,7 @@ function admin_menu_register(){
 	add_submenu_page('new_bill', 'Return List', 'Return List', $src_premissions['purchase_sales'], 'return_list', 'return_list' );
 	add_submenu_page('new_bill', 'Petty Cash', 'Petty Cash', $src_premissions['petty_cash'], 'petty_cash', 'petty_cash' );
 	add_submenu_page('new_bill', 'Income List', 'Income List', $src_premissions['income_list'], 'income_list', 'income_list' );
+	add_submenu_page('new_bill', 'Cancel Billing List', 'Cancel Billing List', $src_premissions['income_list'], 'cancel_billing_list', 'cancel_billing_list' );
 
 
 	add_menu_page(
@@ -201,7 +202,9 @@ function petty_cash() {
 function income_list() {
 	require 'sales/income_list.php';
 }
-
+function cancel_billing_list() {
+    require 'sales/list_cancel_billing.php';
+}
 
 
 function employee_list() {

@@ -15,6 +15,15 @@ $bill_duplicate = '<div class="type-f type-duplicate"></div>';
 $bill_healthcenter = '<div class="type-f type-health"></div>';
 
 $view_from = isset($_GET['view_from'])?$_GET['view_from']:'';
+$delivery_all = '';
+$delivery_partial = '';
+$delivery_boy = '';
+if($view_from == 'cancel_billing_list' ||  $view_from == 'cancel_billing_list'){
+	$delivery_all 		= 'style=display:none';
+	$delivery_partial 	= 'style=display:none';
+	$delivery_boy_display 	    = 'readonly';
+} 
+
 
 ?>
 		<style type="text/css">
@@ -105,10 +114,10 @@ $view_from = isset($_GET['view_from'])?$_GET['view_from']:'';
 								$delivered = (isset($bill_data['bill_data']) && $bill_data['bill_data']->is_delivered == 1) ? 'checked disabled' : '';
 							?>
 							<span>Delivered : </span>
-							<input type="checkbox" <?php echo $delivered; ?> name="deliveried_all" value="1" class="deliveried_all"> All
+							<input type="checkbox" <?php echo $delivery_all; ?> <?php echo $delivered; ?> name="deliveried_all" value="1" class="deliveried_all"> All
 							<br>
 							<br>
-							<span><a href="<?php echo menu_page_url( 'bill_delivery', 0 ).'&financial_year='.$bill_data['bill_data']->financial_year.'&inv_no='.$bill_data['bill_data']->invoice_id  ?>">Partial Delivery</a></span>
+							<span <?php echo $delivery_partial; ?>><a href="<?php echo menu_page_url( 'bill_delivery', 0 ).'&financial_year='.$bill_data['bill_data']->financial_year.'&inv_no='.$bill_data['bill_data']->invoice_id  ?>">Partial Delivery</a></span>
 						</li>
 						<input type="hidden" class="delivery_bill_no" value="<?php echo $bill_no; ?>">
 					</ul>
@@ -122,7 +131,7 @@ $view_from = isset($_GET['view_from'])?$_GET['view_from']:'';
 						<li><span>Bill Date : </span> <?php echo machine_to_man_date($bill_data['bill_data']->invoice_date); ?></li>
 						<li><span>Customer Type : </span> <?php echo $bill_data['bill_data']->customer_type; ?></li>
 						<li><span>Shop Name  : </span><?php echo ($bill_data['bill_data']->order_shop == 'rice_center')?'Saravana Rice Center':  'Saravana Rice Mandy'; ?></li>
-						<li><span>Delivery Boy : </span><input type="text" <?php echo $delivered; ?> name="delivery_boy"  class="delivery_boy" value="<?php echo $delivery_boy; ?>"></li>
+						<li ><span>Delivery Boy : </span><input type="text" <?php echo $delivered; ?> name="delivery_boy"  class="delivery_boy" value="<?php echo $delivery_boy; ?>" <?php echo $delivery_boy_display; ?>></li>
 					</ul>
 				</div>
 			</div>
