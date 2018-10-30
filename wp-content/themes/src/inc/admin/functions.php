@@ -3160,7 +3160,6 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 	if( $condition == 'balance' ) {
 		$cond = 'AND full_table.customer_pending < 0';
 	}
-
 	$query = "SELECT * FROM
 	(
 		SELECT 
