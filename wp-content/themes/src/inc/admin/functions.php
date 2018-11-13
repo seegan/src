@@ -3213,7 +3213,9 @@ function checkCustomerBalance($customer_id = 0, $condition = 'full', $current_sc
 		) as ret
 		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
 	) as full_table WHERE 1 = 1 $cond";
-
+// echo "<pre>";
+// var_dump($query);
+// die();
 	global $wpdb;
 	if($result == 'result') {
 		$data = $wpdb->get_results($query);
@@ -3284,9 +3286,12 @@ function getCurrentScreenBill($customer_id = 0, $current_screen = 'full', $ref_i
 		) as ret
 		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
 	) as full_table";
-
+// echo "<pre>";
+// var_dump($query);
+// die();
 	global $wpdb;
 	$data = $wpdb->get_results($query);
+
 
 
 	return $data;
