@@ -21,7 +21,6 @@ END ) as sale_total,
  THEN 0.00
  ELSE (s1.actual_paid)
 END ) as paid_total,
-list_pagination
 (
  CASE
  WHEN (s1.customer_pending) IS NULL 
@@ -72,6 +71,7 @@ FROM wp_customers s LEFT JOIN
         ON s.customer_id = ret.customer_id  GROUP BY s.customer_id
 
 ) as s1 ON s.id = s1.customer_id WHERE active = 1  ${args['condition']}";
+
 
     //$query              = "SELECT * FROM ${table} WHERE active = 1 ${args['condition']}";
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";

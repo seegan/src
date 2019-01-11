@@ -86,6 +86,7 @@
                             <tr>
                                 <td>
                                     <input type="text" id="pro_lot_number" name="lot_number">
+                                    <input type="hidden" id="pro_lot_id" name="pro_lot_id">
                                     <input type="hidden" class="pro_hsncode" value="">
                                 </td>
                                 <td>   
@@ -214,6 +215,8 @@
         },
         minLength: 2,
         select: function( event, ui ) {
+
+            jQuery('#pro_lot_id').text(ui.item.id);
             jQuery('.pro_brand').text(ui.item.product_brand);
             jQuery('.pro_product').text(ui.item.product_name);
             jQuery('.pro_bag_weight').text(ui.item.bag_weight);
@@ -260,6 +263,7 @@
         var rate = isNaN(parseFloat(jQuery('.pro_rate_val').val())) ? 0.00 : parseFloat(jQuery('.pro_rate_val').val());
         var total_bags =  (parchase_as =='bag') ?  unit : (unit/bag_weight);
         jQuery('.pro_tot_bags').text(total_bags);
+        jQuery('.pro_tot_bags_inout').text(total_bags);
         jQuery('.pro_total').text((unit*rate).toFixed(2));
         jQuery('.pro_total_val').val((unit*rate).toFixed(2));
 
@@ -284,9 +288,9 @@
         jQuery('.pro_bag_count').val('');
         jQuery('.purchase_as[value=bag]').prop('checked', true);
         jQuery('.pro_rate_val').val('');
-        jQuery('.pro_tot_bags').text('');
+        jQuery('.pro_tot_bags').text(0);
+        jQuery('.pro_tot_bags_inout').val(0)''
     }
-
     function calculateTotal() {
         
     }

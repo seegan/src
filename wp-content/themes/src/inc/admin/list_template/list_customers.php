@@ -61,6 +61,7 @@
     	$con = true;
     }
 
+var_dump($condition);
 	/*End Updated for filter 11/10/16*/
 
 	$result_args = array(
