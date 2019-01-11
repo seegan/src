@@ -47,6 +47,7 @@ function remove_footer_admin()
 
 ?>
 <div class="conform-box1" style="display:none;">
+	
 	Reason for cancel?<br><br>
 	<textarea id="cancel_reason"></textarea>
 </div>
@@ -2552,6 +2553,7 @@ function src_delete_data() {
 	global $wpdb;
 	$table_post = $_POST['data_tb'];
 	$data_id = $_POST['data_id'];
+	$cancel_reason = $_POST['cancel_reason'];
 	$data['success'] = 1;
 	$table = $wpdb->prefix.$table_post;
 
@@ -2563,19 +2565,21 @@ function src_delete_data() {
 		lessStock($lot_id ,$old_weight);    
 	}
 
+	if($table_post == 'product_type') {
+		$wpdb->update($table,array('active'=>0),array('ID'=>$data_id));
+	}
+
 	if($table_post == 'sale') {
 		$sql = "SELECT sum(sd.sale_weight) as sale_weight,sd.lot_parent_id FROM wp_sale_detail as sd left join wp_sale as sale on sale.id = sd.sale_id WHERE sd.active = 1 and sale.active = 1 GROUP by sd.lot_parent_id where sd.sale_id = $data_id";
 		$existing_data_get = $wpdb->get_results( $sql );
 		foreach ($existing_data_get as $existing_data) {
 			$lot_id = $existing_data->lot_parent_id;
 			$old_weight = $existing_data->sale_weight;
-			lessStock($lot_id ,$old_weight);
+			lessStock($lot_id ,$old_weight);			
+
 		}
 		
-if($table_post == 'product_type') {
-
-	$wpdb->update($table,array('active'=>0),array('ID'=>$data_id));
-}
+		
 
 		//Return Update
 
@@ -2594,12 +2598,12 @@ if($table_post == 'product_type') {
 		$wpdb->update($return_detail_table,array('active'=>0),array('return_id'=>$data_id));
 
 		//Delivery Table
-
+		$current_date=date("Y-m-d H:i:s");
 		$delivery_table = $wpdb->prefix.'delivery';
 		$delivery_detail_table = $wpdb->prefix.'delivery_detail';
 		$wpdb->update($delivery_table,array('active'=>0),array('delivery_id'=>$data_id));
 		$wpdb->update($delivery_detail_table,array('active'=>0),array('delivery_id'=>$data_id));
-
+		$wpdb->update($table,array('cancel_reason'=>$cancel_reason,'cancelled_date'=>$current_date),array('id'=>$data_id));
 
 	}
 

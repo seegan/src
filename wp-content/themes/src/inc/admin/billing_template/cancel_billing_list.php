@@ -175,7 +175,7 @@
     	</div>
     	<div class="x_content" style="float:left;">
             <div class="table-responsive" style="width:800px;margin: 0 auto;margin-bottom:20px;">
-                <table class="table table-striped jambo_table bulk_action">
+            <!--    <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
                             <th>Total Cash</th>
@@ -197,7 +197,7 @@
                            
                         </tr>
                     </tbody>
-                </table>
+                </table>-->
             </div>
     	</div>
 	</div>
@@ -208,10 +208,10 @@
 				<th>S.No</th>
 				<th>Bill By</th>
 				<th>Invoice No</th>
-				<th>Bill Date</th>
-				<th>Shop</th>
+				<th>Cancelled Date</th>
+				<!--<th>Shop</th>-->
 				<th>Customer Detail</th>
-				<th>Payment Type</th>
+				<th>Reason</th>
 				<th>Total</th>
 				<th>Delivery</th>
 				<th>Payment</th>
@@ -220,7 +220,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		<?php
+		<?php  
 			if(isset($bills_cancel['result']) AND $bills_cancel){
 				$start_count = $bills_cancel['start_count'];
 
@@ -245,10 +245,11 @@
 				<td>
 					<?php echo $b_value->invoice_id; ?>
 				</td>
-				<td><?php echo machine_to_man_date($b_value->invoice_date); ?></td>
-				<td><?php echo $b_value->order_shop; ?></td>
+				<td><?php echo machine_to_man_date($b_value->cancelled_date); ?></td>
+				<!--<td><?php echo $b_value->order_shop; ?></td>-->
 				<td><?php echo $b_value->name.' ('.$b_value->mobile.')<br>('.$b_value->type .')'; ?></td>
-				<td><?php 
+				<td><?php echo $b_value->cancel_reason
+                /*
 					if($b_value->cash_amount > 0)  {
 						echo 'Cash :'.$b_value->cash_amount.'<br>'; 
 					}
@@ -263,7 +264,7 @@
 					}
 					if($b_value->to_be_paid > 0)  {
 						echo 'Credit :'.$b_value->to_be_paid.'<br>'; 
-					} ?> 
+					} */ ?> 
 				</td>
 
 				<td>
