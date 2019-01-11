@@ -518,6 +518,14 @@ function get_ptype_create_form_popup() {
 add_action( 'wp_ajax_get_ptype_create_form_popup', 'get_ptype_create_form_popup' );
 add_action( 'wp_ajax_nopriv_get_ptype_create_form_popup', 'get_ptype_create_form_popup' );
 
+function edit_ptype_create_form_popup() {
+	include('ajax/edit_ptype_create_form_popup.php');
+	die();
+}
+add_action( 'wp_ajax_edit_ptype_create_form_popup', 'edit_ptype_create_form_popup' );
+add_action( 'wp_ajax_nopriv_edit_ptype_create_form_popup', 'edit_ptype_create_form_popup' );
+
+
 function get_lot_create_form_popup() {
 	include('ajax/get_lot_create_form_popup.php');
 	die();
@@ -532,6 +540,7 @@ function edit_lot_create_form_popup() {
 }
 add_action( 'wp_ajax_edit_lot_create_form_popup', 'edit_lot_create_form_popup' );
 add_action( 'wp_ajax_nopriv_edit_lot_create_form_popup', 'edit_lot_create_form_popup' );
+
 
 
 
@@ -1239,6 +1248,16 @@ function get_stock_data_by_id($stock_id = 0) {
 	die();
 }
 
+function get_ptype_data_by_id($id = 0) {
+	global $wpdb;
+	$product_type_table = $wpdb->prefix. 'product_type';	
+
+	$query = "SELECT * FROM ${product_type_table} WHERE id = ".$id;
+
+	return $wpdb->get_row( $query, ARRAY_A );
+	die();
+} 
+
 function get_product_type($name='') {
 	global $wpdb;
 	
@@ -1256,6 +1275,27 @@ function get_product_type($name='') {
 }
 add_action( 'wp_ajax_get_product_type', 'get_product_type' );
 add_action( 'wp_ajax_nopriv_get_product_type', 'get_product_type' );
+
+function ptype_update_submit_popup() {
+		$data['success'] = 0;
+		$data['msg'] = 'No changes happend!';
+		global $wpdb;
+	if($_POST['product_name']!='') {
+				
+		$product_type_table = $wpdb->prefix. 'product_type';
+	
+		$ptype_id = $_POST['ptype_id'];
+		$product_name = $_POST['product_name'];
+		$ptype_update = array('name'=>$product_name);		
+		$wpdb->update($product_type_table, $ptype_update,array('ID' =>$ptype_id));
+		$data['success'] = 1;
+	}
+	echo json_encode($data);
+	die();
+}
+add_action( 'wp_ajax_ptype_update_submit_popup', 'ptype_update_submit_popup');
+add_action( 'wp_ajax_nopriv_ptype_update_submit_popup', 'ptype_update_submit_popup');
+
 
 function stock_update_submit_popup($stock_id = 0) {
 	$data['success'] = 0;
@@ -2532,7 +2572,10 @@ function src_delete_data() {
 			lessStock($lot_id ,$old_weight);
 		}
 		
+if($table_post == 'product_type') {
 
+	$wpdb->update($table,array('active'=>0),array('ID'=>$data_id));
+}
 
 		//Return Update
 

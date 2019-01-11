@@ -273,6 +273,31 @@ jQuery('.bill-delete').live('click', function(){
               console.log()
               //jQuery( this ).dialog("close");
               updateDeleteData(data_id, data_tb,data_user, jQuery(this).find('#cancel_reason').val());
+              jQuery( this ).dialog("close");
+              updateDeleteData(data_id, data_tb,data_user);
+            },
+            Cancel: function() {
+                jQuery( this ).dialog( "close" );
+            }
+        }
+    });
+});
+
+jQuery('.ptype_delete').live('click', function(){
+
+    var data_id = jQuery(this).attr('data-id');
+    var data_tb = jQuery(this).attr('data-action');
+     var data_user= jQuery(this).attr('data-user');
+
+    jQuery( ".conform-box1" ).dialog({
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "Delete": function() {
+              jQuery( this ).dialog("close");
+              updateDeleteData(data_id, data_tb,data_user);
             },
             Cancel: function() {
                 jQuery( this ).dialog( "close" );
