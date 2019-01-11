@@ -270,7 +270,7 @@ jQuery('.bill-delete').live('click', function(){
         modal: true,
         buttons: {
             "Delete": function() {
-              console.log()
+              //saranya
               //jQuery( this ).dialog("close");
               updateDeleteData(data_id, data_tb,data_user, jQuery(this).find('#cancel_reason').val());
               jQuery( this ).dialog("close");
