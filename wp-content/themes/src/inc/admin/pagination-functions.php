@@ -32,7 +32,6 @@ END
 
 FROM wp_customers s LEFT JOIN 
 (
-
    SELECT 
         s.id,
         s.customer_id,
@@ -48,13 +47,11 @@ FROM wp_customers s LEFT JOIN
             -
             ( ( CASE WHEN payment.total_paid IS NULL THEN 0.00 ELSE payment.total_paid END ) - ( ( CASE WHEN sum(s.pay_to_bal) IS NULL THEN 0.00 ELSE sum(s.pay_to_bal) END ) + ( CASE WHEN ret.return_to_pay IS NULL THEN 0.00 ELSE ret.return_to_pay END )) )
         ) as customer_pending 
-        
         FROM
         wp_sale as s 
-        
         LEFT JOIN 
         ( 
-            SELECT  
+            SELECT 
             ( CASE WHEN (p.amount) IS NULL THEN 0.00 ELSE SUM(p.amount) END ) as total_paid,
             p.sale_id as payment_sale_id,p.customer_id
             FROM wp_payment as p WHERE p.payment_type != 'credit' AND p.active = 1 GROUP BY p.customer_id
@@ -69,9 +66,7 @@ FROM wp_customers s LEFT JOIN
             FROM wp_return as r WHERE r.active = 1 GROUP BY r.customer_id
         ) as ret
         ON s.customer_id = ret.customer_id  GROUP BY s.customer_id
-
 ) as s1 ON s.id = s1.customer_id WHERE active = 1  ${args['condition']}";
-
 
     //$query              = "SELECT * FROM ${table} WHERE active = 1 ${args['condition']}";
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";

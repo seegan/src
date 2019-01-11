@@ -113,6 +113,7 @@
                                 </td>
                                 <td>
                                     <span class="pro_tot_bags"></span>
+                                    <input type="hidden" class="pro_tot_bags_input" value="0">
                                 </td>
                                 <td>
                                     <span class="pro_total">
@@ -216,7 +217,7 @@
         minLength: 2,
         select: function( event, ui ) {
 
-            jQuery('#pro_lot_id').text(ui.item.id);
+            jQuery('#pro_lot_id').val(ui.item.id);
             jQuery('.pro_brand').text(ui.item.product_brand);
             jQuery('.pro_product').text(ui.item.product_name);
             jQuery('.pro_bag_weight').text(ui.item.bag_weight);
@@ -231,6 +232,7 @@
                 jQuery(this).val(ui.content[0].value);
                 jQuery(this).autocomplete( "close" );
 
+                jQuery('#pro_lot_id').val(ui.content[0].id);
                 jQuery('.pro_brand').text(ui.content[0].product_brand);
                 jQuery('.pro_product').text(ui.content[0].product_name);
                 jQuery('.pro_bag_weight').text(ui.content[0].bag_weight);
@@ -244,7 +246,6 @@
         }
     });
 
-
     jQuery('.pro_bag_count, .purchase_as, .pro_rate_val').on('change',function () {
         calculateParticular();
     });
@@ -253,7 +254,6 @@
         formPurchaseBill();
         clearParticular();
         jQuery('#pro_lot_number').focus();
-
     });
 
     function calculateParticular() {
@@ -263,25 +263,28 @@
         var rate = isNaN(parseFloat(jQuery('.pro_rate_val').val())) ? 0.00 : parseFloat(jQuery('.pro_rate_val').val());
         var total_bags =  (parchase_as =='bag') ?  unit : (unit/bag_weight);
         jQuery('.pro_tot_bags').text(total_bags);
-        jQuery('.pro_tot_bags_inout').text(total_bags);
+        jQuery('.pro_tot_bags_input').val(total_bags);
         jQuery('.pro_total').text((unit*rate).toFixed(2));
         jQuery('.pro_total_val').val((unit*rate).toFixed(2));
-
     }
     function formPurchaseBill() {
         var hsn = jQuery('.pro_hsncode').val();
+        var lot_id = jQuery('.pro_hsncode').val();
         var description = jQuery('#pro_lot_number').val();
         var qty = jQuery('.pro_bag_count').val();
         var rate = jQuery('.pro_rate_val').val();
         var per = jQuery('.purchase_as:checked').val();
         var total =  jQuery('.pro_total_val').val();
 
-        var row_tr = "<tr><td>"+hsn+"</td><td>"+description+"</td><td>"+qty+"</td><td>"+rate+"</td><td>"+per+"</td><td>"+total+"</td></tr>";
+        var lot_id_hidden = '<input type="hidden" class="lot_id_hidden" value="'+jQuery('#pro_lot_id').val()+'">';
+        var bag_count_hidden = '<input type="hidden" class="bag_count_hidden" value="'+jQuery('.pro_tot_bags_input').val()+'">';
+
+        var row_tr = "<tr><td>"+hsn+lot_id_hidden+"</td><td>"+description+"</td><td>"+qty+bag_count_hidden+"</td><td>"+rate+"</td><td>"+per+"</td><td>"+total+"</td></tr>";
         jQuery('.purchase_row').append(row_tr);
         calculateTotal();
     }
     function clearParticular() {
-        jQuery('#pro_lot_number').val('');
+        jQuery('#pro_lot_number').val(0);
         jQuery('.pro_hsncode').val('');
         jQuery('.pro_bag_weight').text('');
         jQuery('.pro_bag_weight_hide').val('');
@@ -289,9 +292,10 @@
         jQuery('.purchase_as[value=bag]').prop('checked', true);
         jQuery('.pro_rate_val').val('');
         jQuery('.pro_tot_bags').text(0);
-        jQuery('.pro_tot_bags_inout').val(0)''
+        jQuery('.pro_tot_bags_input').val(0);
     }
     function calculateTotal() {
-        
+        //pro_lot_id
     }
 </script>
+
