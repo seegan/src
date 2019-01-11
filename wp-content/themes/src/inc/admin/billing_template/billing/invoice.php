@@ -323,7 +323,7 @@ else {
 		include( get_template_directory().'/inc/admin/billing_template/billing/invoice_print/retail_cancel.php' ); 	
 	}
 	else{
-	include( get_template_directory().'/inc/admin/billing_template/billing/invoice_print/wholesale.php' ); 
+		include( get_template_directory().'/inc/admin/billing_template/billing/invoice_print/wholesale.php' ); 
 	}
 }
  ?>
