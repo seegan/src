@@ -19,6 +19,7 @@ function admin_menu_register(){
 	add_submenu_page('stock', 'Lot List', 'Lot List', $src_premissions['lot_list'], 'stock', 'list_lots' );
 	add_submenu_page('stock', 'Stock List', 'Stock List', $src_premissions['stock_list'], 'list_stocks', 'list_stocks' );
 	add_submenu_page('stock', 'Add Purchase', 'Add Purchase', $src_premissions['stock_list'], 'purchase_add', 'purchase_add' );
+	add_submenu_page('stock', 'Add Product Type', 'Add Product Type', $src_premissions['stock_list'], 'ptype_add_list', 'ptype_add_list' );
 
 
 	add_menu_page(
@@ -154,6 +155,9 @@ function list_stocks() {
 }
 function purchase_add() {
     require 'stocks/purchase_add.php';	
+}
+function ptype_add_list() {
+    require 'stocks/ptype_add_list.php';	
 }
 
 

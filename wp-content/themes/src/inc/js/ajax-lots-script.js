@@ -34,11 +34,25 @@ jQuery('a.lot_edit').live('click', function() {
   edit_popup('edit_lot_create_form_popup', 'Edit Lot', this);
 });
 
+jQuery('a.ptype_edit').live('click', function() {
+  edit_popup('edit_ptype_create_form_popup', 'Edit Product Type', this);
+});
+
   jQuery.validator.setDefaults({
         debug: true,
         success: "valid"
   });
  
+
+
+jQuery('a.ptype_edit').live('click', function(e) {
+    e.preventDefault();
+    jQuery('#src_info_box').bPopup({
+      modalClose: false,
+      position: ['auto', 50] 
+    });
+});
+
 
 
 jQuery('a.lot_edit').live('click', function(e) {
@@ -48,7 +62,6 @@ jQuery('a.lot_edit').live('click', function(e) {
       position: ['auto', 50] 
     });
 });
-
 
 
 jQuery('.bagweight .bag_weight').live('change', function() {
@@ -266,7 +279,39 @@ function lot_create_submit_popup(action = '', data = '') {
 
 
 /*form edit*/
+jQuery('#edit_ptype').live('submit', function(e){
+    var product_name = jQuery('#product_name').val();      
+    if(product_name != '') {
+         ptype_update_submit_popup('ptype_update_submit_popup');
+    } else {
+          e.preventDefault();
+          return false;
+    }
+});
 
+function ptype_update_submit_popup(action = '', data = '') {
+  alert(jQuery("#edit_ptype").serialize());
+    jQuery.ajax({
+        type: "POST",
+        url: frontendajax.ajaxurl,
+        data: {
+            data : jQuery("#edit_ptype").serialize(),
+            action : action
+        },
+        success: function (data) {
+          var obj = jQuery.parseJSON(data);
+          if(obj.success == 1) {
+              clear_main_popup();
+              jQuery('#src_info_box').bPopup().close();
+              alert_popup('<span class="success_msg">Product Type Updated!</span>', 'Success'); 
+
+          } else {
+              alert_popup('<span class="error_msg">Can\'t Edit this data, Try again!</span>', 'Error');  
+          }
+        }
+
+    });
+}
 
 jQuery('#edit_lot').live('submit', function(e){
     var lot_number = jQuery('#lot_number').val();
