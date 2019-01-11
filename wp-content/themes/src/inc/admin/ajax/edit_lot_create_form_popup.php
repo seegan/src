@@ -82,9 +82,6 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<select name="weight" class="bag_weight_total" style="width:20%;">
-				<option <?php echo ($lot_details['lot_data']->weight == 0.25) ? 'selected' : ''; ?> value="0.25">1/4</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 0.5) ? 'selected' : ''; ?> value="0.5">1/2</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 0.75) ? 'selected' : ''; ?> value="0.75">3/4</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5</option>
