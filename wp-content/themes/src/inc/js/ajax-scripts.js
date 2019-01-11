@@ -273,7 +273,7 @@ jQuery('.bill-delete').live('click', function(){
               //jQuery( this ).dialog("close");
               updateDeleteData(data_id, data_tb,data_user, jQuery(this).find('#cancel_reason').val());
               jQuery( this ).dialog("close");
-              updateDeleteData(data_id, data_tb,data_user);
+            
             },
             Cancel: function() {
                 jQuery( this ).dialog( "close" );
