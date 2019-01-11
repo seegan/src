@@ -270,8 +270,9 @@ jQuery('.bill-delete').live('click', function(){
         modal: true,
         buttons: {
             "Delete": function() {
+              console.log()
               //jQuery( this ).dialog("close");
-              //updateDeleteData(data_id, data_tb,data_user);
+              updateDeleteData(data_id, data_tb,data_user, jQuery(this).find('#cancel_reason').val());
             },
             Cancel: function() {
                 jQuery( this ).dialog( "close" );
@@ -280,13 +281,14 @@ jQuery('.bill-delete').live('click', function(){
     });
 });
 
-function updateDeleteData(data_id, data_tb,data_user) {
+function updateDeleteData(data_id, data_tb,data_user, cancel_reason) {
   jQuery.ajax({
       type: "POST",
       url: frontendajax.ajaxurl,
       data: {
           data_id : data_id,
           data_tb : data_tb,
+          cancel_reason : cancel_reason,
           action : 'src_delete_data',
       },
       success: function (data) {

@@ -46,7 +46,10 @@ function remove_footer_admin()
 	$tot_employees = isset($count_data['result']->tot_employees) ? $count_data['result']->tot_employees : 0;
 
 ?>
-<div class="conform-box1" style="display:none;">Choose the action!</div>
+<div class="conform-box1" style="display:none;">
+	Reason for cancel?<br><br>
+	<textarea id="cancel_reason"></textarea>
+</div>
 <span id="footer-thankyou">
 	<div id="footer-wrap" class="">
 		<div id="footer">

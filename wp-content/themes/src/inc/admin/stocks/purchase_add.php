@@ -11,6 +11,10 @@
     .particulars .part-in {
         margin: 10px;
     }
+
+    .footer-txt {
+        text-align: right;
+    }
 </style>
 <div style="width: 100%;">
     <ul class="icons-labeled">
@@ -138,21 +142,34 @@
                         </thead>
                         <tbody class="purchase_row">
                         </tbody>
+                        <tbody class="purchase_total">
+                            <tr>
+                                <td colspan="5"><div class="footer-txt">Sub Total</div></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"><div class="footer-txt">Cash Discount</div></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"><div class="footer-txt">Taxable Amount</div></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"><div class="footer-txt">Total Gst Amount</div></td>
+                                <td></td>
+                            </tr>                            
+                            <tr>
+                                <td colspan="5"><div class="footer-txt">Grand Total</div></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
                         <tfoot>
                             <tr>
-                                <th>dfdf</th>
-                                <th>dfdf</th>
-                                <th>dfdf</th>
-                                <th>dfdf</th>
-                                <th>dfdf</th>
-                                <th>dfdf</th>
                             </tr>
                         </tfoot>
                     </table>
-
                 </div>
-
-
 
             </div>
         </div>
@@ -245,6 +262,7 @@
         jQuery('.pro_tot_bags').text(total_bags);
         jQuery('.pro_total').text((unit*rate).toFixed(2));
         jQuery('.pro_total_val').val((unit*rate).toFixed(2));
+
     }
     function formPurchaseBill() {
         var hsn = jQuery('.pro_hsncode').val();
@@ -254,9 +272,9 @@
         var per = jQuery('.purchase_as:checked').val();
         var total =  jQuery('.pro_total_val').val();
 
-
         var row_tr = "<tr><td>"+hsn+"</td><td>"+description+"</td><td>"+qty+"</td><td>"+rate+"</td><td>"+per+"</td><td>"+total+"</td></tr>";
         jQuery('.purchase_row').append(row_tr);
+        calculateTotal();
     }
     function clearParticular() {
         jQuery('#pro_lot_number').val('');
@@ -267,5 +285,9 @@
         jQuery('.purchase_as[value=bag]').prop('checked', true);
         jQuery('.pro_rate_val').val('');
         jQuery('.pro_tot_bags').text('');
+    }
+
+    function calculateTotal() {
+        
     }
 </script>
