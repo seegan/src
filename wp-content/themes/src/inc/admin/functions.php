@@ -1169,9 +1169,7 @@ function get_lot_data_billing() {
 	$search_term = $_POST['search_key'];
 
 
-	$query = "SELECT ch.*, par.stock_balance as stock_orig, par.sale_balance, par.return_balance, (par.stock_balance - par.sale_balance + par.return_balance) as stock_balance  FROM ( SELECT l.basic_price, l.brand_name, l.buying_price, l.created_at, l.gst_percentage, l.hsn_code, l.id, l.lot_number, l.lot_type, l.modified_at, l.parent_id, l.product_name, l.search_name, l.slab_system, l.stock_alert, l.unit_type, l.weight, (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END ) as par_id from ${lots_table} as l WHERE l.lot_number LIKE '%${search_term}%' AND l.active = 1) as ch JOIN ${lots_table} as par ON ch.par_id = par.id";
-
-
+	$query = "SELECT ch.*, par.lot_number as parent_lot, par.stock_balance as stock_orig, par.sale_balance, par.return_balance, (par.stock_balance - par.sale_balance + par.return_balance) as stock_balance  FROM ( SELECT l.basic_price, l.brand_name, l.buying_price, l.created_at, l.gst_percentage, l.hsn_code, l.id, l.lot_number, l.lot_type, l.modified_at, l.parent_id, l.product_name, l.search_name, l.slab_system, l.stock_alert, l.unit_type, l.weight, (CASE WHEN l.parent_id = 0 THEN l.id ELSE l.parent_id END ) as par_id from ${lots_table} as l WHERE l.lot_number LIKE '%${search_term}%' AND l.active = 1) as ch JOIN ${lots_table} as par ON ch.par_id = par.id";
 
 	if( $data['items'] = $wpdb->get_results( $query, ARRAY_A ) ) {
 		$data['success'] = 1;

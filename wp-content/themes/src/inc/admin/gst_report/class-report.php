@@ -61,7 +61,8 @@ sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_
             (CASE WHEN s.gst_to = 'cgst' THEN sd.sgst_value ELSE 0.00 END) as sgst_value, 
             (CASE WHEN s.gst_to = 'igst' THEN sd.igst_value ELSE 0.00 END) as igst_value, 
             'sale' as report_type,
-            s.gst_to as gst_type
+            s.gst_to as gst_type,
+            DATE(s.invoice_date) as invoice_date
         FROM wp_sale as s 
         LEFT JOIN wp_sale_detail as sd 
         ON s.id = sd.sale_id 
@@ -94,7 +95,8 @@ sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_
             (CASE WHEN s.gst_to = 'cgst' THEN -(rd.sgst_value) ELSE 0.00 END) as sgst_value, 
             (CASE WHEN s.gst_to = 'igst' THEN -(rd.igst_value) ELSE 0.00 END) as igst_value,
             'return' as report_type,
-             s.gst_to as gst_type
+            s.gst_to as gst_type,
+            DATE(s.invoice_date) as invoice_date
         FROM wp_return as r 
         LEFT JOIN wp_return_detail as rd
         ON r.id = rd.return_id 
@@ -109,6 +111,15 @@ sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_
 ON l.id = f.parent_id
 WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
 
+/*$w = 45.5;
+$h = 177.8 / 100;
+var_dump( $w / ($h * $h) );
+
+$iw = 100;
+$ih = 6.4;
+var_dump( ($iw / ($ih * $ih)) * 703  );*/
+
+
     $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
     $status_query        = "SELECT SUM(combined_table.tot_weight) as weight_s, SUM(combined_table.tot_taxless) as taxless_s, SUM(combined_table.tot_cgst) as cgst_s, SUM(combined_table.tot_sgst) as sgst_s, SUM(combined_table.tot_igst) as igst_s, SUM(combined_table.tot_amt) as sale_s  FROM (${query}) AS combined_table";
@@ -119,11 +130,9 @@ WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
     $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
     $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
-
     $totalPage         = ceil($total / $args['items_per_page']);
 
     /*END Updated for filter 11/10/16*/
-
     if(isset($_POST['action']) && $_POST['action'] == 'stock_sale_filter_list') {
         $ppage          = $_POST['per_page'];
         $lot_number     = $_POST['lot_number'];
@@ -144,7 +153,6 @@ WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
 
 
     $page_arg = [];
-
 
     if($lot_number != '') {
         $page_arg['lot_number'] = $lot_number;
