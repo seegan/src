@@ -405,7 +405,7 @@ echo "<script>
                                     <div class="weight_cal_tooltip" style="width:25px;float:left;">
                                       <div class="tooltip tootip-black" data-stockalert="1">
                                         <span class="tooltiptext">
-                                            Slab System : <span class="slab_sys_txt"><?php echo ( $b_value->slab == 0 ) ? 'No' : 'Yes';  ; ?></span>
+                                            Lot : <span class="lot_parent_txt"><?php echo ( $b_value->slab == 0 ) ? 'No' : 'Yes';  ; ?></span><span class="s_w_txt"></span>
                                             <hr class="tooltip-hr">
                                             Stock Avail : <span class="stock_weight_txt"><?php echo bagKgSplitter($b_value->stock_bal, $b_value->bag_weight, $b_value->unit_type); ?></span>
                                             <input type="hidden" class="stock_weight_txt_hidden" value="<?php echo $b_value->stock_bal; ?>">
@@ -562,7 +562,7 @@ echo "<script>
                                     <div class="weight_cal_tooltip" style="width:25px;float:left;">
                                       <div class="tooltip tootip-black" data-stockalert="1">
                                         <span class="tooltiptext">
-                                            Slab System : <span class="slab_sys_txt">--</span>
+                                            Lot : <span class="lot_parent_txt">--</span><span class="s_w_txt"></span>
                                             <hr class="tooltip-hr">
                                             Stock Avail : <span class="stock_weight_txt">--</span> kg
                                         </span>

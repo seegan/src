@@ -50,7 +50,7 @@
 		<div class="form_detail">
 			<label>Bill Title</label>
 			<div style="">
-				<input type="text" id="bill_title" name="bill_title" autocomplete="off" value="Tax Invoice">
+				<input type="text" id="bill_title" name="bill_title" autocomplete="off" value="Original Tax Invoice">
 			</div>
 		</div>
 		<div class="button_sub">

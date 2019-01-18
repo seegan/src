@@ -286,7 +286,7 @@
                                     <div class="weight_cal_tooltip" style="width:25px;float:left;">
                                         <div class="tooltip tootip-black" data-stockalert="1">
                                             <span class="tooltiptext">
-                                                Slab System : <span class="slab_sys_txt">--</span>&nbsp;<span class="s_w_txt"></span>
+                                                Lot : <span class="lot_parent_txt">--</span>&nbsp;<span class="s_w_txt"></span>
                                                 <hr class="tooltip-hr">
                                                 Stock Avail : <span class="stock_weight_txt">--</span>
                                                 <input type="hidden" class="stock_weight_txt_hidden" value="0.00">

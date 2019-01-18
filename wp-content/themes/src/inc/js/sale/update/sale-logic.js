@@ -39,6 +39,7 @@ function populate_select2(this_data = '', v) {
                       lot_type: obj.lot_type, 
                       parent_id: obj.parent_id, 
                       par_id:obj.par_id, 
+                      parent_lot:     obj.parent_lot,
                       stock_bal:obj.stock_balance, 
                       basic_price:obj.basic_price, 
                       stock_alert:obj.stock_alert, 
@@ -135,8 +136,21 @@ function populate_select2(this_data = '', v) {
       //Tooltip Update
       jQuery(this).parent().parent().find('.tooltip').attr('data-stockalert', e.params.data.stock_alert);
       var slab_sys_txt = (e.params.data.slab_system == 1) ? 'yes' : 'no';
-      jQuery(this).parent().parent().find('.slab_sys_txt').text(slab_sys_txt);
-      jQuery(this).parent().parent().find('.stock_weight_txt').text(e.params.data.stock_bal);
+      jQuery(this).parent().parent().find('.lot_parent_txt').text(e.params.data.parent_lot);
+
+
+      /**********************************************/
+      if(slab_sys_txt=='yes'){ 
+          var s_w_txt=" [ "+e.params.data.stock_bal +" Kg ]";
+          jQuery(this).parent().parent().find('.s_w_txt').text(s_w_txt);
+        }
+      else{
+          jQuery(this).parent().parent().find('.s_w_txt').text("[ "+e.params.data.stock_bal +" Kg ]");
+          jQuery(this).parent().parent().find('.stock_weight_txt').text(e.params.data.stock_bal);
+      }  
+      /*******************************************/
+
+
       jQuery(this).parent().parent().find('.stock_weight_txt_hidden').val(e.params.data.stock_bal);
 
       updateBalanceStock(e.params.data.par_id, e.params.data.stock_bal, e.params.data.stock_alert);
