@@ -71,7 +71,7 @@ sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_
         WHERE ${args['sale_condition']} AND s.active = 1 AND sd.active = 1
     )
 
-    UNION ALL
+/*    UNION ALL
     
     (
         SELECT 
@@ -96,7 +96,7 @@ sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_
             (CASE WHEN s.gst_to = 'igst' THEN -(rd.igst_value) ELSE 0.00 END) as igst_value,
             'return' as report_type,
             s.gst_to as gst_type,
-            DATE(s.invoice_date) as invoice_date
+            DATE(r.return_date) as invoice_date
         FROM wp_return as r 
         LEFT JOIN wp_return_detail as rd
         ON r.id = rd.return_id 
@@ -105,11 +105,11 @@ sum(f.weight) as tot_weight, sum(taxless_amt) as tot_taxless, sum(f.amt) as tot_
         LEFT JOIN wp_sale as s 
         ON s.id = r.sale_id
         WHERE ${args['return_condition']} AND r.active = 1 AND rd.active = 1 AND s.active = 1
-    )
+    )*/
     
 ) as f 
 ON l.id = f.parent_id
-WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
+WHERE 1=1 ${args['condition']} GROUP BY f.cgst, f.invoice_date ";
 
 /*$w = 45.5;
 $h = 177.8 / 100;
@@ -129,7 +129,7 @@ var_dump( ($iw / ($ih * $ih)) * 703  );*/
     $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
     $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
-    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+    $data['result']     = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']}" );
     $totalPage         = ceil($total / $args['items_per_page']);
 
     /*END Updated for filter 11/10/16*/
@@ -356,151 +356,164 @@ WHERE 1=1 ${args['condition']} GROUP BY ${args['orderby_field']} ";
 	}
 
 
-function stock_report_pagination_accountant( $args ) {
-    global $wpdb;
-    $sale = $wpdb->prefix.'sale';
-    $sale_details =  $wpdb->prefix.'sale_detail';
-    $return_table = $wpdb->prefix.'return_items_details';
-    $customPagHTML      = "";
+    function stock_report_pagination_accountant( $args ) {
+        global $wpdb;
+        $sale = $wpdb->prefix.'sale';
+        $sale_details =  $wpdb->prefix.'sale_detail';
+        $return_table = $wpdb->prefix.'return_items_details';
+        $customPagHTML      = "";
 
-	$page_arg = [];
-	$page_arg['ppage'] = $args['items_per_page'];
-	$page_arg['bill_from'] = $this->bill_from;
-	$page_arg['bill_to'] = $this->bill_to;
-	$page_arg['slap'] = $this->slap;
-    $page_arg['cpage'] = '%#%';
+    	$page_arg = [];
+    	$page_arg['ppage'] = $args['items_per_page'];
+    	$page_arg['bill_from'] = $this->bill_from;
+    	$page_arg['bill_to'] = $this->bill_to;
+    	$page_arg['slap'] = $this->slap;
+        $page_arg['cpage'] = '%#%';
 
-    $condition = '';  
-    
-    if($this->bill_from != '' && $this->bill_to != '') {
-    	$condition .= " AND DATE(sale.modified_at) >= DATE('".$this->bill_from."') AND DATE(sale.modified_at) <= DATE('".$this->bill_to."')";
-    } else if($this->bill_from != '' || $this->bill_to != '') {
-    	if($this->bill_from != '') {
-    		$condition .= " AND DATE(sale.modified_at) >= DATE('".$this->bill_from."') AND DATE(sale.modified_at) <= DATE('".$this->bill_from."')";
-    	} else {
-    		$condition .= " AND DATE(sale.modified_at) >= DATE('".$this->bill_to."') AND DATE(sale.modified_at) <= DATE('".$this->bill_to."')";
-    	}
-    }
+        $condition = '';  
+        
+        if($this->bill_from != '' && $this->bill_to != '') {
+        	$condition .= " AND DATE(sale.modified_at) >= DATE('".$this->bill_from."') AND DATE(sale.modified_at) <= DATE('".$this->bill_to."')";
+        } else if($this->bill_from != '' || $this->bill_to != '') {
+        	if($this->bill_from != '') {
+        		$condition .= " AND DATE(sale.modified_at) >= DATE('".$this->bill_from."') AND DATE(sale.modified_at) <= DATE('".$this->bill_from."')";
+        	} else {
+        		$condition .= " AND DATE(sale.modified_at) >= DATE('".$this->bill_to."') AND DATE(sale.modified_at) <= DATE('".$this->bill_to."')";
+        	}
+        }
 
-    if($this->slap != '') {
-    	$condition_final .= "AND report.gst = ".$this->slap;
-    }
-    $query 				= "SELECT * from (
-    		SELECT 
-			(sum(fin_tab.bal_cgst)) as cgst_value, 
-			(sum(fin_tab.bal_total)) as total, 
-			(sum(fin_tab.bal_unit)) as total_unit, 
-			(sum(fin_tab.bal_amt)) as amt,fin_tab.gst as gst 
-		      
-			from (SELECT 
-					(case when return_table.return_cgst is null then sale_table.sale_cgst else sale_table.sale_cgst - return_table.return_cgst end ) as bal_cgst, 
-					(case when return_table.return_total is null then sale_table.sale_total else sale_table.sale_total - return_table.return_total end ) as bal_total,
-					(case when return_table.return_unit is null then sale_table.sale_unit else  sale_table.sale_unit - return_table.return_unit end) as bal_unit,
-					(case when return_table.return_amt is null then sale_table.sale_amt else sale_table.sale_amt - return_table.return_amt end ) as bal_amt,
-					sale_table.cgst as gst
-					FROM 
-					(
-					SELECT sale_details.cgst,
-					    sum(sale_details.cgst_value) as sale_cgst, 
-					    sum(sale_details.sgst_value) sale_sgst, 
-					    sum(sale_details.sub_total) as sale_total, 
-					    sum(sale_details.sale_unit) as sale_unit,
-					    sum(sale_details.amt) as sale_amt FROM ${sale} as sale left join ${sale_details} as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1 ${condition} group by sale_details.cgst
-					) as sale_table 
-					left join
-					(
-					 SELECT return_details.cgst,
-					    sum(return_details.cgst_value) as return_cgst, 
-					    sum(return_details.sgst_value) as return_sgst, 
-					    sum(return_details.sub_total) as return_total ,
-					    sum(return_details.return_unit) as return_unit,
-					    sum(return_details.amt) as return_amt FROM ${sale} as sale left join ${return_table} as return_details on sale.`id`= return_details.sale_id WHERE sale.active = 1 and return_details.active = 1 ${condition} group by return_details.cgst
-					) as return_table 
-					on sale_table.cgst = return_table.cgst
-		union all 
-		                	SELECT 
-(case when ws_return_table.return_cgst is null then ws_sale_table.sale_cgst else ws_sale_table.sale_cgst - ws_return_table.return_cgst end ) as bal_cgst, 
-(case when ws_return_table.return_total is null then ws_sale_table.sale_total else ws_sale_table.sale_total - ws_return_table.return_total end ) as bal_total,
-(case when ws_return_table.return_unit is null then ws_sale_table.sale_unit else  ws_sale_table.sale_unit - ws_return_table.return_unit end) as bal_unit,
-(case when ws_return_table.return_amt is null then ws_sale_table.sale_amt else ws_sale_table.sale_amt - ws_return_table.return_amt end ) as bal_amt,
-					ws_sale_table.cgst as gst
-					FROM 
-					(
-					SELECT ws_sale_details.cgst,
-					    sum(ws_sale_details.cgst_value) as sale_cgst, 
-					    sum(ws_sale_details.sgst_value) sale_sgst, 
-					    sum(ws_sale_details.sub_total) as sale_total, 
-					    sum(ws_sale_details.sale_unit) as sale_unit,
-					    sum(ws_sale_details.amt) as sale_amt FROM ${ws_sale} as sale left join ${ws_sale_details} as ws_sale_details on sale.`id`= ws_sale_details.sale_id WHERE sale.active = 1 and ws_sale_details.active = 1 ${condition} group by ws_sale_details.cgst
-					) as ws_sale_table 
-					left join
-					(
-					 SELECT ws_return_details.cgst,
-					    sum(ws_return_details.cgst_value) as return_cgst, 
-					    sum(ws_return_details.sgst_value) as return_sgst, 
-					    sum(ws_return_details.sub_total) as return_total ,
-					    sum(ws_return_details.return_unit) as return_unit,
-					    sum(ws_return_details.amt) as return_amt FROM ${ws_sale} as sale left join ${ws_return_table} as ws_return_details on sale.`id`= ws_return_details.sale_id WHERE sale.active = 1 and ws_return_details.active = 1 ${condition} group by ws_return_details.cgst
-					) as ws_return_table 
-					on ws_sale_table.cgst = ws_return_table.cgst ) as fin_tab GROUP by fin_tab.gst ) as report WHERE report.total_unit > 0 ${condition_final}";
-            
-var_dump($query);
+        if($this->slap != '') {
+        	$condition_final .= "AND report.gst = ".$this->slap;
+        }
+        $query 				= "SELECT * from (
+        		SELECT 
+    			(sum(fin_tab.bal_cgst)) as cgst_value, 
+    			(sum(fin_tab.bal_total)) as total, 
+    			(sum(fin_tab.bal_unit)) as total_unit, 
+    			(sum(fin_tab.bal_amt)) as amt,fin_tab.gst as gst 
+    		      
+    			from (SELECT 
+    					(case when return_table.return_cgst is null then sale_table.sale_cgst else sale_table.sale_cgst - return_table.return_cgst end ) as bal_cgst, 
+    					(case when return_table.return_total is null then sale_table.sale_total else sale_table.sale_total - return_table.return_total end ) as bal_total,
+    					(case when return_table.return_unit is null then sale_table.sale_unit else  sale_table.sale_unit - return_table.return_unit end) as bal_unit,
+    					(case when return_table.return_amt is null then sale_table.sale_amt else sale_table.sale_amt - return_table.return_amt end ) as bal_amt,
+    					sale_table.cgst as gst
+    					FROM 
+    					(
+    					SELECT sale_details.cgst,
+    					    sum(sale_details.cgst_value) as sale_cgst, 
+    					    sum(sale_details.sgst_value) sale_sgst, 
+    					    sum(sale_details.sub_total) as sale_total, 
+    					    sum(sale_details.sale_unit) as sale_unit,
+    					    sum(sale_details.amt) as sale_amt FROM ${sale} as sale left join ${sale_details} as sale_details on sale.`id`= sale_details.sale_id WHERE sale.active = 1 and sale_details.active = 1 ${condition} group by sale_details.cgst
+    					) as sale_table 
+    					left join
+    					(
+    					 SELECT return_details.cgst,
+    					    sum(return_details.cgst_value) as return_cgst, 
+    					    sum(return_details.sgst_value) as return_sgst, 
+    					    sum(return_details.sub_total) as return_total ,
+    					    sum(return_details.return_unit) as return_unit,
+    					    sum(return_details.amt) as return_amt FROM ${sale} as sale left join ${return_table} as return_details on sale.`id`= return_details.sale_id WHERE sale.active = 1 and return_details.active = 1 ${condition} group by return_details.cgst
+    					) as return_table 
+    					on sale_table.cgst = return_table.cgst
+    		union all 
+    		                	SELECT 
+    (case when ws_return_table.return_cgst is null then ws_sale_table.sale_cgst else ws_sale_table.sale_cgst - ws_return_table.return_cgst end ) as bal_cgst, 
+    (case when ws_return_table.return_total is null then ws_sale_table.sale_total else ws_sale_table.sale_total - ws_return_table.return_total end ) as bal_total,
+    (case when ws_return_table.return_unit is null then ws_sale_table.sale_unit else  ws_sale_table.sale_unit - ws_return_table.return_unit end) as bal_unit,
+    (case when ws_return_table.return_amt is null then ws_sale_table.sale_amt else ws_sale_table.sale_amt - ws_return_table.return_amt end ) as bal_amt,
+    					ws_sale_table.cgst as gst
+    					FROM 
+    					(
+    					SELECT ws_sale_details.cgst,
+    					    sum(ws_sale_details.cgst_value) as sale_cgst, 
+    					    sum(ws_sale_details.sgst_value) sale_sgst, 
+    					    sum(ws_sale_details.sub_total) as sale_total, 
+    					    sum(ws_sale_details.sale_unit) as sale_unit,
+    					    sum(ws_sale_details.amt) as sale_amt FROM ${ws_sale} as sale left join ${ws_sale_details} as ws_sale_details on sale.`id`= ws_sale_details.sale_id WHERE sale.active = 1 and ws_sale_details.active = 1 ${condition} group by ws_sale_details.cgst
+    					) as ws_sale_table 
+    					left join
+    					(
+    					 SELECT ws_return_details.cgst,
+    					    sum(ws_return_details.cgst_value) as return_cgst, 
+    					    sum(ws_return_details.sgst_value) as return_sgst, 
+    					    sum(ws_return_details.sub_total) as return_total ,
+    					    sum(ws_return_details.return_unit) as return_unit,
+    					    sum(ws_return_details.amt) as return_amt FROM ${ws_sale} as sale left join ${ws_return_table} as ws_return_details on sale.`id`= ws_return_details.sale_id WHERE sale.active = 1 and ws_return_details.active = 1 ${condition} group by ws_return_details.cgst
+    					) as ws_return_table 
+    					on ws_sale_table.cgst = ws_return_table.cgst ) as fin_tab GROUP by fin_tab.gst ) as report WHERE report.total_unit > 0 ${condition_final}";
 
-    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
+        $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
 
-    $status_query       = "SELECT SUM(cgst_value) as total_cgst,sum(total_unit) as sold_qty,sum(total) as sub_tot,sum(amt) as tot_amt FROM (${query}) AS combined_table";
-	$data['s_result']   = $wpdb->get_row( $status_query );
+        $status_query       = "SELECT SUM(cgst_value) as total_cgst,sum(total_unit) as sold_qty,sum(total) as sub_tot,sum(amt) as tot_amt FROM (${query}) AS combined_table";
+    	$data['s_result']   = $wpdb->get_row( $status_query );
 
-    $data['total']      = $wpdb->get_var( $total_query );
+        $data['total']      = $wpdb->get_var( $total_query );
 
-    //$page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
-    $page               = $this->cpage;
-    $ppage 				= $this->ppage;
-    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
+        //$page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
+        $page               = $this->cpage;
+        $ppage 				= $this->ppage;
+        $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
 
-    $data['result']         = $wpdb->get_results( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+        $data['result']         = $wpdb->get_results( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
 
-    $totalPage         = ceil($data['total'] / $args['items_per_page']);
+        $totalPage         = ceil($data['total'] / $args['items_per_page']);
 
-    if($totalPage > 1){
-        $data['start_count'] = ($ppage * ($page-1));
+        if($totalPage > 1){
+            $data['start_count'] = ($ppage * ($page-1));
 
-        $pagination = paginate_links( array(
-                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=list_report_account')),
-                'format' => '',
-                'type' => 'array',
-                'prev_text' => __('prev'),
-                'next_text' => __('next'),
-                'total' => $totalPage,
-                'current' => $page
-                )
-            );
-        if ( ! empty( $pagination ) ) : 
-            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
-            foreach ($pagination as $key => $page_link ) {
-                if( strpos( $page_link, 'current' ) !== false ) {
-                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
-                } else {
-                    $customPagHTML .=  '<li>'.$page_link.'</li>';
+            $pagination = paginate_links( array(
+                    'base' => add_query_arg( $page_arg , admin_url('admin.php?page=list_report_account')),
+                    'format' => '',
+                    'type' => 'array',
+                    'prev_text' => __('prev'),
+                    'next_text' => __('next'),
+                    'total' => $totalPage,
+                    'current' => $page
+                    )
+                );
+            if ( ! empty( $pagination ) ) : 
+                $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
+                foreach ($pagination as $key => $page_link ) {
+                    if( strpos( $page_link, 'current' ) !== false ) {
+                        $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
+                    } else {
+                        $customPagHTML .=  '<li>'.$page_link.'</li>';
+                    }
                 }
+                $customPagHTML .=  '</ul>';
+            endif;
+        }
+
+        $data['pagination'] = $customPagHTML;
+        $end_count = $data['start_count'] + count($data['result']);
+
+        if( $end_count == 0){
+        	$start_count = 0;
+        }
+        else {
+        	$start_count = $data['start_count'] + 1;
+        }
+        $data['status_txt'] = "<div class='dataTables_info' role='status' aria-live='polite'>Showing ".$start_count." to ".$end_count." of ".$data['total']." entries</div>";
+        return $data;
+
+    }
+
+
+    function groupReportByDate($data) {
+        if($data['result']) {
+            $grouped = array();
+            foreach ($data['result'] as $value) {
+                $grouped[$value->invoice_date][] = $value;
             }
-            $customPagHTML .=  '</ul>';
-        endif;
+            return $grouped;
+        }
     }
 
-    $data['pagination'] = $customPagHTML;
-    $end_count = $data['start_count'] + count($data['result']);
 
-    if( $end_count == 0){
-    	$start_count = 0;
-    }
-    else {
-    	$start_count = $data['start_count'] + 1;
-    }
-    $data['status_txt'] = "<div class='dataTables_info' role='status' aria-live='polite'>Showing ".$start_count." to ".$end_count." of ".$data['total']." entries</div>";
-    return $data;
 
-}
+
 }
 
 ?>

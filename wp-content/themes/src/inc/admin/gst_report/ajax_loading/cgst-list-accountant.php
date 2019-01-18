@@ -20,6 +20,9 @@
         'return_condition' => $return_condition,
     );
     $sales = $report->stock_report_pagination_gst($result_args);
+
+    $grouped_report = $report->groupReportByDate($sales);
+
 ?>
 <style>
 .pointer td{
@@ -79,24 +82,31 @@
                 </thead>
                 <tbody>
                 <?php
-                    if(isset($sales['result']) AND count($sales['result']) > 0 AND $sales){
-                        $start_count = $sales['start_count'];
-                        foreach ($sales['result'] as $s_value) {
-                            $bill_from = ( isset($s_value->bill_type) && $s_value->bill_type == 'original' ) ? 'SRC' : 'Out Side Store';
-                            $bill_from = ( $bill_type == '-' ) ? 'All' : $bill_from;
-                            $start_count++;
+                    if($grouped_report AND count($grouped_report) > 0){
+
+
+                        foreach ($grouped_report as $invoice_date => $group) {
+                            echo '<tr>';
+                            echo '<td colspan="8" style="font-weight:bold;font-size:18px;">'.$invoice_date.'</td>';
+                            echo '</tr>';
+                            $start_count = 1;
+                            foreach ($group as $s_value) {
+                                $bill_from = ( isset($s_value->bill_type) && $s_value->bill_type == 'original' ) ? 'SRC' : 'Out Side Store';
+                                $bill_from = ( $bill_type == '-' ) ? 'All' : $bill_from;
                 ?>
-                    <tr id="customer-data-<?php echo $s_value->sale_detail_id; ?>">
-                        <td><?php echo $start_count; ?></td>
-                        <td><?php echo $s_value->tot_weight.' Kg'; ?></td>
-                        <td><?php echo $s_value->tot_taxless; ?></td>
-                        <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->cgst; ?></td>
-                        <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->sgst; ?></td>
-                        <td><?php echo $s_value->tot_cgst; ?></td>
-                        <td><?php echo $s_value->tot_sgst; ?></td>
-                        <td><?php echo $s_value->tot_amt; ?></td>
-                    </tr>
+                            <tr id="customer-data-<?php echo $s_value->sale_detail_id; ?>">
+                                <td><?php echo $start_count; ?></td>
+                                <td><?php echo $s_value->tot_weight.' Kg'; ?></td>
+                                <td><?php echo $s_value->tot_taxless; ?></td>
+                                <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->cgst; ?></td>
+                                <td style="font-weight: bold;color:#1426ff;"><?php echo $s_value->sgst; ?></td>
+                                <td><?php echo $s_value->tot_cgst; ?></td>
+                                <td><?php echo $s_value->tot_sgst; ?></td>
+                                <td><?php echo $s_value->tot_amt; ?></td>
+                            </tr>
                 <?php
+                                $start_count++;
+                            }
                         }
                     } else {
                         echo "<tr><td colspan='12'>No Sale Made Today!</td></tr>";
@@ -104,7 +114,6 @@
                 ?>
                 </tbody>
             </table>
-            <?php echo $sales['pagination']; ?>
             <div style="clear:both;"></div>
         </div>
 
