@@ -71,6 +71,9 @@ jQuery('.bagweight .bag_weight').live('change', function() {
    if(bag_weight_checked == '1') {
     //jQuery('.dummy_slot_number').css('display','block');
 
+    jQuery('.current_unit').text('(Kg)');
+    
+
     jQuery('.group_retail').css('display','block');
     jQuery('.group_retail_no_slab').css('display','none');
 
@@ -79,6 +82,7 @@ jQuery('.bagweight .bag_weight').live('change', function() {
    }
    if(bag_weight_checked == '0') {
     //jQuery('.dummy_slot_number').css('display','none');
+    jQuery('.current_unit').text('(Bag)');
 
     jQuery('.group_retail').css('display','none');
     jQuery('.group_retail_no_slab').css('display','block');

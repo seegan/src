@@ -58,8 +58,6 @@ jQuery( "#billing_customer, #billing_mobile" ).autocomplete ({
                         var field_val = item.mobile;
                         var identification = 'mobile';
                     }
-
-
                     return {
                         id: item.id,
                         value: field_val,
@@ -68,7 +66,6 @@ jQuery( "#billing_customer, #billing_mobile" ).autocomplete ({
                         mobile : item.mobile,
                         secondary_mobile : item.mobile1,
                         identification : identification 
-
                     }
                 }));
             }
@@ -126,10 +123,6 @@ jQuery( "#billing_customer, #billing_mobile" ).autocomplete ({
       }
     });
   });
-
-
-
-
 
 
   jQuery('.customer_info_bar .deliveried_all').on('change', function () {

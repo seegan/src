@@ -148,7 +148,7 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 		</div>
 		<div class="form_detail">
 			<label>
-				MRP
+				MRP <span class="current_unit">(Bag)</span>
 			</label>
 			<div class="slab">
 				<input type="text" name="basic_price" class="basic_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="<?php echo $lot_details['lot_data']->basic_price; ?>">

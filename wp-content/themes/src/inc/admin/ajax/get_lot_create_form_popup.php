@@ -9,6 +9,9 @@
 	    margin-top: -6px;
 	    color: #dc1919;
 }
+.kg_mrp_text{
+	display: none;
+}
 </style>
 			
 <div class="form-grid">
@@ -130,7 +133,7 @@
 		</div>
 		<div class="form_detail">
 			<label>
-				MRP
+				MRP <span class="current_unit">(Bag)</span>
 			</label>
 			<div class="slab">
 				<input type="text" name="basic_price" class="basic_price" onkeypress="return isNumberKeyWithDot(event)" autocomplete="off" value="0.00">

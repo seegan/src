@@ -251,7 +251,7 @@ jQuery(document).on('change','#customer_mobile,.billing_mobile',function(){
             customer_id     : customer_id,
         },
         success : function(data){
-            if(data){
+            if(data){ console.log(data);
                 alert('Phone number Already Exists!');
                 jQuery('.customer_mobile').val('');
                 jQuery('.billing_mobile').val('');
