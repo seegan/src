@@ -104,10 +104,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
+                <?php print_r($sales);
                     if($sales && is_array($sales) && count($sales) > 0) {
                         $row_count = 1;
                         foreach ($sales as $s_value) {
+                            $slab=$s_value->slab;
                             $bag_checked = ($s_value->sale_as == 'bag') ? 'checked' : '';
                             $kg_checked = ($s_value->sale_as == 'bag') ? '' : 'checked';
                             $bag_kg = ($s_value->sale_as == 'bag') ? 'bag' : 'kg';
@@ -132,7 +133,10 @@
                                 <div style="float:left;">
                                     <div style="padding-top:6px;">
                                         <span class="">
-                                            <span class="sale_as_name_kg"><input type="radio" class="sale_as" value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" <?php echo $delivery_disabled ?> > - Kg</span> | 
+
+                                            <span class="sale_as_name_kg">
+                                                <input type="radio" class="sale_as" <?php if($slab==0){ echo "disabled"; }?> value="kg" <?php echo $kg_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" <?php echo $delivery_disabled ?> > - Kg</span> | 
+
                                             <span class="sale_as_name_bag">Bag - <input type="radio" class="sale_as" value="bag" <?php echo $bag_checked; ?> name="delivery_data[<?php echo $row_count; ?>][delivery_as]" <?php echo $delivery_disabled ?> ></span>
                                         </span>
                                     </div>

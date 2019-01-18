@@ -271,9 +271,16 @@ jQuery(document).on('change','.billing_mobile',function(){
             customer_id     : customer_id,
         },
         success : function(data){
-            if(data){ console.log(data);    
-            alert(data);
-                
+            if(data.success){ var cid=data.results.id;  
+                jQuery('.billing_customer').val(data.results.name);
+                jQuery('.billing_mobile').val(data.results.mobile);
+                jQuery('.billing_address').val(data.results.address);                              
+
+            }else
+            {
+                jQuery('.billing_customer').val('');                
+                jQuery('.billing_address').val('');                
+
             }
         }
     });

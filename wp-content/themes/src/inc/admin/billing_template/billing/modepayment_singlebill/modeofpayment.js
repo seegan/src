@@ -224,8 +224,14 @@ function generateDeliveryAddress(customer_id = 0){
                 jQuery('.delivery_name').val(data.results.name);
                 jQuery('.delivery_phone').val(data.results.mobile);
                 jQuery('.delivery_address').val(data.results.address);
-
+                
             } 
+            else{
+                jQuery('.delivery_name').val('');
+                jQuery('.delivery_phone').val('');
+                jQuery('.delivery_address').val('');
+
+            }
         }
     });
 }
