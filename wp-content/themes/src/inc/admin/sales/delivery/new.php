@@ -104,7 +104,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php print_r($sales);
+                <?php 
                     if($sales && is_array($sales) && count($sales) > 0) {
                         $row_count = 1;
                         foreach ($sales as $s_value) {
