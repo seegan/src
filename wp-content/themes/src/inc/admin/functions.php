@@ -607,7 +607,30 @@ function get_lot($lot_id = 0) {
 
 }
 
+/* new_lot_quantity_weight Create */
+function new_lot_quantity_weight() {
 
+	global $wpdb;
+	$data['success'] = 0;
+	$data['msg'] = 'Something Went Wrong!!';
+	$option_name=$_POST['pt_id'];$new_value=$_POST['lot_quantity'];
+	
+			if ( get_option( $option_name ) !== false ) {
+
+			    // The option already exists, so we just update it.
+			    update_option( $option_name, $new_value );
+
+			} else {
+
+			    // The option hasn't been added yet. We'll add it with $autoload set to 'no'.
+			    $deprecated = null;
+			    $autoload = 'no';
+			    add_option( $option_name, $new_value, $deprecated, $autoload );
+			}
+
+}
+add_action( 'wp_ajax_new_lot_quantity_weight', 'new_lot_quantity_weight' );
+add_action( 'wp_ajax_nopriv_new_lot_quantity_weight', 'new_lot_quantity_weight');
 
 /* Lot Create */
 function lot_create_submit_popup() {
@@ -3374,9 +3397,7 @@ function getCurrentScreenBill($customer_id = 0, $current_screen = 'full', $ref_i
 		) as ret
 		ON s.id = ret.return_sale_id WHERE s.customer_id = $customer_id GROUP BY s.id
 	) as full_table";
-// echo "<pre>";
-// var_dump($query);
-// die();
+
 	global $wpdb;
 	$data = $wpdb->get_results($query);
 
@@ -3384,10 +3405,6 @@ function getCurrentScreenBill($customer_id = 0, $current_screen = 'full', $ref_i
 
 	return $data;
 }
-
-
-
-
 
 function checkCustomerBalanceAjax() {
 	$customer_id = isset($_POST['id'] ) ? $_POST['id'] : '';
@@ -3459,17 +3476,17 @@ function addReturn($lot_id = 0, $return_count = 0) {
 
 function PhoneNumberDuplication_ajax(){
 	global $wpdb;
-	$customer_table = $wpdb->prefix.'customers';
-	$phone_number   = $_POST['phone'];
-	$customer_id   = ($_POST['customer_id'] == '')? 0 : $_POST['customer_id'];
-	$query 			= "SELECT mobile from  $customer_table where mobile = '$phone_number' and active = 1 and id !='$customer_id'";
-	$exists 		= $wpdb->get_row($query);
+	$customer_table= $wpdb->prefix.'customers';
+	$phone_number= $_POST['phone'];
+	$customer_id = ($_POST['customer_id'] == '')? 0 : $_POST['customer_id'];
+	$query 	= "SELECT mobile from  $customer_table where mobile = '$phone_number' and active = 1 and id !='$customer_id'";
+	$exists = $wpdb->get_row($query);
 	$data = ($exists)? 1 : 0 ;
  	echo json_encode($data);
  	die();
 }
-add_action( 'wp_ajax_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
-add_action( 'wp_ajax_nopriv_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
+add_action('wp_ajax_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
+add_action('wp_ajax_nopriv_PhoneNumberDuplication_ajax', 'PhoneNumberDuplication_ajax');
 
 
 function PhoneNumberDuplication($phone_number = 0){
@@ -3481,6 +3498,30 @@ function PhoneNumberDuplication($phone_number = 0){
  	return $data;
 
 }
+function PhoneNumberDuplicationbilling_ajax(){
+	global $wpdb;
+	$customer_table= $wpdb->prefix.'customers';
+	$phone_number= $_POST['phone'];
+	$customer_id = ($_POST['customer_id'] == '')? 0 : $_POST['customer_id'];
+	
+	$query 	= "SELECT id from  $customer_table where mobile = '$phone_number' and active = 1 and id !='$customer_id'";
+	$datas= $wpdb->get_row($query);
+	$customer_id=$datas->id;
+	
+	
+	$query 	= "SELECT * from $customer_table where id = $customer_id and active = 1";
+	if($data['results'] = $wpdb->get_row($query)){
+		$data['success'] = 1;
+	} 
+	else{
+		$data['success'] = 0;
+	}
+	echo json_encode($data);
+	die();
+}
+add_action('wp_ajax_PhoneNumberDuplicationbilling_ajax', 'PhoneNumberDuplicationbilling_ajax');
+add_action('wp_ajax_nopriv_PhoneNumberDuplicationbilling_ajax', 'PhoneNumberDuplicationbilling_ajax');
+
 
 
 

@@ -258,7 +258,9 @@ function cgst_return_report(){
 
 
 
-
+function src_settings(){
+	require 'src_settings.php';
+}
 
 add_action( 'admin_bar_menu', 'wp_admin_bar_my_custom_account_menu', 11 );
 function wp_admin_bar_my_custom_account_menu( $wp_admin_bar ) {

@@ -82,7 +82,15 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<select name="weight" class="bag_weight_total" style="width:20%;">
-				<option <?php echo ($lot_details['lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1</option>
+	<?php echo $qw=get_option('lot_quantityweight_values');
+				$myArray = explode(',', $qw);
+				foreach($myArray as $my_Array){
+   					?><option <?php echo ($lot_details['lot_data']->weight == $my_Array) ? 'selected' : ''; ?> value="<?php echo $my_Array;?>"><?php echo $my_Array;?></option>  
+				<?php }?>
+
+
+
+				<!--<option <?php echo ($lot_details['lot_data']->weight == 1) ? 'selected' : ''; ?> value="1">1</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 2) ? 'selected' : ''; ?> value="2">2</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 5) ? 'selected' : ''; ?> value="5">5</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 10) ? 'selected' : ''; ?> value="10">10</option>
@@ -90,11 +98,11 @@ $gst_percentage = $lot_details['lot_data']->gst_percentage;
 				<option <?php echo ($lot_details['lot_data']->weight == 25) ? 'selected' : ''; ?> value="25">25</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 30) ? 'selected' : ''; ?> value="30">30</option>
 				<option <?php echo ($lot_details['lot_data']->weight == 50) ? 'selected' : ''; ?> value="50">50</option>
-				<option <?php echo ($lot_details['lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75</option>
+				<option <?php echo ($lot_details['lot_data']->weight == 75) ? 'selected' : ''; ?> value="75">75</option>-->
 			</select>
 			<select style="width:30%;" name="bag_weight_type">
 				<option <?php echo ($lot_details['lot_data']->unit_type == 'kg') ? 'selected' : ''; ?> value="kg">Kg</option>
-				<option <?php echo ($lot_details['lot_data']->unit_type == 'pc') ? 'selected' : ''; ?> value="pc">Piece</option>
+				<!--<option <?php echo ($lot_details['lot_data']->unit_type == 'pc') ? 'selected' : ''; ?> value="pc">Piece</option>-->
 			</select>
 		</div>
 		<div class="form_detail">

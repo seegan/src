@@ -239,7 +239,7 @@ jQuery('.customer_filter #per_page, .customer_filter #customer_name, .customer_f
     }); 
 });
 
-jQuery(document).on('change','#customer_mobile,.billing_mobile',function(){
+jQuery(document).on('change','#customer_mobile',function(){
     var customer_id = (typeof(jQuery('.customer_id').val()) != "undefined" && jQuery('.customer_id').val() !== null )? jQuery('.customer_id').val() : 0 ;
     jQuery.ajax({
         type:"POST",
@@ -252,9 +252,28 @@ jQuery(document).on('change','#customer_mobile,.billing_mobile',function(){
         },
         success : function(data){
             if(data){ console.log(data);
-                alert('Phone number Already Exists!');
-                jQuery('.customer_mobile').val('');
-                jQuery('.billing_mobile').val('');
+                alert('Phone number Already Exists.!');
+                jQuery('.customer_mobile').val('');               
+            }
+        }
+    });
+});
+
+jQuery(document).on('change','.billing_mobile',function(){
+    var customer_id = (typeof(jQuery('.customer_id').val()) != "undefined" && jQuery('.customer_id').val() !== null )? jQuery('.customer_id').val() : 0 ;
+    jQuery.ajax({
+        type:"POST",
+        url : frontendajax.ajaxurl,
+        dataType : "json",
+        data : {
+            action          : 'PhoneNumberDuplicationbilling_ajax',
+            phone           : jQuery(this).val(),
+            customer_id     : customer_id,
+        },
+        success : function(data){
+            if(data){ console.log(data);    
+            alert(data);
+                
             }
         }
     });

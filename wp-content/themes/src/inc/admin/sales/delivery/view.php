@@ -87,7 +87,7 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 			</ul>
 		</div>
 		<div class="widget-top">
-			<h4>New Billing</h4>
+			<h4>Delivery Details</h4>
 		</div>
 		<div class = "print_content">
 			<div class = "print_header">
@@ -108,11 +108,12 @@ if(isset($_GET['triger']) && $_GET['triger'] == 'print') {
 					</ul>
 				</div>
 				<div class="bill_info_bar">
-					<ul>
+					<ul><?php //print_r($bill_data);?>
 						<li><span>Bill No : </span> <?php echo $bill_data['bill_data']->invoice_id; ?></li>
 						<li><span>Bill Date : </span> <?php echo $bill_data['bill_data']->invoice_date; ?></li>
 						<li><span>Customer Type : </span> <?php echo $bill_data['bill_data']->customer_type; ?></li>
 						<li><span>Shop Name  : </span><?php echo ($bill_data['bill_data']->order_shop == 'rice_center')?'Saravana Rice Center':  'Saravana Rice Mandy'; ?></li>
+						<li><span>Delivery Boy : </span> <?php echo $bill_data['bill_data']->delivery_boy; ?></li>
 					</ul>
 				</div>
 			</div>

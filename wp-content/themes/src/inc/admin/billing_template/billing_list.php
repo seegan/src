@@ -283,6 +283,8 @@
 				<td class="center">
                     <a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice&view_from=billing_list'; ?>" title="Billing Details">View
                     </a>&nbsp;|&nbsp;
+                     <a href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=invoice&view_from=billing_list&triger=print'; ?>" class="print_bill" title="Billing Details Print">print
+                    </a>&nbsp;|&nbsp;
 					<span>
 						<a class="c-edit list_update" href="<?php echo admin_url('admin.php?page=new_bill').'&bill_no='.$b_value->id.'&action=update&update_from=billing_list'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit Bill">Update</a>&nbsp;|&nbsp;
 					</span>

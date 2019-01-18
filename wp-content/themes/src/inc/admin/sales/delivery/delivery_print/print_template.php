@@ -118,7 +118,8 @@
 
     <table cellspacing='3' cellpadding='3' WIDTH='100%' >
       <tr><?php $customer_name = ($bill_data['bill_data']->bill_from_to =='counter')? 'Counter Cash': $bill_data['customer_data']->name;?>
-        <td valign='top' WIDTH='50%'>Customer : <?php echo $customer_name; ?> </td>         
+        <td valign='top' WIDTH='50%'>Customer : <?php echo $customer_name; ?> </td>         </tr>
+        <tr>
         <td valign='top' WIDTH='50%'>Address : <?php echo $bill_data['customer_data']->address;?></td>         
       </tr>
       <tr>        
@@ -182,14 +183,15 @@
               
 	
     <div style="text-align: center;" >Thank You !!!. Visit Again !!!.</div>
-    <?php
+    <?php 
     if($bill_data['bill_data']->delivery_avail == '1') { ?>
   <table>
     <tr><td><b>Delivery To</b></td><td>  </td></tr>
     <tr><td>Name</td><td>  : <?php echo $bill_data['customer_data']->name; ?></td></tr>
     <tr><td>Address</td><td>  : <?php echo $bill_data['customer_data']->address; ?></td></tr>
     <tr><td>Phone No</td><td>  : <?php echo $bill_data['customer_data']->mobile; ?></td></tr>
-  </table> 
+    <tr><td>Delivery Boy</td><td>  : <?php echo $bill_data['bill_data']->delivery_boy; ?></td></tr>
+  </table>
   <?php } ?>
 
   </div>

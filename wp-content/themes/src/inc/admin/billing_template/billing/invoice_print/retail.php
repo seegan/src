@@ -384,6 +384,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     <?php } ?>
     <div style="text-align: center;" >Thank You !!!. Visit Again !!!.</div>
     <?php $is_delivery = $bill_data['bill_data']->delivery_avail; 
+
     if($is_delivery == '1') { ?>
   <table>
     <tr><td><b>Delivery To</b></td><td>  </td></tr>

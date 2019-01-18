@@ -123,15 +123,15 @@
 				<td><?php echo ucfirst($b_value->customer_type); ?></td>
 				<td>
 					<a href="<?php echo admin_url('admin.php?page=bill_delivery').'&delivery_id='.$b_value->delivery_id.'&action=view'; ?>">Delivery Detail
-					</a> | 
+					</a> <b>|</b>
                     <a href="<?php echo menu_page_url( 'bill_delivery', 0 ).'&delivery_id='.$b_value->delivery_id.'&action=view&triger=print'; ?>">Print Delivery
                     </a>
 				</td>
 				<td class="center">
-					<span>
-						<a class="action-icons c-edit list_update" href="<?php echo admin_url('admin.php?page=bill_delivery').'&delivery_id='.$b_value->delivery_id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>
-					</span>
-					<span><a class="action-icons c-delete delivery_delete last_list_view" href="#" data-action="delivery" title="delete" data-id="<?php echo $b_value->delivery_id; ?>" data-roll="1">Delete</a></span>
+					<span><!--action-icons c-edit-->
+						<a class="list_update" href="<?php echo admin_url('admin.php?page=bill_delivery').'&delivery_id='.$b_value->delivery_id.'&action=update'; ?>" class="action-icons c-edit" data-bill-id="<?php echo $b_value->id; ?>" title="Edit">Edit</a>&nbsp;<b>|</b>
+					</span><!--action-icons c-delete -->
+					<span><a class="delivery_delete c-delete last_list_view" href="#" data-action="delivery" title="delete" data-id="<?php echo $b_value->delivery_id; ?>" data-roll="1">Delete</a></span>
 				</td>
 			</tr>
 		<?php

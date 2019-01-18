@@ -69,7 +69,12 @@
 				<abbr class="require" title="Required Field">*</abbr>
 			</label>
 			<select name="weight" class="dummy_bag_weight_total" style="width:20%;">
-				<option value="1">1</option>
+				<?php echo $qw=get_option('lot_quantityweight_values');
+				$myArray = explode(',', $qw);
+				foreach($myArray as $my_Array){
+   					 echo '<option value="'.$my_Array.'">'.$my_Array.'</option>';  
+				}?>
+				<!--<option value="1">1</option>
 				<option value="2">2</option>
 				<option value="5">5</option>
 				<option value="10">10</option>
@@ -77,11 +82,11 @@
 				<option value="25">25</option>
 				<option value="30">30</option>
 				<option value="50">50</option>
-				<option value="75">75</option>
+				<option value="75">75</option>-->
 			</select>
 			<select style="width:30%;" name="bag_weight_type">
 				<option value="kg">Kg</option>
-				<option value="pc">Piece</option>
+				<!--<option value="pc">Piece</option>-->
 			</select>
 		</div>
 		<div class="form_detail">

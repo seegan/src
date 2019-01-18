@@ -181,7 +181,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
                   <?php echo  $bill_data['customer_data']->mobile; ?><br>
                   <?php echo $bill_data['customer_data']->mobile1;  ?><br>
                   <?php echo  $bill_data['customer_data']->address;  ?><br>
-                  <b> GST NO <?php $bill_data['customer_data']->gst_number; ?></b>
+                  <b> GST NO <?php echo $bill_data['customer_data']->gst_number; ?></b>
                 </td>                 
                 <td colspan="<?php if($bill_data['bill_data']->gst_to == 'cgst') { echo '6'; }else if($bill_data['bill_data']->gst_to == 'igst') { echo '6'; } else { echo '6'; }?>">
                   <b>DELIVERY ADDRESS</b><br>
