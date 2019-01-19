@@ -23,7 +23,14 @@ if($view_from == 'cancel_billing_list' ||  $view_from == 'cancel_billing_list'){
 	$delivery_partial 	= 'style=display:none';
 	$delivery_boy_display 	    = 'readonly';
 } 
-
+if(isset($_GET['triger'])){
+?>
+	<script>		window.print()  
+		  //	var printPage = window.open(document.URL, '_blank');
+		  	//setTimeout(printPage.print(), 5);
+	</script>
+<?php
+}
 
 ?>
 		<style type="text/css">
