@@ -65,6 +65,15 @@
             </label>
             <input type="text" id="brand_name" name="brand_name" autocomplete="off" value="">
         </div>
+        <div class="form_detail">
+            <label style="width: 115px;">Tax
+            </label>
+            <div style="margin-top: 12px;">
+                <input type="radio" name="tax_from" value="notax">NO TAX
+                <input type="radio" name="tax_from" value="cgst" checked>SGST
+                <input type="radio" name="tax_from" value="igst">IGST
+            </div>
+        </div>
         <div style="clear:both;"></div>
         <div class="particulars">
             <div class="part-in">
@@ -79,6 +88,8 @@
                                 <th style="width: 300px;">Bags</th>
                                 <th style="width: 100px;">Rate per Bag / Kg</th>
                                 <th style="width: 200px;">Total Bags</th>
+                                <th style="width: 100px;" colspan="2">CGST</th>
+                                <th style="width: 100px;" colspan="2">SGST</th>
                                 <th>Total Amount</th>
                             </tr>
                         </thead>
@@ -114,6 +125,14 @@
                                 <td>
                                     <span class="pro_tot_bags"></span>
                                     <input type="hidden" class="pro_tot_bags_input" value="0">
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
                                 </td>
                                 <td>
                                     <span class="pro_total">
