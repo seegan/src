@@ -84,7 +84,7 @@
 ?>
 	<table class="display">
 		<thead>
-			<tr>
+			<tr><th>S.No</th>
 				<th>Stock ID</th>
 				<th>Lot Number</th>
 				<th>Brand</th>
@@ -96,11 +96,13 @@
 			</tr>
 		</thead>
 		<tbody>
-		<?php
+		<?php $sno=0;
 			if( count($stocks['result'])>0 ) {
 				foreach ($stocks['result'] as $stock_value) {
+
 		?>
 			<tr id="customer-data-<?php echo $stock_value->id; ?>">
+				<td><?php echo $sno=$sno+1;?></td>
 				<td><?php echo $stock_value->id; ?></td>
 				<td><?php echo $stock_value->lot_number; ?></td>
 				<td><?php echo $stock_value->brand_name; ?></td>
