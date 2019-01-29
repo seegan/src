@@ -251,30 +251,41 @@ function customerBalance(customer_id = 0, bill_id = 0){
 }
 
 jQuery('.bill_submit').live('click', function(){
-    
-    if(parseFloat(jQuery('.actual_price').val()) > 0){
-      jQuery('.bill-loader').css('display', 'block');
-      jQuery.ajax({
-        type: "POST",
-        url: frontendajax.ajaxurl,
-        data: {
-          action : 'update_bill',
-          bill_data : jQuery('#new_billing :input').serialize(),
-        },
-        success: function (data) {
-          var obj = jQuery.parseJSON(data);
-          if(obj.success == 1) {
-            window.location.replace('admin.php?page=new_bill&bill_no='+obj.billing_no+'&action=invoice');
-          } else {
-            jQuery('.bill-loader').css('display', 'none');
-            alert('Something went wrong!');
-          }
-        }
+
+    var flag=1;
+     jQuery('.taxless_tot').each(function() {       
+       if(jQuery(this).html()==0.00){flag=0;};  
     });
-    } else {
-      alert('Please Add Atleast One Product!!! Empty Bill Can'+"'"+'t Submit');
-    }
-   
+     
+       if(flag==1){
+                      if(parseFloat(jQuery('.actual_price').val()) > 0){
+                              jQuery('.bill-loader').css('display', 'block');
+                              jQuery.ajax({
+                                type: "POST",
+                                url: frontendajax.ajaxurl,
+                                data: {
+                                  action : 'update_bill',
+                                  bill_data : jQuery('#new_billing :input').serialize(),
+                                },
+                                success: function (data) {
+                                  var obj = jQuery.parseJSON(data);
+                                  if(obj.success == 1) {
+                                    window.location.replace('admin.php?page=new_bill&bill_no='+obj.billing_no+'&action=invoice');
+                                  } else {
+                                    jQuery('.bill-loader').css('display', 'none');
+                                    alert('Something went wrong!');
+                                  }
+                                }
+                            });
+                      }
+                      else {
+                               alert('Please Add Atleast One Product!!! Empty Bill Can'+"'"+'t Submit');
+                     }
+          } 
+          else {
+                alert('Please Add Atleast One Product!!! Empty Bill Can'+"'"+'t Submit');
+          }
+ 
 });
 
 jQuery('#ck_stk_available').live('click', function(){
