@@ -411,16 +411,14 @@ function ptype_list_pagination( $args ) {
     $total              = $wpdb->get_var( $total_query );
     $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
     $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
-
-    $data['result']         = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+//echo  $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}";
+    $data['result']         = $wpdb->get_results( $query . " ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
 
     $totalPage         = ceil($total / $args['items_per_page']);
 
 
 
-    /*Updated for filter 11/10/16*/
-
-    if(isset($_POST['action']) && $_POST['action'] == 'ptype_list_filter') {
+      if(isset($_POST['action']) && $_POST['action'] == 'ptype_list_filter') {
         $ppage = $_POST['per_page'];
         $search_product = $_POST['search_product'];
     } else {
@@ -436,7 +434,7 @@ function ptype_list_pagination( $args ) {
     $page_arg['cpage'] = '%#%';
     $page_arg['ppage'] = $args['items_per_page'];
 
-    /*End Updated for filter 11/10/16*/
+  
 
     if($totalPage > 1){
         $data['start_count'] = ($ppage * ($page-1));

@@ -61,7 +61,7 @@
 				<th>Lot Number</th>
 				<th>Display Name</th>
 				<th>Product Name</th>
-				<th style="width: 150px;">Last Added Stock (Bag)</th>
+				<th style="width:230px;">Last Added Stock (Bag) with date</th>
 				<th style="width: 150px;">Add Stock (Bag)</th>
 				<th>Action</th>
 			</tr>
@@ -79,7 +79,9 @@
 				<td><?php echo $lot_value->lot_number; ?></td>
 				<td><?php echo $lot_value->brand_name; ?></td>
 				<td><?php echo $lot_value->product_name; ?></td>
-				<td><?php  echo $c=get_last_insert_stock_count($lot_value->id); ?></td>
+				<td><b><?php   $c =get_last_insert_stock_count($lot_value->id);
+				if($c!=""){ echo $c.' Bag /';}?></b>
+					<?php  if($c!=""){echo " (".machine_to_man_date($lot_value->modified_at).")";} ?></td>
 				<td>
 					<span>
 						<a class="add_stock_list" title="Add"  href="#"  data-roll="<?php echo $start_count; ?>" data-id="<?php echo $lot_value->id; ?>">Add Stock</a>

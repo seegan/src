@@ -247,11 +247,11 @@ jQuery('.c-delete').live('click', function(){
         width: 400,
         modal: true,
         buttons: {
-            "Delete": function() {
+            "OK": function() {
               jQuery( this ).dialog( "close" );
               updateDeleteData(data_id, data_tb);
             },
-            Cancel: function() {
+            Close: function() {
                 jQuery( this ).dialog( "close" );
             }
         }
@@ -269,13 +269,13 @@ jQuery('.bill-delete').live('click', function(){
         width: 400,
         modal: true,
         buttons: {
-            "Delete": function() {
+            "OK": function() {
               //jQuery( this ).dialog("close");
               updateDeleteData(data_id, data_tb,data_user, jQuery(this).find('#cancel_reason').val());
               jQuery( this ).dialog("close");
             
             },
-            Cancel: function() {
+            Close: function() {
                 jQuery( this ).dialog( "close" );
             }
         }
@@ -294,11 +294,11 @@ jQuery('.ptype_delete').live('click', function(){
         width: 400,
         modal: true,
         buttons: {
-            "Delete": function() {
+            "OK": function() {
               jQuery( this ).dialog("close");
               updateDeleteData(data_id, data_tb,data_user);
             },
-            Cancel: function() {
+            Close: function() {
                 jQuery( this ).dialog( "close" );
             }
         }

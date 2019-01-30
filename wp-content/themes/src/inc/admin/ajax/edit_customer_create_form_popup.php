@@ -43,7 +43,7 @@
 			<select name="customer_type" id="customer_type" class="customer_type">
 				<option value="Retail" <?php echo ($customer && $customer->type == 'Retail') ? 'selected' : ''; ?> >Retail</option>
 				<option value="Wholesale" <?php echo ($customer && $customer->type == 'Wholesale') ? 'selected' : ''; ?>>Wholesale</option>
-				<option value="Bulk" <?php echo ($customer && $customer->type == 'Bulk') ? 'selected' : ''; ?>>Bulk</option>
+				<!--<option value="Bulk" <?php echo ($customer && $customer->type == 'Bulk') ? 'selected' : ''; ?>>Bulk</option>-->
 			</select>
 		</div>
 		<div class="form_detail gst_num_div" <?php if($customer->type == 'Wholesale'){

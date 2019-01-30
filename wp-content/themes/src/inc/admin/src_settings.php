@@ -35,20 +35,27 @@ $opt = get_option($option_name);
 	</div>
 </div>
 <script type="text/javascript">
-function numericValidation(evt)
-{
-         var charCode = (evt.which) ? evt.which : event.keyCode
-         
-         if (charCode > 31 && (charCode < 48 || charCode > 57 ) && charCode != 44)
-             return false;
-         return true;
-}
+
+		function numericValidation(evt)
+		{
+		         var charCode = (evt.which) ? evt.which : event.keyCode
+		         
+		         if (charCode > 31 && (charCode < 48 || charCode > 57 ) && charCode != 44)
+		             return false;
+		         return true;
+		}
+
 
 	jQuery('#new_lot_quantity .submit-button').click(function () {
-		var lot_quantity    = jQuery('#new_lot_quantity #lot_quantity').val();	
+
+		var lot_quantity = jQuery('#new_lot_quantity #lot_quantity').val();	
 		var user_id    = jQuery('#new_lot_quantity #user_id').val();
 		var pt_id    = jQuery('#new_lot_quantity #pt_id').val();	
 
+  //remove multiple commas
+  	var lot_quantity = lot_quantity.toString();
+    lot_quantity= lot_quantity.replace(/,,+/g, ',');
+    //alert(lot_quantity);
 
 		if(lot_quantity != '') {
 						jQuery.ajax({

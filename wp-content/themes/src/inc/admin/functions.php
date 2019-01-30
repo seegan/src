@@ -84,7 +84,7 @@ function remove_footer_admin()
 					</ul>
 				</div>
 			<div class="copyright">
-			© 2016 Billing Admin Panel. All rights reserved
+			© 2019 Billing Admin Panel. All rights reserved
 			</div>
 			</div>
 		<div id="goTop" style="display: none;" class="">
@@ -2682,6 +2682,13 @@ function stock_list_filter() {
 }
 add_action( 'wp_ajax_stock_list_filter', 'stock_list_filter' );
 add_action( 'wp_ajax_nopriv_stock_list_filter', 'stock_list_filter' );
+
+function ptype_list_filter() {
+	include( get_template_directory().'/inc/admin/list_template/ptype_add_list.php' );
+	die();
+}
+add_action( 'wp_ajax_stock_list_filter', 'ptype_list_filter' );
+add_action( 'wp_ajax_nopriv_stock_list_filter', 'ptype_list_filter' );
 
 function customer_list_filter() {
 	include( get_template_directory().'/inc/admin/list_template/list_customers.php' );

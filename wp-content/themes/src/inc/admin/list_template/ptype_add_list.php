@@ -1,37 +1,39 @@
 <?php
 	
-	/*Updated for filter 11/10/16*/
-	if(isset($_POST['action']) && $_POST['action'] == 'ptype_list_filter') {
+	/*Updated for filter 30.01.2019*/
+	echo $_GET['action'];
+	if(isset($_POST['action']) && $_POST['action'] =='ptype_list_filter') {
 		$cpage = 1;
 		$ppage = $_POST['per_page'];
-		$search_product = $_POST['search_product'];
+		echo '1'.$search_ptype = $_POST['search_ptype'];
 	} else {
 		$cpage = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : 1;
 		$ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
-		$search_product = isset( $_GET['search_product'] ) ? $_GET['search_product']  : '';
+		echo '2'.$search_ptype = isset( $_GET['search_ptype'] ) ? $_GET['search_ptype']  : '';
 	}
 
 
     $con = false;
     $condition = '';
-    if($search_product != '') {
+    if($search_ptype != '') {
    		if($con == false) {
-    		$condition .= " AND name LIKE '".$search_product."%' ";
+    		$condition .= " AND name LIKE '".$search_ptype."%' ";
     	} else {
-    		$condition .= " AND name LIKE '".$search_product."%' ";
+    		$condition .= " AND name LIKE '".$search_ptype."%' ";
     	}
     	$con = true;
     }
 
-    /*End Updated for filter 11/10/16*/
+   
 
 	$result_args = array(
 		'orderby_field' => 'id',
 		'page' => $cpage ,
 		'order_by' => 'DESC',
 		'items_per_page' => $ppage ,
-		'condition' => 'AND active=1 '.$condition,
+		'condition' => ' AND active=1 '.$condition,
 	);
+	echo 'fd'.$condition;
 	$ptype =ptype_list_pagination($result_args);
 ?>
 	<table class="display">

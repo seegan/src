@@ -20,6 +20,11 @@
 .total_due_text{
 	font-weight: bold;
 }
+label{
+	cursor: pointer;
+    text-align: right;
+    font-weight: bold;
+}
 </style>
 
 
@@ -32,7 +37,7 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 
 ?>
 <div class="widget-top">
-	<h4>Add New Admin User</h4>
+	<h4>Pay - Bill Due Amount</h4>
 </div>
 <div class="widget-content module">
 	<div class="form-grid">

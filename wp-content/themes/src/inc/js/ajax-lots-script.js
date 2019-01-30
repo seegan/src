@@ -45,6 +45,41 @@ jQuery('a.ptype_edit').live('click', function() {
  
 
 
+
+/*Updated for filter 30.01.2019*/
+jQuery('.ptype_filter #per_page,.ptype_filter #search_ptype').live('change', function(){
+
+    var per_page = jQuery('#per_page').val();   
+    var search_ptype = jQuery('#search_ptype').val();
+
+    jQuery.ajax({
+      type: "POST",
+      url: frontendajax.ajaxurl,
+      data: {
+          per_page : per_page,
+          search_ptype : search_ptype,
+          action :'ptype_list_filter'
+      },
+      success: function (data) {
+
+          if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+          replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+          replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+              var obj = jQuery.parseJSON(data);
+              if(obj.success == 0) {
+                  alert_popup('<span class="error_msg">Something Went Wrong! try again!</span>', 'Error');
+              }
+          }
+           else {
+              jQuery('.list_protype').html(data);
+          }
+      }
+    });
+});
+
+
+
 jQuery('a.ptype_edit').live('click', function(e) {
     e.preventDefault();
     jQuery('#src_info_box').bPopup({
@@ -168,6 +203,7 @@ function protype_create_submit_popup(action = '', product_type = '',user_id='') 
                     jQuery('#src_info_box').bPopup().close();
                     alert_popup('<span class="success_msg">Product type Created!</span>', 'Success'); 
                 }
+                 window.location.replace('admin.php?page=ptype_add_list');
         }
 
     });

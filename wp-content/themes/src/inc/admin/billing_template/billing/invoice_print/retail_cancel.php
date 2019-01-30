@@ -152,7 +152,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     <?php
       if($bill_data) {
     ?>
-     <b><h1>CANCELLED BILL</h1></b>
+     <b><h1 style="text-align: center;">CANCELLED BILL</h1></b>
     <table cellspacing='3' cellpadding='1' WIDTH='100%' >
       <tr class="text-center" >
         <td valign='top' WIDTH='50%'>

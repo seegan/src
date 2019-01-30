@@ -151,7 +151,7 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
 <div class=" print-table">
     <div class="sheet padding-10mm">
     <div class="inner-container" >
-    	 <b><h1>CANCELLED BILL</h1></b>
+    	 <b><h1 style="text-align: center;">CANCELLED BILL</h1></b>
       <table class="customer-detail" style="margin-top: 20px;margin-bottom:2px;  border-collapse: collapse; " >
         <tbody>
             <tr> 

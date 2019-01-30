@@ -1,22 +1,23 @@
 <?php
- 	/*Updated for filter 11/10/16*/
+ 	/*Updated for filter 30.01.2019*/
+   
 	if(isset($_POST['action']) && $_POST['action'] == 'ptype_list_filter') {
 		$ppage = $_POST['per_page'];
-		$search_product = $_POST['search_product'];
+		$search_ptype = $_POST['search_ptype'];
 
 	} else {
 		$ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
-		$search_product = isset( $_GET['search_product'] ) ? $_GET['search_product']  : '';
+		$search_ptype = isset( $_GET['search_ptype'] ) ? $_GET['search_ptype']  : '';
 
 	}
-	/*End Updated for filter 11/10/16*/
+
 ?>
 
 
 <div style="width: 100%;">
-	<ul class="icons-labeled">
-		 <li><a href="javascript:void(0);" id="my-button" class="popup-ptype"><span class="icon-block-color add-c"></span>Add Product Type</a></li>
-	</ul>
+<ul class="icons-labeled">
+<li><a href="javascript:void(0);" id="my-button" class="popup-ptype"><span class="icon-block-color add-c"></span>Add Product Type</a></li>
+</ul>
 </div>
 <div class="widget-top">
 	<h4>Product Type List</h4>
@@ -35,13 +36,13 @@
 	</select>
 	<!--<input type="text" name="lot_number" id="lot_number" autocomplete="off" placeholder="Search by Lot Number" value="<?php echo $lot_number; ?>">
 	<input type="text" name="search_brand" id="search_brand" autocomplete="off" placeholder="Search by Brand" value="<?php echo $search_brand; ?>">-->
-	<input type="text" name="search_product" id="search_product" autocomplete="off" placeholder="Search by Product Type Name" value="<?php echo $search_product; ?>">
+	<input type="text" name="search_ptype" id="search_ptype" autocomplete="off" placeholder="Search by Product Type Name" value="<?php echo $search_ptype; ?>">
 
 </div>
 
 
-<div class="widget-content module table-simple list_customers">
-<?php include( get_template_directory().'/inc/admin/list_template/list_product_type.php' ); ?>
+<div class="widget-content module table-simple list_protype">
+<?php include( get_template_directory().'/inc/admin/list_template/ptype_add_list.php' ); ?>
 </div>
 
 <script type="text/javascript">
@@ -64,7 +65,7 @@ jQuery(document).ready(function () {
             jQuery('.last_list_view').focus();
         } else if(event.keyCode == 9){
             e.preventDefault(); 
-            jQuery('#search_product').focus();
+            jQuery('#search_ptype').focus();
         } else {
          jQuery('#per_page').focus();
         }

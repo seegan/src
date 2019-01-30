@@ -32,7 +32,7 @@
 			<select name="customer_type" id="customer_type" class="customer_type">
 				<option value="Retail">Retail</option>
 				<option value="Wholesale">Wholesale</option>
-				<option value="Bulk">Bulk</option>
+				<!--<option value="Bulk">Bulk</option>-->
 			</select>
 		</div>
 		<div class="form_detail gst_num_div">
