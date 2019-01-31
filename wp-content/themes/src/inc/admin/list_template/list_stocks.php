@@ -1,5 +1,7 @@
 <?php
 	/*Updated for filter 11/10/16*/
+	        
+
 	if(isset($_POST['action']) && $_POST['action'] == 'stock_list_filter') {
 		$cpage = 1;
 		$ppage = $_POST['per_page'];
@@ -14,8 +16,10 @@
 		$lot_number = isset( $_GET['lot_number'] ) ? $_GET['lot_number']  : '';
 		$search_brand = isset( $_GET['search_brand'] ) ? $_GET['search_brand']  : '';
 		$search_product = isset( $_GET['search_product'] ) ? $_GET['search_product']  : '';
-		$search_from = isset( $_GET['search_from'] ) ? $_GET['search_from']  : '';
-		$search_to = isset( $_GET['search_to'] ) ? $_GET['search_to']  : '';
+		
+       		
+		$search_from = isset( $_GET['search_from'] ) ? $_GET['search_from']  : date("Y-m-d");
+		$search_to = isset( $_GET['search_to'] ) ? $_GET['search_to']  : date("Y-m-d");
 	}
 
 

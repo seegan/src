@@ -94,10 +94,10 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</div>
 				</li>
 				<li>
-					<label class="fldTitle">Due Amount
+					<label class="fldTitle" style="font-size: 15px;">Due Amount : Rs.
 					</label>
 					<div class="fieldwrap">
-						<span class="left">
+						<span class="left"  style="font-size: 15px;padding-top: 3px;">
 							<span class="total_due_text"></span>
 							<input type="hidden" id="total_due" name="total_due"   class="form-control col-md-7 col-xs-12 total_due" value="<?php echo ($credit_debit) ? $credit_debit['main_tab']->due_amount : 0; ?>"/>
 						</span>
@@ -173,10 +173,10 @@ if(isset($_GET['id']) && $credit_debit = get_creditdebit($_GET['id']) ) {
 					</div>
 				</li>
 				<li>
-					<label class="fldTitle">To Pay:
+					<label class="fldTitle"  style="font-size: 15px;font-weight: bold;">To Pay :
 					</label>
 					<div class="fieldwrap">
-						<span class="left">
+						<span class="left"  style="font-size: 15px;padding-top: 4px;font-weight: bold;">
 							<span class="current_bal_txt_cd"><?php echo ( $credit_debit ) ? $credit_debit['main_tab']->to_pay_amt : 0;  ?></span>
 									<input type="hidden" name="to_pay_amt" class="to_pay_amt_cd"  value="<?php echo ( $credit_debit ) ? $credit_debit['main_tab']->to_pay_amt : 0;  ?>"> 
 						</span>
