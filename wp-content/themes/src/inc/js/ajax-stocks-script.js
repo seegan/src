@@ -93,6 +93,8 @@ jQuery('#edit_stock').live('submit', function(){
 });
 
 
+
+
 function stock_update_submit_popup(action = '', data = '') {
     var stock_id = jQuery('#stock_id').val();
     var count = jQuery('#count').val();

@@ -141,6 +141,76 @@ FROM wp_customers s LEFT JOIN
     return $data;
 }
 
+function purchase_list_pagination($args ) {
+
+    global $wpdb;
+    $table =  $wpdb->prefix.'purshase';
+    $customPagHTML      = "";
+
+    $query              = "SELECT * FROM ${table} WHERE status= 1 ${args['condition']}";
+    $total_query        = "SELECT COUNT(1) FROM (${query}) AS combined_table";
+    $total              = $wpdb->get_var( $total_query );
+    $page               = isset( $_GET['cpage'] ) ? abs( (int) $_GET['cpage'] ) : abs( (int) $args['page'] );
+    $offset             = ( $page * $args['items_per_page'] ) - $args['items_per_page'] ;
+  $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}";
+    $data['result'] = $wpdb->get_results( $query . "ORDER BY ${args['orderby_field']} ${args['order_by']} LIMIT ${offset}, ${args['items_per_page']}" );
+
+    $totalPage         = ceil($total / $args['items_per_page']);
+
+    /*Updated for filter 11/10/16*/
+
+    if(isset($_POST['action']) && $_POST['action'] == 'purchase_list_filter') {
+        $ppage = $_POST['per_page'];
+        $from = $_POST['from'];
+        $to = $_POST['to'];      
+    } else {
+        $ppage = isset( $_GET['ppage'] ) ? abs( (int) $_GET['ppage'] ) : 20;
+        $from = isset( $_GET['from'] ) ? $_GET['from']  : '';
+        $to = isset( $_GET['to'] ) ? $_GET['to']  : '';
+      }
+
+    $page_arg = [];
+    if($from != '') {
+        $page_arg['from'] = $from;
+    }
+    if($to != '') {
+        $page_arg['to'] = $to;
+    }
+   
+    $page_arg['cpage'] = '%#%';
+    $page_arg['ppage'] = $args['items_per_page'];
+
+    /*End Updated for filter 11/10/16*/
+
+
+    if($totalPage > 1){
+        $data['start_count'] = ($ppage * ($page-1));
+        $pagination = paginate_links( array(
+                'base' => add_query_arg( $page_arg , admin_url('admin.php?page=purchase_list')),
+                'format' => '',
+                'type' => 'array',
+                'prev_text' => __('prev'),
+                'next_text' => __('next'),
+                'total' => $totalPage,
+                'current' => $page
+                )
+            );
+        if ( ! empty( $pagination ) ) : 
+            $customPagHTML .= '<ul class="paginate pag3 clearfix"><li class="single">Page '.$page.' of '.$totalPage.'</li>';
+            foreach ($pagination as $key => $page_link ) {
+                if( strpos( $page_link, 'current' ) !== false ) {
+                    $customPagHTML .=  '<li class="current">'.$page_link.'</li>';
+                } else {
+                    $customPagHTML .=  '<li>'.$page_link.'</li>';
+                }
+            }
+            $customPagHTML .=  '</ul>';
+        endif;
+    }
+
+    $data['pagination'] = $customPagHTML;
+    return $data;
+}
 
 function employee_list_pagination($args ) {
 

@@ -77,7 +77,7 @@ var_dump($condition);
 	<table class="display">
 		<thead>
 			<tr>
-				<th>S.No</th>
+				<!--<th>S.No</th>-->
 				<th>Customer Name /<br>Phone Number</th>
 				<th>Address</th>
 				<th>Customer Type</th>
@@ -100,7 +100,7 @@ var_dump($condition);
 					$start_count++;
 		?>
 			<tr id="customer-data-<?php echo $customer_value->id; ?>">
-				<td><?php echo $start_count; ?></td>
+				<!--<td><?php echo $start_count; ?></td>-->
 				<td>
 					<?php echo $customer_value->name; ?><br>
 					(<?php echo $customer_value->mobile; ?>)

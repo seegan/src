@@ -76,7 +76,15 @@ $opt = get_option($option_name);
 				                } else {
 				                    clear_main_popup();
 				                    jQuery('#src_info_box').bPopup().close();
-				                    alert_popup('<span class="success_msg">Lot Quantity Created!</span>', 'Success');   
+				                    //alert_popup('<span class="success_msg">Lot Quantity Created!</span>', 'Success'); 
+				                    
+				                     var r = confirm('Lot Quantity Created Successfully... '); 
+										  if (r == true) {
+										    window.location.replace('admin.php?page=stock'); 
+										  } else {
+										    window.location.replace('admin.php?page=src_settings'); 
+										  }
+				                     
 				                }
 				        }
 				    });

@@ -205,7 +205,7 @@
 	<table class="display">
 		<thead>
 			<tr>
-				<th>S.No</th>
+				<!--<th>S.No</th>-->
 				<th>Bill By</th>
 				<th>Invoice No</th>
 				<th>Bill Date</th>
@@ -238,7 +238,7 @@
                     $margin_rate = ($b_value->margin_rate > 0) ? '<span class="w-wsrate">End Price</span>' : '<span class="w-normal">Normal Price</span>';
 		?>
 			<tr id="customer-data-<?php echo $b_value->id; ?>">
-				<td><?php echo $start_count; ?></td>
+				<!--<td><?php echo $start_count; ?></td>-->
 				<td><?php
 					$made_by = get_userdata($b_value->made_by);
 				 	echo ($made_by->user_login) ? $made_by->user_login : '-';

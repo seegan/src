@@ -159,7 +159,7 @@
 	<div>
 		<div class="x_content" style="width:20%;float:left">
             <div class="table-responsive bill_tab">
-                <table class="table table-striped jambo_table bulk_action">
+                <!--<table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
                             <th><br>Total <br> Return</th>
@@ -170,7 +170,7 @@
                             <td><?php echo $bills_cancel['r_result']->return_amount; ?></td>
                         </tr>
                     </tbody>
-                </table>
+                </table>-->
             </div>
     	</div>
     	<div class="x_content" style="float:left;">
@@ -206,7 +206,7 @@
 		<thead>
 			<tr>
 				<th>S.No</th>
-				<th>Bill By</th>
+				<th>Cancelled By</th>
 				<th>Invoice No</th>
 				<th>Cancelled Date</th>
 				<!--<th>Shop</th>-->

@@ -18,6 +18,7 @@ function admin_menu_register(){
 	);
 	add_submenu_page('stock', 'Lot List', 'Lot List', $src_premissions['lot_list'], 'stock', 'list_lots' );
 	add_submenu_page('stock', 'Stock List', 'Stock List', $src_premissions['stock_list'], 'list_stocks', 'list_stocks' );
+	add_submenu_page('stock', 'List Purchase', 'List Purchase', $src_premissions['stock_list'], 'purchase_list', 'purchase_list' );
 	add_submenu_page('stock', 'Add Purchase', 'Add Purchase', $src_premissions['stock_list'], 'purchase_add', 'purchase_add' );
 	add_submenu_page('stock', 'Add Product Type', 'Add Product Type', $src_premissions['stock_list'], 'ptype_add_list', 'ptype_add_list');
 
@@ -62,6 +63,13 @@ function admin_menu_register(){
 	add_submenu_page('new_bill', 'Delivery List', 'Delivery List', $src_premissions['purchase_sales'], 'delivery_list', 'delivery_list' );
 	add_submenu_page('new_bill', 'Item Return', 'Item Return', $src_premissions['purchase_sales'], 'bill_return', 'bill_return' );
 	add_submenu_page('new_bill', 'Return List', 'Return List', $src_premissions['purchase_sales'], 'return_list', 'return_list' );
+
+if(get_current_user_id()==1){
+	add_submenu_page('new_bill', 'New Damaged Goods Bill', 'New Damaged Goods Bill', $src_premissions['purchase_sales'], 'bill_damaged', 'bill_damaged' );	
+add_submenu_page('new_bill', 'Damaged Goods Bills', 'Damaged Goods Bills', $src_premissions['purchase_sales'], 'bill_damaged', 'bill_damaged' );	
+}
+
+
 	add_submenu_page('new_bill', 'Petty Cash', 'Petty Cash', $src_premissions['petty_cash'], 'petty_cash', 'petty_cash' );
 	add_submenu_page('new_bill', 'Income List', 'Income List', $src_premissions['income_list'], 'income_list', 'income_list' );
 	add_submenu_page('new_bill', 'Cancel Billing List', 'Cancel Billing List', $src_premissions['income_list'], 'cancel_billing_list', 'cancel_billing_list' );
@@ -94,8 +102,8 @@ function admin_menu_register(){
 	add_submenu_page('sale_report_list', 'Sale Report', 'Sale Report', $src_premissions['reports'], 'sale_report_list', 'sale_report_list' );
 	add_submenu_page('sale_report_list', 'Stock Balance', 'Stock Balance', $src_premissions['reports'], 'report_list', 'report_list' );
 	add_menu_page(
-	    __( 'GST Report', 'src'),
-	    'GST Report',
+	    __( 'Accountant Report', 'src'),
+	    'Accountant Report',
 	    $src_premissions['reports'],
 	    'cgst_report',
 	    'cgst_report',
@@ -150,6 +158,9 @@ function admin_menu_register(){
 function list_lots() {
     require 'stocks/list_lots.php';
 }
+function purchase_list() {
+    require 'stocks/purchase_list.php';
+}
 function list_stocks() {
     require 'stocks/list_stocks.php';	
 }
@@ -181,7 +192,9 @@ function list_admin_roles() {
 }
 
 
-
+function bill_damaged() {
+    require 'sales/list_damaged.php';
+}
 function billing_list() {
     require 'sales/list_billing.php';
 }

@@ -1115,22 +1115,121 @@ function lot_update_submit_popup() {
 	echo json_encode($data, JSON_PRETTY_PRINT);
 	die();
 }
+
 add_action( 'wp_ajax_lot_update_submit_popup', 'lot_update_submit_popup' );
 add_action( 'wp_ajax_nopriv_lot_update_submit_popup', 'lot_update_submit_popup' );
 
+function purchase_add_submit(){
+	global $wpdb;
+	$data['success'] = 0;
+	$data['msg'] = 'Something Went Wrongs!!';
+
+	$params = array();
+	parse_str($_POST['data'], $params);
+	$pur_table = $wpdb->prefix.'purshase';
+	$pur_details_table= $wpdb->prefix.'purchase_details';
 
 
+			$pur_detail = array(
+						'name' =>$params['pur_name'],
+						'address' =>$params['address'],
+						'mobile' =>$params['phone'],
+						'email' =>$params['email'],
+						'billno' =>$params['bill_number'],
+						'billdate' =>$params['bill_date'],
+						'gstno' =>$params['gst_no'],
+						'gstpercentage' =>$params['gst_percentage'],
+						'grand_total' =>$params['grandtotal'],
+						'sub_total' =>$params['subtotal_tot'],
+						'discount' =>$params['discount'],
+						'taxlessamt' =>$params['taxlesstotal'],
+						'gstamt' =>$params['gsttotal'],
+					);
+			$products_list=explode("~",$params['lot_details']);
+//$sql="INSERT INTO `wp_purshase` (`name`, `address`, `mobile`, `email`, `billno`, `billdate`, `gstno`, `gstpercentage`, `grand_total`, `sub_total`, `discount`, `taxlessamt`, `gstamt`) VALUES (".$params['pur_name'].",".$params['address'].",".$params['phone'].",".$params['email'].",".$params['bill_number'].",".$params['bill_date'].",".$params['gst_no'].",".$params['gst_percentage'].",".$params['grandtotal'].",".$params['subtotal_tot'].",".$params['discount'].",".$params['taxlesstotal'].",'".$params['gsttotal']."')";
+				$wpdb->insert($pur_table, $pur_detail);
+				$purchase_id = $wpdb->insert_id;
+				for($i=0;$i<count($products_list);$i++)
+				{
+/*
+lotid:2,lot_name:MUTHAYAM(B.R),hsn:10063010,rate_per:100,kg_bag:bag,gst:0,gst_value:0,taxlessamout:100.00,quantity:1,totalamt:100.00~lotid:27,lot_name:QWES(R.R),hsn:,rate_per:100,kg_bag:bag,gst:0,gst_value:0,taxlessamout:100.00,quantity:1,totalamt:100.00
+*/
 
 
+					$pdetails=explode(",",$products_list[$i]);
+					$product_detail = array(
+						'purchase_id' =>$purchase_id,
+						'lotid' =>$pdetails[0],
+						'lot_name' =>$pdetails[1],
+						'hsn' =>$pdetails[2],
+						'rate_per' =>$pdetails[3],
+						'kg_bag' =>$pdetails[4],
+						'gst' =>$pdetails[5],
+						'gst_value' =>$pdetails[6],
+						'taxlessamout' =>$pdetails[7],
+						'quantity' =>$pdetails[8],
+						'totalamt' =>$pdetails[9],
+		
+					);
+					$wpdb->insert($pur_details_table, $product_detail);
+
+				}
+			echo json_encode($data);
+			die();
 
 
+}
+add_action( 'wp_ajax_purchase_add_submit', 'purchase_add_submit' );
+add_action( 'wp_ajax_nopriv_purchase_add_submit', 'purchase_add_submit' );
 
+function purchase_details($purchase_id){
+	global $wpdb;
+	$data['success'] = 0;
+	$purchase_table = $wpdb->prefix.'purshase';
+	$purchase_detail_table = $wpdb->prefix.'purchase_details';
+	
+
+	 $query = "SELECT * FROM {$purchase_table} WHERE id= '".$purchase_id."'";
+	 //$query1 = "SELECT * FROM {$purchase_detail_table} WHERE purchase_id= '".$purchase_id."'";
+
+	if( $data['result'] = $wpdb->get_row($query) ) {
+		$data['success'] = 1;
+	}
+	//if( $data['result_details'] = $wpdb->get_results( $query1, ARRAY_A ) ) {
+	//	$data['success'] = 1;
+	//}
+
+	return $data;
+	die();
+
+}
+function purchase_details_list($purchase_id){
+	global $wpdb;
+	$datas['success'] = 0;	
+	$purchase_detail_table = $wpdb->prefix.'purchase_details';
+	
+
+	$query = "SELECT * FROM {$purchase_detail_table} WHERE purchase_id= '".$purchase_id."'";
+	 //$query1 = "SELECT * FROM {$purchase_detail_table} WHERE purchase_id= '".$purchase_id."'";
+
+	if( $datas['results'] = $wpdb->get_results($query, ARRAY_A) ) {
+		$datas['success'] = 1;
+	}
+	//if( $data['result_details'] = $wpdb->get_results( $query1, ARRAY_A ) ) {
+	//	$data['success'] = 1;
+	//}
+
+	return $datas['results'];
+	die();
+
+}
 function get_stock_create_form_popup(){
 	include('ajax/get_stock_create_form_popup.php');
 	die();
 }
 add_action( 'wp_ajax_get_stock_create_form_popup', 'get_stock_create_form_popup' );
 add_action( 'wp_ajax_nopriv_get_stock_create_form_popup', 'get_stock_create_form_popup' );
+
 
 
 function edit_stock_create_form_popup(){
