@@ -17,7 +17,7 @@ function admin_menu_register(){
 	    8
 	);
 	add_submenu_page('stock', 'Lot List', 'Lot List', $src_premissions['lot_list'], 'stock', 'list_lots' );
-	add_submenu_page('stock', 'Stock List', 'Stock List', $src_premissions['stock_list'], 'list_stocks', 'list_stocks' );
+	add_submenu_page('stock', 'Add New Stock', 'Add New Stock', $src_premissions['stock_list'], 'list_stocks', 'list_stocks' );
 	add_submenu_page('stock', 'List Purchase', 'List Purchase', $src_premissions['stock_list'], 'purchase_list', 'purchase_list' );
 	add_submenu_page('stock', 'Add Purchase', 'Add Purchase', $src_premissions['stock_list'], 'purchase_add', 'purchase_add' );
 	add_submenu_page('stock', 'Add Product Type', 'Add Product Type', $src_premissions['stock_list'], 'ptype_add_list', 'ptype_add_list');

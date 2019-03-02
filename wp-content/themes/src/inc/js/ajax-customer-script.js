@@ -260,7 +260,8 @@ jQuery(document).on('change','#customer_mobile',function(){
 });
 
 jQuery(document).on('change','.billing_mobile',function(){
-    var customer_id = (typeof(jQuery('.customer_id').val()) != "undefined" && jQuery('.customer_id').val() !== null )? jQuery('.customer_id').val() : 0 ;
+var customer_id = (typeof(jQuery('.customer_id').val()) != "undefined" && jQuery('.customer_id').val() !== null )? jQuery('.customer_id').val() : 0 ;
+    
     jQuery.ajax({
         type:"POST",
         url : frontendajax.ajaxurl,
@@ -271,20 +272,47 @@ jQuery(document).on('change','.billing_mobile',function(){
             customer_id     : customer_id,
         },
         success : function(data){
-            if(data.success){ var cid=data.results.id;  
-                jQuery('.billing_customer').val(data.results.name);
+            if(data.success){ 
+                var cid=data.results.id;  
+                jQuery('.billing_customer').val(data.results.name);jQuery('.billing_customer').attr('readonly','readonly');              
                 jQuery('.billing_mobile').val(data.results.mobile);
-                jQuery('.billing_address').val(data.results.address);                              
-
+                jQuery('.billing_address').val(data.results.address);jQuery('.billing_address').attr('readonly','readonly');   
             }else
             {
-                jQuery('.billing_customer').val('');                
-                jQuery('.billing_address').val('');                
-
+                jQuery('.billing_customer').val(''); jQuery('.billing_customer').removeAttr('readonly');               
+                jQuery('.billing_address').val(''); jQuery('.billing_address').removeAttr('readonly');                       
             }
         }
     });
 });
+
+jQuery(document).on('blur','.billing_mobile',function(){
+var customer_id = (typeof(jQuery('.customer_id').val()) != "undefined" && jQuery('.customer_id').val() !== null )? jQuery('.customer_id').val() : 0 ;
+    
+    jQuery.ajax({
+        type:"POST",
+        url : frontendajax.ajaxurl,
+        dataType : "json",
+        data : {
+            action          : 'PhoneNumberDuplicationbilling_ajax',
+            phone           : jQuery(this).val(),
+            customer_id     : customer_id,
+        },
+        success : function(data){
+            if(data.success){ 
+                var cid=data.results.id;  
+                jQuery('.billing_customer').val(data.results.name);                jQuery('.billing_customer').attr('readonly','readonly');
+                jQuery('.billing_mobile').val(data.results.mobile);
+                jQuery('.billing_address').val(data.results.address);  jQuery('.billing_address').attr('readonly','readonly');
+            }else
+            {
+                jQuery('.billing_customer').val('');     jQuery('.billing_customer').removeAttr('readonly');            
+                jQuery('.billing_address').val('');   jQuery('.billing_address').removeAttr('readonly');                 
+            }
+        }
+    });
+});
+
 
 jQuery(document).ready(function(){
     jQuery("#search_from" ).datepicker({dateFormat: "dd-mm-yy"});

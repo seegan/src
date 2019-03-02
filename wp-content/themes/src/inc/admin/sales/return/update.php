@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                         </td>
-                         <td><?php echo $s_value->amt_per_kg; ?><input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" class="amt_per_kg" value="<?php echo $s_value->amt_per_kg; ?>"></td>
+                         <td><?php echo $s_value->amt_per_kg; ?><input type="hidden" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" class="amt_per_kg" tabindex=-1 value="<?php echo $s_value->amt_per_kg; ?>"></td>
                         <td>
                             <div class="taxless_amt_txt"><?php echo $s_value->taxless_amount; ?></div>
                             <input type="hidden" name="return_data[<?php echo $row_count; ?>][taxless_amt]" class="taxless_amt" value="<?php echo $s_value->taxless_amount; ?>">

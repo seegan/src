@@ -68,18 +68,7 @@
                 </div>
             </li>
             
-            <!-- <li>
-                <legend class="choiceFld">Bill By Name</legend>
-                <div class="fieldwrap input-uniform">
-                    <span>
-                        <input type="radio" name="bill_by_name" value="no" checked class="bill_by"><label class="choice">Counter</label>
-                    </span>
-                    &nbsp;&nbsp;                                   
-                     <span>
-                        <input type="radio" name="bill_by_name" value="yes" class="bill_by"><label class="choice">Customer Name</label>
-                    </span>
-                </div>
-            </li> -->
+
             <li>
                 <label id="customer" for="customer" class="fldTitle">Select the Customer
                 </label>

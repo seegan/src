@@ -226,7 +226,7 @@ input[type="checkbox"][readonly] {
 
                         </td>
                         <td>
-                            <input type="text" style="width:100px;" onkeypress="return isNumberKeyWithDot(event)" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?> readonly>
+                            <input type="text" style="width:100px;" onkeypress="return isNumberKeyWithDot(event)" name="return_data[<?php echo $row_count; ?>][amt_per_kg]" tabindex=-1 value="<?php echo $amt_per_kg; ?>" class="amt_per_kg" <?php echo $return_disabled ?> readonly>
                         </td>
                         <td>
                             <div class="taxless_amt_txt">0.00</div>
@@ -292,8 +292,8 @@ input[type="checkbox"][readonly] {
                         <input type="hidden" name="total_return" value="0.00" class="total_return">
                     </td>
                 </tr>
-                <tr> <?php $readonly = (checkBillBalance($sale_id)*-1) > 0 ? '' : 'readonly'; ?>
-                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check" checked <?php echo $readonly; ?>/></td></div>
+                <tr> <?php //$readonly = (checkBillBalance($sale_id)*-1) > 0 ? '' : 'readonly'; ?>
+                    <td colspan="<?php if( $gst_from =='cgst' ) { echo '13'; } else if($gst_from == 'igst') { echo '11'; } else { echo '9'; } ?>"><div class="text-right">Return To  <input type="checkbox" name="return_to_check" id="return_to_check" class="return_to_check" checked readonly <?php echo $readonly; ?>/></td></div>
                     <td>
                         <input type="hidden" class="previous_pay_to_bal" value="<?php echo (checkBillBalance($sale_id)*-1) ?>">
                         <div class="return_to_bal_text"><?php echo (checkBillBalance($sale_id)*-1) > 0 ? (checkBillBalance($sale_id)*-1) : 0;  ?></div>

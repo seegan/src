@@ -140,6 +140,10 @@ if(isset($_GET['triger'])){
 						<li><span>Customer Type : </span> <?php echo $bill_data['bill_data']->customer_type; ?></li>
 						<li><span>Shop Name  : </span><?php echo ($bill_data['bill_data']->order_shop == 'rice_center')?'Saravana Rice Center':  'Saravana Rice Mandy'; ?></li>
 						<li ><span>Delivery Boy : </span><input type="text" <?php echo $delivered; ?> name="delivery_boy"  class="delivery_boy" value="<?php echo $delivery_boy; ?>" <?php echo $delivery_boy_display; ?>></li>
+						<?php 
+						if($bill_data['bill_data']->cancel_reason!=''){
+							echo '<li><span>Cancel-Reason  : </span>'.$bill_data['bill_data']->cancel_reason.'</li>';
+						}?>
 					</ul>
 				</div>
 			</div>

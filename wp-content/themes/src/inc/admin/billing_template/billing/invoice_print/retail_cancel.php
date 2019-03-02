@@ -411,7 +411,11 @@ if($bill_data['bill_data']->gst_to == 'cgst'){
     <tr><td>Address</td><td>  : <?php echo $bill_data['bill_data']->delivery_address; ?></td></tr>
     <tr><td>Phone No</td><td>  : <?php echo $bill_data['bill_data']->delivery_phone; ?></td></tr>
   </table> 
-  <?php } ?>
+  <?php }
+  if($bill_data['bill_data']->cancel_reason!=''){
+    echo '<br/><b>REASON FOR CANCELLED :</b> <br>'.$bill_data['bill_data']->cancel_reason;
+
+  } ?>
 
   </div>
 <div>
