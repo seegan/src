@@ -229,12 +229,13 @@ if(decimal <= 0.49){
     jQuery('.return_to_bal_text').text(current_to_pay.toFixed(2));
     jQuery('.return_to_bal').val(current_to_pay.toFixed(2));
     jQuery('.return_to_check').attr('readonly',false);
+    jQuery('.return_to_check').attr('checked',true);
     jQuery('.return_alert').css('display','none');
   }
   else {
     jQuery('.return_to_bal_text').text(0);
     jQuery('.return_to_bal').val(0);
-    jQuery('.return_to_check').attr('checked',false);
+    jQuery('.return_to_check').attr('checked',true);
     jQuery('.return_to_check').attr('readonly',true);
     jQuery('.return_alert').css('display','block');
   }

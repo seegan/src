@@ -92,9 +92,9 @@ var_dump($condition);
 		</thead>
 		<tbody>
 		<?php
-			if( count($customers['result'])>0 ) {
+			if(count($customers['result'])>0 ) {
 				$start_count = $customers['start_count'];
-				foreach ($customers['result'] as $customer_value) {
+				foreach($customers['result'] as $customer_value) {
 					$sale  = ($customer_value->payment_due == 0 && $customer_value->sale_total == 0 ) ? '<span class="c-notpurchase">Not Buy</span>' : '<span class="c-delivered">PAID</span>';
 					$payment_done = ($customer_value->payment_due > 0 && $customer_value->sale_total > 0  ) ? '<span class="c-process">DUE</span>' : $sale ;
 					$start_count++;
@@ -115,9 +115,17 @@ var_dump($condition);
 				<td class="d-status" style="position:relative;"><?php echo $payment_done; ?></td>
 				<td class="center">
 					<span>
-						<a class="action-icons c-edit customer_edit list_update" title="Edit" href="#" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $customer_value->id; ?>">Edit</a>
+						<?php $data=sale_details_for_cus_edit($customer_value->id);
+					if($data['success']==0){?>
+						
+						<a class="customer_edit list_update" title="Edit" href="#" data-roll="<?php echo $start_count; ?>" data-id="<?php echo $customer_value->id; ?>">Edit</a>&nbsp;|&nbsp;
+						<span><a class=" user_delete last_list_view" href="#" data-action="customers" title="delete" data-id="<?php echo $customer_value->id; ?>" data-roll="<?php echo $start_count; ?>">Delete</a></span>
+						<?php }else{
+echo '-';
+
+						}?>
 					</span>
-					<span><a class="action-icons c-delete user_delete last_list_view" href="#" data-action="customers" title="delete" data-id="<?php echo $customer_value->id; ?>" data-roll="<?php echo $start_count; ?>">Delete</a></span>
+					
 				</td>
 			</tr>
 		<?php

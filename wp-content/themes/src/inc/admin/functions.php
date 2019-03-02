@@ -1119,6 +1119,8 @@ function lot_update_submit_popup() {
 add_action( 'wp_ajax_lot_update_submit_popup', 'lot_update_submit_popup' );
 add_action( 'wp_ajax_nopriv_lot_update_submit_popup', 'lot_update_submit_popup' );
 
+
+
 function purchase_add_submit(){
 	global $wpdb;
 	$data['success'] = 0;
@@ -1182,6 +1184,7 @@ lotid:2,lot_name:MUTHAYAM(B.R),hsn:10063010,rate_per:100,kg_bag:bag,gst:0,gst_va
 add_action( 'wp_ajax_purchase_add_submit', 'purchase_add_submit' );
 add_action( 'wp_ajax_nopriv_purchase_add_submit', 'purchase_add_submit' );
 
+
 function purchase_details($purchase_id){
 	global $wpdb;
 	$data['success'] = 0;
@@ -1223,6 +1226,26 @@ function purchase_details_list($purchase_id){
 	die();
 
 }
+
+
+
+function sale_details_for_cus_edit($cus_id){
+	global $wpdb;
+	$data['success'] = 0;
+	$sale_table = $wpdb->prefix.'sale';
+
+	 $query = "SELECT customer_id FROM {$sale_table} WHERE customer_id= '".$cus_id."'";	
+
+	if( $data['result'] = $wpdb->get_row($query) ) {
+		$data['success'] = 1;
+	}
+
+
+	return $data;
+	die();
+
+}
+
 function get_stock_create_form_popup(){
 	include('ajax/get_stock_create_form_popup.php');
 	die();
@@ -3602,6 +3625,39 @@ function PhoneNumberDuplication($phone_number = 0){
  	return $data;
 
 }
+function CusDetails($id = 0){
+	global $wpdb;
+	$customer_table = $wpdb->prefix.'customers';
+	$query 			= "SELECT * from  $customer_table where id = $phone_number and active = 1";
+	$exists 		= $wpdb->get_row($query);
+	$data = ($exists)? 1 : 0 ;
+ 	return $data;
+}
+function PhoneNumberDuplicationbilling_ajax(){
+	global $wpdb;
+	$customer_table= $wpdb->prefix.'customers';
+	$phone_number= $_POST['phone'];
+	$customer_id = ($_POST['customer_id'] == '')? 0 : $_POST['customer_id'];
+	
+	$query 	= "SELECT * from  $customer_table where mobile = '$phone_number' and active = 1 and id ='$customer_id'";
+	$datas= $wpdb->get_row($query);
+	$customer_id=$datas->id;
+	
+	
+	//$query 	= "SELECT * from $customer_table where id = $customer_id and active = 1";
+	if($data['results'] = $wpdb->get_row($query)){
+		$data['success'] = 1;
+	} 
+	else{
+		$data['success'] = 0;
+	}
+	echo json_encode($data);
+	die();
+}
+add_action('wp_ajax_PhoneNumberDuplicationbilling_ajax', 'PhoneNumberDuplicationbilling_ajax');
+add_action('wp_ajax_nopriv_PhoneNumberDuplicationbilling_ajax', 'PhoneNumberDuplicationbilling_ajax');
+
+/*
 function PhoneNumberDuplicationbilling_ajax(){
 	global $wpdb;
 	$customer_table= $wpdb->prefix.'customers';
@@ -3625,8 +3681,7 @@ function PhoneNumberDuplicationbilling_ajax(){
 }
 add_action('wp_ajax_PhoneNumberDuplicationbilling_ajax', 'PhoneNumberDuplicationbilling_ajax');
 add_action('wp_ajax_nopriv_PhoneNumberDuplicationbilling_ajax', 'PhoneNumberDuplicationbilling_ajax');
-
-
+*/
 
 
 function bagKgSplitter($weight = 0, $bag_weight = 0, $unit_type = false) {

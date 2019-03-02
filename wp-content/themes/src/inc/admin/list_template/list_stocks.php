@@ -22,7 +22,6 @@
 		$search_to = isset( $_GET['search_to'] ) ? $_GET['search_to']  : date("Y-m-d");
 	}
 
-
     $con = false;
     $condition = '';
     if($lot_number != '') {

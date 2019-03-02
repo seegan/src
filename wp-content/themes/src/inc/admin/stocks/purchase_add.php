@@ -95,10 +95,11 @@
                         <thead>
                             <tr>
                                 <th style="width: 300px;">Lot Number</th>
-                                <th>Bag Weight (Kg)</th>
-                                <th style="width: 300px;">Bags</th>
+                                <th>Bag Weight (in Kg)</th>
+                                <th style="width: 300px;">Total Bags/kg</th>
                                 <th style="width: 100px;">Rate per Bag / Kg</th>
                                 <th style="width: 200px;">Total Bags</th>
+                                <th style="width: 200px;">Discount in %</th>
                                 <th>Taxless Amount</th>
                                 <th style="width: 100px;" colspan="2">CGST</th>
                                 <th style="width: 100px;" colspan="2">SGST</th>
@@ -113,8 +114,8 @@
                                     <input type="hidden" class="pro_hsncode" value="">
                                 </td>
                                 <td>   
-                                    <span class="pro_bag_weight"></span>
-                                    <input type="hidden" class="pro_bag_weight_hide" value="0">
+                                    <span class="pro_bag_weight" style="display:none"></span>
+                                    <input type="text" style="width:50px" class="pro_bag_weight_hide" value="0">
                                 </td>
                                 <td>
                                     <span>
@@ -138,6 +139,7 @@
                                     <span class="pro_tot_bags"></span>
                                     <input type="hidden" class="pro_tot_bags_input" value="0">
                                 </td> 
+                                <td>  <input type="text" class="pro_inv_discount"  value='0' style="width:50px;"></td>
                                 <td>
                                     <span class="pro_total">
                                     </span>
@@ -192,23 +194,24 @@
                         <tbody class="purchase_total">
                             <tr>
                                 <td colspan="7"><div class="footer-txt">Sub Total</div></td>
-                                <td style="width:100px"><input type="text" value="0" style="width:100px" name="subtotal_tot" class="subtotal_tot" readonly/></td>
-                            </tr>
-                            <tr>
-                                <td colspan="7"><div class="footer-txt">Cash Discount</div></td>
-                                <td><input type="text" value="0" style="width:100px" name="discount" class="discount" readonly/></td>
+                                <td style="width:100px"><input type="text" value="0" style="width:100px" name="subtotal_tot" readonly class="subtotal_tot" /></td>
                             </tr>
                             <tr>
                                 <td colspan="7"><div class="footer-txt">Taxless Amount</div></td>
-                                <td><input type="text" value="0" style="width:100px" name="taxlesstotal" class="taxlesstotal" readonly/></td>
+                                <td><input type="text" value="0" style="width:100px" name="taxlesstotal" class="taxlesstotal" /></td>
+                            </tr>                            
+                            <tr>
+                                <td colspan="7"><div class="footer-txt">Cash Discount</div></td>
+                                <td><input type="text" value="0" style="width:100px" name="discount" class="discount" /></td>
                             </tr>
+
                             <tr>
                                 <td colspan="7"><div class="footer-txt">Total Gst Amount</div></td>
-                                <td><input type="text" style="width:100px" value="0" name="gsttotal" class="gsttotal" readonly/></td>
+                                <td><input type="text" style="width:100px" value="0" name="gsttotal" class="gsttotal" /></td>
                             </tr>                            
                             <tr>
                                 <td colspan="7"><div class="footer-txt">Grand Total</div></td>
-                                <td><input type="text" style="width:100px" value="0" class="grandtotal"  name="grandtotal" readonly/></td>
+                                <td><input type="text" style="width:100px" value="0" class="grandtotal"  name="grandtotal"  readonly/></td>
                             </tr>
                             <input type="hidden" name="lot_details" value="" class="lot_details">
                         </tbody>
@@ -317,9 +320,22 @@ else{
         }
     });
 
-    jQuery('.pro_bag_count, .purchase_as, .pro_rate_val').on('change',function () {
+    jQuery('.pro_bag_count, .purchase_as, .pro_rate_val, .pro_inv_discount').on('change',function () {
         calculateParticular();
     });
+
+
+    jQuery('.taxlesstotal, .discount, .gsttotal').on('change',function () {
+       
+         var taxlesstotal=jQuery('.taxlesstotal').val();
+         var discount=jQuery('.discount').val();
+         var gsttotal=jQuery('.gsttotal').val();
+         var finalamt=parseFloat(taxlesstotal)-parseFloat(discount)+parseFloat(gsttotal);
+         jQuery('.grandtotal').val(finalamt);
+
+    });
+
+
 
   jQuery(".pro_bag_count").keypress(function (e) {    
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -352,20 +368,22 @@ else{
     function calculateParticular() {
         var bag_weight = isNaN(parseFloat(jQuery('.pro_bag_weight_hide').val())) ? 0.00 : parseFloat(jQuery('.pro_bag_weight_hide').val());
         var parchase_as = jQuery('.purchase_as:checked').val();
+        var pro_inv_discount_amount = (jQuery('.pro_inv_discount').val()/100); 
         var gst_percentage= jQuery('.gst_percentage').val()/2; 
         var unit = isNaN(parseFloat(jQuery('.pro_bag_count').val())) ? 0.00 : parseFloat(jQuery('.pro_bag_count').val());
         var rate = isNaN(parseFloat(jQuery('.pro_rate_val').val())) ? 0.00 : parseFloat(jQuery('.pro_rate_val').val());        
         var total_bags =(parchase_as =='bag')?unit : (unit/bag_weight);
         jQuery('.pro_tot_bags').text(total_bags);
         jQuery('.pro_tot_bags_input').val(total_bags);
-        var pro_total=(unit*rate).toFixed(2);
+        pro_inv_discount_amount=pro_inv_discount_amount*(unit*rate);
+        var pro_total=((unit*rate)-pro_inv_discount_amount).toFixed(2);
         var gst_value=pro_total*gst_percentage/100;
         jQuery('.gst_per').text(gst_percentage);jQuery('.gst_per').val(gst_percentage);
         jQuery('.gst_per_value').text(gst_value);jQuery('.gst_per_value').val(gst_value);
-        jQuery('.pro_total').text((unit*rate).toFixed(2));
-        jQuery('.tax_amt').text((parseFloat(unit*rate)+parseFloat(gst_value*2)).toFixed(2));        
-        jQuery('.tax_amt').val((parseFloat(unit*rate)+parseFloat(gst_value*2)).toFixed(2));        
-        jQuery('.pro_total_val').val((unit*rate).toFixed(2));
+        jQuery('.pro_total').text(pro_total);jQuery('.pro_total_val').val(pro_total);
+        jQuery('.tax_amt').text((parseFloat(pro_total)+parseFloat(gst_value*2)).toFixed(2));        
+        jQuery('.tax_amt').val((parseFloat(pro_total)+parseFloat(gst_value*2)).toFixed(2));        
+        
     }
     function formPurchaseBill() {
         var hsn = jQuery('.pro_hsncode').val();var taxlessamount=jQuery('.pro_total_val').val();
